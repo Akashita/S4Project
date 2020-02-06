@@ -42,7 +42,6 @@ public class Projet {
 		Boolean notTrouve = true;
 		int[] res = {0,0};
 		
-		
 		if (this.lRes.size()==0) {
 			return res;
 		}
