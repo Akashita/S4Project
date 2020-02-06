@@ -12,6 +12,7 @@ public class Entreprise {
 			this.idCour = 0;
 		}
 		//classe de base qui permettent de voir la chaîne et récupérer les infos de la classe
+		@Override
 		public String toString() {
 			String chaineRessourceProjet = "voici la liste des projets ainsi que leurs ressources : ";
 			for (int i = 0; i < this.lPro.size(); i++) {
@@ -21,7 +22,7 @@ public class Entreprise {
 			return chaineRessourceProjet;
 		}
 		
-		public void incrementId (){ //fonction a utilisé sur chaque nouvelle ressource pour leur attribué un iD
+		public void incrementId (){ //fonction a utiliser sur chaque nouvelle ressource pour leur attribuer un iD
 			this.idCour = this.idCour +1 ;
 		}
 		
