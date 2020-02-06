@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class Projet {
 
-	private ArrayList<Ressource> lRes;
-	private String nom;
+	private ArrayList<Ressource> lRes;//liste des ressources
+	private String nom;//nom des projets, clefs primaires (sert à les différencier)
 	
 	public Projet(String nom) {
 		this.lRes =  new ArrayList<Ressource>();
@@ -25,20 +25,20 @@ public class Projet {
 		return this.nom + liste;
 	}
 	
-	public void ajouter(Ressource ressource) {
+	public void ajouter(Ressource ressource) { //test si la ressource est déjà dans le projet sinon la rajoute
 		int[] test = this.trouverPlace(ressource);
 		if (test[1]==0) {
 			this.lRes.set(test[0], ressource);
 		}
 	}
 	
-	public void enlever(Ressource ressource) {
+	public void enlever(Ressource ressource) { //test si la ressource est déjà dans le projet si oui l'enlève
 		int[] test = this.trouverPlace(ressource);
 		if (test[1]==1) {
 			this.lRes.remove(test[0]);
 		}
 	}
-	private int[] trouverPlace(Ressource ressource) {
+	public int[] trouverPlace(Ressource ressource) { //cherche la ressource dans le projet
 		Boolean notTrouve = true;
 		int[] res = {0,0};
 		
@@ -59,6 +59,15 @@ public class Projet {
 			}
 			while(notTrouve);
 			return res;
+		}
+	}
+	
+	public boolean equals (Projet projetTest) {//permet de tester si deux projets ont le même nom.
+		if (this.nom == projetTest.nom) {
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	
