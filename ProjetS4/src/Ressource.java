@@ -8,8 +8,16 @@ public class Ressource {
 	public int getId() {//récupération de l'Id de chaque ressource pour les différencier
 		return id;
 	}
-	public boolean equals(Ressource ressource) { //test si deux ressources sont égales
-		return (this.getId() == ressource.getId());
+	
+	@Override
+	public boolean equals(Object obj) { //test si deux ressources sont égales
+		if(obj instanceof Ressource && obj != null) {
+			Ressource res = (Ressource)obj;
+			return id == res.id;
+		} else {
+			return false;
+		}
+		
 	}
 	
 }
