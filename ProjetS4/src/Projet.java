@@ -17,7 +17,7 @@ public class Projet {
 		return this.nom;
 	}
 	public String toString() {
-		String liste = "";
+		String liste = " ";
 		
 		for(int i = 0; i < this.lRes.size(); i++){
 			liste += this.lRes.get(i).toString();
@@ -27,14 +27,14 @@ public class Projet {
 	
 	public void ajouter(Ressource ressource) { //test si la ressource est déjà dans le projet sinon la rajoute
 		int[] test = this.trouverPlace(ressource);
-		if (test[1]==0) {
-			this.lRes.set(test[0], ressource);
+		if (test[0]==0) {
+			this.lRes.add(ressource);
 		}
 	}
 	
 	public void enlever(Ressource ressource) { //test si la ressource est déjà dans le projet si oui l'enlève
 		int[] test = this.trouverPlace(ressource);
-		if (test[1]==1) {
+		if (test[0]==1) {
 			this.lRes.remove(test[0]);
 		}
 	}
@@ -48,16 +48,16 @@ public class Projet {
 		else {
 			
 			do{
-				if (this.lRes.get(res[0]).equals(res)) {
-					res[1] = 1;
+				if (this.lRes.get(res[1]).equals(ressource)) {
+					res[0] = 1;
 					notTrouve = false;
 				}
 				else {
-					res[0] = res[0] + 1;
+					res[1] = res[1] + 1;
 				}
 				
 			}
-			while(notTrouve);
+			while((notTrouve) && (res[1] < this.lRes.size()));
 			return res;
 		}
 	}

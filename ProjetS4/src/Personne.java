@@ -2,7 +2,9 @@
 public class Personne extends Ressource{
 	
 	private String prenom;
-	public final static String tabRole[] = {"collaborateur","chef de projet","administrateur"};
+	public static final String COLLABORATEUR = "Collaborateur";
+	public static final String CHEFDEPROJET = "Chef de projet";
+	public static final String ADMINISTRATEUR = "Administrateur";
 	private String role;
 	
 	Personne(String nom, String prenom, String role, int numSalarie){
@@ -16,5 +18,7 @@ public class Personne extends Ressource{
 		super.id = numSalarie;
 	}
 	
-	
+	public String toString() {
+		return this.role + " de nom " + this.nom + " de prénom " + this.prenom + " immatriculé " + this.id + ". ";
+	}
 }
