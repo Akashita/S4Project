@@ -63,12 +63,12 @@ public class Projet {
 			return res;
 		}
 	}
-	
-	public boolean equals (Projet projetTest) {//permet de tester si deux projets ont le même nom.
-		if (this.nom == projetTest.nom) {
-			return true;
-		}
-		else {
+	@Override
+	public boolean equals(Object obj) {//permet de tester si deux projets ont le même nom.
+		if(obj instanceof Projet && obj != null) {
+			Projet res = (Projet)obj;
+			return nom == res.nom;
+		} else {
 			return false;
 		}
 	}

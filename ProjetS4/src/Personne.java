@@ -14,10 +14,11 @@ public class Personne extends Ressource{
 		this.prenom = prenom;
 		//attributs de la classe mère.
 		super.nom = nom;
-		super.type = "personne";
+		super.type = "Personne";
 		super.id = numSalarie;
 	}
 	
+	@Override
 	public String toString() {
 		return this.role + " de nom " + this.nom + " de prénom " + this.prenom + " immatriculé " + this.id + ". ";
 	}
