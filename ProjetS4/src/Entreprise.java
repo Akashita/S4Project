@@ -70,6 +70,7 @@ public class Entreprise {
 			
 		}
 		
+		//méthode pour créer des ressources et les attribuer a des projets
 		public void nouvPersonne (String nomProjet, String nom, String prenom, String role) {
 			Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);
 			int [] place = 	this.chercheProjet(nomProjet);
@@ -77,8 +78,15 @@ public class Entreprise {
 				this.lPro.get(place[1]).ajouter(nouvPersonne);	
 				this.incrementId();
 			}
-			
-
+		}
+		
+		public void nouvSalle (String nomProjet, String nom, int capacite) {
+			Salle nouvSalle = new Salle(this.idCour,nom, capacite);
+			int [] place = 	this.chercheProjet(nomProjet);
+			if (place[0] == 1) {
+				this.lPro.get(place[1]).ajouter(nouvSalle);	
+				this.incrementId();
+			}
 		}
 		
 	
