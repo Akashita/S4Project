@@ -30,10 +30,9 @@ public class Entreprise {
 		}
 		
 		public int[] chercheProjet(String nomProjet) {
-			//cherche si le nom est déjà utilisé si il est trouvé renvoi true si pas trouvé et false si pas trouvé
 			
-			Boolean notTrouve = true;//sert a sortir plus vite de la boucle
-			int[] res = {0,0};//a gauche la place du projet cherché et a droite si il est trouvé 0 non 1 oui
+			Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
+			int[] res = {0,0};//a droite la place du projet cherché et a gauche si il est trouvé 0 non/1 oui
 			
 			if (this.lPro.size()== 0) {//si l'arrayList est vide il n'y a pas déjà ce projet.
 				
@@ -44,14 +43,14 @@ public class Entreprise {
 				do{
 					if (this.lPro.get(res[1]).getNom() == nomProjet) {
 						res[0] = 1;
-						notTrouve = false;
+						pasTrouve = false;
 					}
 					else {
-						res[1] = res[1] + 1; //on incrémente res pour accéder à chercher
+						res[1] = res[1] + 1; //on incrémente res pour accéder à chercher plus loin.
 					}
 					
 				}
-				while((notTrouve) && (res[1] < this.lPro.size()));
+				while((pasTrouve) && (res[1] < this.lPro.size()));
 				return res ;
 			}
 			
@@ -59,6 +58,7 @@ public class Entreprise {
 		
 		
 		//fonctions de créations d'éléments de l'entreprise, les ressources ainsi que les projets
+		
 		public void creerProjet(String nom) {//crée un projet si son nom n'est pas déjà utilisé
 			
 			Projet newProjet = new Projet(nom);
