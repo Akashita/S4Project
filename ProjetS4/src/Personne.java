@@ -17,9 +17,18 @@ public class Personne extends Ressource{
 		super.type = "Personne";
 		super.id = numSalarie;
 	}
+	public String getRole() {//récupération du rôle de la personne
+		return this.role;
+	}
+	public String getPrenom() {//récupération du prénom de la personne
+		return this.prenom;
+	}
+	
 	
 	@Override
 	public String toString() {
 		return this.role + " de nom " + this.nom + " de prénom " + this.prenom + " immatriculé " + this.id + ". ";
 	}
+	
+	
 }

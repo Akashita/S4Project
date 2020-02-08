@@ -17,12 +17,13 @@ public class Projet {
 		return this.nom;
 	}
 	public String toString() {
-		String liste = " ";
+		String liste = "Nom du projet : " + this.nom + ". \nIl contient les ressources suivantes : ";
 		
 		for(int i = 0; i < this.lRes.size(); i++){
 			liste += this.lRes.get(i).toString();
+			liste += "\n";
 		}
-		return this.nom + liste;
+		return liste;
 	}
 	
 	public void ajouter(Ressource ressource) { //test si la ressource est déjà dans le projet sinon la rajoute
@@ -37,7 +38,7 @@ public class Projet {
 		int[] test = this.chercherRessource(ressource);
 		
 		if (test[0]==1) {
-			this.lRes.remove(test[0]);
+			this.lRes.remove(test[1]);
 		}
 	}
 	public int[] chercherRessource(Ressource ressource) { //cherche la ressource dans le projet et donne la place si trouvé
