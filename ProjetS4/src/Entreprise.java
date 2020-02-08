@@ -14,7 +14,9 @@ public class Entreprise {
 			this.listeType =  new ArrayList<String>();
 			this.listeRessource =  new ArrayList<Ressource>();
 			this.idCour = 0;
+			
 		}
+		
 		//classe de base qui permettent de voir la chaîne et récupérer les infos de la classe
 		@Override
 		public String toString() {
@@ -233,9 +235,34 @@ public class Entreprise {
 			this.incrementId();
 			this.ajouterRessource(nouvRessourceAutre);
 			nouvRessourceAutre.rendDisponible();
+			this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
+
 
 		}
-		
+		public void nouvCalculateur(String nomProjet, String nom) {
+			Calculateur nouvCalculateur = new Calculateur(nom, idCour);
+			int [] place = 	this.chercheProjet(nomProjet);
+			this.incrementId();
+			this.ajouterRessource(nouvCalculateur);
+			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
+				Projet projetCour = this.lPro.get(place[1]);
+				projetCour.ajouter(nouvCalculateur);	
+				nouvCalculateur.rendIndisponible();
+				nouvCalculateur.setProjet(projetCour);
+			}
+			else {
+				nouvCalculateur.rendDisponible();//si le nom du projet est mal écrit ou faux la ressource vas dans la liste de ressource disponible
+
+			}
+			
+		}
+		public void nouvCalculateur (String nom) {
+			Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
+			this.incrementId();
+			this.ajouterRessource(nouvCalculateur);
+			nouvCalculateur.rendDisponible();
+
+		}
 		
 		
 		//Méthodes pour changer une ressource de projet en rajouter ou en enlever 
