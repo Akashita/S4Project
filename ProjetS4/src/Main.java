@@ -6,9 +6,11 @@ public class Main {
 		public static void main (String[] args) {
 			//test Entreprise et ses méthodes
 			 test.creerProjet("test, le projet");
-			 test.nouvPersonne("test, le projet", "geyer", "jules", Personne.COLLABORATEUR);
-			 test.nouvPersonne("test, le projet", "Planchamp", "Damien", Personne.ADMINISTRATEUR);
+			 //test.nouvPersonne("test, le projet", "geyer", "jules", Personne.COLLABORATEUR);
+			 //test.nouvPersonne("test, le projet", "Planchamp", "Damien", Personne.ADMINISTRATEUR);
 			 test.nouvSalle("test, le projet","salut a tous c'est la salle", 25);
+			 test.nouvTypeRessource("typeTest");
+			 test.nouvRessourceAutre("test, le projet", "el roulio telefo", "telephone");
 			 
 			 // Test methode equals de Ressource
 			 Personne p1 = new Personne("azert", "yolo", "chef", 1555);

@@ -32,7 +32,7 @@ public class Salle extends Ressource{
 	
 	public String toString() {
 		String liste = " Cette salle s'appelle : " + this.nom + ", elle porte le numéro : " + this.numSalle  
-				+ ", elle est immatriculé : " + this.numSalle + " elle contient le matériel suivant : " ;
+				+ ", elle est immatriculé : " + this.numSalle + " elle a une capacitée de :  " + this.capacite +  "elle contient le matériel suivant : " ;
 		
 		for(int i = 0; i < this.lMatos.size(); i++){
 			liste += this.lMatos.get(i).toString();

@@ -9,4 +9,8 @@ public class RessourceAutre extends Ressource{
 		super.id = idRessource;
 	}
 
+	public String toString() {
+		return "cette ressource personnalisable " + this.nom + " est un(e) " + this.type + " est matriculé " + this.id;
+	}
+	
 }
