@@ -6,12 +6,24 @@ public class Main {
 		public static void main (String[] args) {
 			//test Entreprise et ses méthodes
 			 test.creerProjet("test, le projet");
+			 test.creerProjet("test2, il est de retour");
 			 test.nouvPersonne("test, le projet", "geyer", "jules", Personne.COLLABORATEUR);
 			 test.nouvPersonne("test, le projet", "Planchamp", "Damien", Personne.ADMINISTRATEUR);
 			 test.nouvPersonne("Dompnier", "Silvio", Personne.CHEFDEPROJET);
 			 test.nouvSalle("test, le projet","salut a tous c'est la salle", 25);
 			 test.nouvTypeRessource("typeTest");
 			 test.nouvRessourceAutre("test, le projet", "el roulio telefo", "telephone");
+			 test.ajouterRessourceProjet(2,"test, le projet");
+			 test.nouvPersonne("Launay", "Swan", Personne.COLLABORATEUR);
+			 test.supprimerRessource(5);
+			 test.nouvPersonne("Monsieur", "5g", Personne.COLLABORATEUR);
+			 //test.supprimerRessource(5);
+			 test.enleverRessourceProjet(0);
+			 test.deplacerRessourceProjet(1, "test2, il est de retour");
+
+
+
+			 
 			 
 			 // Test methode equals de Ressource
 			 Personne p1 = new Personne("azert", "yolo", "chef", 1555);

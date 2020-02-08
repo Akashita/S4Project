@@ -29,8 +29,9 @@ public class Entreprise {
 				Ressource resCour;
 				chaineRessourceProjet += " \n";
 				resCour =  this.listeRessource.get(i);
-				chaineRessourceProjet += resCour.getNom() + "------disponible : ";
-				chaineRessourceProjet += resCour.getDispo();
+				chaineRessourceProjet += resCour.getNom() + "    ---disponible : ";
+				chaineRessourceProjet += resCour.getDispo() + "    ---matricule : ";
+				chaineRessourceProjet += resCour.getId() + ".";
 			}
 			
 			chaineRessourceProjet += ".  \nIl y a aussi ces types disponibles : ";
@@ -51,41 +52,46 @@ public class Entreprise {
 		public int getId() {
 			return this.idCour;
 		}
+		
 		public void ajouterRessource(Ressource resCour) {
 			this.listeRessource.add(resCour);
 		}
-		public void enleverRessource(Ressource resCour) {
-			int[] test = this.chercherRessource(resCour);
-			if (test[0] == 1) {
-			this.listeRessource.remove(test[1]);
-		}
-		}
 		
-		public int[] chercherRessource(Ressource ressource) {
+		public void supprimerRessource(int idRessource) {
+			
+			int[] place = this.chercherRessource(idRessource);
+			if (place[0] == 1) {
+				int rangRessource = place[1];
+				Ressource resCour = this.listeRessource.get(rangRessource);
+
+				if (resCour.getDispo() == true) {//on enleve la ressource si elle est disponible 
+					this.listeRessource.remove(resCour);
+
+						}
+				
+			}
+			
+		}
+		public int[] chercherRessource(int idCour) {
 			Boolean pasTrouve = true;
 			int[] res = {0,0};//a droite la place du projet cherché et a gauche si il est trouvé 0 non/1 oui
-			
 			if (this.listeRessource.size()==0) {
 				return res;
 			}
 			else {
-				
 				do{
-					if (this.listeRessource.get(res[1]).equals(ressource)) {
+					if (this.listeRessource.get(res[1]).getId() == idCour) {
 						res[0] = 1;
 						pasTrouve = false;
 					}
 					else {
 						res[1] = res[1] + 1;
 					}
-					
 				}
 				while((pasTrouve) && (res[1] < this.listeRessource.size()));
 				return res;
 			}
-		}
-
-		
+		}	
 		
 		public int[] chercheProjet(String nomProjet) {
 			
@@ -160,8 +166,12 @@ public class Entreprise {
 			this.incrementId();
 			this.ajouterRessource(nouvPersonne);
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				this.lPro.get(place[1]).ajouter(nouvPersonne);	
+				Projet projetCour = this.lPro.get(place[1]);
+				projetCour.ajouter(nouvPersonne);	
 				nouvPersonne.rendIndisponible();
+				nouvPersonne.setProjet(projetCour);
+
+				
 			}
 			else {
 				nouvPersonne.rendDisponible();//si le nom du projet est mal écrit ou faux la ressource vas dans la liste de ressource disponible
@@ -182,8 +192,10 @@ public class Entreprise {
 			this.incrementId();
 			this.ajouterRessource(nouvSalle);
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				this.lPro.get(place[1]).ajouter(nouvSalle);	
+				Projet projetCour = this.lPro.get(place[1]);
+				projetCour.ajouter(nouvSalle);	
 				nouvSalle.rendIndisponible();
+				nouvSalle.setProjet(projetCour);
 			}
 			else {
 				nouvSalle.rendDisponible();//si le nom du projet est mal écrit ou faux la ressource vas dans la liste de ressource disponible
@@ -205,8 +217,10 @@ public class Entreprise {
 			this.incrementId();
 			this.ajouterRessource(nouvRessourceAutre);
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				this.lPro.get(place[1]).ajouter(nouvRessourceAutre);	
+				Projet projetCour = this.lPro.get(place[1]);
+				projetCour.ajouter(nouvRessourceAutre);	
 				nouvRessourceAutre.rendIndisponible();
+				nouvRessourceAutre.setProjet(projetCour);
 				this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
 			}
 			else {
@@ -222,6 +236,45 @@ public class Entreprise {
 
 		}
 		
+		
+		
+		//Méthodes pour changer une ressource de projet en rajouter ou en enlever 
+		public void ajouterRessourceProjet(int idRessource,String nomProjet) {//ajouter une ressource a un projet à l'aide de son identifiant
+			int[] placeRessource = this.chercherRessource(idRessource);
+			if (placeRessource[0] == 1) {
+				int rangRessource = placeRessource[1];
+					Ressource resCour = this.listeRessource.get(rangRessource);
+					if (resCour.getDispo() == true) {//vérifie la disponibilité de la ressource
+						int[] placeProjet = this.chercheProjet(nomProjet);
+						if (placeProjet[0] == 1) {
+							Projet projetCour = this.lPro.get(placeProjet[1]);
+							projetCour.ajouter(resCour);	//on ajoute au projet la ressource
+							resCour.setProjet(projetCour);
+							resCour.rendIndisponible();
+							
+						}
+					}
+			}
+		}
+		
+		public void enleverRessourceProjet(int idRessource) {
+			int[] placeRessource = this.chercherRessource(idRessource);
+			if (placeRessource[0] == 1) {
+				int rangRessource = placeRessource[1];
+				Ressource resCour = this.listeRessource.get(rangRessource);
+				resCour.getProjet().enlever(resCour);
+				resCour.unsetProjet();
+				resCour.rendDisponible();
+			}
+		}
+		
+		public void deplacerRessourceProjet(int idRessource, String nomProjet) {
+			//déplace la ressource d'iD vers le projet entré sauf si il est dans aucun projet il est mis dans le projet si le nom est faux il est juste retiré
+			this.enleverRessourceProjet(idRessource);
+			this.ajouterRessourceProjet(idRessource, nomProjet);
+		}
+		
+
 		
 
 }

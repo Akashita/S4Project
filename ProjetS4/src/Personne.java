@@ -27,8 +27,14 @@ public class Personne extends Ressource{
 	
 	@Override
 	public String toString() {
-		return this.role + " de nom " + this.nom + " de prénom " + this.prenom + " immatriculé " + this.id + ". ";
-	}
+		if (this.getProjet() != null) {
+			return this.role + " de nom " + this.nom + " de prénom " + this.prenom + " participe à " + this.getProjet().getNom() +  " immatriculé " + this.id + ". ";
+		}
+		else {
+			return this.role + " de nom " + this.nom + " de prénom " + this.prenom +  " immatriculé " + this.id + ". ";
+
+		}
+		}
 	
 	
 }

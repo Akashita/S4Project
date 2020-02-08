@@ -3,7 +3,10 @@ public class Ressource {
 	protected String nom;
 	protected String type;
 	protected Boolean dispo; //booléen si la ressource est utilisé ou vacante
+	protected Projet Projet;
 	protected int id;
+	
+
 	
 	public String getNom() {//récupération du type
 		return this.nom;
@@ -18,6 +21,17 @@ public class Ressource {
 	}
 	public int getId() {//récupération de l'Id de chaque ressource pour les différencier
 		return this.id;
+	}
+	public Projet getProjet() {
+		return this.Projet;
+	}
+	
+	public void setProjet(Projet projetCour) {
+		this.Projet = projetCour;
+	}
+	
+	public void unsetProjet() {
+		this.Projet = null;
 	}
 	
 	@Override

@@ -34,8 +34,16 @@ public class Salle extends Ressource{
 	
 	
 	public String toString() {
-		String liste = "Cette salle s'appelle : " + this.nom + ", elle porte le numéro : " + this.id  
+		String liste = "";
+		if (this.getProjet() != null) {
+			liste = "Cette salle s'appelle : " + this.nom + ", elle porte le numéro : " + this.id  
+					+  " elle a une capacitée de :  " + this.capacite +  " elle est utilisé dans " + this.getProjet().getNom() + "elle contient le matériel suivant : " ;
+		
+		}
+		else {
+			liste = "Cette salle s'appelle : " + this.nom + ", elle porte le numéro : " + this.id  
 				+  " elle a une capacitée de :  " + this.capacite +  " elle contient le matériel suivant : " ;
+		}
 		
 		if (this.lMatos.size() == 0) {
 			liste += "aucun";
