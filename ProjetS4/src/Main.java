@@ -1,10 +1,13 @@
 //histoire de faire mes tests => j'aime faire des tests @jules 
 public class Main {
 
-	static Entreprise test = new Entreprise();
+	//static Entreprise test = new Entreprise();
 
 		public static void main (String[] args) {
-			//test Entreprise et ses méthodes
+			Entreprise entreprise = new Entreprise();
+			new FenetrePrincipale(entreprise);
+			/*
+			//test Entreprise et ses mï¿½thodes
 			 test.creerProjet("test, le projet");
 			 test.creerProjet("test2, il est de retour");
 			 test.nouvPersonne("test, le projet", "geyer", "jules", Personne.COLLABORATEUR);
@@ -36,7 +39,7 @@ public class Main {
 			 
 
 			 System.out.println(test.toString());
-
+			*/
 			}
 
 		

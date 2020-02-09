@@ -1,14 +1,15 @@
 import java.util.ArrayList;
+import java.util.Observable;
 
-//model il sert a créer des projets puis leur donne des ressources.
+//model il sert a crï¿½er des projets puis leur donne des ressources.
 
-public class Entreprise {
+public class Entreprise extends Observable{
 		private ArrayList<Projet> lPro;//liste qui contient tous les projets de l'entreprise
-		private ArrayList<String> listeType;//liste qui contient tous les types de ressourceAutre qui ont déjà été crée pour les réutiliser
+		private ArrayList<String> listeType;//liste qui contient tous les types de ressourceAutre qui ont dï¿½jï¿½ ï¿½tï¿½ crï¿½e pour les rï¿½utiliser
 		private ArrayList<Ressource> listeRessource;//liste qui contient 
 		private int idCour;//id des ressources
 		
-		//création de l'entreprise unique il faudra lui ajouter un nom si on désire étendre nos activités
+		//crï¿½ation de l'entreprise unique il faudra lui ajouter un nom si on dï¿½sire ï¿½tendre nos activitï¿½s
 		public Entreprise() {
 			this.lPro =  new ArrayList<Projet>();
 			this.listeType =  new ArrayList<String>();
@@ -17,7 +18,7 @@ public class Entreprise {
 			
 		}
 		
-		//classe de base qui permettent de voir la chaîne et récupérer les infos de la classe
+		//classe de base qui permettent de voir la chaï¿½ne et rï¿½cupï¿½rer les infos de la classe
 		@Override
 		public String toString() {
 			String chaineRessourceProjet = "voici la liste des projets ainsi que leurs ressources : ";
@@ -25,7 +26,7 @@ public class Entreprise {
 				chaineRessourceProjet += this.lPro.get(i).toString(); 
 				
 			}
-			chaineRessourceProjet += ". \n Liste des Ressource de l'entreprise et leurs disponibilités : ";
+			chaineRessourceProjet += ". \n Liste des Ressource de l'entreprise et leurs disponibilitï¿½s : ";
 
 			for (int i = 0; i < this.listeRessource.size(); i++) {
 				Ressource resCour;
@@ -76,7 +77,7 @@ public class Entreprise {
 		}
 		public int[] chercherRessource(int idCour) {
 			Boolean pasTrouve = true;
-			int[] res = {0,0};//a droite la place du projet cherché et a gauche si il est trouvé 0 non/1 oui
+			int[] res = {0,0};//a droite la place du projet cherchï¿½ et a gauche si il est trouvï¿½ 0 non/1 oui
 			if (this.listeRessource.size()==0) {
 				return res;
 			}
@@ -98,9 +99,9 @@ public class Entreprise {
 		public int[] chercheProjet(String nomProjet) {
 			
 			Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
-			int[] res = {0,0};//a droite la place du projet cherché et a gauche si il est trouvé 0 non/1 oui
+			int[] res = {0,0};//a droite la place du projet cherchï¿½ et a gauche si il est trouvï¿½ 0 non/1 oui
 			
-			if (this.lPro.size()== 0) {//si l'arrayList est vide il n'y a pas déjà ce projet.
+			if (this.lPro.size()== 0) {//si l'arrayList est vide il n'y a pas dï¿½jï¿½ ce projet.
 				
 				return res;
 			}
@@ -112,7 +113,7 @@ public class Entreprise {
 						pasTrouve = false;
 					}
 					else {
-						res[1] = res[1] + 1; //on incrémente res pour accéder à chercher plus loin.
+						res[1] = res[1] + 1; //on incrï¿½mente res pour accï¿½der ï¿½ chercher plus loin.
 					}
 					
 				}
@@ -122,22 +123,22 @@ public class Entreprise {
 			
 		}
 		
-		//méthode pour rajouter un type de RessourceAutre
+		//mï¿½thode pour rajouter un type de RessourceAutre
 				public void nouvTypeRessource(String nouvType) {
 					Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
 					int i = 0;
-					if (this.listeType.size()== 0) {//si l'arrayList est vide il n'y a pas déjà ce projet.
+					if (this.listeType.size()== 0) {//si l'arrayList est vide il n'y a pas dï¿½jï¿½ ce projet.
 						this.listeType.add(nouvType);
 
 					}
 					else {
 						
 						do{
-							if (this.listeType.get(i) == nouvType) {//teste si le nom est déjà présent dans les types de ressources
+							if (this.listeType.get(i) == nouvType) {//teste si le nom est dï¿½jï¿½ prï¿½sent dans les types de ressources
 								pasTrouve = false;//sort de la boucle sans rien faire
 							}
 							else {
-								i++; //on incrémente i pour accéder à chercher plus loin.
+								i++; //on incrï¿½mente i pour accï¿½der ï¿½ chercher plus loin.
 							}
 							
 						}
@@ -148,10 +149,10 @@ public class Entreprise {
 				}
 				
 				
-		//fonctions de créations d'éléments de l'entreprise, les ressources ainsi que les projets
-		//les méthodes sont doublés -> direct dans un projet ou dans l'entreprise
+		//fonctions de crï¿½ations d'ï¿½lï¿½ments de l'entreprise, les ressources ainsi que les projets
+		//les mï¿½thodes sont doublï¿½s -> direct dans un projet ou dans l'entreprise
 		
-		public void creerProjet(String nom) {//crée un projet si son nom n'est pas déjà utilisé
+		public void creerProjet(String nom) {//crï¿½e un projet si son nom n'est pas dï¿½jï¿½ utilisï¿½
 			
 			Projet newProjet = new Projet(nom);
 			
@@ -161,7 +162,7 @@ public class Entreprise {
 			
 		}
 		
-		//méthode pour créer des ressources et les attribuer a des projets
+		//mï¿½thode pour crï¿½er des ressources et les attribuer a des projets
 		public void nouvPersonne (String nomProjet, String nom, String prenom, String role) {
 			Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);
 			int [] place = 	this.chercheProjet(nomProjet);
@@ -176,7 +177,7 @@ public class Entreprise {
 				
 			}
 			else {
-				nouvPersonne.rendDisponible();//si le nom du projet est mal écrit ou faux la ressource vas dans la liste de ressource disponible
+				nouvPersonne.rendDisponible();//si le nom du projet est mal ï¿½crit ou faux la ressource vas dans la liste de ressource disponible
 
 			}
 		}
@@ -200,7 +201,7 @@ public class Entreprise {
 				nouvSalle.setProjet(projetCour);
 			}
 			else {
-				nouvSalle.rendDisponible();//si le nom du projet est mal écrit ou faux la ressource vas dans la liste de ressource disponible
+				nouvSalle.rendDisponible();//si le nom du projet est mal ï¿½crit ou faux la ressource vas dans la liste de ressource disponible
 
 			}
 		}
@@ -212,7 +213,7 @@ public class Entreprise {
 			nouvSalle.rendDisponible();
 		}
 		
-		//méthode de création des RessourceAutre personnalisable et qui permettent de créer des types différents
+		//mï¿½thode de crï¿½ation des RessourceAutre personnalisable et qui permettent de crï¿½er des types diffï¿½rents
 		public void nouvRessourceAutre (String nomProjet, String nom,String type) {
 			RessourceAutre nouvRessourceAutre = new RessourceAutre(nom, type, this.idCour);
 			int [] place = 	this.chercheProjet(nomProjet);
@@ -226,7 +227,7 @@ public class Entreprise {
 				this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
 			}
 			else {
-				nouvRessourceAutre.rendDisponible();//si le nom du projet est mal écrit ou faux la ressource vas dans la liste de ressource disponible
+				nouvRessourceAutre.rendDisponible();//si le nom du projet est mal ï¿½crit ou faux la ressource vas dans la liste de ressource disponible
 
 			}
 		}
@@ -251,7 +252,7 @@ public class Entreprise {
 				nouvCalculateur.setProjet(projetCour);
 			}
 			else {
-				nouvCalculateur.rendDisponible();//si le nom du projet est mal écrit ou faux la ressource vas dans la liste de ressource disponible
+				nouvCalculateur.rendDisponible();//si le nom du projet est mal ï¿½crit ou faux la ressource vas dans la liste de ressource disponible
 
 			}
 			
@@ -265,13 +266,13 @@ public class Entreprise {
 		}
 		
 		
-		//Méthodes pour changer une ressource de projet en rajouter ou en enlever 
-		public void ajouterRessourceProjet(int idRessource,String nomProjet) {//ajouter une ressource a un projet à l'aide de son identifiant
+		//Mï¿½thodes pour changer une ressource de projet en rajouter ou en enlever 
+		public void ajouterRessourceProjet(int idRessource,String nomProjet) {//ajouter une ressource a un projet ï¿½ l'aide de son identifiant
 			int[] placeRessource = this.chercherRessource(idRessource);
 			if (placeRessource[0] == 1) {
 				int rangRessource = placeRessource[1];
 					Ressource resCour = this.listeRessource.get(rangRessource);
-					if (resCour.getDispo() == true) {//vérifie la disponibilité de la ressource
+					if (resCour.getDispo() == true) {//vï¿½rifie la disponibilitï¿½ de la ressource
 						int[] placeProjet = this.chercheProjet(nomProjet);
 						if (placeProjet[0] == 1) {
 							Projet projetCour = this.lPro.get(placeProjet[1]);
@@ -296,7 +297,7 @@ public class Entreprise {
 		}
 		
 		public void deplacerRessourceProjet(int idRessource, String nomProjet) {
-			//déplace la ressource d'iD vers le projet entré sauf si il est dans aucun projet il est mis dans le projet si le nom est faux il est juste retiré
+			//dï¿½place la ressource d'iD vers le projet entrï¿½ sauf si il est dans aucun projet il est mis dans le projet si le nom est faux il est juste retirï¿½
 			this.enleverRessourceProjet(idRessource);
 			this.ajouterRessourceProjet(idRessource, nomProjet);
 		}
