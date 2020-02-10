@@ -9,6 +9,7 @@ public class NouvelleRessourceListener implements ActionListener {
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		new FenetreNouvelleRessource(entreprise);
 		// TODO Auto-generated method stub
 
 	}

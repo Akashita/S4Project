@@ -17,7 +17,7 @@ public class FenetrePrincipale extends JFrame{
 		Panel panelGauche = new Panel(new FlowLayout());
 		Panel panelBas = new Panel(new FlowLayout());
 		
-		Button nouvelleRessource = new Button("nouvelle une ressource");
+		Button nouvelleRessource = new Button("nouvelle ressource");
 		panelGauche.add(nouvelleRessource);
 		nouvelleRessource.addActionListener(new NouvelleRessourceListener(entreprise));
 
