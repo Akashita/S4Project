@@ -13,7 +13,7 @@ public class PanelPrincipal extends JPanel implements Observer{
 	
 	public void paint(Graphics g){
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		//Entreprise.dessineToi(g);
+		entreprise.dessineToi(g);
 	}
 
 	@Override

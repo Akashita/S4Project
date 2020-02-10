@@ -1,8 +1,9 @@
 
+
 public class Calculateur extends Ressource{
 	
 	public Calculateur(String nom, int numCalculateur) {
-		//attributs de la classe mère.
+		//attributs de la classe mï¿½re.
 			super.nom = nom;
 			super.type = "Calculateur";
 			super.id = numCalculateur;
@@ -10,12 +11,12 @@ public class Calculateur extends Ressource{
 	public String toString() {
 		String liste = "";
 		if (this.getProjet() != null) {
-			liste = "Le calculateur s'appelle : " + this.nom + ", il porte le numéro : " + this.id  
-					+   " il est utilisé dans " + this.getProjet().getNom();
+			liste = "Le calculateur s'appelle : " + this.nom + ", il porte le numï¿½ro : " + this.id  
+					+   " il est utilisï¿½ dans " + this.getProjet().getNom();
 		
 		}
 		else {
-			liste = "Le calculateur s'appelle : " + this.nom + ", il porte le numéro : " + this.id;
+			liste = "Le calculateur s'appelle : " + this.nom + ", il porte le numï¿½ro : " + this.id;
 		}
 		return liste;
 	}

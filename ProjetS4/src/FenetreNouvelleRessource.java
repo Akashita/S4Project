@@ -1,8 +1,6 @@
 import javax.swing.*;
 
 public class FenetreNouvelleRessource extends JFrame{
-	public static final int HAUTEUR = 400,
-			LARGEUR = 500;
 	Entreprise entreprise;
 	
 	public FenetreNouvelleRessource(Entreprise entreprise) {
@@ -12,7 +10,7 @@ public class FenetreNouvelleRessource extends JFrame{
 	}
 	
 	private String choixType() {
-	    String[] toutLesTypes = {"Salarié", "Salle", "Calculateur"};
+	    String[] toutLesTypes = {Ressource.PERSONNE, Ressource.SALLE, Ressource.CALCULATEUR};
 	    String typeChoisi = (String) JOptionPane.showInputDialog(null, 
 	      "Veuillez indiquer le type de la ressource!",
 	      "Creer une ressource",
@@ -24,20 +22,20 @@ public class FenetreNouvelleRessource extends JFrame{
 	}
 	
 	private void creationRessource(String type) {
-		if (type == "Salarié") {
+		if (type == Ressource.PERSONNE) {
 			creationSalarie();
 		}
-		if (type == "Salle") {
+		if (type == Ressource.SALLE) {
 			creationSalle();
 		}
-		if (type == "Calculateur") {
+		if (type == Ressource.CALCULATEUR) {
 			creationCalculateur();
 		}
 	}
 	
 	private void creationSalarie() {
 		String nom, prenom;
-		String[] toutLesRoles = {"Administrateur", "Chef de Projet", "Collaborateur"};
+		String[] toutLesRoles = {Personne.ADMINISTRATEUR, Personne.CHEFDEPROJET, Personne.COLLABORATEUR};
 	    
 	    nom = JOptionPane.showInputDialog(null, "Veuillez ecrire son nom", "Ajouter un salarié", JOptionPane.QUESTION_MESSAGE);
 	    prenom = JOptionPane.showInputDialog(null, "Veuillez ecrire son prenom", "Ajouter un salarié", JOptionPane.QUESTION_MESSAGE);
@@ -48,7 +46,7 @@ public class FenetreNouvelleRessource extends JFrame{
 	      JOptionPane.QUESTION_MESSAGE,
 	      null,
 	      toutLesRoles,
-	      toutLesRoles[0]);
+	      toutLesRoles[2]);
 
 		entreprise.nouvPersonne(nom, prenom, roleChoisi);	 
 	}

@@ -1,4 +1,5 @@
 
+
 public class Personne extends Ressource{
 	
 	private String prenom;
@@ -12,15 +13,15 @@ public class Personne extends Ressource{
 		//attribut de la classe fille.
 		this.role = role;
 		this.prenom = prenom;
-		//attributs de la classe mère.
+		//attributs de la classe mï¿½re.
 		super.nom = nom;
 		super.type = "Personne";
 		super.id = numSalarie;
 	}
-	public String getRole() {//récupération du rôle de la personne
+	public String getRole() {//rï¿½cupï¿½ration du rï¿½le de la personne
 		return this.role;
 	}
-	public String getPrenom() {//récupération du prénom de la personne
+	public String getPrenom() {//rï¿½cupï¿½ration du prï¿½nom de la personne
 		return this.prenom;
 	}
 	
@@ -28,10 +29,10 @@ public class Personne extends Ressource{
 	@Override
 	public String toString() {
 		if (this.getProjet() != null) {
-			return this.role + " de nom " + this.nom + " de prénom " + this.prenom + " participe à " + this.getProjet().getNom() +  " immatriculé " + this.id + ". ";
+			return this.role + " de nom " + this.nom + " de prï¿½nom " + this.prenom + " participe ï¿½ " + this.getProjet().getNom() +  " immatriculï¿½ " + this.id + ". ";
 		}
 		else {
-			return this.role + " de nom " + this.nom + " de prénom " + this.prenom +  " immatriculé " + this.id + ". ";
+			return this.role + " de nom " + this.nom + " de prï¿½nom " + this.prenom +  " immatriculï¿½ " + this.id + ". ";
 
 		}
 		}

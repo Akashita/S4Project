@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 
@@ -5,53 +7,55 @@ import java.util.ArrayList;
 
 public class Projet {
 
-	private ArrayList<Ressource> lRes;//liste des ressources
-	private String nom;//nom des projets, clefs primaires (sert à les différencier)
+	private ArrayList<Ressource> listeRessource;//liste des ressources
+	private String nom;//nom des projets, clefs primaires (sert ï¿½ les diffï¿½rencier)
 	
 	public Projet(String nom) {
-		this.lRes =  new ArrayList<Ressource>();
+		this.listeRessource =  new ArrayList<Ressource>();
 		this.nom = nom;
 	}
 	
 	public String getNom() {
 		return this.nom;
 	}
+	
 	public String toString() {
 		String liste = "Nom du projet : " + this.nom + ". \nIl contient les ressources suivantes : ";
 		
-		for(int i = 0; i < this.lRes.size(); i++){
-			liste += this.lRes.get(i).toString();
+		for(int i = 0; i < this.listeRessource.size(); i++){
+			liste += this.listeRessource.get(i).toString();
 			liste += "\n";
 		}
 		return liste;
 	}
 	
-	public void ajouter(Ressource ressource) { //test si la ressource est déjà dans le projet sinon la rajoute
+	public void ajouter(Ressource ressource) { //test si la ressource est dï¿½jï¿½ dans le projet sinon la rajoute
 		int[] test = this.chercherRessource(ressource);
 		
 		if (test[0]==0) {
-			this.lRes.add(ressource);
+			this.listeRessource.add(ressource);
 		}
 	}
 	
-	public void enlever(Ressource ressource) { //test si la ressource est déjà dans le projet si oui l'enlève
+	public void enlever(Ressource ressource) { //test si la ressource est dï¿½jï¿½ dans le projet si oui l'enlï¿½ve
 		int[] test = this.chercherRessource(ressource);
 		
 		if (test[0]==1) {
-			this.lRes.remove(test[1]);
+			this.listeRessource.remove(test[1]);
 		}
 	}
-	public int[] chercherRessource(Ressource ressource) { //cherche la ressource dans le projet et donne la place si trouvé
+	
+	public int[] chercherRessource(Ressource ressource) { //cherche la ressource dans le projet et donne la place si trouvï¿½
 		Boolean pasTrouve = true;
-		int[] res = {0,0};//a droite la place du projet cherché et a gauche si il est trouvé 0 non/1 oui
+		int[] res = {0,0};//a droite la place du projet cherchï¿½ et a gauche si il est trouvï¿½ 0 non/1 oui
 		
-		if (this.lRes.size()==0) {
+		if (this.listeRessource.size()==0) {
 			return res;
 		}
 		else {
 			
 			do{
-				if (this.lRes.get(res[1]).equals(ressource)) {
+				if (this.listeRessource.get(res[1]).equals(ressource)) {
 					res[0] = 1;
 					pasTrouve = false;
 				}
@@ -60,18 +64,34 @@ public class Projet {
 				}
 				
 			}
-			while((pasTrouve) && (res[1] < this.lRes.size()));
+			while((pasTrouve) && (res[1] < this.listeRessource.size()));
 			return res;
 		}
 	}
+	
 	@Override
-	public boolean equals(Object obj) {//permet de tester si deux projets ont le même nom.
+	public boolean equals(Object obj) {//permet de tester si deux projets ont le mï¿½me nom.
 		if(obj instanceof Projet && obj != null) {
 			Projet res = (Projet)obj;
 			return nom == res.nom;
 		} else {
 			return false;
 		}
+	}
+	
+	public void dessineToi(Graphics g) {
+		 for (int i=0; i<listeRessource.size(); i++) {
+			 if (listeRessource.get(i).getType() == Ressource.PERSONNE) {
+				 g.setColor(Color.PINK);
+			 }
+			 if (listeRessource.get(i).getType() == Ressource.SALLE) {
+				 g.setColor(Color.RED);
+			 }
+			 if (listeRessource.get(i).getType() == Ressource.CALCULATEUR) {
+				 g.setColor(Color.GREEN);
+			 }
+			 g.fillOval(100+(i*50), 100, 50, 50);
+		 }
 	}
 	
 }

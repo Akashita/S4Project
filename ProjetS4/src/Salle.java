@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 
 public class Salle extends Ressource{
@@ -5,15 +6,15 @@ public class Salle extends Ressource{
 	private ArrayList<Materiel> lMatos; 
 	private int capacite;
 	
-	//Différents constructeurs:
+	//Diffï¿½rents constructeurs:
 	
 	
-	//création avec tous les éléments et avec une liste de Matériel
+	//crï¿½ation avec tous les ï¿½lï¿½ments et avec une liste de Matï¿½riel
 	public Salle(int numSalle, String nom, int capacite, ArrayList<Materiel> matos) {
 		//attribut classse fille
 		this.lMatos = matos;
 		this.capacite = capacite;
-		//attribut classe mère
+		//attribut classe mï¿½re
 		super.nom = nom;
 		super.type = "Salle";
 		super.id = numSalle;
@@ -27,7 +28,7 @@ public class Salle extends Ressource{
 		this(numSalle, nom,capacite, new ArrayList<Materiel>());
 	}
 	
-	public int getCapacite() {//récupération de la capacité de la salle
+	public int getCapacite() {//rï¿½cupï¿½ration de la capacitï¿½ de la salle
 		return this.capacite;
 	}
 
@@ -36,13 +37,13 @@ public class Salle extends Ressource{
 	public String toString() {
 		String liste = "";
 		if (this.getProjet() != null) {
-			liste = "Cette salle s'appelle : " + this.nom + ", elle porte le numéro : " + this.id  
-					+  " elle a une capacitée de :  " + this.capacite +  " elle est utilisé dans " + this.getProjet().getNom() + "elle contient le matériel suivant : " ;
+			liste = "Cette salle s'appelle : " + this.nom + ", elle porte le numï¿½ro : " + this.id  
+					+  " elle a une capacitï¿½e de :  " + this.capacite +  " elle est utilisï¿½ dans " + this.getProjet().getNom() + "elle contient le matï¿½riel suivant : " ;
 		
 		}
 		else {
-			liste = "Cette salle s'appelle : " + this.nom + ", elle porte le numéro : " + this.id  
-				+  " elle a une capacitée de :  " + this.capacite +  " elle contient le matériel suivant : " ;
+			liste = "Cette salle s'appelle : " + this.nom + ", elle porte le numï¿½ro : " + this.id  
+				+  " elle a une capacitï¿½e de :  " + this.capacite +  " elle contient le matï¿½riel suivant : " ;
 		}
 		
 		if (this.lMatos.size() == 0) {

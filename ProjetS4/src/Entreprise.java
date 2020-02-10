@@ -1,17 +1,19 @@
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Observable;
 
 //model il sert a cr�er des projets puis leur donne des ressources.
 
 public class Entreprise extends Observable{
-		private ArrayList<Projet> lPro;//liste qui contient tous les projets de l'entreprise
+		private ArrayList<Projet> listeProjet;//liste qui contient tous les projets de l'entreprise
 		private ArrayList<String> listeType;//liste qui contient tous les types de ressourceAutre qui ont d�j� �t� cr�e pour les r�utiliser
 		private ArrayList<Ressource> listeRessource;//liste qui contient 
 		private int idCour;//id des ressources
 		
 		//cr�ation de l'entreprise unique il faudra lui ajouter un nom si on d�sire �tendre nos activit�s
 		public Entreprise() {
-			this.lPro =  new ArrayList<Projet>();
+			this.listeProjet =  new ArrayList<Projet>();
 			this.listeType =  new ArrayList<String>();
 			this.listeRessource =  new ArrayList<Ressource>();
 			this.idCour = 0;
@@ -22,8 +24,8 @@ public class Entreprise extends Observable{
 		@Override
 		public String toString() {
 			String chaineRessourceProjet = "voici la liste des projets ainsi que leurs ressources : ";
-			for (int i = 0; i < this.lPro.size(); i++) {
-				chaineRessourceProjet += this.lPro.get(i).toString(); 
+			for (int i = 0; i < this.listeProjet.size(); i++) {
+				chaineRessourceProjet += this.listeProjet.get(i).toString(); 
 				
 			}
 			chaineRessourceProjet += ". \n Liste des Ressource de l'entreprise et leurs disponibilit�s : ";
@@ -101,14 +103,14 @@ public class Entreprise extends Observable{
 			Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
 			int[] res = {0,0};//a droite la place du projet cherch� et a gauche si il est trouv� 0 non/1 oui
 			
-			if (this.lPro.size()== 0) {//si l'arrayList est vide il n'y a pas d�j� ce projet.
+			if (this.listeProjet.size()== 0) {//si l'arrayList est vide il n'y a pas d�j� ce projet.
 				
 				return res;
 			}
 			else {
 				
 				do{
-					if (this.lPro.get(res[1]).getNom() == nomProjet) {
+					if (this.listeProjet.get(res[1]).getNom() == nomProjet) {
 						res[0] = 1;
 						pasTrouve = false;
 					}
@@ -117,7 +119,7 @@ public class Entreprise extends Observable{
 					}
 					
 				}
-				while((pasTrouve) && (res[1] < this.lPro.size()));
+				while((pasTrouve) && (res[1] < this.listeProjet.size()));
 				return res ;
 			}
 			
@@ -157,7 +159,7 @@ public class Entreprise extends Observable{
 			Projet newProjet = new Projet(nom);
 			
 			if (this.chercheProjet(newProjet.getNom())[0] == 0) {
-				this.lPro.add(newProjet);
+				this.listeProjet.add(newProjet);
 			}
 			
 		}
@@ -169,7 +171,7 @@ public class Entreprise extends Observable{
 			this.incrementId();
 			this.ajouterRessource(nouvPersonne);
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.lPro.get(place[1]);
+				Projet projetCour = this.listeProjet.get(place[1]);
 				projetCour.ajouter(nouvPersonne);	
 				nouvPersonne.rendIndisponible();
 				nouvPersonne.setProjet(projetCour);
@@ -195,7 +197,7 @@ public class Entreprise extends Observable{
 			this.incrementId();
 			this.ajouterRessource(nouvSalle);
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.lPro.get(place[1]);
+				Projet projetCour = this.listeProjet.get(place[1]);
 				projetCour.ajouter(nouvSalle);	
 				nouvSalle.rendIndisponible();
 				nouvSalle.setProjet(projetCour);
@@ -220,7 +222,7 @@ public class Entreprise extends Observable{
 			this.incrementId();
 			this.ajouterRessource(nouvRessourceAutre);
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.lPro.get(place[1]);
+				Projet projetCour = this.listeProjet.get(place[1]);
 				projetCour.ajouter(nouvRessourceAutre);	
 				nouvRessourceAutre.rendIndisponible();
 				nouvRessourceAutre.setProjet(projetCour);
@@ -246,7 +248,7 @@ public class Entreprise extends Observable{
 			this.incrementId();
 			this.ajouterRessource(nouvCalculateur);
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.lPro.get(place[1]);
+				Projet projetCour = this.listeProjet.get(place[1]);
 				projetCour.ajouter(nouvCalculateur);	
 				nouvCalculateur.rendIndisponible();
 				nouvCalculateur.setProjet(projetCour);
@@ -275,7 +277,7 @@ public class Entreprise extends Observable{
 					if (resCour.getDispo() == true) {//v�rifie la disponibilit� de la ressource
 						int[] placeProjet = this.chercheProjet(nomProjet);
 						if (placeProjet[0] == 1) {
-							Projet projetCour = this.lPro.get(placeProjet[1]);
+							Projet projetCour = this.listeProjet.get(placeProjet[1]);
 							projetCour.ajouter(resCour);	//on ajoute au projet la ressource
 							resCour.setProjet(projetCour);
 							resCour.rendIndisponible();
@@ -283,6 +285,7 @@ public class Entreprise extends Observable{
 						}
 					}
 			}
+			update();
 		}
 		
 		public void enleverRessourceProjet(int idRessource) {
@@ -294,6 +297,7 @@ public class Entreprise extends Observable{
 				resCour.unsetProjet();
 				resCour.rendDisponible();
 			}
+			update();
 		}
 		
 		public void deplacerRessourceProjet(int idRessource, String nomProjet) {
@@ -301,8 +305,18 @@ public class Entreprise extends Observable{
 			this.enleverRessourceProjet(idRessource);
 			this.ajouterRessourceProjet(idRessource, nomProjet);
 		}
-		
 
-		
+		public void dessineToi(Graphics g) { // algorithme de test
+			// TODO Auto-generated method stub
+			if (listeProjet.size() > 0) {
+				listeProjet.get(0).dessineToi(g);
+			}
+		}
+
+		private void update() {
+			this.setChanged();
+			this.notifyObservers();		
+		}
+	
 
 }

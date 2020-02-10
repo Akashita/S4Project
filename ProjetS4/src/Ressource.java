@@ -1,25 +1,29 @@
 
+
 public class Ressource {
 	protected String nom;
+	public static final String PERSONNE = "Personne";
+	public static final String SALLE = "Salle";
+	public static final String CALCULATEUR = "Calculateur";
 	protected String type;
-	protected Boolean dispo; //booléen si la ressource est utilisé ou vacante
+	protected Boolean dispo; //boolï¿½en si la ressource est utilisï¿½ ou vacante
 	protected Projet Projet;
 	protected int id;
 	
 
 	
-	public String getNom() {//récupération du type
+	public String getNom() {//rï¿½cupï¿½ration du type
 		return this.nom;
 	}
 
-	public String getTye() {//récupération du type
+	public String getType() {//rï¿½cupï¿½ration du type
 		return this.type;
 	}
 	
-	public Boolean getDispo() {//récupération de la disponibilité d'une ressource
+	public Boolean getDispo() {//rï¿½cupï¿½ration de la disponibilitï¿½ d'une ressource
 		return this.dispo;
 	}
-	public int getId() {//récupération de l'Id de chaque ressource pour les différencier
+	public int getId() {//rï¿½cupï¿½ration de l'Id de chaque ressource pour les diffï¿½rencier
 		return this.id;
 	}
 	public Projet getProjet() {
@@ -35,7 +39,7 @@ public class Ressource {
 	}
 	
 	@Override
-	public boolean equals(Object obj) { //test si deux ressources sont égales
+	public boolean equals(Object obj) { //test si deux ressources sont ï¿½gales
 		if(obj instanceof Ressource && obj != null) {
 			Ressource res = (Ressource)obj;
 			return id == res.id;
@@ -45,7 +49,7 @@ public class Ressource {
 		
 	}
 	
-	//méthodes pour modifier la disponibilité des ressources
+	//mï¿½thodes pour modifier la disponibilitï¿½ des ressources
 	public void rendDisponible() {
 		this.dispo = true;
 	}
