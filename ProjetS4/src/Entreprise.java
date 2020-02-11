@@ -63,6 +63,24 @@ public class Entreprise extends Observable{
 			return this.idCour;
 		}
 		
+		public Projet getDernierProjet() { //retourne le dernier projet creer, pour PanelProjet
+			return listeProjet.get(listeProjet.size()-1);
+		}
+		
+		public Projet getProjetSelectionner() {
+			Projet projet = null;
+			for (int i=0; i<listeProjet.size();i++) {
+				if (listeProjet.get(i).getSelectionner()) {
+					projet = listeProjet.get(i);
+				}
+			}
+			return projet;
+		}
+		
+		public ArrayList<Ressource> getRessource(){
+			return listeRessource;
+		}
+		
 		public void ajouterRessource(Ressource resCour) {
 			this.listeRessource.add(resCour);
 		}
@@ -158,14 +176,11 @@ public class Entreprise extends Observable{
 		//fonctions de cr�ations d'�l�ments de l'entreprise, les ressources ainsi que les projets
 		//les m�thodes sont doubl�s -> direct dans un projet ou dans l'entreprise
 		
-		public void creerProjet(String nom, PanelProjet pp) {//cr�e un projet si son nom n'est pas d�j� utilis�
-			
+		public void creerProjet(String nom) {//cr�e un projet si son nom n'est pas d�j� utilis�
 			Projet newProjet = new Projet(nom);
-			
 			if (this.chercheProjet(newProjet.getNom())[0] == 0) {
 				this.listeProjet.add(newProjet);
 			}
-			pp.ajoutProjet(newProjet);
 			update();
 		}
 		
@@ -320,12 +335,13 @@ public class Entreprise extends Observable{
 		 */
 		
 		public void dessineToi(Graphics g) { // algorithme de test
-			// TODO Auto-generated method stub
-			g.setColor(new Color(234, 234, 234));
-			g.fillRect(0, 0, 2000, 1000);
-			
+			for (int i=0; i<listeProjet.size();i++) {
+				if (listeProjet.get(i).getSelectionner()) {
+					listeProjet.get(i).dessineToi(g);
+				}
+			}
 		}
-
+		
 		private void update() {
 			this.setChanged();
 			this.notifyObservers();		

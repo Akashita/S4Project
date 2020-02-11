@@ -9,6 +9,7 @@ public class Projet {
 
 	private ArrayList<Ressource> listeRessource;//liste des ressources
 	private String nom;//nom des projets, clefs primaires (sert � les diff�rencier)
+	private boolean selectionner=false;
 	
 	public Projet(String nom) {
 		this.listeRessource =  new ArrayList<Ressource>();
@@ -29,6 +30,18 @@ public class Projet {
 		return liste;
 	}
 	
+	public boolean getSelectionner() {
+		return selectionner;
+	}
+	
+	public void selectionner() {
+		this.selectionner = true;
+	}
+	
+	public void deselectionner() {
+		this.selectionner = false;
+	}
+		
 	public void ajouter(Ressource ressource) { //test si la ressource est d�j� dans le projet sinon la rajoute
 		int[] test = this.chercherRessource(ressource);
 		
@@ -93,5 +106,4 @@ public class Projet {
 			 g.fillOval(100+(i*50), 100, 50, 50);
 		 }
 	}
-	
 }
