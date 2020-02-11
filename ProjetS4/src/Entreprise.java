@@ -1,7 +1,12 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Observable;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 
 //model il sert a cr�er des projets puis leur donne des ressources.
 
@@ -149,19 +154,19 @@ public class Entreprise extends Observable{
 					}
 
 				}
-				
-				
+								
 		//fonctions de cr�ations d'�l�ments de l'entreprise, les ressources ainsi que les projets
 		//les m�thodes sont doubl�s -> direct dans un projet ou dans l'entreprise
 		
-		public void creerProjet(String nom) {//cr�e un projet si son nom n'est pas d�j� utilis�
+		public void creerProjet(String nom, PanelProjet pp) {//cr�e un projet si son nom n'est pas d�j� utilis�
 			
 			Projet newProjet = new Projet(nom);
 			
 			if (this.chercheProjet(newProjet.getNom())[0] == 0) {
 				this.listeProjet.add(newProjet);
 			}
-			
+			pp.ajoutProjet(newProjet);
+			update();
 		}
 		
 		//m�thode pour cr�er des ressources et les attribuer a des projets
@@ -233,6 +238,7 @@ public class Entreprise extends Observable{
 
 			}
 		}
+		
 		public void nouvRessourceAutre (String nom,String type) {
 			RessourceAutre nouvRessourceAutre = new RessourceAutre(nom, type, this.idCour);
 			this.incrementId();
@@ -242,6 +248,7 @@ public class Entreprise extends Observable{
 
 
 		}
+		
 		public void nouvCalculateur(String nomProjet, String nom) {
 			Calculateur nouvCalculateur = new Calculateur(nom, idCour);
 			int [] place = 	this.chercheProjet(nomProjet);
@@ -259,6 +266,7 @@ public class Entreprise extends Observable{
 			}
 			
 		}
+		
 		public void nouvCalculateur (String nom) {
 			Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
 			this.incrementId();
@@ -266,7 +274,6 @@ public class Entreprise extends Observable{
 			nouvCalculateur.rendDisponible();
 
 		}
-		
 		
 		//M�thodes pour changer une ressource de projet en rajouter ou en enlever 
 		public void ajouterRessourceProjet(int idRessource,String nomProjet) {//ajouter une ressource a un projet � l'aide de son identifiant
@@ -306,17 +313,21 @@ public class Entreprise extends Observable{
 			this.ajouterRessourceProjet(idRessource, nomProjet);
 		}
 
+		
+		/**
+		 * 
+		 * PARTIE GRAPHIQUE
+		 */
+		
 		public void dessineToi(Graphics g) { // algorithme de test
 			// TODO Auto-generated method stub
-			if (listeProjet.size() > 0) {
-				listeProjet.get(0).dessineToi(g);
-			}
+			g.setColor(new Color(234, 234, 234));
+			g.fillRect(0, 0, 2000, 1000);
+			
 		}
 
 		private void update() {
 			this.setChanged();
 			this.notifyObservers();		
 		}
-	
-
 }
