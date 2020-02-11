@@ -7,9 +7,11 @@ public class PanelProjet extends JPanel{
 	private ArrayList<Projet> listeProjet = new ArrayList<Projet>();
 	private ArrayList<JLabel> listeLabel = new ArrayList<JLabel>();
 	
+	Entreprise entreprise;
 	
 	public void nouveauProjet(Entreprise entreprise, String nom) {
-		entreprise.creerProjet(nom);
+		this.entreprise = entreprise;
+		this.entreprise.creerProjet(nom);
 		ajoutProjet(entreprise.getDernierProjet());
 	}
 
@@ -38,6 +40,7 @@ public class PanelProjet extends JPanel{
 			if (listeLabel.get(i) ==  label) {
 				indice = i;
 			}
+			entreprise.update();
 		}
 		label.setForeground(new Color(255,255,255));
 		label.setOpaque(true);

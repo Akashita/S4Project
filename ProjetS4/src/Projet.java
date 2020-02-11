@@ -95,7 +95,7 @@ public class Projet {
 	public void dessineToi(Graphics g) {
 		 for (int i=0; i<listeRessource.size(); i++) {
 			 if (listeRessource.get(i).getType() == Ressource.PERSONNE) {
-				 g.setColor(Color.PINK);
+				 g.setColor(Color.BLUE);
 			 }
 			 if (listeRessource.get(i).getType() == Ressource.SALLE) {
 				 g.setColor(Color.RED);

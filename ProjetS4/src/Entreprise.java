@@ -342,7 +342,7 @@ public class Entreprise extends Observable{
 			}
 		}
 		
-		private void update() {
+		public void update() {
 			this.setChanged();
 			this.notifyObservers();		
 		}

@@ -36,9 +36,9 @@ public class FenetreNouvelleRessource extends JFrame{
 	private void creationSalarie() {
 		String nom, prenom;
 		String[] toutLesRoles = {Personne.ADMINISTRATEUR, Personne.CHEFDEPROJET, Personne.COLLABORATEUR};
-	    
+	   
+		prenom = JOptionPane.showInputDialog(null, "Veuillez ecrire son prenom", "Ajouter un salarié", JOptionPane.QUESTION_MESSAGE);
 	    nom = JOptionPane.showInputDialog(null, "Veuillez ecrire son nom", "Ajouter un salarié", JOptionPane.QUESTION_MESSAGE);
-	    prenom = JOptionPane.showInputDialog(null, "Veuillez ecrire son prenom", "Ajouter un salarié", JOptionPane.QUESTION_MESSAGE);
 	    
 	    String roleChoisi = (String) JOptionPane.showInputDialog(null, 
 	      "Veuillez indiquer le role de la ressource",
