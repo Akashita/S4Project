@@ -19,7 +19,7 @@ public class Date {
 	}
 	
 	public boolean superieur(Date date) {
-		return !inferieur(date);
+		return toLongInt(this) > toLongInt(date);
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class Date {
 		}
 	}
 	
-	public int toLongInt(Date date) { //Permet la comparaison de dates (Concatenation d’entier)
+	public int toLongInt(Date date) { //Permet la comparaison de dates (Concatenation d entier)
 		return Integer.parseInt(""+annee+mois+jour+heure+minute);
 	}
 	
