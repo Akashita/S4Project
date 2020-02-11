@@ -3,10 +3,8 @@
 public class Calculateur extends Ressource{
 	
 	public Calculateur(String nom, int numCalculateur) {
-		//attributs de la classe m�re.
-			super.nom = nom;
-			super.type = "Calculateur";
-			super.id = numCalculateur;
+		//attribut classe m�re
+		super(numCalculateur, nom, "Calculateur");
 	}
 	public String toString() {
 		String liste = "";

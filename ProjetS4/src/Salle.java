@@ -11,13 +11,11 @@ public class Salle extends Ressource{
 	
 	//cr�ation avec tous les �l�ments et avec une liste de Mat�riel
 	public Salle(int numSalle, String nom, int capacite, ArrayList<Materiel> matos) {
+		//attribut classe m�re
+		super(numSalle, nom, "Salle");
 		//attribut classse fille
 		this.lMatos = matos;
 		this.capacite = capacite;
-		//attribut classe m�re
-		super.nom = nom;
-		super.type = "Salle";
-		super.id = numSalle;
 	}
 	
 	public Salle(int numSalle) {

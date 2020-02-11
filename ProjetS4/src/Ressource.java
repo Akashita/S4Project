@@ -10,9 +10,15 @@ public class Ressource {
 	protected Projet Projet;
 	protected int id;
 	
+	public Ressource(int id, String nom, String type) {
+		this.id = id;
+		this.nom = nom;
+		this.type = type;
+		this.dispo = true;
+	}
 
 	
-	public String getNom() {//r�cup�ration du type
+	public String getNom() {//r�cup�ration du nom
 		return this.nom;
 	}
 
