@@ -10,7 +10,7 @@ public class FenetrePrincipale extends JFrame{
 		
 		this.entreprise = entreprise;
 		this.setTitle("ProjetS4");
-		setSize(LARGEUR,HAUTEUR);
+		this.setSize(LARGEUR,HAUTEUR);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setLayout(new BorderLayout());
 		PanelProjet projetPanel = new PanelProjet();
@@ -28,30 +28,49 @@ public class FenetrePrincipale extends JFrame{
 	private void creationBarreMenu(PanelProjet projetPanel) {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menuFichier = new JMenu("Fichier");
+		JMenu menuEditer = new JMenu("Editer");
+		
 		JMenu menuNouveau = new JMenu("Nouveau");
 		JMenu menuAjout = new JMenu("Ajouter");
+		JMenu menuPropos = new JMenu("A propos");
 		
-		JMenuItem  itemNouvelleRessource = new JMenuItem("Nouvelle Ressource");
+		JMenuItem itemNouvelleRessource = new JMenuItem("Nouvelle Ressource");
 		itemNouvelleRessource.addActionListener(new NouvelleRessourceListener(entreprise));
 		JMenuItem itemNouveauProjet = new JMenuItem("Nouveau Projet");
 		itemNouveauProjet.addActionListener(new NouveauProjetListener(entreprise, projetPanel));
 
-		JMenuItem  itemAjoutPersonne = new JMenuItem(Ressource.PERSONNE);
+		JMenuItem itemAjoutPersonne = new JMenuItem(Ressource.PERSONNE);
 		itemAjoutPersonne.addActionListener(new AjouterRessourceListener(entreprise, Ressource.PERSONNE));
 		JMenuItem itemAjoutSalle = new JMenuItem(Ressource.SALLE);
 		itemAjoutSalle.addActionListener(new AjouterRessourceListener(entreprise, Ressource.SALLE));
 		JMenuItem itemAjoutCalculateur = new JMenuItem(Ressource.CALCULATEUR);
 		itemAjoutCalculateur.addActionListener(new AjouterRessourceListener(entreprise, Ressource.CALCULATEUR));
-				
+		
+		JMenuItem itemModifier = new JMenuItem("Modifier");
+		JMenuItem itemSupprimer = new JMenuItem("Supprimer");
+
+		JMenuItem itemPropos = new JMenuItem("Projet");
+
+		itemNouvelleRessource.setMnemonic('N');
 		menuNouveau.add(itemNouvelleRessource);
 		menuNouveau.add(itemNouveauProjet);
+		
 		menuAjout.add(itemAjoutPersonne);
 		menuAjout.add(itemAjoutSalle);
 		menuAjout.add(itemAjoutCalculateur);
+		
 		menuFichier.add(menuNouveau);
-		menuFichier.add(menuAjout);
+		
+		menuEditer.add(menuAjout);
+		menuEditer.add(itemModifier);
+		menuEditer.add(itemSupprimer);
+		
+		menuPropos.add(itemPropos);
+		
 		menuBar.add(menuFichier);
-		setJMenuBar(menuBar);		
+		menuBar.add(menuEditer);
+		menuBar.add(menuPropos);
+		setJMenuBar(menuBar);	
 	}
 	
 }

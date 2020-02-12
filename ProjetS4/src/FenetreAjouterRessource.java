@@ -1,14 +1,22 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class FenetreAjouterRessource {
+public class FenetreAjouterRessource extends JFrame{
 	Entreprise entreprise;
 	String type;
 	
 	public FenetreAjouterRessource(Entreprise entreprise, String type) {
 		this.entreprise = entreprise;
 		this.type = type;
+		this.setTitle("Ajout ressource");
+		this.setSize(300,200);
+		this.setVisible(true);
 		ajoutRessource();
 	}
 	
@@ -34,85 +42,36 @@ public class FenetreAjouterRessource {
 				Personne personne = (Personne) listeRessource.get(i);
 				tab[i] =personne.getPrenom() +" "+ personne.getNom(); 
 			}
-			ajoutPersonne(tab, listeRessource);
+			ajoutRessource(tab, listeRessource);
 		}
 		if (type == Ressource.SALLE) {
 			for (int i=0; i<tab.length;i++) {
 				Salle Salle = (Salle) listeRessource.get(i);
 				tab[i] = Salle.getNom(); 
 			}
-			ajoutSalle(tab, listeRessource);			
+			ajoutRessource(tab, listeRessource);			
 		}
 		if (type == Ressource.CALCULATEUR) {
 			for (int i=0; i<tab.length;i++) {
 				Calculateur Calculateur = (Calculateur) listeRessource.get(i);
 				tab[i] = Calculateur.getNom(); 
 			}
-			ajoutCalculateur(tab, listeRessource);			
+			ajoutRessource(tab, listeRessource);			
 		}
 	}
 	
-	private void ajoutPersonne(String tab[], ArrayList<Ressource> listeRessource) {
+	private void ajoutRessource(String tab[], ArrayList<Ressource> listeRessource) {
 		Projet projet = entreprise.getProjetSelectionner();
-		JOptionPane.showInputDialog(null, 
-	  	      "Selectionner un salarié à ajouter",
-	  	      "Ajouter un salarié au projet" + projet.getNom(),
-	  	      JOptionPane.QUESTION_MESSAGE,
-	  	      null,
-	  	    tab,
-	  	  tab[0]);	    
-		int indice = indiceChoisiePersonne(tab, listeRessource);
-	    entreprise.ajouterRessourceProjet(listeRessource.get(indice).getId(), projet.getNom());
-
-	}
-	
-	private void ajoutSalle(String tab[], ArrayList<Ressource> listeRessource) {
-		Projet projet = entreprise.getProjetSelectionner();
-	    JOptionPane.showInputDialog(null, 
-	  	      "Selectionner une salle à ajouter",
-	  	      "Ajouter un salarié au projet" + projet.getNom(),
-	  	      JOptionPane.QUESTION_MESSAGE,
-	  	      null,
-	  	    tab,
-	  	  tab[0]);
-		int indice = indiceChoisieRessource(tab, listeRessource);
-	    entreprise.ajouterRessourceProjet(listeRessource.get(indice).getId(), projet.getNom());
-
-	}
-	
-	private void ajoutCalculateur(String tab[], ArrayList<Ressource> listeRessource) {
-		Projet projet = entreprise.getProjetSelectionner();
-	    JOptionPane.showInputDialog(null, 
-	  	      "Selectionner un salarié à ajouter",
-	  	      "Ajouter un salarié au projet" + projet.getNom(),
-	  	      JOptionPane.QUESTION_MESSAGE,
-	  	      null,
-	  	    tab,
-	  	  tab[0]);	 
-		int indice = indiceChoisieRessource(tab, listeRessource);
-	    entreprise.ajouterRessourceProjet(listeRessource.get(indice).getId(), projet.getNom());
-
-	}
-	
-	private int indiceChoisiePersonne(String tab[], ArrayList<Ressource> listeRessource) {
-		int indice = 0;
-		for (int i=0; i<tab.length;i++) {
-			Personne personne = (Personne) listeRessource.get(i);
-			if (tab[i] == personne.getPrenom() +" "+ personne.getNom()) {
-				indice = i;
-			}
-		}
-		return indice;
-	}
-
-	private int indiceChoisieRessource(String tab[], ArrayList<Ressource> listeRessource) {
-		int indice = 0;
-		for (int i=0; i<tab.length;i++) {
-			Ressource ressource =  listeRessource.get(i);
-			if (tab[i] == ressource.getNom()) {
-				indice = i;
-			}
-		}
-		return indice;
-	}
+		JButton bouton = new JButton("Ajout");
+		bouton.setBounds(100, 20, 100, 10);
+		final JComboBox jcb = new JComboBox(tab);
+		this.add(bouton);
+		this.add(jcb);
+	    bouton.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	    	    int index = jcb.getSelectedIndex();
+	    	    entreprise.ajouterRessourceProjet(listeRessource.get(index).getId(), projet.getNom());
+	        }
+	    });
+	}	
 }

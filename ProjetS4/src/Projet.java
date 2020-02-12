@@ -94,13 +94,14 @@ public class Projet {
 	
 	public void dessineToi(Graphics g) {
 		 for (int i=0; i<listeRessource.size(); i++) {
-			 if (listeRessource.get(i).getType() == Ressource.PERSONNE) {
+			 Ressource ressource = listeRessource.get(i); 
+			 if (ressource.getType() == Ressource.PERSONNE) {
 				 g.setColor(Color.BLUE);
 			 }
-			 if (listeRessource.get(i).getType() == Ressource.SALLE) {
+			 if (ressource.getType() == Ressource.SALLE) {
 				 g.setColor(Color.RED);
 			 }
-			 if (listeRessource.get(i).getType() == Ressource.CALCULATEUR) {
+			 if (ressource.getType() == Ressource.CALCULATEUR) {
 				 g.setColor(Color.GREEN);
 			 }
 			 g.fillOval(100+(i*50), 100, 50, 50);
