@@ -33,6 +33,10 @@ public class Projet {
 	public boolean getSelectionner() {
 		return selectionner;
 	}
+
+	public ArrayList<Ressource> getListe(){
+		return listeRessource;
+	}
 	
 	public void selectionner() {
 		this.selectionner = true;

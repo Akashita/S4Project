@@ -321,7 +321,7 @@ public class Entreprise extends Observable{
 			}
 			update();
 		}
-		
+
 		public void deplacerRessourceProjet(int idRessource, String nomProjet) {
 			//d�place la ressource d'iD vers le projet entr� sauf si il est dans aucun projet il est mis dans le projet si le nom est faux il est juste retir�
 			this.enleverRessourceProjet(idRessource);

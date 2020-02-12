@@ -6,8 +6,7 @@ public class FenetrePrincipale extends JFrame{
 			LARGEUR = 500;
 	private Entreprise entreprise;
 	
-	public FenetrePrincipale(Entreprise entreprise) {
-		
+	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
 		this.setTitle("ProjetS4");
 		this.setSize(LARGEUR,HAUTEUR);
@@ -27,12 +26,13 @@ public class FenetrePrincipale extends JFrame{
 	
 	private void creationBarreMenu(PanelProjet projetPanel) {
 		JMenuBar menuBar = new JMenuBar();
+		
 		JMenu menuFichier = new JMenu("Fichier");
 		JMenu menuEditer = new JMenu("Editer");
-		
+		JMenu menuPropos = new JMenu("A propos");
+
 		JMenu menuNouveau = new JMenu("Nouveau");
 		JMenu menuAjout = new JMenu("Ajouter");
-		JMenu menuPropos = new JMenu("A propos");
 		
 		JMenuItem itemNouvelleRessource = new JMenuItem("Nouvelle Ressource");
 		itemNouvelleRessource.addActionListener(new NouvelleRessourceListener(entreprise));
@@ -45,9 +45,12 @@ public class FenetrePrincipale extends JFrame{
 		itemAjoutSalle.addActionListener(new AjouterRessourceListener(entreprise, Ressource.SALLE));
 		JMenuItem itemAjoutCalculateur = new JMenuItem(Ressource.CALCULATEUR);
 		itemAjoutCalculateur.addActionListener(new AjouterRessourceListener(entreprise, Ressource.CALCULATEUR));
-		
+
+		JMenuItem itemEnleverRessource = new JMenuItem("Enlever ressource");
+		itemEnleverRessource.addActionListener(new EnleverRessourceListener(entreprise));
+
 		JMenuItem itemModifier = new JMenuItem("Modifier");
-		JMenuItem itemSupprimer = new JMenuItem("Supprimer");
+		JMenuItem itemSupprimer = new JMenuItem("Supprimer Projet");
 
 		JMenuItem itemPropos = new JMenuItem("Projet");
 
@@ -62,6 +65,7 @@ public class FenetrePrincipale extends JFrame{
 		menuFichier.add(menuNouveau);
 		
 		menuEditer.add(menuAjout);
+		menuEditer.add(itemEnleverRessource);
 		menuEditer.add(itemModifier);
 		menuEditer.add(itemSupprimer);
 		
