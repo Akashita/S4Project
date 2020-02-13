@@ -9,6 +9,7 @@ public class Projet {
 
 	private ArrayList<Ressource> listeRessource;//liste des ressources
 	private String nom;//nom des projets, clefs primaires (sert � les diff�rencier)
+	private boolean selectionner=false;
 	
 	public Projet(String nom) {
 		this.listeRessource =  new ArrayList<Ressource>();
@@ -29,6 +30,22 @@ public class Projet {
 		return liste;
 	}
 	
+	public boolean getSelectionner() {
+		return selectionner;
+	}
+
+	public ArrayList<Ressource> getListe(){
+		return listeRessource;
+	}
+	
+	public void selectionner() {
+		this.selectionner = true;
+	}
+	
+	public void deselectionner() {
+		this.selectionner = false;
+	}
+		
 	public void ajouter(Ressource ressource) { //test si la ressource est d�j� dans le projet sinon la rajoute
 		int[] test = this.chercherRessource(ressource);
 		
@@ -81,17 +98,17 @@ public class Projet {
 	
 	public void dessineToi(Graphics g) {
 		 for (int i=0; i<listeRessource.size(); i++) {
-			 if (listeRessource.get(i).getType() == Ressource.PERSONNE) {
-				 g.setColor(Color.PINK);
+			 Ressource ressource = listeRessource.get(i); 
+			 if (ressource.getType() == Ressource.PERSONNE) {
+				 g.setColor(Color.BLUE);
 			 }
-			 if (listeRessource.get(i).getType() == Ressource.SALLE) {
+			 if (ressource.getType() == Ressource.SALLE) {
 				 g.setColor(Color.RED);
 			 }
-			 if (listeRessource.get(i).getType() == Ressource.CALCULATEUR) {
+			 if (ressource.getType() == Ressource.CALCULATEUR) {
 				 g.setColor(Color.GREEN);
 			 }
 			 g.fillOval(100+(i*50), 100, 50, 50);
 		 }
 	}
-	
 }

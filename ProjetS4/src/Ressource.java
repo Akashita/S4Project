@@ -62,6 +62,5 @@ public class Ressource {
 	
 	public void rendIndisponible() {
 		this.dispo = false;
-	}
-	
+	}	
 }
