@@ -1,11 +1,6 @@
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import  java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Observable;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 
 //model il sert a cr�er des projets puis leur donne des ressources.
@@ -180,6 +175,7 @@ public class Entreprise extends Observable{
 			Projet newProjet = new Projet(nom);
 			if (this.chercheProjet(newProjet.getNom())[0] == 0) {
 				this.listeProjet.add(newProjet);
+				newProjet.selectionner();
 			}
 			update();
 		}
