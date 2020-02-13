@@ -36,9 +36,20 @@ public class Main {
 			 System.out.println(p1.equals(p2));
 			 System.out.println(p1.equals(p3));
 
-			 
-
 			 System.out.println(test.toString());
+			*/
+
+			
+			/*
+			 *Utilisation de la classe Date()
+			Date date1 = new Date("2020", "02", "15", "12", "30"); 
+			Date date2 = new Date("2020", "12", "15", "12", "29"); 
+			
+			System.out.println(date1.equals(date2));
+			System.out.println(date1.superieur(date2));
+			System.out.println(date1.inferieur(date2));
+			System.out.println(date1.toLong());
+			System.out.println(date1.toString());
 			*/
 			}
 

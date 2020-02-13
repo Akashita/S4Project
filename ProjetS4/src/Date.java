@@ -1,12 +1,12 @@
 
 public class Date {
-	private int annee;
-	private int mois;
-	private int jour;
-	private int heure;
-	private int minute;
+	private String annee;
+	private String mois;
+	private String jour;
+	private String heure;
+	private String minute;
 	
-	public Date(int annee, int mois, int jour, int heure, int minute) {
+	public Date(String annee, String mois, String jour, String heure, String minute) {
 		this.annee = annee;
 		this.mois = mois;
 		this.jour = jour;
@@ -15,11 +15,11 @@ public class Date {
 	}
 	
 	public boolean inferieur(Date date) {
-		return toLongInt(this) < toLongInt(date);
+		return toLong() < date.toLong();
 	}
 	
 	public boolean superieur(Date date) {
-		return toLongInt(this) > toLongInt(date);
+		return toLong() > date.toLong();
 	}
 	
 	@Override
@@ -32,13 +32,13 @@ public class Date {
 		}
 	}
 	
-	public int toLongInt(Date date) { //Permet la comparaison de dates (Concatenation d entier)
-		return Integer.parseInt(""+annee+mois+jour+heure+minute);
+	public long toLong() { //Permet la comparaison de dates (Concatenation d entier)
+		return Long.parseLong(annee+mois+jour+heure+minute);
 	}
 	
 	@Override
 	public String toString() { 
-		return annee + " " + mois + " " + jour + " " + heure + " " + minute;
+		return annee + "/" + mois + "/" + jour + " " + heure + ":" + minute;
 	}
 }
 
