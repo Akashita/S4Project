@@ -1,3 +1,4 @@
+package Ressource;
 
 
 public class RessourceAutre extends Ressource{

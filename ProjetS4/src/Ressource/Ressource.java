@@ -1,4 +1,5 @@
-
+package Ressource;
+import Model.Projet;
 
 public class Ressource {
 	protected String nom;

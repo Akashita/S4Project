@@ -1,6 +1,14 @@
+package Fenetre;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
+
+import Model.Entreprise;
+import Model.Projet;
+import Ressource.Calculateur;
+import Ressource.Personne;
+import Ressource.Ressource;
+import Ressource.Salle;
 
 public class FenetreAjouterRessource extends JFrame{
 	Entreprise entreprise;

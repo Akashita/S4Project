@@ -1,6 +1,9 @@
+package Model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+
+import Ressource.Ressource;
 
 
 

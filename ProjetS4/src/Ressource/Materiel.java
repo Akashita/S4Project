@@ -1,3 +1,4 @@
+package Ressource;
 
 public class Materiel { // = Fourniture de bureau, compose un salle
 	private String type;
@@ -10,6 +11,6 @@ public class Materiel { // = Fourniture de bureau, compose un salle
 	
 	@Override
 	public String toString() {
-		return "Matériel : " +  quantite + " " + type;
+		return "Matï¿½riel : " +  quantite + " " + type;
 	}
 }

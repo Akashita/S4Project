@@ -1,4 +1,9 @@
+package Fenetre;
 import javax.swing.*;
+
+import Model.Entreprise;
+import Ressource.Personne;
+import Ressource.Ressource;
 
 public class FenetreNouvelleRessource extends JFrame{
 	Entreprise entreprise;

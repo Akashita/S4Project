@@ -1,7 +1,17 @@
+package Fenetre;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
 import javax.swing.*;
+
+import EcouteurEvenement.AjouterRessourceListener;
+import EcouteurEvenement.EnleverRessourceListener;
+import EcouteurEvenement.NouveauProjetListener;
+import EcouteurEvenement.NouvelleRessourceListener;
+import Model.Entreprise;
+import Panel.PanelPrincipal;
+import Panel.PanelProjet;
+import Ressource.Ressource;
 
 public class FenetrePrincipale extends JFrame{
 	public static final int HAUTEUR = 400,

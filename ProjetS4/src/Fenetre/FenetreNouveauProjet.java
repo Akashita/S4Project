@@ -1,5 +1,9 @@
+package Fenetre;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import Model.Entreprise;
+import Panel.PanelProjet;
 
 public class FenetreNouveauProjet extends JFrame{
 	Entreprise entreprise;

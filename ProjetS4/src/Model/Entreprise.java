@@ -1,8 +1,15 @@
+package Model;
 import  java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Observable;
 
 import javax.swing.JPanel;
+
+import Ressource.Calculateur;
+import Ressource.Personne;
+import Ressource.Ressource;
+import Ressource.RessourceAutre;
+import Ressource.Salle;
 
 
 //model il sert a cr�er des projets puis leur donne des ressources.

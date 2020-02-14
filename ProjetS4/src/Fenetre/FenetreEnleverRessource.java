@@ -1,3 +1,4 @@
+package Fenetre;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -5,6 +6,10 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+
+import Model.Entreprise;
+import Model.Projet;
+import Ressource.Ressource;
 
 public class FenetreEnleverRessource extends JFrame{
 	Entreprise entreprise;

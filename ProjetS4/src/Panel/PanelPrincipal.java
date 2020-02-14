@@ -1,6 +1,14 @@
+package Panel;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+
+import Model.Entreprise;
+import Model.Projet;
+import Ressource.Calculateur;
+import Ressource.Personne;
+import Ressource.Ressource;
+import Ressource.Salle;
 
 public class PanelPrincipal extends JPanel implements Observer{
 	/**

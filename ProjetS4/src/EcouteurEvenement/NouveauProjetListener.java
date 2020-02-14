@@ -1,5 +1,10 @@
+package EcouteurEvenement;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import Fenetre.FenetreNouveauProjet;
+import Model.Entreprise;
+import Panel.PanelProjet;
 
 public class NouveauProjetListener implements ActionListener {
 	Entreprise entreprise;

@@ -1,3 +1,6 @@
+package Model;
+import Fenetre.FenetrePrincipale;
+
 //histoire de faire mes tests => j'aime faire des tests @jules 
 public class Main {
 

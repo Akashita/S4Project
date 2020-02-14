@@ -1,7 +1,12 @@
+package Panel;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import EcouteurEvenement.SourisProjetListener;
+import Model.Entreprise;
+import Model.Projet;
 
 public class PanelProjet extends JPanel{
 	private ArrayList<Projet> listeProjet = new ArrayList<Projet>();

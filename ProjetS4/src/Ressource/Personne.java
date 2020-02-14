@@ -1,3 +1,4 @@
+package Ressource;
 
 
 public class Personne extends Ressource{
@@ -8,7 +9,7 @@ public class Personne extends Ressource{
 	public static final String ADMINISTRATEUR = "Administrateur";
 	private String role;
 	
-	Personne(String nom, String prenom, String role, int numSalarie){
+	public Personne(String nom, String prenom, String role, int numSalarie){
 		//attributs de la classe m�re.
 		super(numSalarie, nom, "Personne");
 		//attribut de la classe fille.

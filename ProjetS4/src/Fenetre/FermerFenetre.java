@@ -1,3 +1,4 @@
+package Fenetre;
 
 import java.awt.Window;
 import java.awt.event.*;
