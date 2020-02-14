@@ -11,20 +11,14 @@ public class PanelPrincipal extends JPanel implements Observer{
 	
 	public PanelPrincipal (Entreprise entreprise) {
 		this.entreprise = entreprise;
+        this.setLayout(new BorderLayout());
 		this.setSize(this.getWidth(), this.getHeight());
 		entreprise.addObserver(this);
-
 	}
-	
-	/*public void paint(Graphics g){
-		entreprise.dessineToi(g);
 		
-		//this.add(entreprise.ajoutProjet(this));
-		
-	}*/
-	
 	private void afficheRessourceProjet() {
 		Projet projet = entreprise.getProjetSelectionner();
+		JPanel panelProjet = entreprise.getPanelDuProjet();
 		if (projet != null) {
 			ArrayList<Ressource> listeRessource = projet.getListe();
 			ArrayList<Personne> listePersonne = new ArrayList<Personne>();
@@ -43,56 +37,56 @@ public class PanelPrincipal extends JPanel implements Observer{
 					listeCalculateur.add((Calculateur) ressource);
 				}
 			}
-			affichePersonne(listePersonne);
-			afficheSalle(listeSalle);
-			afficheCalculateur(listeCalculateur);			
+			panelProjet.removeAll();
+			panelProjet.setSize(this.getWidth(), this.getHeight());
+			panelProjet.setLayout(new BoxLayout(panelProjet, BoxLayout.Y_AXIS));
+			panelProjet.add(affichePersonne(listePersonne));
+			panelProjet.add(afficheSalle(listeSalle), BorderLayout.CENTER);
+			panelProjet.add(afficheCalculateur(listeCalculateur), BorderLayout.EAST);
+			this.add(panelProjet, BorderLayout.CENTER);
+			this.revalidate();
 		}
 	}
 	
 	
 	
 	
-	private void affichePersonne(ArrayList<Personne> listePersonne) {
+	private JPanel affichePersonne(ArrayList<Personne> listePersonne) {
+		JPanel panel = new JPanel();
 		for (int i=0; i<listePersonne.size(); i++) {
-			JPanel panel = new JPanel();
 			Personne personne = listePersonne.get(i);
-			JLabel label = new JLabel(personne.getRole()+ " " + personne.getPrenom()+personne.getNom());
-			panel.add(label);
-			panel.setBounds(200, 200, 100, 100);
-			this.add(panel);
-			this.revalidate();
+			String texte = personne.getRole()+ " " + personne.getPrenom()+personne.getNom();
+			panel.add(new JLabel(texte));
 		}
+		return panel;
 	}
 
-	private void afficheSalle(ArrayList<Salle> listeSalle) {
+	private JPanel afficheSalle(ArrayList<Salle> listeSalle) {
+		JPanel panel = new JPanel();
 		for (int i=0; i<listeSalle.size(); i++) {
-			JPanel panel = new JPanel();
 			Salle salle = listeSalle.get(i);
-			JLabel label = new JLabel("Salle :" + salle.getNom());
-			panel.add(label);
-			panel.setBounds(200, 200, 100, 100);
-			this.add(panel);
-			this.revalidate();
-		}		
+			String texte = "Salle :" + salle.getNom();
+			panel.add(new JLabel(texte));
+		}	
+		return panel;
 	}
 
-	private void afficheCalculateur(ArrayList<Calculateur> listeCalculateur) {
+	private JPanel afficheCalculateur(ArrayList<Calculateur> listeCalculateur) {
+		JPanel panel = new JPanel();
 		for (int i=0; i<listeCalculateur.size(); i++) {
-			JPanel panel = new JPanel();
 			Calculateur calculateur = listeCalculateur.get(i);
-			JLabel label = new JLabel("Calculateur: " + calculateur.getNom());
-			panel.add(label);
-			panel.setBounds(200, 200, 100, 100);
-			this.add(panel);
-			this.revalidate();
+			String texte = "Calculateur: " + calculateur.getNom();
+			panel.add(new JLabel(texte));
 		}
+		return panel;
 	}
 
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		this.removeAll();
-		this.repaint();	
 		this.afficheRessourceProjet();
+		this.repaint();	
 	}
 
 

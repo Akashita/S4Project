@@ -17,10 +17,7 @@ public class PanelProjet extends JPanel{
 
 	public void ajoutProjet(Projet projet) {
 		listeProjet.add(projet);
-		listeProjet.get(0).deselectionner();
-
 		creerLabel(projet.getNom());
-
 		this.revalidate();
 	}
 	
@@ -29,30 +26,32 @@ public class PanelProjet extends JPanel{
 		label.addMouseListener(new SourisProjetListener(this, label));
 		this.add(label);
 		listeLabel.add(label);
-		selectionnerLabel (label);
+		selectionnerProjet (label);
 
 	}
 	
-	public void selectionnerLabel (JLabel label) {
 		int indice = 0;
 		for(int i=0; i<listeLabel.size();i++) {
-			deselectionnerLabel(listeLabel.get(i), listeProjet.get(i));
-			if (listeLabel.get(i) ==  label) {
-				indice = i;
 			}
 			entreprise.update();
 		}
+	public void selectionnerProjet (JLabel label) {
+		deselectionnerLabel();
 		label.setForeground(new Color(255,255,255));
 		label.setOpaque(true);
 		label.setBackground(Color.BLUE);
-		listeProjet.get(indice).selectionner();
+		String nom = label.getText();
+		entreprise.selectionnerProjet(nom);
 	}
 	
-	private void deselectionnerLabel(JLabel label, Projet projet) {
-		label.setForeground(new Color(0,0,0));
-		label.setOpaque(true);
-		label.setBackground(Color.WHITE);
-		projet.deselectionner();
+	private void deselectionnerLabel() {
+		entreprise.deselectionnerProjet();
+		for(int i=0; i<listeLabel.size();i++) {
+			JLabel label = listeLabel.get(i);
+			label.setForeground(new Color(0,0,0));
+			label.setOpaque(true);
+			label.setBackground(Color.WHITE);
+		}
 	}
 
 }

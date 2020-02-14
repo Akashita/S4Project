@@ -2,6 +2,8 @@ import  java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import javax.swing.JPanel;
+
 
 //model il sert a cr�er des projets puis leur donne des ressources.
 
@@ -10,7 +12,8 @@ public class Entreprise extends Observable{
 		private ArrayList<String> listeType;//liste qui contient tous les types de ressourceAutre qui ont d�j� �t� cr�e pour les r�utiliser
 		private ArrayList<Ressource> listeRessource;//liste qui contient 
 		private int idCour;//id des ressources
-		
+		private ArrayList<JPanel> listePanel = new ArrayList<JPanel>();
+
 		//cr�ation de l'entreprise unique il faudra lui ajouter un nom si on d�sire �tendre nos activit�s
 		public Entreprise() {
 			this.listeProjet =  new ArrayList<Projet>();
@@ -72,6 +75,32 @@ public class Entreprise extends Observable{
 			return projet;
 		}
 		
+		public void selectionnerProjet(String nom) {
+			for (int i=0; i<listeProjet.size(); i++) {
+				Projet projet = listeProjet.get(i);
+				if (projet.getNom() == nom) {
+					projet.selectionner();
+				}
+			}
+			update();
+		}
+		
+		public void deselectionnerProjet() { //utile pour le graphique
+			for (int i=0; i<listeProjet.size(); i++) {
+				listeProjet.get(i).deselectionner();
+			}
+		}
+		
+		public JPanel getPanelDuProjet() {
+			JPanel panel = null;
+			for (int i=0; i<listeProjet.size();i++) {
+				if (listeProjet.get(i).getSelectionner()) {
+					panel = listePanel.get(i);
+				}
+			}
+			return panel;
+		}
+		
 		public ArrayList<Ressource> getRessource(){
 			return listeRessource;
 		}
@@ -95,6 +124,7 @@ public class Entreprise extends Observable{
 			}
 			
 		}
+		
 		public int[] chercherRessource(int idCour) {
 			Boolean pasTrouve = true;
 			int[] res = {0,0};//a droite la place du projet cherch� et a gauche si il est trouv� 0 non/1 oui
@@ -176,6 +206,7 @@ public class Entreprise extends Observable{
 			if (this.chercheProjet(newProjet.getNom())[0] == 0) {
 				this.listeProjet.add(newProjet);
 				newProjet.selectionner();
+				this.listePanel.add(new JPanel());
 			}
 			update();
 		}
@@ -323,23 +354,9 @@ public class Entreprise extends Observable{
 			this.enleverRessourceProjet(idRessource);
 			this.ajouterRessourceProjet(idRessource, nomProjet);
 		}
-
-		
-		/**
-		 * 
-		 * PARTIE GRAPHIQUE
-		 */
-		
-		public void dessineToi(Graphics g) { // algorithme de test
-			for (int i=0; i<listeProjet.size();i++) {
-				if (listeProjet.get(i).getSelectionner()) {
-					listeProjet.get(i).dessineToi(g);
-				}
-			}
-		}
-		
+			
 		public void update() {
 			this.setChanged();
-			this.notifyObservers();		
+			this.notifyObservers();	
 		}
 }

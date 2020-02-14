@@ -94,21 +94,5 @@ public class Projet {
 		} else {
 			return false;
 		}
-	}
-	
-	public void dessineToi(Graphics g) {
-		 for (int i=0; i<listeRessource.size(); i++) {
-			 Ressource ressource = listeRessource.get(i); 
-			 if (ressource.getType() == Ressource.PERSONNE) {
-				 g.setColor(Color.BLUE);
-			 }
-			 if (ressource.getType() == Ressource.SALLE) {
-				 g.setColor(Color.RED);
-			 }
-			 if (ressource.getType() == Ressource.CALCULATEUR) {
-				 g.setColor(Color.GREEN);
-			 }
-			 g.fillOval(100+(i*50), 100, 50, 50);
-		 }
-	}
+	}	
 }

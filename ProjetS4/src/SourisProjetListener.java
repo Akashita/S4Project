@@ -15,7 +15,7 @@ public class SourisProjetListener implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		pp.selectionnerLabel(label);
+		pp.selectionnerProjet(label);
 	}
 
 	@Override
