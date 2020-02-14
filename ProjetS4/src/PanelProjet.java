@@ -30,11 +30,6 @@ public class PanelProjet extends JPanel{
 
 	}
 	
-		int indice = 0;
-		for(int i=0; i<listeLabel.size();i++) {
-			}
-			entreprise.update();
-		}
 	public void selectionnerProjet (JLabel label) {
 		deselectionnerLabel();
 		label.setForeground(new Color(255,255,255));

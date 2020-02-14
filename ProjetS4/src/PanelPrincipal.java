@@ -39,8 +39,8 @@ public class PanelPrincipal extends JPanel implements Observer{
 			}
 			panelProjet.removeAll();
 			panelProjet.setSize(this.getWidth(), this.getHeight());
-			panelProjet.setLayout(new BoxLayout(panelProjet, BoxLayout.Y_AXIS));
-			panelProjet.add(affichePersonne(listePersonne));
+			panelProjet.setLayout(new BorderLayout());
+			panelProjet.add(affichePersonne(listePersonne), BorderLayout.WEST);
 			panelProjet.add(afficheSalle(listeSalle), BorderLayout.CENTER);
 			panelProjet.add(afficheCalculateur(listeCalculateur), BorderLayout.EAST);
 			this.add(panelProjet, BorderLayout.CENTER);
