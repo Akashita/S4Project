@@ -53,6 +53,7 @@ public class PanelPrincipal extends JPanel implements Observer{
 	
 	private JPanel affichePersonne(ArrayList<Personne> listePersonne) {
 		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		for (int i=0; i<listePersonne.size(); i++) {
 			Personne personne = listePersonne.get(i);
 			String texte = personne.getRole()+ " " + personne.getPrenom()+personne.getNom();
@@ -63,6 +64,7 @@ public class PanelPrincipal extends JPanel implements Observer{
 
 	private JPanel afficheSalle(ArrayList<Salle> listeSalle) {
 		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		for (int i=0; i<listeSalle.size(); i++) {
 			Salle salle = listeSalle.get(i);
 			String texte = "Salle :" + salle.getNom();
@@ -73,6 +75,7 @@ public class PanelPrincipal extends JPanel implements Observer{
 
 	private JPanel afficheCalculateur(ArrayList<Calculateur> listeCalculateur) {
 		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		for (int i=0; i<listeCalculateur.size(); i++) {
 			Calculateur calculateur = listeCalculateur.get(i);
 			String texte = "Calculateur: " + calculateur.getNom();
