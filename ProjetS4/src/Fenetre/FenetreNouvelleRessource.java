@@ -10,7 +10,7 @@ public class FenetreNouvelleRessource extends JFrame{
 	
 	public FenetreNouvelleRessource(Entreprise entreprise) {
 		this.entreprise = entreprise;
-		
+		this.addWindowListener(new FermerFenetre(this));
 		creationRessource(choixType());
 	}
 	
