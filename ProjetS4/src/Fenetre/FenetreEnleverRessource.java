@@ -27,15 +27,21 @@ public class FenetreEnleverRessource extends JDialog{
     public FenetreEnleverRessource(Entreprise entreprise) {
 		this.entreprise= entreprise;
 		if (entreprise.getProjetSelectionner() != null) {
-			this.setTitle("Enlever ressource");
-			this.setSize(300,200);
-			this.setLocationRelativeTo(null);
-			this.addWindowListener(new FermerFenetre(this));
-			this.setVisible(true);
-			creerInterface();
+			listeRessource = entreprise.getProjetSelectionner().getListe();
+			if (listeRessource.size()>0) {
+				this.setTitle("Enlever ressource");
+				this.setSize(300,200);
+				this.setLocationRelativeTo(null);
+				this.addWindowListener(new FermerFenetre(this));
+				this.setVisible(true);
+				creerInterface();				
+			}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Aucune ressource presente", "Erreur", JOptionPane.ERROR_MESSAGE);							
+			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Aucun projet selectioner", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionner", "Erreur", JOptionPane.ERROR_MESSAGE);							
 		}		
 	}
 
@@ -44,7 +50,9 @@ public class FenetreEnleverRessource extends JDialog{
 		panelPrincipal.setLayout(new GridLayout(2, 0));
 	    panelPrincipal.setBorder(BorderFactory.createTitledBorder("Enlever ressource du Projet"));
 		panelPrincipal.add(creerComboBox());
-		panelPrincipal.add(creerBoutton());
+		if(listeRessource.size()>0) {
+			panelPrincipal.add(creerBoutton());
+		}
 		this.add(panelPrincipal);		
 	}
 	
@@ -64,18 +72,17 @@ public class FenetreEnleverRessource extends JDialog{
 	
 	private JComboBox<String> creerComboBox(){
 		ArrayList<String> listeNom = new ArrayList<String>();
-		listeRessource = entreprise.getProjetSelectionner().getListe();
 
 		for (int i=0; i<listeRessource.size(); i++) {
 			Ressource ressource = listeRessource.get(i); 
 			if (ressource.getType() == Ressource.PERSONNE) {
-				listeNom.add(((Personne)ressource).getPrenom() + " " + ressource.getNom());
+				listeNom.add("Personne: " + ((Personne)ressource).getPrenom() + " " + ressource.getNom());
 			}
 			if (ressource.getType() == Ressource.SALLE) {
-				listeNom.add(ressource.getNom());
+				listeNom.add("Salle: "+ ressource.getNom());
 			}
 			if (ressource.getType() == Ressource.CALCULATEUR) {
-				listeNom.add(ressource.getNom());
+				listeNom.add("Calculateur: " + ressource.getNom());
 			}
 		}
 		comboBoxRessource = new JComboBox<String>(convertirArrayEnTab(listeNom));

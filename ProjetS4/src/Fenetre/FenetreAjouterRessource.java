@@ -42,7 +42,7 @@ public class FenetreAjouterRessource extends JDialog{
 			creationInterface();			
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Aucun projet selectioner", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionner", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 	
