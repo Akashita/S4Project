@@ -27,7 +27,7 @@ public class FenetreAjouterRessource extends JDialog{
 			this.setLocationRelativeTo(null);
 			this.addWindowListener(new FermerFenetre(this));
 			this.setVisible(true);
-			/*JRootPane rootPane = this.getRootPane();
+			JRootPane rootPane = this.getRootPane();
 			rootPane.getInputMap().put(
 					KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
 					"close");
@@ -36,7 +36,7 @@ public class FenetreAjouterRessource extends JDialog{
 					//this.setVisible(false);
 					dispose();
 				}
-			});*/
+			});
 
 
 			creationInterface();			

@@ -3,8 +3,10 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -12,6 +14,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 import Model.Entreprise;
 import Model.Projet;
@@ -34,6 +38,16 @@ public class FenetreEnleverRessource extends JDialog{
 				this.setLocationRelativeTo(null);
 				this.addWindowListener(new FermerFenetre(this));
 				this.setVisible(true);
+				JRootPane rootPane = this.getRootPane();
+				rootPane.getInputMap().put(
+						KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+						"close");
+				rootPane.getActionMap().put("close", new AbstractAction() {
+					public void actionPerformed(ActionEvent e) {
+						//this.setVisible(false);
+						dispose();
+					}
+				});
 				creerInterface();				
 			}
 			else {
