@@ -1,80 +1,109 @@
 package Fenetre;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
 import Model.Entreprise;
-import Model.Projet;
-import Ressource.Calculateur;
-import Ressource.Personne;
-import Ressource.Ressource;
-import Ressource.Salle;
+import Ressource.*;
 
-public class FenetreAjouterRessource extends JFrame{
-	Entreprise entreprise;
-	String type;
+public class FenetreAjouterRessource extends JDialog{
+	private Entreprise entreprise;
+    private JComboBox<String> comboBoxType;
+    private JComboBox<Ressource> comboBoxRessource;
+	ArrayList<Ressource> listeRessource;
+
+	private JPanel panelPrincipal = new JPanel();
+	private JPanel panelSecondaire = new JPanel();
+
 	
-	public FenetreAjouterRessource(Entreprise entreprise, String type) {
+	public FenetreAjouterRessource(Entreprise entreprise) {
 		this.entreprise = entreprise;
-		this.type = type;
 		this.setTitle("Ajout ressource");
-		this.setSize(300,200);
+		this.setSize(270,220);
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-		ajoutRessource();
+		this.add(panelPrincipal);
+		panelPrincipal.setLayout(new GridLayout(2, 0));
+		panelSecondaire.setLayout(new GridLayout(2, 0));
+
+		creationInterface();
 	}
 	
-	private void ajoutRessource() {
-		ArrayList<Ressource> listeRessource = new ArrayList<Ressource>();
-		for (int i=0; i<entreprise.getRessource().size(); i++) {
-			Ressource ressource = entreprise.getRessource().get(i);
-			if (ressource.getType() == Ressource.PERSONNE && type == Ressource.PERSONNE) {
-				listeRessource.add(ressource);
+	private void creationInterface() {
+	    String[] type = {"Choisissez le type de la ressource", Ressource.PERSONNE, Ressource.SALLE, Ressource.CALCULATEUR};
+	    comboBoxType = new JComboBox<String>(type);
+		panelPrincipal.add(choixType());
+		comboBoxType.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				String type = (String)comboBoxType.getSelectedItem();
+				panelSecondaire.removeAll();
+				panelSecondaire.add(ajoutRessource(type));
+				panelSecondaire.add(creerBoutton());
+				panelPrincipal.add(panelSecondaire);
+				panelPrincipal.revalidate();
 			}
-			if (ressource.getType() == Ressource.SALLE && type == Ressource.SALLE) {
-				listeRessource.add(ressource);
-			}
-			if (ressource.getType() == Ressource.CALCULATEUR && type == Ressource.CALCULATEUR) {
-				listeRessource.add(ressource);
-			}
-		}
-
-		String tab[] = new String[listeRessource.size()];
-
-		if (type == Ressource.PERSONNE) {
-			for (int i=0; i<tab.length;i++) {
-				Personne personne = (Personne) listeRessource.get(i);
-				tab[i] =personne.getPrenom() +" "+ personne.getNom(); 
-			}
-			ajoutRessource(tab, listeRessource);
-		}
-		if (type == Ressource.SALLE) {
-			for (int i=0; i<tab.length;i++) {
-				Salle Salle = (Salle) listeRessource.get(i);
-				tab[i] = Salle.getNom(); 
-			}
-			ajoutRessource(tab, listeRessource);			
-		}
-		if (type == Ressource.CALCULATEUR) {
-			for (int i=0; i<tab.length;i++) {
-				Calculateur Calculateur = (Calculateur) listeRessource.get(i);
-				tab[i] = Calculateur.getNom(); 
-			}
-			ajoutRessource(tab, listeRessource);			
-		}
+		});
 	}
-	
-	private void ajoutRessource(String tab[], ArrayList<Ressource> listeRessource) {
-		Projet projet = entreprise.getProjetSelectionner();
-		JButton bouton = new JButton("Ajout");
-		bouton.setBounds(100, 20, 100, 10);
-		final JComboBox jcb = new JComboBox(tab);
-		this.add(bouton);
-		this.add(jcb);
+
+	private JButton creerBoutton() {
+		JButton bouton = new JButton("Ajouter");
+		panelPrincipal.add(bouton);
 	    bouton.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
-	    	    int index = jcb.getSelectedIndex();
-	    	    entreprise.ajouterRessourceProjet(listeRessource.get(index).getId(), projet.getNom());
+	    	    int index = comboBoxRessource.getSelectedIndex();
+	    	    entreprise.ajouterRessourceProjet(listeRessource.get(index).getId(), entreprise.getProjetSelectionner().getNom());
 	        }
-	    });
+	    });			
+	    return bouton;
+	}
+	
+	private JPanel choixType() {
+	    JPanel panel = new JPanel();
+	    panel.setBackground(Color.white);
+	    panel.setPreferredSize(new Dimension(220, 60));
+	    panel.setBorder(BorderFactory.createTitledBorder("Type de la ressource a ajouter"));
+	    panel.add(comboBoxType);
+	    return panel;
+	}
+	
+	private JPanel ajoutRessource(String type) {
+	    JPanel panel = new JPanel();
+	    panel.setBackground(Color.white);
+	    panel.setPreferredSize(new Dimension(220, 60));
+	    panel.setBorder(BorderFactory.createTitledBorder(type + " a ajouter"));
+	    panel.add(creerComboBox(type));
+	    return panel;
+	}
+
+	private JComboBox creerComboBox(String type) {
+	ArrayList<String> listeNom = new ArrayList<String>();
+	listeRessource = entreprise.getListeRessourceType(type);	
+	for (int i=0; i<listeRessource.size(); i++) {
+		Ressource ressource = listeRessource.get(i); 
+		if (ressource.getType() == Ressource.PERSONNE && type == Ressource.PERSONNE) {
+			listeNom.add(((Personne)ressource).getPrenom() + " " + ressource.getNom());
+		}
+		if (ressource.getType() == Ressource.SALLE && type == Ressource.SALLE) {
+			listeNom.add(ressource.getNom());
+		}
+		if (ressource.getType() == Ressource.CALCULATEUR && type == Ressource.CALCULATEUR) {
+			listeNom.add(ressource.getNom());
+		}
+	}
+	comboBoxRessource = new JComboBox(convertirArrayEnTab(listeNom));
+	return comboBoxRessource;
+	}
+	
+	private String[] convertirArrayEnTab(ArrayList<String> listeNom) {
+		String[] tab = new String[listeNom.size()];
+		for (int i=0; i<tab.length; i++) {
+			tab[i] = listeNom.get(i);
+		}
+		return tab;
 	}	
 }

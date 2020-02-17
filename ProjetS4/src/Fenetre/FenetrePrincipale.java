@@ -1,5 +1,7 @@
 package Fenetre;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.*;
@@ -44,7 +46,7 @@ public class FenetrePrincipale extends JFrame{
 		JMenu menuPropos = new JMenu("A propos");
 
 		JMenu menuNouveau = new JMenu("Nouveau");
-		JMenu menuAjout = new JMenu("Ajouter");
+		
 		
 		JMenuItem itemNouvelleRessource = new JMenuItem("Nouvelle Ressource", KeyEvent.VK_R);
 	    KeyStroke ctrlNouvelleRessource = KeyStroke.getKeyStroke("control R");
@@ -56,22 +58,21 @@ public class FenetrePrincipale extends JFrame{
 	    itemNouveauProjet.setAccelerator(ctrlNouvelleProjet);
 		itemNouveauProjet.addActionListener(new NouveauProjetListener(entreprise, projetPanel));
 
-		JMenuItem itemAjoutPersonne = new JMenuItem(Ressource.PERSONNE, KeyEvent.VK_A);
+		JMenuItem itemQuitter = new JMenuItem("Quitter", KeyEvent.VK_Q);
+	    KeyStroke ctrlQuitter = KeyStroke.getKeyStroke("control Q");
+	    itemQuitter.setAccelerator(ctrlQuitter);
+	    itemQuitter.addActionListener(new ActionListener(){
+	        public void actionPerformed(ActionEvent event){
+	          System.exit(0);
+	        }
+	      });		
+		
+		JMenuItem JMenuItem = new JMenuItem("Ajouter", KeyEvent.VK_A);
 	    KeyStroke ctrlAjoutPersonne = KeyStroke.getKeyStroke("control A");
-	    itemAjoutPersonne.setAccelerator(ctrlAjoutPersonne);
-		itemAjoutPersonne.addActionListener(new AjouterRessourceListener(entreprise, Ressource.PERSONNE));
-		
-		JMenuItem itemAjoutSalle = new JMenuItem(Ressource.SALLE, KeyEvent.VK_S);
-	    KeyStroke ctrlAjoutSalle = KeyStroke.getKeyStroke("control S");
-	    itemAjoutSalle.setAccelerator(ctrlAjoutSalle);
-		itemAjoutSalle.addActionListener(new AjouterRessourceListener(entreprise, Ressource.SALLE));
-		
-		JMenuItem itemAjoutCalculateur = new JMenuItem(Ressource.CALCULATEUR, KeyEvent.VK_D);
-	    KeyStroke ctrlAjoutCalculateur = KeyStroke.getKeyStroke("control D");
-	    itemAjoutCalculateur.setAccelerator(ctrlAjoutCalculateur);
-		itemAjoutCalculateur.addActionListener(new AjouterRessourceListener(entreprise, Ressource.CALCULATEUR));
+	    JMenuItem.setAccelerator(ctrlAjoutPersonne);
+	    JMenuItem.addActionListener(new AjouterRessourceListener(entreprise));
 
-		JMenuItem itemEnleverRessource = new JMenuItem("Enlever ressource", KeyEvent.VK_E);
+	    JMenuItem itemEnleverRessource = new JMenuItem("Enlever ressource", KeyEvent.VK_E);
 	    KeyStroke ctrlEnleverRessource = KeyStroke.getKeyStroke("control E");
 	    itemEnleverRessource.setAccelerator(ctrlEnleverRessource);
 		itemEnleverRessource.addActionListener(new EnleverRessourceListener(entreprise));
@@ -85,13 +86,11 @@ public class FenetrePrincipale extends JFrame{
 		menuNouveau.add(itemNouvelleRessource);
 		menuNouveau.add(itemNouveauProjet);
 		
-		menuAjout.add(itemAjoutPersonne);
-		menuAjout.add(itemAjoutSalle);
-		menuAjout.add(itemAjoutCalculateur);
 		
 		menuFichier.add(menuNouveau);
+		menuFichier.add(itemQuitter);
 		
-		menuEditer.add(menuAjout);
+		menuEditer.add(JMenuItem);
 		menuEditer.add(itemEnleverRessource);
 		menuEditer.add(itemModifier);
 		menuEditer.add(itemSupprimer);

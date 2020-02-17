@@ -6,16 +6,15 @@ import Fenetre.FenetreAjouterRessource;
 import Model.Entreprise;
 
 public class AjouterRessourceListener implements ActionListener {
-	Entreprise entreprise;
-	String type;
+	private Entreprise entreprise;
+	private String type;
 	
-	public AjouterRessourceListener(Entreprise entreprise, String type) {
+	public AjouterRessourceListener(Entreprise entreprise) {
 		this.entreprise = entreprise;
-		this.type = type;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new FenetreAjouterRessource(entreprise, type);
+		new FenetreAjouterRessource(entreprise);
 	}
 
 }

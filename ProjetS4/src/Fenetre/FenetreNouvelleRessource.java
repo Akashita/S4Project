@@ -6,7 +6,7 @@ import Ressource.Personne;
 import Ressource.Ressource;
 
 public class FenetreNouvelleRessource extends JFrame{
-	Entreprise entreprise;
+	private Entreprise entreprise;
 	
 	public FenetreNouvelleRessource(Entreprise entreprise) {
 		this.entreprise = entreprise;
@@ -28,7 +28,7 @@ public class FenetreNouvelleRessource extends JFrame{
 	
 	private void creationRessource(String type) {
 		if (type == Ressource.PERSONNE) {
-			creationSalarie();
+			creationPersonne();
 		}
 		if (type == Ressource.SALLE) {
 			creationSalle();
@@ -38,7 +38,7 @@ public class FenetreNouvelleRessource extends JFrame{
 		}
 	}
 	
-	private void creationSalarie() {
+	private void creationPersonne() {
 		String nom, prenom;
 		String[] toutLesRoles = {Personne.ADMINISTRATEUR, Personne.CHEFDEPROJET, Personne.COLLABORATEUR};
 	   
@@ -58,11 +58,32 @@ public class FenetreNouvelleRessource extends JFrame{
 	
 	private void creationSalle() {
 		String nom;
-		int capacite;
+		String capacite;
 		
 	    nom = JOptionPane.showInputDialog(null, "Veuillez ecrire son nom", "Ajouter une salle", JOptionPane.QUESTION_MESSAGE);
-	    capacite = Integer.parseInt((String)JOptionPane.showInputDialog(null, "Veuillez indiquer sa capacité", "Ajouter une salle", JOptionPane.QUESTION_MESSAGE));
-		entreprise.nouvSalle(nom, capacite);	 
+	    
+	    
+	    boolean estNombre = false;
+		while (!estNombre) {
+		    capacite = (String)JOptionPane.showInputDialog(null, "Veuillez indiquer sa capacité", "Ajouter une salle", JOptionPane.QUESTION_MESSAGE);
+		    if (estUnEntier(capacite)) {
+				entreprise.nouvSalle(nom, Integer.parseInt(capacite));	
+				estNombre = true;	
+		    }
+		    else {
+		    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);
+		    }	    	
+	    }
+	}
+
+	private boolean estUnEntier(String chaine) {
+		try {
+			Integer.parseInt(chaine);
+		} catch (NumberFormatException e){
+			return false;
+		}
+ 
+		return true;
 	}
 
 	private void creationCalculateur() {

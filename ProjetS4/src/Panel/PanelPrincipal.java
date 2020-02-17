@@ -29,69 +29,53 @@ public class PanelPrincipal extends JPanel implements Observer{
 		JPanel panelProjet = entreprise.getPanelDuProjet();
 		if (projet != null) {
 			ArrayList<Ressource> listeRessource = projet.getListe();
-			ArrayList<Personne> listePersonne = new ArrayList<Personne>();
-			ArrayList<Salle> listeSalle = new ArrayList<Salle>();
-			ArrayList<Calculateur> listeCalculateur = new ArrayList<Calculateur>();
-			
-			for (int i=0; i<listeRessource.size(); i++) {
-				Ressource ressource = listeRessource.get(i);
-				if (ressource.getType() == Ressource.PERSONNE) {
-					listePersonne.add((Personne) ressource);
-				}
-				if (ressource.getType() == Ressource.SALLE) {
-					listeSalle.add((Salle) ressource);
-				}
-				if (ressource.getType() == Ressource.CALCULATEUR) {
-					listeCalculateur.add((Calculateur) ressource);
-				}
-			}
+	
 			panelProjet.removeAll();
 			panelProjet.setSize(this.getWidth(), this.getHeight());
-			panelProjet.setLayout(new BorderLayout());
-			panelProjet.add(affichePersonne(listePersonne), BorderLayout.WEST);
-			panelProjet.add(afficheSalle(listeSalle), BorderLayout.CENTER);
-			panelProjet.add(afficheCalculateur(listeCalculateur), BorderLayout.EAST);
+			//panelProjet.setLayout(new BorderLayout());
+			panelProjet.setLayout(new GridLayout(0, 3));
+
+			panelProjet.add(creerPanelRessource(listeRessource, Ressource.PERSONNE));
+			panelProjet.add(creerPanelRessource(listeRessource, Ressource.SALLE));
+			panelProjet.add(creerPanelRessource(listeRessource, Ressource.CALCULATEUR));
+			
 			this.add(panelProjet, BorderLayout.CENTER);
 			this.revalidate();
 		}
 	}
 	
 	
-	
-	
-	private JPanel affichePersonne(ArrayList<Personne> listePersonne) {
+	private JPanel creerPanelRessource(ArrayList<Ressource> listeRessource, String type) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		for (int i=0; i<listePersonne.size(); i++) {
-			Personne personne = listePersonne.get(i);
-			String texte = personne.getRole()+ " " + personne.getPrenom()+personne.getNom();
-			panel.add(new JLabel(texte));
+		for (int i=0; i<listeRessource.size(); i++) {
+			if (listeRessource.get(i).getType() == type) {
+				panel.add(Box.createRigidArea(new Dimension(0,20)));
+				panel.add(creerJLabelRessource(listeRessource.get(i)), "Center");
+			}
 		}
 		return panel;
 	}
-
-	private JPanel afficheSalle(ArrayList<Salle> listeSalle) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		for (int i=0; i<listeSalle.size(); i++) {
-			Salle salle = listeSalle.get(i);
-			String texte = "Salle :" + salle.getNom();
-			panel.add(new JLabel(texte));
-		}	
-		return panel;
-	}
-
-	private JPanel afficheCalculateur(ArrayList<Calculateur> listeCalculateur) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		for (int i=0; i<listeCalculateur.size(); i++) {
-			Calculateur calculateur = listeCalculateur.get(i);
-			String texte = "Calculateur: " + calculateur.getNom();
-			panel.add(new JLabel(texte));
+	
+	private JLabel creerJLabelRessource(Ressource ressource) {
+		JLabel label = null;
+		String texte = null;
+		
+		if (ressource.getType() == Ressource.PERSONNE) {
+			Personne personne = (Personne) ressource;
+			texte = personne.getRole()+ " " + personne.getPrenom()+ " " +personne.getNom();
 		}
-		return panel;
+		if (ressource.getType() == Ressource.SALLE) {
+			texte = "Salle: " + ressource.getNom();
+		}
+		if (ressource.getType() == Ressource.CALCULATEUR) {
+			texte = "Calculateur: " + ressource.getNom();
+		}
+		
+		label = new JLabel(texte);
+		label.setFont(new Font("Arial", Font.BOLD, 20));
+		return label;
 	}
-
 	
 	@Override
 	public void update(Observable o, Object arg) {

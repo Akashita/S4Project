@@ -1,5 +1,6 @@
 package Panel;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,6 +29,7 @@ public class PanelProjet extends JPanel{
 	
 	private void creerLabel(String nom) {
 		JLabel label = new JLabel(nom);
+		label.setFont(new Font("Arial", Font.BOLD, 30));
 		label.addMouseListener(new SourisProjetListener(this, label));
 		this.add(label);
 		listeLabel.add(label);

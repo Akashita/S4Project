@@ -108,10 +108,17 @@ public class Entreprise extends Observable{
 			return panel;
 		}
 		
-		public ArrayList<Ressource> getRessource(){
-			return listeRessource;
+		public ArrayList<Ressource> getListeRessourceType(String type){
+			ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
+			for (int i=0; i<listeRessource.size(); i++) {
+				Ressource ressource = listeRessource.get(i);
+				if(ressource.getType() == type) {
+					nouvelleListe.add(ressource);
+				}
+			}
+			return nouvelleListe;
 		}
-		
+				
 		public void ajouterRessource(Ressource resCour) {
 			this.listeRessource.add(resCour);
 		}
