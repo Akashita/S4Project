@@ -1,4 +1,6 @@
 package Ressource;
+import java.util.ArrayList;
+
 import Model.Projet;
 
 public class Ressource {
@@ -7,15 +9,16 @@ public class Ressource {
 	public static final String SALLE = "Salle";
 	public static final String CALCULATEUR = "Calculateur";
 	protected String type;
-	protected Boolean dispo; //bool�en si la ressource est utilis� ou vacante
 	protected Projet Projet;
 	protected int id;
+		
+	ArrayList<Plage> edt;
+
 	
 	public Ressource(int id, String nom, String type) {
 		this.id = id;
 		this.nom = nom;
 		this.type = type;
-		this.dispo = true;
 	}
 
 	
@@ -26,10 +29,7 @@ public class Ressource {
 	public String getType() {//r�cup�ration du type
 		return this.type;
 	}
-	
-	public Boolean getDispo() {//r�cup�ration de la disponibilit� d'une ressource
-		return this.dispo;
-	}
+
 	public int getId() {//r�cup�ration de l'Id de chaque ressource pour les diff�rencier
 		return this.id;
 	}
@@ -56,12 +56,33 @@ public class Ressource {
 		
 	}
 	
-	//m�thodes pour modifier la disponibilit� des ressources
-	public void rendDisponible() {
-		this.dispo = true;
+	
+	// --------------------
+	//Gestion du calendrier
+	// --------------------
+	
+	public boolean setPlage(Plage pl) {
+		boolean place = false;
+		boolean conflit = false;
+		int taille = edt.size();
+		int i = 0;
+		
+		while(!place && !conflit && i<taille ) {
+			if(pl.estSuperpose(edt.get(i))) {
+				conflit = true;
+			} else if(pl.estAvant(edt.get(i))) {
+				edt.set(i, pl);
+				place = true;
+			} else if(i == taille -1) {
+				edt.set(i+1, pl);
+				place = true;
+			}
+		}
+		
+		return place;
 	}
 	
-	public void rendIndisponible() {
-		this.dispo = false;
-	}	
+	public ArrayList<Plage> getPlages() {
+		return edt;
+	}
 }
