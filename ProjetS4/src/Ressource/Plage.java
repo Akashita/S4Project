@@ -6,6 +6,7 @@ public class Plage {
 	private String nomProjet;
 	private Calendar debut;
 	private Calendar fin;
+	//Salut
 	
 	public Plage(String nomProjet, Calendar debut, Calendar fin) {
 		this.nomProjet = nomProjet;
