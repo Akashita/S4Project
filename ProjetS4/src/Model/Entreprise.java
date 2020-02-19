@@ -45,7 +45,7 @@ public class Entreprise extends Observable{
 				chaineRessourceProjet += " \n";
 				resCour =  this.listeRessource.get(i);
 				chaineRessourceProjet += resCour.getNom() + "    ---disponible : ";
-				chaineRessourceProjet += resCour.getDispo() + "    ---matricule : ";
+				//chaineRessourceProjet += resCour.getDispo() + "    ---matricule : ";
 				chaineRessourceProjet += resCour.getId() + ".";
 			}
 			
@@ -129,12 +129,12 @@ public class Entreprise extends Observable{
 			if (place[0] == 1) {
 				int rangRessource = place[1];
 				Ressource resCour = this.listeRessource.get(rangRessource);
-
+				/*
 				if (resCour.getDispo() == true) {//on enleve la ressource si elle est disponible 
 					this.listeRessource.remove(resCour);
 
 						}
-				
+				*/
 			}
 			
 		}
@@ -234,13 +234,13 @@ public class Entreprise extends Observable{
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
 				Projet projetCour = this.listeProjet.get(place[1]);
 				projetCour.ajouter(nouvPersonne);	
-				nouvPersonne.rendIndisponible();
+				//nouvPersonne.rendIndisponible();
 				nouvPersonne.setProjet(projetCour);
 
 				
 			}
 			else {
-				nouvPersonne.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
+				//nouvPersonne.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
 
 			}
 		}
@@ -250,7 +250,7 @@ public class Entreprise extends Observable{
 			Personne nouvPersonne = new Personne(nom,prenom, this.idCour);
 			this.incrementId();
 			this.ajouterRessource(nouvPersonne);
-			nouvPersonne.rendDisponible();
+			//nouvPersonne.rendDisponible();
 		}
 		
 		public void nouvSalle (String nomProjet, String nom, int capacite) {
@@ -261,11 +261,11 @@ public class Entreprise extends Observable{
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
 				Projet projetCour = this.listeProjet.get(place[1]);
 				projetCour.ajouter(nouvSalle);	
-				nouvSalle.rendIndisponible();
+				//nouvSalle.rendIndisponible();
 				nouvSalle.setProjet(projetCour);
 			}
 			else {
-				nouvSalle.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
+				//nouvSalle.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
 
 			}
 		}
@@ -274,7 +274,7 @@ public class Entreprise extends Observable{
 			Salle nouvSalle = new Salle(this.idCour,nom, capacite);
 			this.incrementId();
 			this.ajouterRessource(nouvSalle);
-			nouvSalle.rendDisponible();
+			//nouvSalle.rendDisponible();
 		}
 		
 		//m�thode de cr�ation des RessourceAutre personnalisable et qui permettent de cr�er des types diff�rents
@@ -286,12 +286,12 @@ public class Entreprise extends Observable{
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
 				Projet projetCour = this.listeProjet.get(place[1]);
 				projetCour.ajouter(nouvRessourceAutre);	
-				nouvRessourceAutre.rendIndisponible();
+				//nouvRessourceAutre.rendIndisponible();
 				nouvRessourceAutre.setProjet(projetCour);
 				this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
 			}
 			else {
-				nouvRessourceAutre.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
+				//nouvRessourceAutre.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
 
 			}
 		}
@@ -300,7 +300,7 @@ public class Entreprise extends Observable{
 			RessourceAutre nouvRessourceAutre = new RessourceAutre(nom, type, this.idCour);
 			this.incrementId();
 			this.ajouterRessource(nouvRessourceAutre);
-			nouvRessourceAutre.rendDisponible();
+			//nouvRessourceAutre.rendDisponible();
 			this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
 
 
@@ -314,11 +314,11 @@ public class Entreprise extends Observable{
 			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
 				Projet projetCour = this.listeProjet.get(place[1]);
 				projetCour.ajouter(nouvCalculateur);	
-				nouvCalculateur.rendIndisponible();
+				//nouvCalculateur.rendIndisponible();
 				nouvCalculateur.setProjet(projetCour);
 			}
 			else {
-				nouvCalculateur.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
+				//nouvCalculateur.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
 
 			}
 			
@@ -328,7 +328,7 @@ public class Entreprise extends Observable{
 			Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
 			this.incrementId();
 			this.ajouterRessource(nouvCalculateur);
-			nouvCalculateur.rendDisponible();
+			//nouvCalculateur.rendDisponible();
 
 		}
 		
@@ -338,6 +338,8 @@ public class Entreprise extends Observable{
 			if (placeRessource[0] == 1) {
 				int rangRessource = placeRessource[1];
 					Ressource resCour = this.listeRessource.get(rangRessource);
+					
+					/*
 					if (resCour.getDispo() == true) {//v�rifie la disponibilit� de la ressource
 						int[] placeProjet = this.chercheProjet(nomProjet);
 						if (placeProjet[0] == 1) {
@@ -347,7 +349,7 @@ public class Entreprise extends Observable{
 							resCour.rendIndisponible();
 							
 						}
-					}
+					*/
 			}
 			update();
 		}
@@ -359,7 +361,7 @@ public class Entreprise extends Observable{
 				Ressource resCour = this.listeRessource.get(rangRessource);
 				resCour.getProjet().enlever(resCour);
 				resCour.unsetProjet();
-				resCour.rendDisponible();
+				//resCour.rendDisponible();
 			}
 			update();
 		}
