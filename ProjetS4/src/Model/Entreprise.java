@@ -72,6 +72,10 @@ public class Entreprise extends Observable{
 			return listeProjet.get(listeProjet.size()-1);
 		}
 		
+		public ArrayList<Projet> getListeProjet(){
+			return listeProjet;
+		}
+		
 		public Projet getProjetSelectionner() {
 			Projet projet = null;
 			for (int i=0; i<listeProjet.size();i++) {

@@ -8,11 +8,11 @@ import javax.swing.*;
 
 import EcouteurEvenement.AjouterRessourceListener;
 import EcouteurEvenement.EnleverRessourceListener;
+import EcouteurEvenement.NouveauListener;
 import EcouteurEvenement.NouveauProjetListener;
 import EcouteurEvenement.NouvelleRessourceListener;
 import Model.Entreprise;
-import Panel.PanelPrincipal;
-import Panel.PanelProjet;
+import Panel.*;
 import Ressource.Ressource;
 
 public class FenetrePrincipale extends JFrame{
@@ -26,29 +26,33 @@ public class FenetrePrincipale extends JFrame{
 		this.setSize(LARGEUR,HAUTEUR);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setLayout(new BorderLayout());
-		PanelProjet projetPanel = new PanelProjet();
-		PanelPrincipal pp = new PanelPrincipal(entreprise);	
-		this.add(pp, BorderLayout.CENTER);
-		this.add(projetPanel, BorderLayout.SOUTH);
+		PanelProjet panelProjet = new PanelProjet(entreprise);
+		PanelRessource panelRessource = new PanelRessource(entreprise);
+		PanelPrincipal pp = new PanelPrincipal(entreprise, 
+				panelRessource, panelProjet);	
 
-		creationBarreMenu(projetPanel);
+		this.add(pp, BorderLayout.CENTER);
+		this.add(panelRessource, BorderLayout.WEST);
+		this.add(panelProjet, BorderLayout.SOUTH);
+
+		creationBarreMenu(panelProjet, panelRessource);
 		
 		this.addWindowListener(new FermerFenetre(this));
 		this.setVisible(true);	
 		pp.setVisible(true);
 	}
 	
-	private void creationBarreMenu(PanelProjet projetPanel) {
+	private void creationBarreMenu(PanelProjet panelProjet, PanelRessource panelRessource) {
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu menuFichier = new JMenu("Fichier");
 		JMenu menuEditer = new JMenu("Editer");
 		JMenu menuPropos = new JMenu("A propos");
 
-		JMenu menuNouveau = new JMenu("Nouveau");
+		//JMenu menuNouveau = new JMenu("Nouveau");
 		
 		
-		JMenuItem itemNouvelleRessource = new JMenuItem("Nouvelle Ressource", KeyEvent.VK_R);
+		/*JMenuItem itemNouvelleRessource = new JMenuItem("Nouvelle Ressource", KeyEvent.VK_R);
 	    KeyStroke ctrlNouvelleRessource = KeyStroke.getKeyStroke("control R");
 	    itemNouvelleRessource.setAccelerator(ctrlNouvelleRessource);
 		itemNouvelleRessource.addActionListener(new NouvelleRessourceListener(entreprise));
@@ -56,7 +60,13 @@ public class FenetrePrincipale extends JFrame{
 		JMenuItem itemNouveauProjet = new JMenuItem("Nouveau Projet", KeyEvent.VK_P);
 	    KeyStroke ctrlNouvelleProjet = KeyStroke.getKeyStroke("control P");
 	    itemNouveauProjet.setAccelerator(ctrlNouvelleProjet);
-		itemNouveauProjet.addActionListener(new NouveauProjetListener(entreprise, projetPanel));
+		itemNouveauProjet.addActionListener(new NouveauProjetListener(entreprise, projetPanel));*/
+
+		JMenuItem itemNouveau = new JMenuItem("Nouveau", KeyEvent.VK_N);
+	    KeyStroke ctrlNouveau = KeyStroke.getKeyStroke("control N");
+	    itemNouveau.setAccelerator(ctrlNouveau);
+	    itemNouveau.addActionListener(new NouveauListener(entreprise, 
+	    		panelProjet, panelRessource));
 
 		JMenuItem itemQuitter = new JMenuItem("Quitter", KeyEvent.VK_Q);
 	    KeyStroke ctrlQuitter = KeyStroke.getKeyStroke("control Q");
@@ -83,11 +93,11 @@ public class FenetrePrincipale extends JFrame{
 		JMenuItem itemPropos = new JMenuItem("Projet");
 
 		//itemNouvelleRessource.setMnemonic(KeyEvent.VK_N);
-		menuNouveau.add(itemNouvelleRessource);
-		menuNouveau.add(itemNouveauProjet);
+//		menuNouveau.add(itemNouvelleRessource);
+//		menuNouveau.add(itemNouveauProjet);
 		
 		
-		menuFichier.add(menuNouveau);
+		menuFichier.add(itemNouveau);
 		menuFichier.add(itemQuitter);
 		
 		menuEditer.add(JMenuItem);
