@@ -1,7 +1,12 @@
 package Panel;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -10,50 +15,48 @@ import Model.Entreprise;
 import Model.Projet;
 
 public class PanelProjet extends JPanel{
-	private ArrayList<Projet> listeProjet = new ArrayList<Projet>();
-	private ArrayList<JLabel> listeLabel = new ArrayList<JLabel>();
-	
 	Entreprise entreprise;
 	
-	public void nouveauProjet(Entreprise entreprise, String nom) {
+	public PanelProjet(Entreprise entreprise) {
 		this.entreprise = entreprise;
-		this.entreprise.creerProjet(nom);
-		ajoutProjet(entreprise.getDernierProjet());
-	}
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		this.setBackground(Color.white);
+		this.setBorder(BorderFactory.createTitledBorder("liste des projets"));
 
-	public void ajoutProjet(Projet projet) {
-		listeProjet.add(projet);
-		creerLabel(projet.getNom());
-		this.revalidate();
 	}
 	
-	private void creerLabel(String nom) {
+	public void afficherProjet() {
+		ArrayList<Projet> listeProjet = entreprise.getListeProjet();
+		String nomProjetSelectionner = entreprise.getProjetSelectionner().getNom();
+		this.removeAll();
+		for (int i=0; i<listeProjet.size(); i++) {
+			Projet projet = listeProjet.get(i);
+			boolean selectionner = false;
+			if(projet.getNom() == nomProjetSelectionner) {
+				selectionner = true;
+			}
+			this.add(creerLabel(projet.getNom(), selectionner));
+			this.add(Box.createRigidArea(new Dimension(10,0)));
+		}
+	}
+	
+	private JLabel creerLabel(String nom, boolean selectionner) {
 		JLabel label = new JLabel(nom);
 		label.setFont(new Font("Arial", Font.BOLD, 30));
 		label.addMouseListener(new SourisProjetListener(this, label));
-		this.add(label);
-		listeLabel.add(label);
-		selectionnerProjet (label);
-
-	}
-	
-	public void selectionnerProjet (JLabel label) {
-		deselectionnerLabel();
-		label.setForeground(new Color(255,255,255));
-		label.setOpaque(true);
-		label.setBackground(Color.BLUE);
-		String nom = label.getText();
-		entreprise.selectionnerProjet(nom);
-	}
-	
-	private void deselectionnerLabel() {
-		entreprise.deselectionnerProjet();
-		for(int i=0; i<listeLabel.size();i++) {
-			JLabel label = listeLabel.get(i);
-			label.setForeground(new Color(0,0,0));
+		if(selectionner) {
 			label.setOpaque(true);
-			label.setBackground(Color.WHITE);
+			label.setBackground(Color.BLUE);
 		}
+		return label;
 	}
 
+	public void nouveauProjet(String nom) {
+		entreprise.creerProjet(nom);
+	}
+	
+	public void selectionnerProjet(JLabel label) {
+		entreprise.deselectionnerProjet();
+		entreprise.selectionnerProjet(label.getText());
+	} 
 }

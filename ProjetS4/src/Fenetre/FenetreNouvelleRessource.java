@@ -10,6 +10,7 @@ import java.awt.event.ItemListener;
 import javax.swing.*;
 
 import Model.Entreprise;
+import Panel.PanelRessource;
 import Ressource.Personne;
 import Ressource.Ressource;
 

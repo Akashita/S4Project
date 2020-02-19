@@ -13,6 +13,6 @@ public class FenetreNouveauProjet extends JFrame{
 
 		this.entreprise = entreprise;
 	    String nom = JOptionPane.showInputDialog(null, "Veuillez ecrire le nom du projet", "Creer un projet", JOptionPane.QUESTION_MESSAGE);
-	    pp.nouveauProjet(entreprise,nom);
+	    pp.nouveauProjet(nom);
 	}
 }

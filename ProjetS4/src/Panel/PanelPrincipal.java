@@ -11,14 +11,16 @@ import Ressource.Ressource;
 import Ressource.Salle;
 
 public class PanelPrincipal extends JPanel implements Observer{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
 	private Entreprise entreprise;
+	private PanelRessource panelRessource;
+	private PanelProjet panelProjet;
 	
-	public PanelPrincipal (Entreprise entreprise) {
+	public PanelPrincipal (Entreprise entreprise,
+			PanelRessource panelRessource, PanelProjet panelProjet) {
 		this.entreprise = entreprise;
+		this.panelRessource = panelRessource;
+		this.panelProjet = panelProjet;
         this.setLayout(new BorderLayout());
 		this.setSize(this.getWidth(), this.getHeight());
 		entreprise.addObserver(this);
@@ -81,6 +83,8 @@ public class PanelPrincipal extends JPanel implements Observer{
 	public void update(Observable o, Object arg) {
 		this.removeAll();
 		this.afficheRessourceProjet();
+		panelRessource.afficherRessource();
+		panelProjet.afficherProjet();
 		this.repaint();	
 	}
 

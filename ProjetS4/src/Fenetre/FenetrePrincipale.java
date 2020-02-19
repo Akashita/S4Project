@@ -11,8 +11,7 @@ import EcouteurEvenement.EnleverRessourceListener;
 import EcouteurEvenement.NouveauProjetListener;
 import EcouteurEvenement.NouvelleRessourceListener;
 import Model.Entreprise;
-import Panel.PanelPrincipal;
-import Panel.PanelProjet;
+import Panel.*;
 import Ressource.Ressource;
 
 public class FenetrePrincipale extends JFrame{
@@ -26,9 +25,13 @@ public class FenetrePrincipale extends JFrame{
 		this.setSize(LARGEUR,HAUTEUR);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setLayout(new BorderLayout());
-		PanelProjet projetPanel = new PanelProjet();
-		PanelPrincipal pp = new PanelPrincipal(entreprise);	
+		PanelProjet projetPanel = new PanelProjet(entreprise);
+		PanelRessource projetRessource = new PanelRessource(entreprise);
+		PanelPrincipal pp = new PanelPrincipal(entreprise, 
+				projetRessource, projetPanel);	
+
 		this.add(pp, BorderLayout.CENTER);
+		this.add(projetRessource, BorderLayout.WEST);
 		this.add(projetPanel, BorderLayout.SOUTH);
 
 		creationBarreMenu(projetPanel);
