@@ -17,6 +17,13 @@ public class Personne extends Ressource{
 		this.prenom = prenom;
 		
 	}
+	public Personne(String nom, String prenom, int numSalarie){
+		//attributs de la classe m�re.
+		super(numSalarie, nom, "Personne");
+		//attribut de la classe fille.
+		this.prenom = prenom;		
+	}
+	
 	public String getRole() {//r�cup�ration du r�le de la personne
 		return this.role;
 	}

@@ -245,8 +245,9 @@ public class Entreprise extends Observable{
 			}
 		}
 		
-		public void nouvPersonne (String nom, String prenom, String role) {
-			Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);
+		public void nouvPersonne (String nom, String prenom/*, String role*/) {
+			//Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);
+			Personne nouvPersonne = new Personne(nom,prenom, this.idCour);
 			this.incrementId();
 			this.ajouterRessource(nouvPersonne);
 			nouvPersonne.rendDisponible();

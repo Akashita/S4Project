@@ -50,8 +50,6 @@ public class FenetreAjouterRessource extends JDialog{
 		this.add(panelPrincipal);
 		panelPrincipal.setLayout(new GridLayout(2, 0));
 		panelSecondaire.setLayout(new GridLayout(2, 0));
-	    String[] type = {"Choisissez le type de la ressource", Ressource.PERSONNE, Ressource.SALLE, Ressource.CALCULATEUR};
-	    comboBoxType = new JComboBox<String>(type);
 		panelPrincipal.add(choixType());
 		comboBoxType.addItemListener(new ItemListener() {
 			@Override
@@ -82,6 +80,8 @@ public class FenetreAjouterRessource extends JDialog{
 	}
 		
 	private JPanel choixType() {
+	    String[] type = {"Choisissez le type de la ressource", Ressource.PERSONNE, Ressource.SALLE, Ressource.CALCULATEUR};
+	    comboBoxType = new JComboBox<String>(type);
 	    JPanel panel = new JPanel();
 	    panel.setBackground(Color.white);
 	    panel.setBorder(BorderFactory.createTitledBorder("Type de la ressource a ajouter"));
