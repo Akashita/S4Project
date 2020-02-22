@@ -1,5 +1,5 @@
 package Model;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 import Fenetre.FenetrePrincipale;
 import Ressource.Plage;
@@ -45,40 +45,20 @@ public class Main {
 			 System.out.println(test.toString());
 			*/
 
-			
-			/*
-			 *Utilisation de la classe Date()
-			Date date1 = new Date("2020", "02", "15", "12", "30"); 
-			Date date2 = new Date("2020", "12", "15", "12", "29"); 
-			
-			System.out.println(date1.equals(date2));
-			System.out.println(date1.superieur(date2));
-			System.out.println(date1.inferieur(date2));
-			System.out.println(date1.toLong());
-			System.out.println(date1.toString());
-			*/
-			
-			
-			/*
-			 * TEST ET DEMO DE LA CLASSE PLAGE ET DU TYPE CALENDAR
-			 * 
-			Calendar cal1 = Calendar.getInstance();
-			Calendar cal2 = Calendar.getInstance();
-			cal1.set(2020, 02, 22, 22, 52);
-			cal2.set(2020, 02, 22, 23, 52);
-			
-			Calendar cal3 = Calendar.getInstance();
-			Calendar cal4 = Calendar.getInstance();
-			cal3.set(2020, 02, 22, 23, 52);
-			cal4.set(2020, 02, 22, 23, 55);
-			// set(annee, mois, jour, heure, minute)
 
-			Plage p1 = new Plage("Projet 1", cal1, cal2);
-			Plage p2 = new Plage("Projet 1", cal3, cal4);
+			//TEST ET DEMO DE LA CLASSE PLAGE ET DU TYPE CALENDAR
+
+			LocalDateTime b = LocalDateTime.of(2012, 7, 25, 12, 30);
+			LocalDateTime c = LocalDateTime.of(2012, 7, 25, 13, 30);
+			
+			LocalDateTime d = LocalDateTime.of(2012, 7, 25, 13, 00);
+			LocalDateTime e = LocalDateTime.of(2012, 7, 25, 14, 30);
+
+			Plage p1 = new Plage("Projet 1", b, c);
+			Plage p2 = new Plage("Projet 1", d, e);
 			
 			System.out.println(p1.estAvant(p2)+ " " + p1.estSuperpose(p2));
-			*/
-			
+
 			}
 
 		

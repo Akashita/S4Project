@@ -1,24 +1,23 @@
 package Ressource;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 public class Plage {
 	private String nomProjet;
-	private Calendar debut;
-	private Calendar fin;
-	//Salut
+	private LocalDateTime debut;
+	private LocalDateTime fin;
 	
-	public Plage(String nomProjet, Calendar debut, Calendar fin) {
+	public Plage(String nomProjet, LocalDateTime debut, LocalDateTime fin) {
 		this.nomProjet = nomProjet;
 		this.debut = debut;
 		this.fin = fin;
 	}
 	
-	public Calendar getDebut(){
+	public LocalDateTime getDebut(){
 		return debut;
 	}
 	
-	public Calendar getFin() {
+	public LocalDateTime getFin() {
 		return fin;
 	}
 	
@@ -26,7 +25,7 @@ public class Plage {
 		return nomProjet;
 	}
 	
-	public void resetDate(Calendar debut, Calendar fin) {
+	public void resetDate(LocalDateTime debut, LocalDateTime fin) {
 		this.debut = debut;
 		this.fin= fin;
 	}
@@ -36,7 +35,7 @@ public class Plage {
 	}
 	
 	public boolean estAvant(Plage pl) {
-		return fin.before(pl.debut) || fin.equals(pl.debut);
+		return fin.isBefore(pl.debut) || fin.equals(pl.debut);
 	}
 	
 	
@@ -44,8 +43,21 @@ public class Plage {
 		return (this.contient(pl.debut) || this.contient(pl.fin));
 	}
 	
-	public boolean contient(Calendar date) {
-		return date.after(debut) && date.before(fin);
+	public boolean contient(LocalDateTime date) {
+		return date.isAfter(debut) && date.isBefore(fin);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Plage && obj != null) {
+			Plage res = (Plage)obj;
+			return nomProjet == res.nomProjet
+					&& debut == res.debut
+					&& fin == res.fin;
+		} else {
+			return false;
+		}
+		
 	}
 	
 }
