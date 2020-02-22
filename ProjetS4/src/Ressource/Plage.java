@@ -52,8 +52,8 @@ public class Plage {
 		if(obj instanceof Plage && obj != null) {
 			Plage res = (Plage)obj;
 			return nomProjet == res.nomProjet
-					&& debut == res.debut
-					&& fin == res.fin;
+					&& debut.equals(res.debut)
+					&& fin.equals(res.fin);
 		} else {
 			return false;
 		}

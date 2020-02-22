@@ -19,6 +19,7 @@ public class Ressource {
 		this.id = id;
 		this.nom = nom;
 		this.type = type;
+		this.edt = new ArrayList<Plage>();
 	}
 
 	
@@ -61,13 +62,13 @@ public class Ressource {
 	//Gestion du calendrier
 	// --------------------
 	
-	public boolean setPlage(Plage pl) {
+	public boolean addPlage(Plage pl) {
 		boolean place = false;
 		boolean conflit = false;
 		int taille = edt.size();
 		int i = 0;
 		
-		while(!place && !conflit && i<taille ) {
+		while(!place && !conflit && i<taille) {
 			if(pl.estSuperpose(edt.get(i))) {
 				conflit = true;
 			} else if(pl.estAvant(edt.get(i))) {
@@ -77,9 +78,26 @@ public class Ressource {
 				edt.set(i+1, pl);
 				place = true;
 			}
+			
+			i++;
 		}
 		
 		return place;
+	}
+	
+	
+	public void removePlage(Plage pl) {
+		boolean supprime = false;
+		int taille = edt.size();
+		int i = 0;
+
+		while(!supprime && i<taille) {
+			if(edt.get(i).equals(pl)) {
+				edt.remove(i);
+				supprime = true;
+			}
+			i++;
+		}
 	}
 	
 	public ArrayList<Plage> getPlages() {
