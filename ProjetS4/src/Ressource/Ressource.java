@@ -61,6 +61,22 @@ public class Ressource {
 	// --------------------
 	//Gestion du calendrier
 	// --------------------
+	public boolean estDispo(Plage pl) { //Indique si une plage horaire est disponible
+		int taille = edt.size();
+		boolean depace = false;
+		int i = 0;
+		boolean res = true;
+		
+		while(i<taille && !depace) {
+			if(edt.get(i).estSuperpose(pl)) {
+				res = false;
+				depace = true;
+			}
+			i++;
+		}
+		return res;
+	}
+	
 	
 	public boolean addPlage(Plage pl) {
 		boolean place = false;
@@ -86,7 +102,7 @@ public class Ressource {
 	}
 	
 	
-	public void removePlage(Plage pl) {
+	public boolean removePlage(Plage pl) {
 		boolean supprime = false;
 		int taille = edt.size();
 		int i = 0;
@@ -98,6 +114,7 @@ public class Ressource {
 			}
 			i++;
 		}
+		return supprime;
 	}
 	
 	public ArrayList<Plage> getPlages() {

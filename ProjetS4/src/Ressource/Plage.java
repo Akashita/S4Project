@@ -38,6 +38,9 @@ public class Plage {
 		return fin.isBefore(pl.debut) || fin.equals(pl.debut);
 	}
 	
+	public boolean finiApres(LocalDateTime date) {
+		return (fin.isAfter(date));
+	}
 	
 	public boolean estSuperpose(Plage pl) {
 		return (this.contient(pl.debut) || this.contient(pl.fin));
