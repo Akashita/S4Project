@@ -81,18 +81,6 @@ public class FenetreNouvelleRessource extends JDialog{
 	    panel.add(comboBoxType);
 	    return panel;
 	}
-
-	/*private String choixType() {
-	    String[] toutLesTypes = {Ressource.PERSONNE, Ressource.SALLE, Ressource.CALCULATEUR};
-	    String typeChoisi = (String) JOptionPane.showInputDialog(null, 
-	      "Veuillez indiquer le type de la ressource!",
-	      "Creer une ressource",
-	      JOptionPane.QUESTION_MESSAGE,
-	      null,
-	      toutLesTypes,
-	      toutLesTypes[0]);
-	    return typeChoisi;
-	}*/
 	
 	private JPanel creationRessource(String type) {
 	    JPanel panelPrincipal= new JPanel();
@@ -138,7 +126,6 @@ public class FenetreNouvelleRessource extends JDialog{
 	    panel.setBackground(Color.WHITE);
 	    panel.add(creerJTextField(this.NOM));
 	    panel.add(creerJTextField(this.CAPACITE));
-	    //panel.add(choixCapacite());
 	    return panel;
 	}
 
@@ -169,24 +156,6 @@ public class FenetreNouvelleRessource extends JDialog{
 		return panel;
 	}
 
-	private JPanel choixCapacite() {
-	    JPanel panel = new JPanel();
-	    panel.setBackground(Color.white);
-	    panel.setBorder(BorderFactory.createTitledBorder("Capacité de la salle"));
-	    tranche1 = new JRadioButton("-10 Personnes");
-	    tranche1.setSelected(true);
-	    tranche2 = new JRadioButton("10 - 20 Personnes");
-	    tranche3 = new JRadioButton("+20 Personnes");
-	    ButtonGroup bg = new ButtonGroup();
-	    bg.add(tranche1);
-	    bg.add(tranche2);
-	    bg.add(tranche3);
-	    panel.add(tranche1);
-	    panel.add(tranche2);
-	    panel.add(tranche3);
-		return panel;
-	}
-	
 	private JButton creerBouttonNouv(String type) {
 		JButton bouton = new JButton("Creer");
 	    bouton.addActionListener(new ActionListener() {  

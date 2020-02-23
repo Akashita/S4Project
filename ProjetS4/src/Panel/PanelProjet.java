@@ -20,23 +20,24 @@ public class PanelProjet extends JPanel{
 	public PanelProjet(Entreprise entreprise) {
 		this.entreprise = entreprise;
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		this.setBackground(Color.white);
-		this.setBorder(BorderFactory.createTitledBorder("liste des projets"));
-
 	}
 	
 	public void afficherProjet() {
 		ArrayList<Projet> listeProjet = entreprise.getListeProjet();
-		String nomProjetSelectionner = entreprise.getProjetSelectionner().getNom();
-		this.removeAll();
-		for (int i=0; i<listeProjet.size(); i++) {
-			Projet projet = listeProjet.get(i);
-			boolean selectionner = false;
-			if(projet.getNom() == nomProjetSelectionner) {
-				selectionner = true;
-			}
-			this.add(creerLabel(projet.getNom(), selectionner));
-			this.add(Box.createRigidArea(new Dimension(10,0)));
+		if (listeProjet.size()>0) {
+			this.setBackground(Color.white);
+			this.setBorder(BorderFactory.createTitledBorder("liste des projets"));
+			String nomProjetSelectionner = entreprise.getProjetSelectionner().getNom();
+			this.removeAll();
+			for (int i=0; i<listeProjet.size(); i++) {
+				Projet projet = listeProjet.get(i);
+				boolean selectionner = false;
+				if(projet.getNom() == nomProjetSelectionner) {
+					selectionner = true;
+				}
+				this.add(creerLabel(projet.getNom(), selectionner));
+				this.add(Box.createRigidArea(new Dimension(10,0)));
+			}			
 		}
 	}
 	

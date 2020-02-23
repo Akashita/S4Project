@@ -249,6 +249,8 @@ public class Entreprise extends Observable{
 			Personne nouvPersonne = new Personne(nom,prenom, this.idCour);
 			this.incrementId();
 			this.ajouterRessource(nouvPersonne);
+			update();
+
 		}
 		
 		public void nouvSalle (String nomProjet, String nom, int capacite) {
@@ -267,6 +269,8 @@ public class Entreprise extends Observable{
 			Salle nouvSalle = new Salle(this.idCour,nom, capacite);
 			this.incrementId();
 			this.ajouterRessource(nouvSalle);
+			update();
+
 		}
 		
 		//m�thode de cr�ation des RessourceAutre personnalisable et qui permettent de cr�er des types diff�rents
@@ -289,6 +293,7 @@ public class Entreprise extends Observable{
 			this.ajouterRessource(nouvRessourceAutre);
 			this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
 
+			update();
 
 		}
 		
@@ -309,6 +314,7 @@ public class Entreprise extends Observable{
 			Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
 			this.incrementId();
 			this.ajouterRessource(nouvCalculateur);
+			update();
 		}
 		
 		//M�thodes pour changer une ressource de projet en rajouter ou en enlever 

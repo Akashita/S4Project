@@ -82,9 +82,8 @@ public class PanelPrincipal extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		this.removeAll();
-		this.afficheRessourceProjet();
-		panelRessource.afficherRessource();
 		panelProjet.afficherProjet();
+		panelRessource.afficherRessource();
 		this.repaint();	
 	}
 
