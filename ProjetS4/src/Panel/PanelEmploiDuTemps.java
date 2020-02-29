@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 import EcouteurEvenement.SourisEmploieDuTempsListener;
 import EcouteurEvenement.SourisProjetListener;
 import Model.Entreprise;
+import Model.Plage;
 import Model.Projet;
-import Ressource.Plage;
 import Ressource.Ressource;
 
 public class PanelEmploiDuTemps extends JFrame{
