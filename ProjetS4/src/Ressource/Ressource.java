@@ -1,6 +1,8 @@
 package Ressource;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Model.CreneauHoraire;
 import Model.Plage;
 import Model.Projet;
 
@@ -13,14 +15,14 @@ public class Ressource {
 	protected Projet Projet;
 	protected int id;
 		
-	ArrayList<Plage> edt;
+	ArrayList<Package> edt;
 
 	
 	public Ressource(int id, String nom, String type) {
 		this.id = id;
 		this.nom = nom;
 		this.type = type;
-		this.edt = new ArrayList<Plage>();
+		this.edt = new ArrayList<Package>();
 	}
 
 	
@@ -63,46 +65,14 @@ public class Ressource {
 	//Gestion du calendrier
 	// --------------------
 	
-	private boolean ajouterDansEDT(Plage pl) {
-		boolean place = false;
-		int taille = edt.size();
-		int i = 0;
-		
-		while(!place && i<taille) {
-			if(pl.estAvant(edt.get(i))) {
-				edt.set(i, pl);
-				place = true;
-			} else if(i == taille-1) {
-				edt.set(i+1, pl);
-				place = true;
-			}
-			
-			i++;
+	private ArrayList<CreneauHoraire> getTousCreneauxLibres(LocalDate jour) {
+		ArrayList<CreneauHoraire> creneauxLibres = new ArrayList<CreneauHoraire>();
+		for (int i = 0; i < edt.size(); i++) {
+			edt.get(i)
 		}
 		
-		return place;
+		return;
 	}
 	
-	private boolean ajusterEDT() {
-
-		return true;
-	}
-
-	
-	public boolean ajouterPlage(Plage pl) {
-		ajouterDansEDT(pl);
-		ajusterEDT();
-	}
-	
-	public ArrayList<String> getEdtJour(LocalDate jour){
-		ArrayList res = new ArrayList<String>();
-		
-		
-	}
-	
-	
-	public ArrayList<Plage> getPlages() {
-		return edt;
-	}
 
 }
