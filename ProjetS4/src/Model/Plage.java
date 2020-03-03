@@ -1,17 +1,37 @@
 package Model;
 
-import java.time.LocalDateTime;
+import java.time.Duration;
+import java.time.LocalDate;
 
 public class Plage {
 	private String nomProjet;
-	private LocalDateTime debut;
-	private LocalDateTime fin;
+	private LocalDate debut;
+	private Duration nbHeure;
+	private int pourcentage;
+	private LocalDate fin;
 	
-	public Plage(String nomProjet, LocalDateTime debut, LocalDateTime fin) {
+	public Plage(String nomProjet, LocalDate debut, int nbHeure, int pourcentage) {
 		this.nomProjet = nomProjet;
 		this.debut = debut;
-		this.fin = fin;
+		this.nbHeure = Duration.ofHours(nbHeure);
+		this.pourcentage = pourcentage;
+		
+		fin = debut.plus(Duration.ofDays((nbHeure*100)/(pourcentage*8)));
+		
 	}
+	
+	public boolean estAvant(Plage pl) {
+		return debut.isBefore(pl.debut);
+	}
+	
+	public boolean contientJour(LocalDate jour) {
+		return jour.isAfter(debut) && jour.isBefore(fin) || jour.isEqual(debut) || jour.isEqual(fin);
+	}
+	
+	
+	
+	
+	/*
 	
 	public LocalDateTime getDebut(){
 		return debut;
@@ -61,6 +81,6 @@ public class Plage {
 			return false;
 		}
 		
-	}
+	}*/
 	
 }

@@ -62,36 +62,17 @@ public class Ressource {
 	// --------------------
 	//Gestion du calendrier
 	// --------------------
-	public boolean estDispo(Plage pl) { //Indique si une plage horaire est disponible
-		int taille = edt.size();
-		boolean depace = false;
-		int i = 0;
-		boolean res = true;
-		
-		while(i<taille && !depace) {
-			if(edt.get(i).estSuperpose(pl)) {
-				res = false;
-				depace = true;
-			}
-			i++;
-		}
-		return res;
-	}
 	
-	
-	public boolean addPlage(Plage pl) {
+	private boolean ajouterDansEDT(Plage pl) {
 		boolean place = false;
-		boolean conflit = false;
 		int taille = edt.size();
 		int i = 0;
 		
-		while(!place && !conflit && i<taille) {
-			if(pl.estSuperpose(edt.get(i))) {
-				conflit = true;
-			} else if(pl.estAvant(edt.get(i))) {
+		while(!place && i<taille) {
+			if(pl.estAvant(edt.get(i))) {
 				edt.set(i, pl);
 				place = true;
-			} else if(i == taille -1) {
+			} else if(i == taille-1) {
 				edt.set(i+1, pl);
 				place = true;
 			}
@@ -102,23 +83,26 @@ public class Ressource {
 		return place;
 	}
 	
-	
-	public boolean removePlage(Plage pl) {
-		boolean supprime = false;
-		int taille = edt.size();
-		int i = 0;
+	private boolean ajusterEDT() {
 
-		while(!supprime && i<taille) {
-			if(edt.get(i).equals(pl)) {
-				edt.remove(i);
-				supprime = true;
-			}
-			i++;
-		}
-		return supprime;
+		return true;
 	}
+
+	
+	public boolean ajouterPlage(Plage pl) {
+		ajouterDansEDT(pl);
+		ajusterEDT();
+	}
+	
+	public ArrayList<String> getEdtJour(LocalDate jour){
+		ArrayList res = new ArrayList<String>();
+		
+		
+	}
+	
 	
 	public ArrayList<Plage> getPlages() {
 		return edt;
 	}
+
 }
