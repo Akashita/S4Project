@@ -16,8 +16,13 @@ public class CreneauHoraire {
 		fin.plus(duree.toMinutes(), ChronoUnit.MINUTES);
 	}
 	
-	public boolean estAvant(CreneauHoraire horaire) {
-		return debut.isBefore(horaire.debut);
+	public boolean estAvant(CreneauHoraire horaire) { //On considère que les créneaux ne se superposent pas 
+		System.out.println(debut.compareTo(horaire.fin));
+		return fin.isBefore(horaire.debut);
+	}
+	
+	public boolean estApres(CreneauHoraire horaire) {;
+		return debut.isAfter(horaire.fin);
 	}
 	
 	public Duration getDuree() {
@@ -31,14 +36,7 @@ public class CreneauHoraire {
 	public LocalTime getFin() {
 		return fin;
 	}
-	
-	public boolean estEspaceDe(CreneauHoraire cr) {
-		return !fin.equals(cr.debut); //TODO ATTENTION EQUALS
-	}
-	
-	public Duration dureeJusque(CreneauHoraire cr) {
-		return cr.debut.minus(fin);
-	}
+
 	
 	
 }
