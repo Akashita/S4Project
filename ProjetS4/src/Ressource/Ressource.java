@@ -1,6 +1,7 @@
 package Ressource;
 import java.util.ArrayList;
 
+import Model.Plage;
 import Model.Projet;
 
 public class Ressource {
