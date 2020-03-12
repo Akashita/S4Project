@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
-import java.time.Duration;
-
-import Model.Activite;
 import Model.CreneauHoraire;
-import Model.Projet;
 
 public class Ressource {
 	protected String nom;
@@ -17,14 +13,13 @@ public class Ressource {
 	public static final String SALLE = "Salle";
 	public static final String CALCULATEUR = "Calculateur";
 	protected String type;
-	protected Projet Projet;
 	protected int id;
 	
 	public final static LocalTime DEBUT_JOURNEE = LocalTime.of(8,0);
 	public final static LocalTime FIN_JOURNEE = LocalTime.of(16,0);
 	//Ajouter la pause du midi ?
 	
-	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> jours; //Contient l'ensemble des jours qui possèdent un créneau horaire, la clé est une LocalDate du jour choisi
+	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> jours; //Contient l'ensemble des jours qui possï¿½dent un crï¿½neau horaire, la clï¿½ est une LocalDate du jour choisi
 
 	
 	public Ressource(int id, String nom, String type) {
@@ -38,7 +33,7 @@ public class Ressource {
 		
 		boolean place = false;
 		
-		if(jours.containsKey(jour)) { //Si le jour existe (il y a déja un créneau dedans)
+		if(jours.containsKey(jour)) { //Si le jour existe (il y a dï¿½ja un crï¿½neau dedans)
 			ArrayList<CreneauHoraire> creneauxExistant = jours.get(jour);
 			int taille = creneauxExistant.size();
 			int i = 0;
@@ -60,17 +55,17 @@ public class Ressource {
 		} else {
 			ArrayList<CreneauHoraire> listTMP = new ArrayList<CreneauHoraire>();
 			listTMP.add(creneau);
-			jours.put(jour, listTMP); //On crée un nouveau jour avec une arraylist de créneaux (qui n'en contient que un seul pour le moment)
+			jours.put(jour, listTMP); //On crï¿½e un nouveau jour avec une arraylist de crï¿½neaux (qui n'en contient que un seul pour le moment)
 			place = true;
 		}
 		
 		return place;
 	}
 	
-	public Hashtable<LocalDate, ArrayList<CreneauHoraire>> getCreneauxLibres(){ //Retourne une hashtable de jour avec tous les créneaux libres
+	public Hashtable<LocalDate, ArrayList<CreneauHoraire>> getCreneauxLibres(){ //Retourne une hashtable de jour avec tous les crï¿½neaux libres
 		Hashtable<LocalDate, ArrayList<CreneauHoraire>> creneauxLibres = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
 		
-		Set<LocalDate> keys = jours.keySet(); //On récupère les clés de la hashtable jours
+		Set<LocalDate> keys = jours.keySet(); //On rï¿½cupï¿½re les clï¿½s de la hashtable jours
 		Iterator<LocalDate> itt = keys.iterator();
 		
 		LocalDate key;
@@ -87,7 +82,7 @@ public class Ressource {
 		return creneauxLibres;
 	}
 	
-	private ArrayList<CreneauHoraire> getCreneauxLibresJour(ArrayList<CreneauHoraire> jourCourant) { //Retourne les créneaux libres d'une journée
+	private ArrayList<CreneauHoraire> getCreneauxLibresJour(ArrayList<CreneauHoraire> jourCourant) { //Retourne les crï¿½neaux libres d'une journï¿½e
 		ArrayList<CreneauHoraire> creneauxLibres = new ArrayList<CreneauHoraire>();
 		//TODO A COMPLETER
 		return creneauxLibres;
@@ -106,17 +101,7 @@ public class Ressource {
 	public int getId() {//rï¿½cupï¿½ration de l'Id de chaque ressource pour les diffï¿½rencier
 		return this.id;
 	}
-	public Projet getProjet() {
-		return this.Projet;
-	}
-	
-	public void setProjet(Projet projetCour) {
-		this.Projet = projetCour;
-	}
-	
-	public void unsetProjet() {
-		this.Projet = null;
-	}
+
 	
 	@Override
 	public boolean equals(Object obj) { //test si deux ressources sont ï¿½gales

@@ -1,36 +1,78 @@
 package Model;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 import Ressource.Ressource;
 
 public class Activite {
-	private String nomProjet;
+	private int id;
 	private LocalDate jourDebut;
-	private int nbJour;
-	private int pourcentage;
+	private LocalDate jourFin;
 	
-	private Ressource ressource;
+	private String nomProjet;
+		
+	private ArrayList<Ressource> ressources; //Contient les crï¿½neaux horaires d'une journï¿½e
 	
-	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> jours; //Contient l'ensemble des jours qui possèdent un créneau horaire, la clé est une LocalDate du jour choisi
-	private ArrayList<CreneauHoraire> creneaux; //Contient les créneaux horaires d'une journée
-	
-	public Activite(LocalDate Jourdebut, LocalDate Jourfin) {
+	public Activite(int id, String nomProjet,LocalDate jourDebut, LocalDate jourFin) {
+		this.id = id;
+		this.jourDebut = jourDebut;
+		this.jourFin = jourFin;
 		this.nomProjet = nomProjet;
-		this.jourDebut = Jourdebut;
-		this.nbJour = nbJour;
-		this.pourcentage = pourcentage;
-		
-		this.creneaux = new ArrayList<CreneauHoraire>(); 
-
-	    jours = new Hashtable(); 
-		
-
+		ressources = new ArrayList<Ressource>();
+	}
+	
+	public void ajouterRessource(Ressource res) {
+		ressources.add(res);
+	}
+	
+	public String getNomProjet() {
+		return nomProjet;
+	}
+	
+	public void setNomProjet(String nomProjet) {
+		this.nomProjet = nomProjet;
+	}
+	
+	public boolean supprimerRessource(int id) {
+		boolean suppr = false;
+		int i = 0;
+		Ressource ressourceCourrante;
+		while(i < ressources.size() && !suppr) {
+			ressourceCourrante = ressources.get(i);
+			if (ressourceCourrante.getId() == id) {
+				ressources.remove(i);
+				suppr = true;
+			}	
+			i++;
+		}
+		return suppr;
+	}
+	
+	public ArrayList<Ressource> getListeRessourceType(String type){
+		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
+		for (int i=0; i<ressources.size(); i++) {
+			Ressource ressource = ressources.get(i);
+			if(ressource.getType() == type) {
+				nouvelleListe.add(ressource);
+			}
+		}
+		return nouvelleListe;
+	}
+	
+	@Override
+	public String toString() {
+		return "Activite numero "+id+" allant de "+jourDebut+" a "+ jourFin;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Activite && obj != null) {
+			Activite res = (Activite)obj;
+			return id == res.id;
+		} else {
+			return false;
+		}
 	}
 	
 
