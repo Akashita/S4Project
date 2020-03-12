@@ -1,21 +1,38 @@
 package Fenetre;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 import EcouteurEvenement.AjouterRessourceListener;
 import EcouteurEvenement.EnleverRessourceListener;
 import EcouteurEvenement.NouveauListener;
-import EcouteurEvenement.NouveauProjetListener;
-import EcouteurEvenement.NouvelleRessourceListener;
 import Model.Entreprise;
 import Panel.*;
-import Ressource.Ressource;
 
+
+/**
+ * Fenetre principal qui contient les trois panels principaux:
+ * - le panel principal
+ * - le panel ressource 
+ * - le panel projet
+ * 
+ * il contient egalement la barre du menu
+ * 
+ * @author damien planchamp
+ *
+ */
 public class FenetrePrincipale extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
@@ -110,7 +127,7 @@ public class FenetrePrincipale extends JFrame{
 		menuBar.add(menuFichier);
 		menuBar.add(menuEditer);
 		menuBar.add(menuPropos);
-		setJMenuBar(menuBar);	
+		this.setJMenuBar(menuBar);	
 	}
 	
 }

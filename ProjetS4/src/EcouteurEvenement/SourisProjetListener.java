@@ -6,6 +6,13 @@ import javax.swing.JLabel;
 
 import Panel.PanelProjet;
 
+/**
+ * Cette classe permet l'interaction utilisateur machine avec la souris
+ * pour pouvoir changer de projet
+ * 
+ * @author damien planchamp
+ *
+ */
 public class SourisProjetListener implements MouseListener {
 	PanelProjet pp;
 	JLabel label;
@@ -16,8 +23,12 @@ public class SourisProjetListener implements MouseListener {
 	}
 	
 
+	/**
+	 * lorsqu'on clique sur un label de projet (barre du bas), 
+	 * on informe au panel qui gere les projets qu'un autre projet à été selectionné
+	 */
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void mouseClicked(MouseEvent arg0) { 
 		pp.selectionnerProjet(label);
 	}
 

@@ -68,6 +68,20 @@ public class Entreprise extends Observable{
 			return this.idCour;
 		}
 		
+		public Ressource getRessource(int id) {
+			return this.chercherRessourceParId(id);
+		}
+		
+		private Ressource chercherRessourceParId(int id) {
+			Ressource ressource = null;
+			for (int i=0; i<listeRessource.size(); i++) {
+				if (listeRessource.get(i).getId() == id) {
+					ressource = listeRessource.get(i);
+				}
+			}
+			return ressource;
+		}
+		
 		public Projet getDernierProjet() { //retourne le dernier projet creer, pour PanelProjet
 			return listeProjet.get(listeProjet.size()-1);
 		}
@@ -123,6 +137,7 @@ public class Entreprise extends Observable{
 			return nouvelleListe;
 		}
 				
+
 		public void ajouterRessource(Ressource resCour) {
 			this.listeRessource.add(resCour);
 		}

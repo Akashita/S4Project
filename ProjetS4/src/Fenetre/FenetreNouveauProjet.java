@@ -5,7 +5,17 @@ import javax.swing.JOptionPane;
 import Model.Entreprise;
 import Panel.PanelProjet;
 
+/**
+ * Cette fenetre permet la creation d'un projet
+ * 
+ * @author damien planchamp
+ *
+ */
 public class FenetreNouveauProjet extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Entreprise entreprise;
 	
 	public FenetreNouveauProjet(Entreprise entreprise, PanelProjet pp) {		
