@@ -34,27 +34,7 @@ public class Salle extends Ressource{
 	
 	
 	public String toString() {
-		String liste = "";
-		if (this.getProjet() != null) {
-			liste = "Cette salle s'appelle : " + this.nom + ", elle porte le num�ro : " + this.id  
-					+  " elle a une capacit�e de :  " + this.capacite +  " elle est utilis� dans " + this.getProjet().getNom() + "elle contient le mat�riel suivant : " ;
-		
-		}
-		else {
-			liste = "Cette salle s'appelle : " + this.nom + ", elle porte le num�ro : " + this.id  
-				+  " elle a une capacit�e de :  " + this.capacite +  " elle contient le mat�riel suivant : " ;
-		}
-		
-		if (this.lMatos.size() == 0) {
-			liste += "aucun";
-		}
-		else {
-		for(int i = 0; i < this.lMatos.size(); i++){
-			liste += this.lMatos.get(i).toString();
-		}
-		}
-		
-		return liste;
+		return "PAS FAIT";
 	}
 
 }

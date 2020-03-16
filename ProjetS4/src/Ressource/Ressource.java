@@ -1,8 +1,11 @@
 package Ressource;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-
-import Model.Plage;
-import Model.Projet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Set;
+import Model.CreneauHoraire;
 
 public class Ressource {
 	protected String nom;
@@ -10,20 +13,83 @@ public class Ressource {
 	public static final String SALLE = "Salle";
 	public static final String CALCULATEUR = "Calculateur";
 	protected String type;
-	protected Projet Projet;
 	protected int id;
-		
-	ArrayList<Plage> edt;
+	
+	public final static LocalTime DEBUT_JOURNEE = LocalTime.of(8,0);
+	public final static LocalTime FIN_JOURNEE = LocalTime.of(16,0);
+	//Ajouter la pause du midi ?
+	
+	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> jours; //Contient l'ensemble des jours qui poss�dent un cr�neau horaire, la cl� est une LocalDate du jour choisi
 
 	
 	public Ressource(int id, String nom, String type) {
 		this.id = id;
 		this.nom = nom;
 		this.type = type;
-		this.edt = new ArrayList<Plage>();
+		this.jours = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
 	}
-
 	
+	public boolean ajouterCreneau(CreneauHoraire creneau, LocalDate jour) {
+		
+		boolean place = false;
+		
+		if(jours.containsKey(jour)) { //Si le jour existe (il y a d�ja un cr�neau dedans)
+			ArrayList<CreneauHoraire> creneauxExistant = jours.get(jour);
+			int taille = creneauxExistant.size();
+			int i = 0;
+			place = false;
+			while(i < taille && !place) {
+				if(creneau.estApres(creneauxExistant.get(i))) {
+					if(i == taille - 1) {
+						jours.get(jour).add(i+1, creneau);
+						place = true;
+					}
+				} else {
+					jours.get(jour).add(i, creneau);
+					place = true;
+				}
+				i++;
+			}
+			
+		
+		} else {
+			ArrayList<CreneauHoraire> listTMP = new ArrayList<CreneauHoraire>();
+			listTMP.add(creneau);
+			jours.put(jour, listTMP); //On cr�e un nouveau jour avec une arraylist de cr�neaux (qui n'en contient que un seul pour le moment)
+			place = true;
+		}
+		
+		return place;
+	}
+	
+	public Hashtable<LocalDate, ArrayList<CreneauHoraire>> getCreneauxLibres(){ //Retourne une hashtable de jour avec tous les cr�neaux libres
+		Hashtable<LocalDate, ArrayList<CreneauHoraire>> creneauxLibres = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
+		
+		Set<LocalDate> keys = jours.keySet(); //On r�cup�re les cl�s de la hashtable jours
+		Iterator<LocalDate> itt = keys.iterator();
+		
+		LocalDate key;
+		ArrayList<CreneauHoraire> jourCourant;
+		while(itt.hasNext()) { // on parcours les jours
+			key = itt.next();
+			jourCourant = jours.get(key);
+			jourCourant = getCreneauxLibresJour(jourCourant);
+			if (jourCourant != null) {
+				creneauxLibres.put(key, jourCourant);
+			}
+		}
+		
+		return creneauxLibres;
+	}
+	
+	private ArrayList<CreneauHoraire> getCreneauxLibresJour(ArrayList<CreneauHoraire> jourCourant) { //Retourne les cr�neaux libres d'une journ�e
+		ArrayList<CreneauHoraire> creneauxLibres = new ArrayList<CreneauHoraire>();
+		//TODO A COMPLETER
+		return creneauxLibres;
+		
+	}
+	
+
 	public String getNom() {//r�cup�ration du nom
 		return this.nom;
 	}
@@ -35,17 +101,7 @@ public class Ressource {
 	public int getId() {//r�cup�ration de l'Id de chaque ressource pour les diff�rencier
 		return this.id;
 	}
-	public Projet getProjet() {
-		return this.Projet;
-	}
-	
-	public void setProjet(Projet projetCour) {
-		this.Projet = projetCour;
-	}
-	
-	public void unsetProjet() {
-		this.Projet = null;
-	}
+
 	
 	@Override
 	public boolean equals(Object obj) { //test si deux ressources sont �gales
@@ -57,68 +113,7 @@ public class Ressource {
 		}
 		
 	}
-	
-	
-	// --------------------
-	//Gestion du calendrier
-	// --------------------
-	public boolean estDispo(Plage pl) { //Indique si une plage horaire est disponible
-		int taille = edt.size();
-		boolean depace = false;
-		int i = 0;
-		boolean res = true;
-		
-		while(i<taille && !depace) {
-			if(edt.get(i).estSuperpose(pl)) {
-				res = false;
-				depace = true;
-			}
-			i++;
-		}
-		return res;
-	}
-	
-	
-	public boolean addPlage(Plage pl) {
-		boolean place = false;
-		boolean conflit = false;
-		int taille = edt.size();
-		int i = 0;
-		
-		while(!place && !conflit && i<taille) {
-			if(pl.estSuperpose(edt.get(i))) {
-				conflit = true;
-			} else if(pl.estAvant(edt.get(i))) {
-				edt.set(i, pl);
-				place = true;
-			} else if(i == taille -1) {
-				edt.set(i+1, pl);
-				place = true;
-			}
-			
-			i++;
-		}
-		
-		return place;
-	}
-	
-	
-	public boolean removePlage(Plage pl) {
-		boolean supprime = false;
-		int taille = edt.size();
-		int i = 0;
 
-		while(!supprime && i<taille) {
-			if(edt.get(i).equals(pl)) {
-				edt.remove(i);
-				supprime = true;
-			}
-			i++;
-		}
-		return supprime;
-	}
 	
-	public ArrayList<Plage> getPlages() {
-		return edt;
-	}
+
 }

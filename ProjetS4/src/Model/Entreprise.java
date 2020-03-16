@@ -1,5 +1,4 @@
 package Model;
-import  java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -17,7 +16,7 @@ import Ressource.Salle;
 public class Entreprise extends Observable{
 		private ArrayList<Projet> listeProjet;//liste qui contient tous les projets de l'entreprise
 		private ArrayList<String> listeType;//liste qui contient tous les types de ressourceAutre qui ont d�j� �t� cr�e pour les r�utiliser
-		private ArrayList<Ressource> listeRessource;//liste qui contient 
+		private ArrayList<Ressource> listeRessource;//liste de toutes les differentes ressources de l’entrepris
 		private int idCour;//id des ressources
 		private ArrayList<JPanel> listePanel = new ArrayList<JPanel>();
 
@@ -31,9 +30,10 @@ public class Entreprise extends Observable{
 		}
 		
 		//classe de base qui permettent de voir la cha�ne et r�cup�rer les infos de la classe
+		/*
 		@Override
 		public String toString() {
-			String chaineRessourceProjet = "voici la liste des projets ainsi que leurs ressources : ";
+			String chaineRessourceProjet = "Voici la liste des projets ainsi que leurs ressources : ";
 			for (int i = 0; i < this.listeProjet.size(); i++) {
 				chaineRessourceProjet += this.listeProjet.get(i).toString(); 
 				
@@ -59,6 +59,7 @@ public class Entreprise extends Observable{
 			
 			return chaineRessourceProjet;
 		}
+		*/
 		
 		public void incrementId (){ //fonction a utiliser sur chaque nouvelle ressource pour leur attribuer un iD
 			this.idCour = this.idCour +1 ;
@@ -66,20 +67,6 @@ public class Entreprise extends Observable{
 		
 		public int getId() {
 			return this.idCour;
-		}
-		
-		public Ressource getRessource(int id) {
-			return this.chercherRessourceParId(id);
-		}
-		
-		private Ressource chercherRessourceParId(int id) {
-			Ressource ressource = null;
-			for (int i=0; i<listeRessource.size(); i++) {
-				if (listeRessource.get(i).getId() == id) {
-					ressource = listeRessource.get(i);
-				}
-			}
-			return ressource;
 		}
 		
 		public Projet getDernierProjet() { //retourne le dernier projet creer, pour PanelProjet
@@ -137,7 +124,6 @@ public class Entreprise extends Observable{
 			return nouvelleListe;
 		}
 				
-
 		public void ajouterRessource(Ressource resCour) {
 			this.listeRessource.add(resCour);
 		}
@@ -238,26 +224,7 @@ public class Entreprise extends Observable{
 			}
 			update();
 		}
-		
-		//m�thode pour cr�er des ressources et les attribuer a des projets
-		public void nouvPersonne (String nomProjet, String nom, String prenom, String role) {
-			Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);
-			int [] place = 	this.chercheProjet(nomProjet);
-			this.incrementId();
-			this.ajouterRessource(nouvPersonne);
-			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.listeProjet.get(place[1]);
-				projetCour.ajouter(nouvPersonne);	
-				//nouvPersonne.rendIndisponible();
-				nouvPersonne.setProjet(projetCour);
 
-				
-			}
-			else {
-				//nouvPersonne.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
-
-			}
-		}
 		
 		public void nouvPersonne (String nom, String prenom/*, String role*/) {
 			//Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);
@@ -268,17 +235,6 @@ public class Entreprise extends Observable{
 
 		}
 		
-		public void nouvSalle (String nomProjet, String nom, int capacite) {
-			Salle nouvSalle = new Salle(this.idCour,nom, capacite);
-			int [] place = 	this.chercheProjet(nomProjet);
-			this.incrementId();
-			this.ajouterRessource(nouvSalle);
-			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.listeProjet.get(place[1]);
-				projetCour.ajouter(nouvSalle);	
-				nouvSalle.setProjet(projetCour);
-			}
-		}
 		
 		public void nouvSalle (String nom, int capacite) {
 			Salle nouvSalle = new Salle(this.idCour,nom, capacite);
@@ -288,19 +244,6 @@ public class Entreprise extends Observable{
 
 		}
 		
-		//m�thode de cr�ation des RessourceAutre personnalisable et qui permettent de cr�er des types diff�rents
-		public void nouvRessourceAutre (String nomProjet, String nom,String type) {
-			RessourceAutre nouvRessourceAutre = new RessourceAutre(nom, type, this.idCour);
-			int [] place = 	this.chercheProjet(nomProjet);
-			this.incrementId();
-			this.ajouterRessource(nouvRessourceAutre);
-			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.listeProjet.get(place[1]);
-				projetCour.ajouter(nouvRessourceAutre);	
-				nouvRessourceAutre.setProjet(projetCour);
-				this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
-			}
-		}
 		
 		public void nouvRessourceAutre (String nom,String type) {
 			RessourceAutre nouvRessourceAutre = new RessourceAutre(nom, type, this.idCour);
@@ -312,19 +255,6 @@ public class Entreprise extends Observable{
 
 		}
 		
-		public void nouvCalculateur(String nomProjet, String nom) {
-			Calculateur nouvCalculateur = new Calculateur(nom, idCour);
-			int [] place = 	this.chercheProjet(nomProjet);
-			this.incrementId();
-			this.ajouterRessource(nouvCalculateur);
-			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.listeProjet.get(place[1]);
-				projetCour.ajouter(nouvCalculateur);	
-				nouvCalculateur.setProjet(projetCour);
-			}
-			
-		}
-		
 		public void nouvCalculateur (String nom) {
 			Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
 			this.incrementId();
@@ -332,44 +262,6 @@ public class Entreprise extends Observable{
 			update();
 		}
 		
-		//M�thodes pour changer une ressource de projet en rajouter ou en enlever 
-		public void ajouterRessourceProjet(int idRessource,String nomProjet) {//ajouter une ressource a un projet � l'aide de son identifiant
-			int[] placeRessource = this.chercherRessource(idRessource);
-			if (placeRessource[0] == 1) {
-				int rangRessource = placeRessource[1];
-					Ressource resCour = this.listeRessource.get(rangRessource);
-					
-					/*
-					if (resCour.getDispo() == true) {//v�rifie la disponibilit� de la ressource
-						int[] placeProjet = this.chercheProjet(nomProjet);
-						if (placeProjet[0] == 1) {
-							Projet projetCour = this.listeProjet.get(placeProjet[1]);
-							projetCour.ajouter(resCour);	//on ajoute au projet la ressource
-							resCour.setProjet(projetCour);
-							resCour.rendIndisponible();
-							
-						}
-					*/
-			}
-			update();
-		}
-		
-		public void enleverRessourceProjet(int idRessource) {
-			int[] placeRessource = this.chercherRessource(idRessource);
-			if (placeRessource[0] == 1) {
-				int rangRessource = placeRessource[1];
-				Ressource resCour = this.listeRessource.get(rangRessource);
-				resCour.getProjet().enlever(resCour);
-				resCour.unsetProjet();
-			}
-			update();
-		}
-
-		public void deplacerRessourceProjet(int idRessource, String nomProjet) {
-			//d�place la ressource d'iD vers le projet entr� sauf si il est dans aucun projet il est mis dans le projet si le nom est faux il est juste retir�
-			this.enleverRessourceProjet(idRessource);
-			this.ajouterRessourceProjet(idRessource, nomProjet);
-		}
 			
 		public void update() {
 			this.setChanged();
