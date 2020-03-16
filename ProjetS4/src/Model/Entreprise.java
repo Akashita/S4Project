@@ -30,36 +30,15 @@ public class Entreprise extends Observable{
 		}
 		
 		//classe de base qui permettent de voir la cha�ne et r�cup�rer les infos de la classe
-		/*
 		@Override
 		public String toString() {
-			String chaineRessourceProjet = "Voici la liste des projets ainsi que leurs ressources : ";
+			String chaineActProjet = "Voici la liste des projets ainsi que leurs activites : ";
 			for (int i = 0; i < this.listeProjet.size(); i++) {
-				chaineRessourceProjet += this.listeProjet.get(i).toString(); 
+				chaineActProjet += this.listeProjet.get(i).toString(); 
 				
 			}
-			chaineRessourceProjet += ". \n Liste des Ressource de l'entreprise et leurs disponibilit�s : ";
-
-			for (int i = 0; i < this.listeRessource.size(); i++) {
-				Ressource resCour;
-				chaineRessourceProjet += " \n";
-				resCour =  this.listeRessource.get(i);
-				chaineRessourceProjet += resCour.getNom() + "    ---disponible : ";
-				//chaineRessourceProjet += resCour.getDispo() + "    ---matricule : ";
-				chaineRessourceProjet += resCour.getId() + ".";
-			}
-			
-			chaineRessourceProjet += ".  \nIl y a aussi ces types disponibles : ";
-			
-			for (int i = 0; i < this.listeType.size(); i++) {
-				chaineRessourceProjet += this.listeType.get(i).toString(); 
-				chaineRessourceProjet += ", ";
-			}
-			
-			
-			return chaineRessourceProjet;
+			return chaineActProjet;
 		}
-		*/
 		
 		public void incrementId (){ //fonction a utiliser sur chaque nouvelle ressource pour leur attribuer un iD
 			this.idCour = this.idCour +1 ;

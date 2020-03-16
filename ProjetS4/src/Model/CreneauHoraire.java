@@ -36,6 +36,11 @@ public class CreneauHoraire {
 	public LocalTime getFin() {
 		return fin;
 	}
+	
+	@Override 
+	public String toString() {
+		return "Creneau qui commence le " + debut.toString() + " et qui dure " + duree.toString();
+	}
 
 	
 	

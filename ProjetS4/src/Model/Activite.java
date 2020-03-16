@@ -62,7 +62,7 @@ public class Activite {
 	
 	@Override
 	public String toString() {
-		return "Activite numero "+id+" allant de "+jourDebut+" a "+ jourFin;
+		return "Activite numero "+ id +" allant de " + jourDebut + " a " + jourFin;
 	}
 	
 	@Override
