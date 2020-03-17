@@ -7,18 +7,20 @@ import Ressource.Ressource;
 
 public class Activite {
 	private int id;
+	private String titre;
+	private int charge;
+	private String ordre;
 	private LocalDate jourDebut;
-	private LocalDate jourFin;
 	
-	private String nomProjet;
 		
 	private ArrayList<Ressource> ressources; //Contient les cr�neaux horaires d'une journ�e
 	
-	public Activite(int String nomProjet,LocalDate jourDebut/*, LocalDate jourFin*/) {
+	public Activite(int id, String titre, int charge, String ordre, LocalDate jourDebut) {
 		this.id = id;
+		this.titre = titre;
+		this.charge = charge;
+		this.ordre = ordre;
 		this.jourDebut = jourDebut;
-		this.jourFin = jourFin;
-		this.nomProjet = nomProjet;
 		ressources = new ArrayList<Ressource>();
 	}
 	

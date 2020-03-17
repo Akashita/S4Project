@@ -19,6 +19,7 @@ public class Entreprise extends Observable{
 		private ArrayList<String> listeType;//liste qui contient tous les types de ressourceAutre qui ont d�j� �t� cr�e pour les r�utiliser
 		private ArrayList<Ressource> listeRessource;//liste de toutes les differentes ressources de l’entrepris
 		private int idCour;//id des ressources
+		private int idAct; //id des activités
 		private ArrayList<JPanel> listePanel = new ArrayList<JPanel>();
 
 		//cr�ation de l'entreprise unique il faudra lui ajouter un nom si on d�sire �tendre nos activit�s
@@ -208,8 +209,9 @@ public class Entreprise extends Observable{
 
 		
 		public void creerActivite(Projet projet, String titre, int charge, String ordre, LocalDate debut) {
-			
-			projet.ajouter(activite);
+			this.idAct++;
+			Activite act = new Activite(idAct, titre, charge, ordre, debut);
+			projet.ajouter(act);
 		}
 		
 		public void nouvPersonne (String nom, String prenom/*, String role*/) {
