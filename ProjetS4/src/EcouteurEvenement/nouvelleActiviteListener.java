@@ -1,21 +1,21 @@
 package EcouteurEvenement;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import Fenetre.FenetreAjouterRessource;
+import Fenetre.FenetreNouvelleActivite;
 import Model.Entreprise;
 
 /**
  * Cette classe permet l'interaction utilisateur machine avec la barre du menu
- * pour pouvoir ajouter une ressource à l'activité selectionner
+ * pour pouvoir creer une activité au projet selectionner
  * 
  * @author damien planchamp
  *
  */
-public class AjouterRessourceListener implements ActionListener {
+public class nouvelleActiviteListener implements ActionListener {
 	private Entreprise entreprise;
 	
-	public AjouterRessourceListener(Entreprise entreprise) {
+	public nouvelleActiviteListener(Entreprise entreprise) {
 		this.entreprise = entreprise;
 	}
 	
@@ -25,7 +25,7 @@ public class AjouterRessourceListener implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new FenetreAjouterRessource(entreprise);
+		new FenetreNouvelleActivite(entreprise);
 	}
 
 }
