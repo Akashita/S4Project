@@ -178,6 +178,7 @@ public class FenetreNouvelleActivite extends JDialog{
 						LocalDate debut = creerLaDate();
 						entreprise.creerActivite(projet, 
 								titre.getText(), Integer.parseInt(charge.getText()), ordre.getText(), debut);
+						dispose();
 					}
 					else {
 				    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			

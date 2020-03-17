@@ -95,6 +95,37 @@ public class Entreprise extends Observable{
 			return panel;
 		}
 		
+		public void selectionnerActivite(int id) {
+			Projet projet = getProjetSelectionner();
+			ArrayList<Activite> listeAct = projet.getListe();
+			for (int i=0; i<listeAct.size(); i++) {
+				Activite act = listeAct.get(i);
+				if (act.getId() == id) {
+					act.selectionner();
+				}
+			}
+			update();
+		}
+		
+		public void deselectionnerActivite() { //utile pour le graphique
+			ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
+			for (int i=0; i<listeAct.size(); i++) {
+				listeAct.get(i).deselectionner();
+			}
+		}
+
+		public Activite getActiviteSelectionner() {
+			//Projet projet = getProjetSelectionner();
+			ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
+			Activite act = null;
+			for (int i=0; i<listeAct.size();i++) {
+				if (listeAct.get(i).getSelectionner()) {
+					act = listeAct.get(i);
+				}
+			}
+			return act;
+		}
+
 		public ArrayList<Ressource> getListeRessourceType(String type){
 			ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
 			for (int i=0; i<listeRessource.size(); i++) {
@@ -211,7 +242,9 @@ public class Entreprise extends Observable{
 		public void creerActivite(Projet projet, String titre, int charge, String ordre, LocalDate debut) {
 			this.idAct++;
 			Activite act = new Activite(idAct, titre, charge, ordre, debut);
+			act.selectionner();
 			projet.ajouter(act);
+			update();
 		}
 		
 		public void nouvPersonne (String nom, String prenom/*, String role*/) {

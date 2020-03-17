@@ -11,7 +11,8 @@ public class Activite {
 	private int charge;
 	private String ordre;
 	private LocalDate jourDebut;
-	
+	private boolean selectionner = false;
+
 		
 	private ArrayList<Ressource> ressources; //Contient les cr�neaux horaires d'une journ�e
 	
@@ -27,14 +28,7 @@ public class Activite {
 	public void ajouterRessource(Ressource res) {
 		ressources.add(res);
 	}
-	
-	public String getNomProjet() {
-		return nomProjet;
-	}
-	
-	public void setNomProjet(String nomProjet) {
-		this.nomProjet = nomProjet;
-	}
+
 	
 	public boolean supprimerRessource(int id) {
 		boolean suppr = false;
@@ -62,9 +56,45 @@ public class Activite {
 		return nouvelleListe;
 	}
 	
-	@Override
+	/*@Override
 	public String toString() {
 		return "Activite numero "+ id +" allant de " + jourDebut + " a " + jourFin;
+	}*/
+	
+	public void selectionner() {
+		this.selectionner = true;
+	}
+	
+	public void deselectionner() {
+		this.selectionner = false;
+	}
+	
+	public boolean getSelectionner() {
+		return selectionner;
+	}
+
+	public String getTitre() {
+		return titre;
+	}
+	
+	public int getCharge() {
+		return charge;
+	}
+
+	public String getOrdre() {
+		return ordre;
+	}
+
+	public String getJourDebut() {
+		String jour = Integer.toString(jourDebut.getDayOfMonth());
+		String mois = Integer.toString(jourDebut.getMonthValue());
+		String annee = Integer.toString(jourDebut.getYear());
+		String date = jour + "/" + mois + "/" + annee;
+		return date;
+	}
+
+	public int getId() {
+		return id;
 	}
 	
 	@Override

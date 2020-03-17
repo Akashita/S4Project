@@ -52,9 +52,6 @@ public class PanelProjet extends JPanel{
 		return label;
 	}
 
-	public void nouveauProjet(String nom) {
-		entreprise.creerProjet(nom);
-	}
 	
 	public void selectionnerProjet(JLabel label) {
 		entreprise.deselectionnerProjet();
