@@ -1,5 +1,4 @@
 package Model;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -16,12 +15,9 @@ import Ressource.Salle;
 //model il sert a crï¿½er des projets puis leur donne des ressources.
 
 public class Entreprise extends Observable{
-		private ArrayList<Projet> lProjet;//liste qui contient tous les projets de l'entreprise 
-		//trié par ordre de priorité (du plus au moins important)
-		
+		private ArrayList<Projet> lProjet;//liste qui contient tous les projets de l'entreprise
 		private ArrayList<String> lType;//liste qui contient tous les types de ressourceAutre qui ont dï¿½jï¿½ ï¿½tï¿½ crï¿½e pour les rï¿½utiliser
-		
-		private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de lentreprise		
+		private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de lâ€™entrepris
 		private int idCour;//id des ressources
 		private int idAct; //id des activitÃ©s
 		private ArrayList<JPanel> lPanel = new ArrayList<JPanel>();
@@ -45,7 +41,7 @@ public class Entreprise extends Observable{
 			}
 			return chaineActProjet;
 		}
-		
+
 		public void majEDT() {
 			ArrayList<Activite> lActivite;
 			 for (int i = 0; i < lProjet.size(); i++) {
@@ -66,8 +62,9 @@ public class Entreprise extends Observable{
 			}
 		}
 		
+		
 		public void incrementId (){ //fonction a utiliser sur chaque nouvelle ressource pour leur attribuer un iD
-			this.idCour = this.idCour + 1;
+			this.idCour = this.idCour +1 ;
 		}
 		
 		public int getId() {
@@ -225,29 +222,29 @@ public class Entreprise extends Observable{
 		}
 		
 		//mï¿½thode pour rajouter un type de RessourceAutre
-				public void nouvTypeRessource(String nouvType) {
-					Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
-					int i = 0;
-					if (this.lType.size()== 0) {//si l'arrayList est vide il n'y a pas dï¿½jï¿½ ce projet.
-						this.lType.add(nouvType);
+		public void nouvTypeRessource(String nouvType) {
+			Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
+			int i = 0;
+			if (this.lType.size()== 0) {//si l'arrayList est vide il n'y a pas dï¿½jï¿½ ce projet.
+				this.lType.add(nouvType);
 
+			}
+			else {
+				
+				do{
+					if (this.lType.get(i) == nouvType) {//teste si le nom est dï¿½jï¿½ prï¿½sent dans les types de ressources
+						pasTrouve = false;//sort de la boucle sans rien faire
 					}
 					else {
-						
-						do{
-							if (this.lType.get(i) == nouvType) {//teste si le nom est dï¿½jï¿½ prï¿½sent dans les types de ressources
-								pasTrouve = false;//sort de la boucle sans rien faire
-							}
-							else {
-								i++; //on incrï¿½mente i pour accï¿½der ï¿½ chercher plus loin.
-							}
-							
-						}
-						while((pasTrouve) && (i < this.lType.size()));
-						this.lType.add(nouvType);
+						i++; //on incrï¿½mente i pour accï¿½der ï¿½ chercher plus loin.
 					}
-
+					
 				}
+				while((pasTrouve) && (i < this.lType.size()));
+				this.lType.add(nouvType);
+			}
+
+		}
 								
 		//fonctions de crï¿½ations d'ï¿½lï¿½ments de l'entreprise, les ressources ainsi que les projets
 		//les mï¿½thodes sont doublï¿½s -> direct dans un projet ou dans l'entreprise
@@ -255,7 +252,7 @@ public class Entreprise extends Observable{
 		public void creerProjet(String nom, float priorite) {//crï¿½e un projet si son nom n'est pas dï¿½jï¿½ utilisï¿½
 			Projet newProjet = new Projet(nom, priorite);
 			if (this.chercheProjet(newProjet.getNom())[0] == 0) {
-				ajouterProjet(newProjet);
+				this.lProjet.add(newProjet);
 				newProjet.selectionner();
 				this.lPanel.add(new JPanel());
 			}
@@ -285,8 +282,6 @@ public class Entreprise extends Observable{
 			projet.ajouter(act);
 			update();
 		}
-		
-		
 		
 		public void nouvPersonne (String nom, String prenom/*, String role*/) {
 			//Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);
@@ -324,9 +319,15 @@ public class Entreprise extends Observable{
 			update();
 		}
 		
+		public void ajouterRessourceActivite(Ressource res) {
+			Activite act = getActiviteSelectionner();
+			act.ajouterRessource(res);
+			update();
+		}
 			
 		public void update() {
 			this.setChanged();
 			this.notifyObservers();	
 		}
 }
+

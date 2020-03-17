@@ -1,5 +1,6 @@
 package Fenetre;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.*;
@@ -130,8 +131,6 @@ public class FenetreAjouterRessource extends JDialog{
 	    panel.setBackground(Color.white);
 	    panel.setBorder(BorderFactory.createTitledBorder(type + " a ajouter"));
 	    panel.add(creerComboBox(type));
-	    panel.add(creerJTextField(this.JOURHOMME));
-	    panel.add(creerComboBox(this.POURCENT));
 	    return panel;
 	}
 	
@@ -166,17 +165,6 @@ public class FenetreAjouterRessource extends JDialog{
 		return panel;
 	}
 	
-	//retourne un panel avec le champs de saisie et un label
-	private JPanel creerJTextField(String texte) {		
-	    JPanel panel = new JPanel();
-	    panel.setLayout(new GridLayout(1, 1));
-	    if (texte == this.JOURHOMME) {
-		    panel.add(new JLabel("Veillez saisir le nombre de jour/homme: "));
-	    	jourHomme = new JTextField();
-		    panel.add(jourHomme);	    	
-	    }
-		return panel;
-	}
 	
 	private String[] convertirArrayEnTab(ArrayList<String> listeNom) {
 		String[] tab = new String[listeNom.size()];
@@ -187,32 +175,12 @@ public class FenetreAjouterRessource extends JDialog{
 	}	
 
 	private void ajouterRessource() {
-		String jh = jourHomme.getText();
-		if (estUnEntier(jh)) {
-		    int index = comboBoxRessource.getSelectedIndex();
-		    int jourHomme = Integer.parseInt(jh);
-		    int pourcent = Integer.parseInt((String) comboBoxPourcent.getSelectedItem());
-		    Ressource ressource = getRessource(index);
-		    Projet projet = entreprise.getProjetSelectionner();
-		    new FenetreEmploiDuTemps(ressource, projet, jourHomme, pourcent);
-		    //entreprise.ajouterRessourceProjet(listeRessource.get(index).getId(), entreprise.getProjetSelectionner().getNom());
-		    dispose();			
-		}
-		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}
+		int index = comboBoxRessource.getSelectedIndex();
+	    Ressource ressource = getRessource(index);
+		entreprise.ajouterRessourceActivite(ressource);
+	    dispose();			
 	}
 	
-	private boolean estUnEntier(String chaine) {
-		try {
-			Integer.parseInt(chaine);
-		} catch (NumberFormatException e){
-			return false;
-		}
- 
-		return true;
-	}
-
 	private Ressource getRessource(int index) {
 		return listeRessource.get(index);
 	}
