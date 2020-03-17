@@ -283,6 +283,11 @@ public class Entreprise extends Observable{
 			update();
 		}
 		
+		public void ajouterRessourceActivite(Ressource res) {
+			Activite act = getActiviteSelectionner();
+			act.ajouterRessource(res);
+			update();
+		}
 			
 		public void update() {
 			this.setChanged();
