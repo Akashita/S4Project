@@ -1,27 +1,29 @@
 package Model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import Ressource.Ressource;
 
-public class Activite {
+public class Activite implements Comparable<Activite>{
 	private int id;
 	private String titre;
 	private int charge;
 	private String ordre;
-	private LocalDate jourDebut;
+	private LocalDateTime debut;
 	private boolean selectionner = false;
+	private String priorite;
 
 		
 	private ArrayList<Ressource> ressources; //Contient les cr�neaux horaires d'une journ�e
 	
-	public Activite(int id, String titre, int charge, String ordre, LocalDate jourDebut) {
+	public Activite(int id, String titre, int charge, String ordre, LocalDateTime debut, String priorite) {
 		this.id = id;
 		this.titre = titre;
 		this.charge = charge;
 		this.ordre = ordre;
-		this.jourDebut = jourDebut;
+		this.debut = debut;
+		this.priorite = priorite;
 		ressources = new ArrayList<Ressource>();
 	}
 	
@@ -58,7 +60,7 @@ public class Activite {
 	
 	/*@Override
 	public String toString() {
-		return "Activite numero "+ id +" allant de " + jourDebut + " a " + jourFin;
+		return "Activite numero "+ id +" allant de " + debut + " a " + jourFin;
 	}*/
 	
 	public void selectionner() {
@@ -84,11 +86,19 @@ public class Activite {
 	public String getOrdre() {
 		return ordre;
 	}
-
+	
+	public LocalDateTime getDebut() {
+		return debut;
+	}
+	
+	public ArrayList<Ressource> getLRessource(){
+		return ressources;
+	}
+	
 	public String getJourDebut() {
-		String jour = Integer.toString(jourDebut.getDayOfMonth());
-		String mois = Integer.toString(jourDebut.getMonthValue());
-		String annee = Integer.toString(jourDebut.getYear());
+		String jour = Integer.toString(debut.getDayOfMonth());
+		String mois = Integer.toString(debut.getMonthValue());
+		String annee = Integer.toString(debut.getYear());
 		String date = jour + "/" + mois + "/" + annee;
 		return date;
 	}
@@ -105,6 +115,11 @@ public class Activite {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public int compareTo(Activite act) {
+		return priorite.compareTo(act.priorite);
 	}
 	
 
