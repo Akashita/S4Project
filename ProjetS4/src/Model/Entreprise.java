@@ -1,4 +1,5 @@
 package Model;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -55,7 +56,8 @@ public class Entreprise extends Observable{
 		public ArrayList<Projet> getListeProjet(){
 			return listeProjet;
 		}
-		
+
+
 		public Projet getProjetSelectionner() {
 			Projet projet = null;
 			for (int i=0; i<listeProjet.size();i++) {
@@ -204,6 +206,11 @@ public class Entreprise extends Observable{
 			update();
 		}
 
+		
+		public void creerActivite(Projet projet, String titre, int charge, String ordre, LocalDate debut) {
+			
+			projet.ajouter(activite);
+		}
 		
 		public void nouvPersonne (String nom, String prenom/*, String role*/) {
 			//Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);

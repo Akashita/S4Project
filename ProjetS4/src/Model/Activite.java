@@ -14,7 +14,7 @@ public class Activite {
 		
 	private ArrayList<Ressource> ressources; //Contient les cr�neaux horaires d'une journ�e
 	
-	public Activite(int id, String nomProjet,LocalDate jourDebut, LocalDate jourFin) {
+	public Activite(int String nomProjet,LocalDate jourDebut/*, LocalDate jourFin*/) {
 		this.id = id;
 		this.jourDebut = jourDebut;
 		this.jourFin = jourFin;

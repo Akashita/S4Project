@@ -10,7 +10,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import EcouteurEvenement.AjouterListener;
 import EcouteurEvenement.AjouterRessourceListener;
 import EcouteurEvenement.EnleverRessourceListener;
 import EcouteurEvenement.NouveauListener;
@@ -93,7 +92,7 @@ public class FenetrePrincipale extends JFrame{
 	    itemEnlever.setAccelerator(ctrlEnlever);
 	    itemEnlever.addActionListener(new EnleverRessourceListener(entreprise));
 
-	    JMenuItem itemNouvelleActivité = new JMenuItem("Enlever ressource", KeyEvent.VK_Y);
+	    JMenuItem itemNouvelleActivité = new JMenuItem("Ajoutre activité", KeyEvent.VK_Y);
 	    KeyStroke ctrlNouvelleActivité = KeyStroke.getKeyStroke("control Y");
 	    itemNouvelleActivité.setAccelerator(ctrlNouvelleActivité);
 	    itemNouvelleActivité.addActionListener(new nouvelleActiviteListener(entreprise));

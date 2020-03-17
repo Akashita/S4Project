@@ -33,7 +33,7 @@ public class FenetreEnleverRessource extends JDialog{
     private JComboBox<String> comboBoxRessource;
 	ArrayList<Ressource> listeRessource;
 
-    public FenetreEnleverRessource(Entreprise entreprise) {
+    /*public FenetreEnleverRessource(Entreprise entreprise) {
 		this.entreprise= entreprise;
 		if (entreprise.getProjetSelectionner() != null) { // on vérifie qu'un projet est selectionné
 			listeRessource = entreprise.getProjetSelectionner().getListe();
@@ -64,7 +64,7 @@ public class FenetreEnleverRessource extends JDialog{
 		else {
 	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionner", "Erreur", JOptionPane.ERROR_MESSAGE);							
 		}		
-	}
+	}*/
 
     /**
      * creer l'interface
@@ -88,7 +88,7 @@ public class FenetreEnleverRessource extends JDialog{
 	    bouton.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
 	    	    int index = comboBoxRessource.getSelectedIndex();
-	    	    entreprise.enleverRessourceProjet(listeRessource.get(index).getId());
+	    	    //entreprise.enleverRessourceProjet(listeRessource.get(index).getId());
 	    	    dispose();
 	        }
 	    });			

@@ -26,7 +26,7 @@ public class PanelPrincipal extends JPanel implements Observer{
 		entreprise.addObserver(this);
 	}
 		
-	private void afficheRessourceProjet() {
+	/*private void afficheRessourceProjet() {
 		Projet projet = entreprise.getProjetSelectionner();
 		JPanel panelProjet = entreprise.getPanelDuProjet();
 		if (projet != null) {
@@ -44,7 +44,7 @@ public class PanelPrincipal extends JPanel implements Observer{
 			this.add(panelProjet, BorderLayout.CENTER);
 			this.revalidate();
 		}
-	}
+	}*/
 	
 	
 	private JPanel creerPanelRessource(ArrayList<Ressource> listeRessource, String type) {

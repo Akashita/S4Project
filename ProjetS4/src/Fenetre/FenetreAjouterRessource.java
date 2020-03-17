@@ -42,6 +42,7 @@ public class FenetreAjouterRessource extends JDialog{
 			this.setLocationRelativeTo(null);
 			this.addWindowListener(new FermerFenetre(this));
 			this.setVisible(true);
+			
 			JRootPane rootPane = this.getRootPane();
 			rootPane.getInputMap().put(
 					KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
@@ -62,7 +63,7 @@ public class FenetreAjouterRessource extends JDialog{
 			creationInterface();			
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionner", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 	
@@ -194,7 +195,7 @@ public class FenetreAjouterRessource extends JDialog{
 		    Ressource ressource = getRessource(index);
 		    Projet projet = entreprise.getProjetSelectionner();
 		    new FenetreEmploiDuTemps(ressource, projet, jourHomme, pourcent);
-		    entreprise.ajouterRessourceProjet(listeRessource.get(index).getId(), entreprise.getProjetSelectionner().getNom());
+		    //entreprise.ajouterRessourceProjet(listeRessource.get(index).getId(), entreprise.getProjetSelectionner().getNom());
 		    dispose();			
 		}
 		else {

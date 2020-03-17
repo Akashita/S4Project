@@ -32,7 +32,7 @@ public class FenetreNouvelleRessource extends JDialog{
 
 	private final String NOM = "nom", PRENOM = "prenom", CAPACITE = "capacité";
 	
-	private final int tailleLargeurPersonne = 360,
+	private final int tailleLargeurPersonne = 400,
 			tailleHauteurPersonne = 220,
 			tailleLargeurSalle = 360,		
 			tailleHauteurSalle = 220,
