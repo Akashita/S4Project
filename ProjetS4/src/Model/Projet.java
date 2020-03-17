@@ -1,21 +1,17 @@
 package Model;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
-
-import Ressource.Ressource;
 
 
 
 
 public class Projet {
 
-	private ArrayList<Ressource> listeRessource;//liste des ressources
+	private ArrayList<Activite> listeActivite;//liste des activites
 	private String nom;//nom des projets, clefs primaires (sert � les diff�rencier)
-	private boolean selectionner=false;
+	private boolean selectionner = false;
 	
 	public Projet(String nom) {
-		this.listeRessource =  new ArrayList<Ressource>();
+		this.listeActivite =  new ArrayList<Activite>();
 		this.nom = nom;
 	}
 	
@@ -24,10 +20,10 @@ public class Projet {
 	}
 	
 	public String toString() {
-		String liste = "Nom du projet : " + this.nom + ". \nIl contient les ressources suivantes : ";
+		String liste = "Nom du projet : " + this.nom + ". \nIl contient les activites suivantes : ";
 		
-		for(int i = 0; i < this.listeRessource.size(); i++){
-			liste += this.listeRessource.get(i).toString();
+		for(int i = 0; i < this.listeActivite.size(); i++){
+			liste += this.listeActivite.get(i).toString();
 			liste += "\n";
 		}
 		return liste;
@@ -37,8 +33,8 @@ public class Projet {
 		return selectionner;
 	}
 
-	public ArrayList<Ressource> getListe(){
-		return listeRessource;
+	public ArrayList<Activite> getListe(){
+		return listeActivite;
 	}
 	
 	public void selectionner() {
@@ -49,33 +45,33 @@ public class Projet {
 		this.selectionner = false;
 	}
 		
-	public void ajouter(Ressource ressource) { //test si la ressource est d�j� dans le projet sinon la rajoute
-		int[] test = this.chercherRessource(ressource);
+	public void ajouter(Activite activite) { //test si la activite est d�j� dans le projet sinon la rajoute
+		int[] test = this.chercherActivite(activite);
 		
 		if (test[0]==0) {
-			this.listeRessource.add(ressource);
+			this.listeActivite.add(activite);
 		}
 	}
 	
-	public void enlever(Ressource ressource) { //test si la ressource est d�j� dans le projet si oui l'enl�ve
-		int[] test = this.chercherRessource(ressource);
+	public void enlever(Activite activite) { //test si la activite est d�j� dans le projet si oui l'enl�ve
+		int[] test = this.chercherActivite(activite);
 		
 		if (test[0]==1) {
-			this.listeRessource.remove(test[1]);
+			this.listeActivite.remove(test[1]);
 		}
 	}
 	
-	public int[] chercherRessource(Ressource ressource) { //cherche la ressource dans le projet et donne la place si trouv�
+	public int[] chercherActivite(Activite activite) { //cherche l’activite dans le projet et donne la place si trouv�
 		Boolean pasTrouve = true;
 		int[] res = {0,0};//a droite la place du projet cherch� et a gauche si il est trouv� 0 non/1 oui
 		
-		if (this.listeRessource.size()==0) {
+		if (this.listeActivite.size()==0) {
 			return res;
 		}
 		else {
 			
 			do{
-				if (this.listeRessource.get(res[1]).equals(ressource)) {
+				if (this.listeActivite.get(res[1]).equals(activite)) {
 					res[0] = 1;
 					pasTrouve = false;
 				}
@@ -84,7 +80,7 @@ public class Projet {
 				}
 				
 			}
-			while((pasTrouve) && (res[1] < this.listeRessource.size()));
+			while((pasTrouve) && (res[1] < this.listeActivite.size()));
 			return res;
 		}
 	}
