@@ -1,7 +1,7 @@
 package Model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import Ressource.Ressource;
@@ -28,6 +28,22 @@ public class Activite implements Comparable<Activite>{
 	
 	public void ajouterRessource(Ressource res) {
 		ressources.add(res);
+	}
+	
+	public boolean creneauDispo(LocalDate date, LocalTime heure){
+		Boolean dispo = false;
+		for (int i = 0; i < ressources.size(); i++) {
+			if(ressources.get(i).creneauDispo(date, heure) == true) {
+				
+			}
+		}
+		return dispo;
+	}
+	
+	public void ajouterCreneau(CreneauHoraire cr, LocalDate jour) {
+		for (int i = 0; i < ressources.size(); i++) {
+			ressources.get(i).ajouterCreneau(cr, jour);
+		}
 	}
 
 	
@@ -114,5 +130,10 @@ public class Activite implements Comparable<Activite>{
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public int compareTo(Activite act) {
+		return ordre.compareTo(act.ordre);
 	}
 }
