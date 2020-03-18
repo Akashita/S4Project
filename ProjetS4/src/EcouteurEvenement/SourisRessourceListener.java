@@ -4,7 +4,9 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
 
+import Panel.PanelInfoProjet;
 import Panel.PanelRessource;
+import Ressource.Ressource;
 
 /**
  * Cette classe permet l'interaction utilisateur machine avec la souris
@@ -16,18 +18,18 @@ import Panel.PanelRessource;
  *
  */
  public class SourisRessourceListener implements MouseListener {
-	PanelRessource pr;
-	JLabel label;
+	PanelInfoProjet pip;
+	Ressource res;
 	
-	public SourisRessourceListener(PanelRessource pr, JLabel label) {
-		this.pr = pr;
-		this.label = label;
+	public SourisRessourceListener(PanelInfoProjet pip, Ressource res) {
+		this.pip = pip;
+		this.res = res;
 	}
 	
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		//pr.selectionnerRessource(label);
+		pip.afficheInfoRessource(res);
 	}
 
 	@Override

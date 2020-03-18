@@ -1,5 +1,6 @@
 package Model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -10,20 +11,18 @@ public class Activite implements Comparable<Activite>{
 	private String titre;
 	private int charge;
 	private String ordre;
-	private LocalDateTime debut;
+	private LocalDate debut;
 	private boolean selectionner = false;
-	private String priorite;
 
 		
 	private ArrayList<Ressource> ressources; //Contient les cr�neaux horaires d'une journ�e
 	
-	public Activite(int id, String titre, int charge, String ordre, LocalDateTime debut, String priorite) {
+	public Activite(int id, String titre, int charge, String ordre, LocalDate debut) {
 		this.id = id;
 		this.titre = titre;
 		this.charge = charge;
 		this.ordre = ordre;
 		this.debut = debut;
-		this.priorite = priorite;
 		ressources = new ArrayList<Ressource>();
 	}
 	
@@ -87,7 +86,7 @@ public class Activite implements Comparable<Activite>{
 		return ordre;
 	}
 	
-	public LocalDateTime getDebut() {
+	public LocalDate getDebut() {
 		return debut;
 	}
 	
@@ -116,11 +115,4 @@ public class Activite implements Comparable<Activite>{
 			return false;
 		}
 	}
-
-	@Override
-	public int compareTo(Activite act) {
-		return priorite.compareTo(act.priorite);
-	}
-	
-
 }

@@ -1,4 +1,5 @@
 package Model;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -259,7 +260,7 @@ public class Entreprise extends Observable{
 			update();
 		}
 		
-		public void ajouterProjet(Projet proj) { //Les projets sont ajoutés à la liste en les triant par ordre de priorite
+		public void ajouterProjet(Projet proj) { //Les projets sont ajoutï¿½s ï¿½ la liste en les triant par ordre de priorite
 			Boolean place = false;
 			int i = 0;
 			while (i < lProjet.size() && !place) {
@@ -275,9 +276,9 @@ public class Entreprise extends Observable{
 		}
 
 		
-		public void creerActivite(Projet projet, String titre, int charge, String ordre, LocalDateTime debut, String priorite) {
+		public void creerActivite(Projet projet, String titre, int charge, String ordre, LocalDate debut) {
 			this.idAct++;
-			Activite act = new Activite(idAct, titre, charge, ordre, debut, priorite);
+			Activite act = new Activite(idAct, titre, charge, ordre, debut);
 			act.selectionner();
 			projet.ajouter(act);
 			update();

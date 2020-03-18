@@ -12,13 +12,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import EcouteurEvenement.SourisActiviteListener;
-import EcouteurEvenement.SourisProjetListener;
 import EcouteurEvenement.SourisRessourceListener;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
 import Ressource.Personne;
 import Ressource.Ressource;
+import Ressource.Salle;
 
 public class PanelInfoProjet extends JPanel{
 	
@@ -37,7 +37,6 @@ public class PanelInfoProjet extends JPanel{
 	    this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 	    
 		this.add(afficheActivite());
-
 		this.add(afficheRessource());
 	}
 	
@@ -61,7 +60,6 @@ public class PanelInfoProjet extends JPanel{
 		}
 		return panel;
 	}
-
 
 	private JPanel panelActivite(Activite act, boolean selectionner) {
 		JPanel panel = new JPanel();
@@ -105,7 +103,9 @@ public class PanelInfoProjet extends JPanel{
 			if (listeR.size() > 0) {
 				for(int i=0; i<listeR.size(); i++) {
 					Personne res = (Personne)listeR.get(i);
-					panel.add(creerLabel(res.getPrenom() + " " + res.getNom()));
+					JLabel label = creerLabel(res.getPrenom() + " " + res.getNom());
+					label.addMouseListener(new SourisRessourceListener(this, res));
+					panel.add(label);
 				}				
 			}
 		}		
@@ -144,11 +144,31 @@ public class PanelInfoProjet extends JPanel{
 				for(int i=0; i<listeR.size(); i++) {
 					Ressource res = listeR.get(i);
 					panel.add(creerLabel(res.getNom()));
-					System.out.println(res.getNom());
 				}			
 			}
 		}		
 		return panel;
+	}
+
+	public void afficheInfoRessource(Ressource res) {
+		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createTitledBorder("Information de la ressource: "));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(Color.WHITE);	
+		if(res.getType() == Ressource.PERSONNE) {
+			panel.add(creerLabel("Nom: " + ((Personne) res).getPrenom() + " " + res.getNom()));
+			panel.add(creerLabel("Compétence: "));			
+
+		}
+		if(res.getType() == Ressource.SALLE) {
+			panel.add(creerLabel("Nom: " + res.getNom()));
+			panel.add(creerLabel("Capacité: " + ((Salle)res).getCapacite()));			
+		}
+		if(res.getType() == Ressource.CALCULATEUR) {
+			panel.add(creerLabel("Nom: " + res.getNom()));	
+		}
+		this.add(panel);
+		this.revalidate();
 	}
 
 	private JLabel creerLabel(String nom) {
