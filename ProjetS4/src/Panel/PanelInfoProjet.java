@@ -4,18 +4,24 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import EcouteurEvenement.SourisActiviteListener;
 import EcouteurEvenement.SourisRessourceListener;
+import Fenetre.FenetreEmploiDuTemps;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
+import Ressource.Calculateur;
 import Ressource.Personne;
 import Ressource.Ressource;
 import Ressource.Salle;
@@ -81,76 +87,67 @@ public class PanelInfoProjet extends JPanel{
 	
 	private JPanel afficheRessource() {
 		JPanel panel = new JPanel ();
-		panel.setBorder(BorderFactory.createTitledBorder("Liste des ressources de l'activité"));
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.WHITE);		
-		panel.add(creerLabel("                                    "));
-		panel.add(personne());
-		panel.add(salle());
-		panel.add(calculateur());
-		return panel;
-	}
-
-	private JPanel personne() {
-		JPanel panel = new JPanel ();
-	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.WHITE);		
 		if(entreprise.getActiviteSelectionner() != null) {
-			panel.setBorder(BorderFactory.createTitledBorder("Liste des personnes"));
+			panel.setBorder(BorderFactory.createTitledBorder("Liste des ressources de l'activité"));
+			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+			panel.setBackground(Color.WHITE);		
 			panel.add(creerLabel("                                    "));
+
 			Activite act = entreprise.getActiviteSelectionner();
-			ArrayList<Ressource> listeR = act.getListeRessourceType(Ressource.PERSONNE);
-			if (listeR.size() > 0) {
-				for(int i=0; i<listeR.size(); i++) {
-					Personne res = (Personne)listeR.get(i);
-					JLabel label = creerLabel(res.getPrenom() + " " + res.getNom());
-					label.addMouseListener(new SourisRessourceListener(this, res));
-					panel.add(label);
-				}				
+			if (act.getLRessource().size() > 0) {
+				panel.add(afficheRessourceType(act, Ressource.PERSONNE));
+				panel.add(afficheRessourceType(act, Ressource.SALLE));
+				panel.add(afficheRessourceType(act, Ressource.CALCULATEUR));
 			}
-		}		
+			else {
+				panel.add(creerLabel("aucune ressource présente"));
+			}
+		}
 		return panel;
 	}
 
-	private JPanel salle() {
+	private JPanel afficheRessourceType (Activite act, String type) {
 		JPanel panel = new JPanel ();
 	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.WHITE);		
-		if(entreprise.getActiviteSelectionner() != null) {
-			panel.setBorder(BorderFactory.createTitledBorder("Liste des salles"));
+		panel.setBackground(Color.WHITE);	
+		ArrayList<Ressource> listeR = act.getListeRessourceType(type);
+		if (listeR.size() > 0) {
 			panel.add(creerLabel("                                    "));
-			Activite act = entreprise.getActiviteSelectionner();
-			ArrayList<Ressource> listeR = act.getListeRessourceType(Ressource.SALLE);
-			if (listeR.size() > 0) {
-				for(int i=0; i<listeR.size(); i++) {
-					Ressource res = listeR.get(i);
-					panel.add(creerLabel(res.getNom()));
+			panel.setBorder(BorderFactory.createTitledBorder("Liste de " + type));
+			for(int i=0; i<listeR.size(); i++) {
+				Ressource res = null;
+				JLabel label = null;
+				if (type == Ressource.PERSONNE) {
+					res = (Personne)listeR.get(i);
+					label = creerLabel(((Personne) res).getPrenom() + " " + res.getNom());					
 				}
-			}
+				if (type == Ressource.SALLE) {
+					res = (Salle)listeR.get(i);
+					label = creerLabel(res.getNom());					
+					
+				}
+				if (type == Ressource.CALCULATEUR) {
+					res = (Calculateur)listeR.get(i);
+					label = creerLabel(res.getNom());					
+					
+				}
+				label.addMouseListener(new SourisRessourceListener(this, res));
+				panel.add(label);
+			}				
 		}		
 		return panel;
 	}
-
-	private JPanel calculateur() {
-		JPanel panel = new JPanel ();
-	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(creerLabel("                                    "));
-		panel.setBackground(Color.WHITE);		
-		if(entreprise.getActiviteSelectionner() != null) {
-			Activite act = entreprise.getActiviteSelectionner();
-			ArrayList<Ressource> listeR = act.getListeRessourceType(Ressource.CALCULATEUR);
-			if (listeR.size() > 0) {
-				panel.setBorder(BorderFactory.createTitledBorder("Liste des calculateurs"));
-				for(int i=0; i<listeR.size(); i++) {
-					Ressource res = listeR.get(i);
-					panel.add(creerLabel(res.getNom()));
-				}			
-			}
-		}		
-		return panel;
+	
+	private JLabel creerLabel(String nom) {
+		JLabel label = new JLabel(nom);
+		label.setFont(new Font("Arial", Font.BOLD, 15));
+		//label.addMouseListener(new SourisRessourceListener(this, label));
+		return label;
 	}
 
 	public void afficheInfoRessource(Ressource res) {
+		this.removeAll();
+		afficheInterface();
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder("Information de la ressource: "));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -167,15 +164,19 @@ public class PanelInfoProjet extends JPanel{
 		if(res.getType() == Ressource.CALCULATEUR) {
 			panel.add(creerLabel("Nom: " + res.getNom()));	
 		}
+		panel.add(bouttonEmploiDuTemps(res));
 		this.add(panel);
 		this.revalidate();
 	}
 
-	private JLabel creerLabel(String nom) {
-		JLabel label = new JLabel(nom);
-		label.setFont(new Font("Arial", Font.BOLD, 15));
-		//label.addMouseListener(new SourisRessourceListener(this, label));
-		return label;
+	private JButton bouttonEmploiDuTemps(Ressource res) {
+		JButton bouton = new JButton("Afficher emploi du temps");
+	    bouton.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	new FenetreEmploiDuTemps(res);
+	        }
+	    });			
+	    return bouton;
 	}
 
 	public void selectionnerActivite(int idActiviteSelectionner) {

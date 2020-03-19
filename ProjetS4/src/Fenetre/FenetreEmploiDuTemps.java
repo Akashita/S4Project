@@ -26,18 +26,9 @@ public class FenetreEmploiDuTemps extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	private Ressource ressource;
-	private Projet projet;
-	private int jourHomme;
-	private int pourcent;
 	
-	private final int nbHeure = 9, nbJour = 5; //on travaille de 8h à 17h et du lundi au vendredi
-	private int numeroSemaine = Temps.getSemaine();
-	
-	public FenetreEmploiDuTemps(Ressource ressource, Projet projet, int jourHomme, int pourcent) {
+	public FenetreEmploiDuTemps(Ressource ressource) {
 		this.ressource = ressource;
-		this.projet = projet;
-		this.jourHomme = jourHomme;
-		this.pourcent = pourcent;
 		
 		this.setSize(700, 550);
 		this.setLayout(new BorderLayout());
@@ -50,7 +41,6 @@ public class FenetreEmploiDuTemps extends JFrame{
 	
 	public JPanel afficherEmploiDuTemps() {
 		JPanel panel = new JPanel();		
-		ArrayList<Plage>listePlage = ressource.getPlages();
 		panel.setLayout(new BorderLayout());
 		panel.add(afficheJour(), BorderLayout.NORTH);
 		panel.add(afficheHeure(), BorderLayout.WEST);

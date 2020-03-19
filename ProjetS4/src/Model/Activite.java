@@ -62,16 +62,6 @@ public class Activite implements Comparable<Activite>{
 		return suppr;
 	}
 	
-	public ArrayList<Ressource> getListeRessourceType(String type){
-		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
-		for (int i=0; i<ressources.size(); i++) {
-			Ressource ressource = ressources.get(i);
-			if(ressource.getType() == type) {
-				nouvelleListe.add(ressource);
-			}
-		}
-		return nouvelleListe;
-	}
 	
 	/*@Override
 	public String toString() {
@@ -110,6 +100,17 @@ public class Activite implements Comparable<Activite>{
 		return ressources;
 	}
 	
+	public ArrayList<Ressource> getListeRessourceType(String type){
+		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
+		for (int i=0; i<ressources.size(); i++) {
+			Ressource ressource = ressources.get(i);
+			if(ressource.getType() == type) {
+				nouvelleListe.add(ressource);
+			}
+		}
+		return nouvelleListe;
+	}
+
 	public String getJourDebut() {
 		String jour = Integer.toString(debut.getDayOfMonth());
 		String mois = Integer.toString(debut.getMonthValue());

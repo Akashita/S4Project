@@ -325,7 +325,11 @@ public class Entreprise extends Observable{
 			act.ajouterRessource(res);
 			update();
 		}
-			
+		
+		public void afficheInfoRessource(Ressource res) {
+			p
+		}
+		
 		public void update() {
 			this.setChanged();
 			this.notifyObservers();	
