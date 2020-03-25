@@ -39,7 +39,7 @@ public class Projet implements Comparable<Projet>{
 		return selectionner;
 	}
 
-	public ArrayList<Activite> getListe(){
+	public ArrayList<Activite> getListeActivite(){
 		return lActivite;
 	}
 	

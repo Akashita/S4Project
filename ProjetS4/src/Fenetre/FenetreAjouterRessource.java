@@ -38,30 +38,30 @@ public class FenetreAjouterRessource extends JDialog{
 	public FenetreAjouterRessource(Entreprise entreprise) {
 		this.entreprise = entreprise;
 		if (entreprise.getProjetSelectionner() != null) {
-			this.setTitle("Ajout ressource");
-			this.setSize(tailleLargeurDefaut,tailleHauteurDefaut);
-			this.setLocationRelativeTo(null);
-			this.addWindowListener(new FermerFenetre(this));
-			this.setVisible(true);
-			
-			JRootPane rootPane = this.getRootPane();
-			rootPane.getInputMap().put(
-					KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-					"close");
-			rootPane.getActionMap().put("close", new AbstractAction() {
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				public void actionPerformed(ActionEvent e) {
-					//this.setVisible(false);
-					dispose();
-				}
-			});
+			if (entreprise.getActiviteSelectionner() != null) {
+				this.setTitle("Ajout ressource");
+				this.setSize(tailleLargeurDefaut,tailleHauteurDefaut);
+				this.setLocationRelativeTo(null);
+				this.addWindowListener(new FermerFenetre(this));
+				this.setVisible(true);
+				
+				JRootPane rootPane = this.getRootPane();
+				rootPane.getInputMap().put(
+						KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+						"close");
+				rootPane.getActionMap().put("close", new AbstractAction() {
+					public void actionPerformed(ActionEvent e) {
+						//this.setVisible(false);
+						dispose();
+					}
+				});
 
 
-			creationInterface();			
+				creationInterface();							
+			}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Aucune activité selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
 		}
 		else {
 	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -174,6 +174,7 @@ public class FenetreAjouterRessource extends JDialog{
 		return tab;
 	}	
 
+	//ajoute la ressource  dans l'activité
 	private void ajouterRessource() {
 		int index = comboBoxRessource.getSelectedIndex();
 	    Ressource ressource = getRessource(index);

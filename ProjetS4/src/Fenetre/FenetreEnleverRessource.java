@@ -33,43 +33,82 @@ public class FenetreEnleverRessource extends JDialog{
     private JComboBox<String> comboBoxRessource;
 	ArrayList<Ressource> listeRessource;
 
-    /*public FenetreEnleverRessource(Entreprise entreprise) {
-		this.entreprise= entreprise;
-		if (entreprise.getProjetSelectionner() != null) { // on vérifie qu'un projet est selectionné
-			listeRessource = entreprise.getProjetSelectionner().getListe();
-			if (listeRessource.size()>0) { // on vérifie que des ressources sont présentes dans le projet
-				this.setTitle("Enlever ressource");
+	/*public FenetreEnleverRessource(Entreprise entreprise) {
+		this.entreprise = entreprise;
+		if (entreprise.getProjetSelectionner() != null) {
+			if (entreprise.getActiviteSelectionner() != null) {
+				
+				this.setTitle("Ajout ressource");
 				this.setSize(300,200);
 				this.setLocationRelativeTo(null);
 				this.addWindowListener(new FermerFenetre(this));
 				this.setVisible(true);
-				JRootPane rootPane = this.getRootPane(); //le rootPane permet la supression de la fenetre avec la touche "echap"
+				
+				JRootPane rootPane = this.getRootPane();
 				rootPane.getInputMap().put(
 						KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
 						"close");
 				rootPane.getActionMap().put("close", new AbstractAction() {
-					private static final long serialVersionUID = 1L;
-
 					public void actionPerformed(ActionEvent e) {
 						//this.setVisible(false);
 						dispose();
 					}
 				});
-				creerInterface();				
+
+
+				creationInterface();							
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Aucune ressource presente", "Erreur", JOptionPane.ERROR_MESSAGE);							
+		    	JOptionPane.showMessageDialog(null, "Aucune activité selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionner", "Erreur", JOptionPane.ERROR_MESSAGE);							
-		}		
+	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
 	}*/
+	
+    public FenetreEnleverRessource(Entreprise entreprise) {
+		this.entreprise= entreprise;
+		if (entreprise.getProjetSelectionner() != null) { // on vérifie qu'un projet est selectionné
+			if (entreprise.getActiviteSelectionner() != null) {
+				listeRessource = entreprise.getActiviteSelectionner().getLRessource();
+				if (listeRessource.size()>0) { // on vérifie que des ressources sont présentes dans le projet
+					this.setTitle("Enlever ressource");
+					this.setSize(300,200);
+					this.setLocationRelativeTo(null);
+					this.addWindowListener(new FermerFenetre(this));
+					this.setVisible(true);
+					JRootPane rootPane = this.getRootPane(); //le rootPane permet la supression de la fenetre avec la touche "echap"
+					rootPane.getInputMap().put(
+							KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+							"close");
+					rootPane.getActionMap().put("close", new AbstractAction() {
+						private static final long serialVersionUID = 1L;
+
+						public void actionPerformed(ActionEvent e) {
+							//this.setVisible(false);
+							dispose();
+						}
+					});
+					creationInterface();				
+				}
+				else {
+			    	JOptionPane.showMessageDialog(null, "Aucune ressource presente", "Erreur", JOptionPane.ERROR_MESSAGE);							
+				}
+			}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Aucune activité selectionner", "Erreur", JOptionPane.ERROR_MESSAGE);							
+			}						
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);							
+		}						
+	}
 
     /**
      * creer l'interface
      */
-	private void creerInterface() {
+	private void creationInterface() {
 		panelPrincipal.setBackground(Color.white);
 		panelPrincipal.setLayout(new GridLayout(2, 0));
 	    panelPrincipal.setBorder(BorderFactory.createTitledBorder("Enlever ressource du Projet"));
@@ -88,7 +127,7 @@ public class FenetreEnleverRessource extends JDialog{
 	    bouton.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
 	    	    int index = comboBoxRessource.getSelectedIndex();
-	    	    //entreprise.enleverRessourceProjet(listeRessource.get(index).getId());
+	    	    entreprise.enleverRessourceActivite(listeRessource.get(index));
 	    	    dispose();
 	        }
 	    });			

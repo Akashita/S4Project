@@ -33,7 +33,7 @@ public class PanelInfoProjet extends JPanel{
 	public PanelInfoProjet(Entreprise entreprise) {
 		this.entreprise = entreprise;
 		if (entreprise.getProjetSelectionner() != null) {
-			if (entreprise.getProjetSelectionner().getListe().size()>0) {//on vérifie qu'il y a au moins une activité
+			if (entreprise.getProjetSelectionner().getListeActivite().size()>0) {//on vérifie qu'il y a au moins une activité
 				afficheInterface();
 			}
 		}
@@ -53,7 +53,7 @@ public class PanelInfoProjet extends JPanel{
 		panel.setBackground(Color.WHITE);			
 
 		Projet projet = entreprise.getProjetSelectionner();
-		ArrayList<Activite> listeActivite = projet.getListe();
+		ArrayList<Activite> listeActivite = projet.getListeActivite();
 
 		for (int i=0; i<listeActivite.size(); i++) {
 			Activite act = listeActivite.get(i);

@@ -16,9 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 import EcouteurEvenement.SourisEmploieDuTempsListener;
+import Model.CreneauHoraire;
 import Model.Entreprise;
 import Model.Projet;
-import Ressource.Plage;
+import Model.Temps;
 import Ressource.Ressource;
 
 public class FenetreEmploiDuTemps extends JFrame{
@@ -26,10 +27,12 @@ public class FenetreEmploiDuTemps extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	private Ressource ressource;
+	private int nbJour = 5;
+	private	int nbHeure = 9;
+	
 	
 	public FenetreEmploiDuTemps(Ressource ressource) {
 		this.ressource = ressource;
-		
 		this.setSize(700, 550);
 		this.setLayout(new BorderLayout());
 		this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);
@@ -39,27 +42,58 @@ public class FenetreEmploiDuTemps extends JFrame{
 	}
 
 	
-	public JPanel afficherEmploiDuTemps() {
+	private JPanel afficherEmploiDuTemps() {
 		JPanel panel = new JPanel();		
 		panel.setLayout(new BorderLayout());
 		panel.add(afficheJour(), BorderLayout.NORTH);
 		panel.add(afficheHeure(), BorderLayout.WEST);
-		panel.add(afficheSemaine(listePlage), BorderLayout.CENTER);
+		panel.add(afficheSemaine(), BorderLayout.CENTER);
 		panel.setBackground(Color.BLACK);
 		return panel;
 	}
 	
-	
-	private JPanel afficheSemaine(ArrayList<Plage>listePlage) {
+		
+	private JPanel afficheJour() {
+		nbJour = 5;
+		LocalDate[] jours = Temps.getJourSemaine();
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0,nbJour));
 		for (int i=0; i<nbJour; i++) {
-			panel.add(afficheJour(listePlage));
+			LocalDate jourActuel = jours[i];
+			String jour = jourActuel.getDayOfWeek().toString();
+			String date = jourActuel.getDayOfMonth() + "/" + jourActuel.getMonthValue() + "/" + jourActuel.getYear();
+			
+			panel.add(creerLabelInterface(jour));
+			panel.add(creerLabelInterface(date));
 		}
 		return panel;
 	}
 	
-	private JPanel afficheJour(ArrayList<Plage>listePlage) {
+	private JPanel afficheHeure() {
+		nbHeure = 9;
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(nbHeure,0));
+		for (int i=0; i<nbHeure; i++) {
+			JPanel panelHeure = new JPanel();
+			panelHeure.setLayout(new GridLayout(2,0));
+			panelHeure.add(creerLabelInterface(Integer.toString(i+8)+"h"));
+			//panelHeure.add(creerLabelInterface(Integer.toString(i+9)+"h"));
+			panel.add(panelHeure);
+		}
+		return panel;
+	}
+
+	private JPanel afficheSemaine() {
+		ArrayList<CreneauHoraire>listeCreneau = ressource.getCreneauTravail(Temps.getJourSemaine());
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(0,nbJour));
+		for (int i=0; i<nbJour; i++) {
+			panel.add(afficheJour(listeCreneau));
+		}
+		return panel;
+	}
+	
+	private JPanel afficheJour(ArrayList<CreneauHoraire>listeCreneau) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(nbHeure,0));
 		for (int i=0; i<nbHeure; i++) {
@@ -117,27 +151,6 @@ public class FenetreEmploiDuTemps extends JFrame{
 		return couleur;
 	}
 	
-	private JPanel afficheHeure() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(nbHeure,0));
-		for (int i=0; i<nbHeure; i++) {
-			JPanel panelHeure = new JPanel();
-			panelHeure.setLayout(new GridLayout(2,0));
-			panelHeure.add(creerLabelInterface(Integer.toString(i+8)+"h"));
-			panelHeure.add(creerLabelInterface(Integer.toString(i+9)+"h"));
-			panel.add(panelHeure);
-		}
-		return panel;
-	}
-		
-	private JPanel afficheJour() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(0,nbJour));
-		for (int i=0; i<nbJour; i++) {
-			panel.add(creerLabelInterface(afficheJour(i)));
-		}
-		return panel;
-	}
 
 	private JLabel creerLabelInterface(String texte) {
 		JLabel label = new JLabel();
@@ -149,21 +162,5 @@ public class FenetreEmploiDuTemps extends JFrame{
 		return label;
 	}
 
-	private String afficheJour(int indiceJour) {
-		String jour = null;
-		switch(indiceJour) {
-		case(0): jour = "lundi";
-		break;
-		case(1): jour = "mardi";
-		break;
-		case(2): jour = "mercredi";
-		break;
-		case(3): jour = "jeudi";
-		break;
-		case(4): jour = "vendredi";
-		break;
-		}
-		return jour;
-	}
 
 }

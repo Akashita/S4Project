@@ -46,7 +46,7 @@ public class Entreprise extends Observable{
 		public void majEDT() {
 			ArrayList<Activite> lActivite;
 			 for (int i = 0; i < lProjet.size(); i++) {
-				 lActivite = lProjet.get(i).getListe();
+				 lActivite = lProjet.get(i).getListeActivite();
 				 for (int j = 0; j < lActivite.size(); j++) {
 					creerLCreneaux(lActivite.get(i));
 				}
@@ -119,7 +119,7 @@ public class Entreprise extends Observable{
 		
 		public void selectionnerActivite(int id) {
 			Projet projet = getProjetSelectionner();
-			ArrayList<Activite> listeAct = projet.getListe();
+			ArrayList<Activite> listeAct = projet.getListeActivite();
 			for (int i=0; i<listeAct.size(); i++) {
 				Activite act = listeAct.get(i);
 				if (act.getId() == id) {
@@ -130,7 +130,7 @@ public class Entreprise extends Observable{
 		}
 		
 		public void deselectionnerActivite() { //utile pour le graphique
-			ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
+			ArrayList<Activite> listeAct = getProjetSelectionner().getListeActivite();
 			for (int i=0; i<listeAct.size(); i++) {
 				listeAct.get(i).deselectionner();
 			}
@@ -138,7 +138,7 @@ public class Entreprise extends Observable{
 
 		public Activite getActiviteSelectionner() {
 			//Projet projet = getProjetSelectionner();
-			ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
+			ArrayList<Activite> listeAct = getProjetSelectionner().getListeActivite();
 			Activite act = null;
 			for (int i=0; i<listeAct.size();i++) {
 				if (listeAct.get(i).getSelectionner()) {
@@ -323,6 +323,12 @@ public class Entreprise extends Observable{
 		public void ajouterRessourceActivite(Ressource res) {
 			Activite act = getActiviteSelectionner();
 			act.ajouterRessource(res);
+			update();
+		}
+		
+		public void enleverRessourceActivite(Ressource res) {
+			Activite act = getActiviteSelectionner();
+			act.enleverRessource(res);
 			update();
 		}
 		

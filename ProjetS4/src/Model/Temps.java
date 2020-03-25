@@ -15,25 +15,43 @@ public final class Temps {
 	}
 	
 	
-	//TODO Risque de poser problème lors du changement d'année
-	public static LocalDate[] getJourSemaine(int annee, int semaine) {
+	//TODO Risque de poser problï¿½me lors du changement d'annï¿½e
+	public static LocalDate[] getJourSemaine() {
 		LocalDate[] tab = new LocalDate[5];
-		
-		//On récupère le numéro du premier jour (initialisé au lundi) de la semaine passée en paramètre
+		LocalDate date = LocalDate.now();
+		//On rï¿½cupï¿½re le numï¿½ro du premier jour (initialisï¿½ au lundi) de la semaine passï¿½e en paramï¿½tre
 		Calendar cal = Calendar.getInstance();
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
-		cal.setWeekDate(annee, semaine, Calendar.MONDAY);
+		cal.setWeekDate(date.getYear(), date.getMonthValue(), Calendar.MONDAY);
 		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
 		
 		//On remplit le tableau avec les 5 jours ouvrables de la semaine (lundi -> vendredi)
-		// en incrémentant le numéro du jour 
+		// en incrï¿½mentant le numï¿½ro du jour 
 		for (int i = 0; i < 5; i++) {
 			tab[i] = LocalDate.ofYearDay(annee, numJour+i);
 		}
 		
 		return tab;	
 	}
-	
+
+	public static LocalDate[] getJourSemaine(int annee, int semaine) {
+		LocalDate[] tab = new LocalDate[5];
+		
+		//On rï¿½cupï¿½re le numï¿½ro du premier jour (initialisï¿½ au lundi) de la semaine passï¿½e en paramï¿½tre
+		Calendar cal = Calendar.getInstance();
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
+		cal.setWeekDate(annee, semaine, Calendar.MONDAY);
+		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
+		
+		//On remplit le tableau avec les 5 jours ouvrables de la semaine (lundi -> vendredi)
+		// en incrï¿½mentant le numï¿½ro du jour 
+		for (int i = 0; i < 5; i++) {
+			tab[i] = LocalDate.ofYearDay(annee, numJour+i);
+		}
+		
+		return tab;	
+	}
+
 	public static String getLocalDateString(LocalDate date) {
 		String res = "";
 		switch (date.getDayOfWeek()) {

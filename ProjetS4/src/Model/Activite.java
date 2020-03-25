@@ -29,7 +29,16 @@ public class Activite implements Comparable<Activite>{
 	public void ajouterRessource(Ressource res) {
 		ressources.add(res);
 	}
-	
+
+	public void enleverRessource(Ressource res) {
+		for (int i=0; i<ressources.size(); i++) {
+			if (res.getId() == ressources.get(i).getId()) {
+				ressources.remove(i);
+				break;
+			}
+		}
+	}
+
 	public boolean creneauDispo(LocalDate date, LocalTime heure){
 		Boolean dispo = false;
 		for (int i = 0; i < ressources.size(); i++) {
