@@ -32,6 +32,7 @@ public class Activite implements Comparable<Activite>{
 	public boolean creneauDispo(LocalDate date, int heure){
 		Boolean dispo = true;
 		for (int i = 0; i < ressources.size(); i++) {
+			System.out.println("lol");
 			if(!ressources.get(i).creneauDispo(date, heure)) {
 				dispo = false;
 			}

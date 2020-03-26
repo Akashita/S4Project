@@ -68,9 +68,11 @@ public class Entreprise extends Observable{
 			LocalDate jourCourant = act.getDebut();
 			int heureCourante = HEURE_DEBUT_MATIN;
 				
-			while (chargeAloue < charge) {	
+			while (chargeAloue < charge) {					
 				if(act.creneauDispo(jourCourant, heureCourante)) { //Si le creneau est disponible pour toutes les ressources de l'activite
 					act.ajouterCreneau(new CreneauHoraire("TODO : REMPLACER LE TITRE", heureCourante), jourCourant);
+					System.out.println("yolo1");
+					chargeAloue++;
 				}
 				
 				heureCourante = heureSuivante(heureCourante);
@@ -340,7 +342,7 @@ public class Entreprise extends Observable{
 		}
 		
 		
-		public void nouvRessourceAutre (String nom,String type) {
+		public void nouvRessourceAutre (String nom, String type) {
 			RessourceAutre nouvRessourceAutre = new RessourceAutre(nom, type, this.idCour);
 			this.incrementId();
 			this.ajouterRessource(nouvRessourceAutre);
@@ -360,6 +362,7 @@ public class Entreprise extends Observable{
 		public void ajouterRessourceActivite(Ressource res) {
 			Activite act = getActiviteSelectionner();
 			act.ajouterRessource(res);
+			creerLCreneaux(act);
 			update();
 		}
 		

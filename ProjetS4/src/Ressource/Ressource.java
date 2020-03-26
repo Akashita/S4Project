@@ -78,7 +78,7 @@ public class Ressource {
 	
 	//Dit si un creneau est dispo pour le jour et l'heure en parametre
 	public boolean creneauDispo(LocalDate date, int heure) {
-		boolean dispo = false;
+		boolean dispo = true;
 		if(jours.containsKey(date)) {
 			ArrayList<CreneauHoraire> jour = jours.get(date);
 			for (int i = 0; i < jour.size(); i++) {
