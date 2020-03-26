@@ -360,6 +360,7 @@ public class Entreprise extends Observable{
 		public void ajouterRessourceActivite(Ressource res) {
 			Activite act = getActiviteSelectionner();
 			act.ajouterRessource(res);
+			
 			update();
 		}
 		

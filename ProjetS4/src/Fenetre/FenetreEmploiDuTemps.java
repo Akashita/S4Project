@@ -2,24 +2,20 @@ package Fenetre;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-//import EcouteurEvenement.SourisEmploieDuTempsListener;
+import EcouteurEvenement.SourisSemaineListener;
 import Model.CreneauHoraire;
-import Model.Entreprise;
-import Model.Projet;
 import Model.Temps;
 import Ressource.Ressource;
 
@@ -28,7 +24,13 @@ public class FenetreEmploiDuTemps extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	private Ressource ressource;
-	
+	private CreneauHoraire [][] tableauCreneau;
+	private JSlider slide = new JSlider();
+	private JPanel panelSemaine = new JPanel();
+	private JPanel panelListeSemaine = new JPanel();
+	private JPanel panelCompletJourDeLasemaine = new JPanel();
+	private JPanel panelJourDeLasemaine = new JPanel();
+	private int semaineSelectionner;
 	
 	public FenetreEmploiDuTemps(Ressource ressource) {
 		this.ressource = ressource;
@@ -42,32 +44,44 @@ public class FenetreEmploiDuTemps extends JFrame{
 
 	
 	private JPanel afficherEmploiDuTemps() {
-		CreneauHoraire [][] tableauCreneau = ressource.getSemaineEDT(Temps.getAnnee(), Temps.getSemaine());
+		semaineSelectionner = Temps.getSemaine();
+		tableauCreneau = ressource.getSemaineEDT(Temps.getAnnee(), Temps.getSemaine());
 		JPanel panel = new JPanel();		
 		panel.setLayout(new BorderLayout());
-		panel.add(afficheJourDeLaSemaine(tableauCreneau.length), BorderLayout.NORTH);
+		
+		panel.add(panelCompletJourDeLasemaine, BorderLayout.NORTH);
+		panelCompletJourDeLasemaine.setBackground(Color.PINK);
+		panelCompletJourDeLasemaine.setLayout(new BorderLayout());
+		afficheJourDeLaSemaine();
+		
 		panel.add(afficheHeure(tableauCreneau[0].length), BorderLayout.WEST);
-		panel.add(afficheSemaine(tableauCreneau), BorderLayout.CENTER);
-		panel.setBackground(Color.BLACK);
+		
+		afficherListeSemaine();
+		
+		panel.add(afficheCreneauDeLaSemaine(tableauCreneau), BorderLayout.CENTER);
 		return panel;
 	}
 	
-	
-	private JPanel afficheJourDeLaSemaine(int nbJour) {
-		LocalDate[] jours = Temps.getJourSemaine();
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2,nbJour));
+
+	private void afficheJourDeLaSemaine() {
+		panelCompletJourDeLasemaine.remove(panelJourDeLasemaine);
+		panelJourDeLasemaine = new JPanel();
+		int nbJour = tableauCreneau.length;
+		panelJourDeLasemaine.setLayout(new GridLayout(nbJour,0));
+		LocalDate[] jours = Temps.getJourSemaine(Temps.getAnnee(), semaineSelectionner);
+		panelJourDeLasemaine.setLayout(new GridLayout(2,nbJour));
 		for (int i=0; i<nbJour; i++) {
 			LocalDate jourActuel = jours[i];
 			String jour = jourActuel.getDayOfWeek().toString();			
-			panel.add(creerLabelInterface(jour));
+			panelJourDeLasemaine.add(creerLabelInterface(jour));
 		}
 		for (int i=0; i<nbJour; i++) {
 			LocalDate jourActuel = jours[i];
 			String date = jourActuel.getDayOfMonth() + "/" + jourActuel.getMonthValue() + "/" + jourActuel.getYear();			
-			panel.add(creerLabelInterface(date));
+			panelJourDeLasemaine.add(creerLabelInterface(date));
 		}
-		return panel;
+		panelCompletJourDeLasemaine.add(panelJourDeLasemaine,BorderLayout.CENTER);
+		this.revalidate();
 	}
 
 	
@@ -80,7 +94,64 @@ public class FenetreEmploiDuTemps extends JFrame{
 		return panel;
 	}
 
-	private JPanel afficheSemaine(CreneauHoraire [][] tableauCreneau) {
+	
+	private void afficherListeSemaine() {
+		configureSlider();
+		this.add(panelSemaine, BorderLayout.SOUTH);
+		panelSemaine.setLayout(new BoxLayout(panelSemaine, BoxLayout.Y_AXIS));
+		panelSemaine.add(slide);
+		changeSemaine();
+	}
+	
+	private void configureSlider() {
+		slide.setMinimum(0);
+		slide.setMaximum(42);
+	    slide.setPaintTicks(false);
+	    slide.setPaintLabels(false);
+	    int defaultPos = semaineSelectionner;
+	    if(defaultPos <= 10) { defaultPos = 10;}
+	    if(defaultPos >= 42) { defaultPos = 42;}
+	    slide.setValue(defaultPos-5);
+	    slide.addChangeListener(new ChangeListener(){
+	        public void stateChanged(ChangeEvent event){
+	        	changeSemaine();
+	        	afficheJourDeLaSemaine();
+	        }
+	      });  
+	}
+	
+	private void changeSemaine() {
+		panelSemaine.remove(panelListeSemaine);
+		panelListeSemaine = new JPanel();
+		int nbSemaine = 10;
+		int ecart = slide.getValue();
+		panelListeSemaine.setLayout(new GridLayout(0, nbSemaine));
+		for (int i=1; i<=nbSemaine; i++) {
+			panelListeSemaine.add(creerLabelInteractif(Integer.toString(i+ecart)));
+		}
+		panelSemaine.add(panelListeSemaine);
+		this.revalidate();
+	}
+
+	private JLabel creerLabelInteractif(String texte) {
+		JLabel label = new JLabel(texte);
+		label.addMouseListener(new SourisSemaineListener(this, label));
+		if(semaineSelectionner == Integer.parseInt(texte)) {
+			label.setOpaque(true);
+			label.setBackground(Color.YELLOW);
+		}
+		label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		label.setHorizontalAlignment(JLabel.CENTER);
+		return label;
+	}
+
+	public void selectionnerProjet(JLabel label) {
+		semaineSelectionner = Integer.parseInt(label.getText());
+		changeSemaine();
+    	afficheJourDeLaSemaine();
+	} 
+	
+	private JPanel afficheCreneauDeLaSemaine(CreneauHoraire [][] tableauCreneau) {
 		JPanel panel = new JPanel();
 		int nbJour = tableauCreneau.length;
 		panel.setLayout(new GridLayout(0, nbJour));
@@ -123,8 +194,7 @@ public class FenetreEmploiDuTemps extends JFrame{
 	private JLabel creerLabelInterface(String texte) {
 		JLabel label = new JLabel(texte);
 		label.setBackground(Color.GRAY);
-		Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
-		label.setBorder(border);
+		label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		return label;
 	}
 
