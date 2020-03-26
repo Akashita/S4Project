@@ -6,15 +6,37 @@ public class CreneauHoraire {
 	private String titre;
 	private int debut;
 	private int fin;
-	private boolean dispo; 
+	private int position;
 	
 	//Un creneau horaire est une plage de temps d'une heure qui a un debut et une fin
 	//il s'agit d'un element qui est contenu dans une journee : une journee est composee de creneaux horaires
-	public CreneauHoraire(String titre, int debut, boolean occupe) {
+	public CreneauHoraire(String titre, int debut) {
 		this.titre = titre;
 		this.debut = debut;
-		this.dispo = occupe;
 		fin = debut + 1; //On calcul la fin du creneau
+		
+		int i = Entreprise.HEURE_DEBUT_MATIN;
+		int pos = 0;
+		boolean posTrouve = false;
+		
+		//On cherche la position du creneau dans une journe (les creneaux sont tous les uns apres mes autres)
+		while(i != Entreprise.HEURE_FIN_APREM && !posTrouve) {
+			if (i == Entreprise.HEURE_FIN_MATIN) {
+				i = Entreprise.HEURE_DEBUT_APREM;
+			} 
+			if (i == debut) {
+				this.position = pos;
+				posTrouve = true;
+			}
+			pos++;
+			i++;
+		}
+		
+		
+	}
+	
+	public int getPosition() {
+		return position;
 	}
 	
 	public boolean estAvant(CreneauHoraire horaire) {
@@ -36,25 +58,7 @@ public class CreneauHoraire {
 	public int getFin() {
 		return fin;
 	}
-	
-	public boolean getDispo() {
-		return dispo;
-	}
-	
-	public void setDebut(int debut) {
-		this.debut = debut;
-		this.fin = debut+1;
-	}
-	
-	public void decalerAvant(int heure) { //Decale le creneau d'un nombre d'heure donn� dans le futur
-		this.debut = this.debut + heure;
-		this.fin = this.debut + 1;
-	}
-		
-	public void decalerAriere(int heure) { //Decale le creneau d'un nombre d'heure donn� dans le passe
-		this.debut = this.debut - heure;
-		this.fin = this.debut + 1;
-	}
+
 	
 	@Override 
 	public String toString() {

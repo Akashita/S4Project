@@ -28,6 +28,7 @@ public class Entreprise extends Observable{
 		public static final int HEURE_FIN_MATIN = 12;
 		public static final int HEURE_DEBUT_APREM = 13;
 		public static final int HEURE_FIN_APREM = 17;
+		
 		public static final int NB_HEURE_JOUR = 8;
 		
 		//cr�ation de l'entreprise unique il faudra lui ajouter un nom si on d�sire �tendre nos activit�s
@@ -69,7 +70,7 @@ public class Entreprise extends Observable{
 				
 			while (chargeAloue < charge) {	
 				if(act.creneauDispo(jourCourant, heureCourante)) { //Si le creneau est disponible pour toutes les ressources de l'activite
-					act.ajouterCreneau(new CreneauHoraire(heureCourante, false), jourCourant);
+					act.ajouterCreneau(new CreneauHoraire("TODO : REMPLACER LE TITRE", heureCourante), jourCourant);
 				}
 				
 				heureCourante = heureSuivante(heureCourante);

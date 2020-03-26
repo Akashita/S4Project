@@ -37,11 +37,7 @@ public class Ressource {
 			if(jours.containsKey(dateJours[i])){
 				for (int j = 0; j < Entreprise.NB_HEURE_JOUR; j++) {
 					creneauTMP = jours.get(dateJours[i]).get(j);
-					if(creneauTMP.getDispo()) {
-						semaineEDT[i][j] = null;
-					} else {
-						semaineEDT[i][j] = creneauTMP;
-					}				
+					semaineEDT[i][j] = creneauTMP;				
 				}
 			} else {
 				for (int j = 0; j < Entreprise.NB_HEURE_JOUR; j++) {
@@ -54,13 +50,8 @@ public class Ressource {
 	
 	private ArrayList<CreneauHoraire> creeJourneeCreneauLibre() {
 		ArrayList<CreneauHoraire> creneaux = new ArrayList<CreneauHoraire>();
-		int heure = Entreprise.HEURE_DEBUT_MATIN;
 		for (int i = 0; i < Entreprise.NB_HEURE_JOUR; i++) {
-			if (heure == Entreprise.HEURE_FIN_MATIN) {
-				heure = Entreprise.HEURE_DEBUT_APREM;
-			} 
-			creneaux.add(new CreneauHoraire(heure, true));
-			heure += 1;
+			creneaux.add(null);
 		}
 		return creneaux;
 	}
@@ -76,12 +67,11 @@ public class Ressource {
 			listTMP = creeJourneeCreneauLibre();
 		}
 
-		for (int i = 0; i < listTMP.size(); i++) {
-			if (listTMP.get(i).equals(creneau) && listTMP.get(i).getDispo()) {
-				listTMP.set(i, creneau);
-				place = true;
-				jours.put(jour, listTMP); //On creee un nouveau jour avec une arraylist de creneaux (qui n'en contient que un seul pour le moment)
-			}
+		if(listTMP.get(creneau.getPosition()) == null) {
+			listTMP.set(creneau.getPosition(), creneau);
+			jours.put(jour, listTMP);
+			place = true;
+
 		}
 		return place;
 	}
@@ -92,8 +82,8 @@ public class Ressource {
 		if(jours.containsKey(date)) {
 			ArrayList<CreneauHoraire> jour = jours.get(date);
 			for (int i = 0; i < jour.size(); i++) {
-				if(jour.get(i).equals(new CreneauHoraire(heure, false))) {
-					return jour.get(i).getDispo();
+				if(jour.get(i).getDebut() == heure){ //equals(new CreneauHoraire(heure, false))) {
+					return jour.get(i) == null;
 				}
 			}
 		}
@@ -126,7 +116,7 @@ public class Ressource {
 	private ArrayList<CreneauHoraire> getCreneauxLibresJour(ArrayList<CreneauHoraire> jourCourant) { //Retourne les cr�neaux libres d'une journ�e
 		ArrayList<CreneauHoraire> creneauxLibres = new ArrayList<CreneauHoraire>();
 		for (int j = 0; j < jourCourant.size(); j++) {
-			if(jourCourant.get(j).getDispo()) {
+			if(jourCourant.get(j) == null) {
 				creneauxLibres.add(jourCourant.get(j));
 			}
 		}

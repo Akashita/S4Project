@@ -9,18 +9,22 @@ import Ressource.Personne;
 public class Main {
 	public static void main (String[] args) {
 		Entreprise entreprise = new Entreprise();
-		//new FenetrePrincipale(entreprise);
+		new FenetrePrincipale(entreprise);
 		
+		/*
+		CreneauHoraire cr = new CreneauHoraire("titre", 15);
+		System.out.println(cr.getPosition());
+		*/
 
 		Personne p1 = new Personne("azert", "yolo", "chef", 1555);
 
-		p1.ajouterCreneau(new CreneauHoraire(8, false), LocalDate.of(2020, 03, 26));
-		p1.ajouterCreneau(new CreneauHoraire(10, false), LocalDate.of(2020, 03, 26));
-		p1.ajouterCreneau(new CreneauHoraire(15, false), LocalDate.of(2020, 03, 26));
-		p1.ajouterCreneau(new CreneauHoraire(13, false), LocalDate.of(2020, 03, 26));
+		p1.ajouterCreneau(new CreneauHoraire("titre", 8), LocalDate.of(2020, 03, 26));
+		p1.ajouterCreneau(new CreneauHoraire("titre", 10), LocalDate.of(2020, 03, 26));
+		p1.ajouterCreneau(new CreneauHoraire("titre", 15), LocalDate.of(2020, 03, 26));
+		p1.ajouterCreneau(new CreneauHoraire("titre", 13), LocalDate.of(2020, 03, 26));
 
-		p1.ajouterCreneau(new CreneauHoraire(11, false), LocalDate.of(2020, 03, 27));
-		p1.ajouterCreneau(new CreneauHoraire(13, false), LocalDate.of(2020, 03, 27));
+		p1.ajouterCreneau(new CreneauHoraire("titre", 11), LocalDate.of(2020, 03, 27));
+		p1.ajouterCreneau(new CreneauHoraire("titre", 13), LocalDate.of(2020, 03, 27));
 
 		
 		CreneauHoraire[][] edt = p1.getSemaineEDT(2020, 13);
@@ -34,13 +38,14 @@ public class Main {
 			} 
 			System.out.println("");
 		}
+
 		/*
 		System.out.println(p1.getCreneauxLibres());
 		
 		Personne p2 = new Personne("az", "yo", "ch", 1554);
-		p2.ajouterCreneau(new CreneauHoraire(9, false), LocalDate.of(2020, 03, 26));
-		p2.ajouterCreneau(new CreneauHoraire(10, false), LocalDate.of(2020, 03, 26));
-		p2.ajouterCreneau(new CreneauHoraire(13, false), LocalDate.of(2020, 03, 26));
+		p2.ajouterCreneau(new CreneauHoraire(9), LocalDate.of(2020, 03, 26));
+		p2.ajouterCreneau(new CreneauHoraire(10), LocalDate.of(2020, 03, 26));
+		p2.ajouterCreneau(new CreneauHoraire(13), LocalDate.of(2020, 03, 26));
 			
 		System.out.println(p2.getCreneauxLibres());
 
