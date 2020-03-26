@@ -18,7 +18,7 @@ import Model.Projet;
  * @author damien planchamp
  *
  */
-public class FenetreNouvelleActivite extends JDialog{
+public class FenetreNouvelleActivite extends JDialog implements FenetreInterface{
 	/**
 	 * 
 	 */
@@ -49,7 +49,8 @@ public class FenetreNouvelleActivite extends JDialog{
 	/**
 	 * creation de l'interface 
 	 */
-	private void creationInterface() {
+	@Override
+	public void creationInterface() {
 
 		panelPrincipal.removeAll();
 		panelPrincipal.setBackground(Color.WHITE);
@@ -127,8 +128,8 @@ public class FenetreNouvelleActivite extends JDialog{
 		
 	}
 	
-	
-	private JPanel ajoutBouton() {
+	@Override
+	public JPanel ajoutBouton() {
 		JPanel panel = new JPanel();
 		panel.setSize(this.getWidth(),10);
 		panel.add(creerBouttonAnnuler());
@@ -229,4 +230,23 @@ public class FenetreNouvelleActivite extends JDialog{
 		}
 		return true;
 	}
+
+	@Override
+	public void actionBoutonFin() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public JButton creerBoutonFin() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JButton creerBoutonAnnuler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

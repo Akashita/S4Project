@@ -18,7 +18,7 @@ import Ressource.Ressource;
  * @author damien planchamp
  *
  */
-public class FenetreNouvelleRessource extends JDialog{
+public class FenetreNouvelleRessource extends JDialog implements FenetreInterface{
 	/**
 	 * 
 	 */
@@ -39,6 +39,8 @@ public class FenetreNouvelleRessource extends JDialog{
 			tailleLargeurCalculateur = 360,
 			tailleHauteurCalculateur = 180;
 
+	private String type;
+	
 	public FenetreNouvelleRessource(Entreprise entreprise) {
 		this.entreprise = entreprise;
 		this.setSize(300,100);
@@ -51,7 +53,8 @@ public class FenetreNouvelleRessource extends JDialog{
 	/**
 	 * creation de l'interface 
 	 */
-	private void creationInterface() {
+	@Override
+	public void creationInterface() {
 		/*
 		 * le panel principal gere le type de la ressource
 		 * le panel secondaire gere les informations de saisie pour la ressource 
@@ -63,10 +66,10 @@ public class FenetreNouvelleRessource extends JDialog{
 		comboBoxType.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				String type = (String)comboBoxType.getSelectedItem();
+				type = (String)comboBoxType.getSelectedItem();
 				changeTailleFenetre(type);
 				panelSecondaire.removeAll();
-				panelSecondaire.add(creationRessourceInterface(type));
+				panelSecondaire.add(creationRessourceInterface());
 				panelPrincipal.add(panelSecondaire);
 				panelPrincipal.revalidate();
 			}
@@ -105,7 +108,7 @@ public class FenetreNouvelleRessource extends JDialog{
 	 * @param type 
 	 * @return un panel contenant les champs à saisir en fonction de la ressource
 	 */
-	private JPanel creationRessourceInterface(String type) {
+	private JPanel creationRessourceInterface() {
 	    JPanel panelPrincipal= new JPanel();
 	    panelPrincipal.setBackground(Color.white);
 	    panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
@@ -128,8 +131,8 @@ public class FenetreNouvelleRessource extends JDialog{
 		JPanel panel2 = new JPanel();
 		panel2.setBackground(Color.white);
 		panel2.setLayout(new GridLayout(1, 1));
-		panel2.add(creerBouttonNouv(type));
-		panel2.add(creerBouttonAnnuler());
+		panel2.add(creerBoutonFin());
+		panel2.add(creerBoutonAnnuler());
 		panelPrincipal.add(panel2);
 		return panelPrincipal;
 	}
@@ -182,39 +185,19 @@ public class FenetreNouvelleRessource extends JDialog{
 		return panel;
 	}
 
-	/**
-	 * 
-	 * @param type
-	 * @return le bouton qui permet l'action pour creer la nouvelle ressource
-	 */
-	private JButton creerBouttonNouv(String type) {
-		JButton bouton = new JButton("Creer");
-	    bouton.addActionListener(new ActionListener() {  
-	        public void actionPerformed(ActionEvent e) {
-			        ajouterRessourceAEntreprise(type);	 
-	        }
-	    });			
-	    return bouton;
+
+	private boolean estUnEntier(String chaine) {
+		try {
+			Integer.parseInt(chaine);
+		} catch (NumberFormatException e){
+			return false;
+		}
+		return true;
 	}
-	
-	/**
-	 * 
-	 * @return le bouton qui permet l'action pour fermer la fenetre
-	 */
-	private JButton creerBouttonAnnuler() {
-		JButton bouton = new JButton("Annuler");
-	    bouton.addActionListener(new ActionListener() {  
-	        public void actionPerformed(ActionEvent e) {
-	        	dispose();
-	        }
-	    });			
-	    return bouton;
-	}
-	
-	/**
-	 * verifie les informations saisie et ajoute la ressource au model (Entreprise)
-	 */
-	private void ajouterRessourceAEntreprise(String type) {
+
+
+	@Override
+	public void actionBoutonFin() {
 		if (!nom.getText().isEmpty()) {
 			if (type == Ressource.PERSONNE) {
 				if (!prenom.getText().isEmpty()) {
@@ -242,12 +225,31 @@ public class FenetreNouvelleRessource extends JDialog{
 		}
 	}
 
-	private boolean estUnEntier(String chaine) {
-		try {
-			Integer.parseInt(chaine);
-		} catch (NumberFormatException e){
-			return false;
-		}
-		return true;
+	@Override
+	public JButton creerBoutonFin() {
+		JButton bouton = new JButton("Creer");
+	    bouton.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	actionBoutonFin();	 
+	        }
+	    });			
+	    return bouton;
+	}
+
+	@Override
+	public JButton creerBoutonAnnuler() {
+		JButton bouton = new JButton("Annuler");
+	    bouton.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	dispose();
+	        }
+	    });			
+	    return bouton;
+	}
+
+	@Override
+	public JPanel ajoutBouton() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

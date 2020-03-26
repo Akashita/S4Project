@@ -26,47 +26,13 @@ import Ressource.Ressource;
  * @author damien planchamp
  *
  */
-public class FenetreEnleverRessource extends JDialog{
+public class FenetreEnleverRessource extends JDialog implements FenetreInterface{
 	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
 	private JPanel panelPrincipal = new JPanel();
     private JComboBox<String> comboBoxRessource;
 	ArrayList<Ressource> listeRessource;
 
-	/*public FenetreEnleverRessource(Entreprise entreprise) {
-		this.entreprise = entreprise;
-		if (entreprise.getProjetSelectionner() != null) {
-			if (entreprise.getActiviteSelectionner() != null) {
-				
-				this.setTitle("Ajout ressource");
-				this.setSize(300,200);
-				this.setLocationRelativeTo(null);
-				this.addWindowListener(new FermerFenetre(this));
-				this.setVisible(true);
-				
-				JRootPane rootPane = this.getRootPane();
-				rootPane.getInputMap().put(
-						KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-						"close");
-				rootPane.getActionMap().put("close", new AbstractAction() {
-					public void actionPerformed(ActionEvent e) {
-						//this.setVisible(false);
-						dispose();
-					}
-				});
-
-
-				creationInterface();							
-			}
-			else {
-		    	JOptionPane.showMessageDialog(null, "Aucune activité selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
-			}
-		}
-		else {
-	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}
-	}*/
-	
     public FenetreEnleverRessource(Entreprise entreprise) {
 		this.entreprise= entreprise;
 		if (entreprise.getProjetSelectionner() != null) { // on vérifie qu'un projet est selectionné
@@ -108,7 +74,8 @@ public class FenetreEnleverRessource extends JDialog{
     /**
      * creer l'interface
      */
-	private void creationInterface() {
+    @Override
+	public void creationInterface() {
 		panelPrincipal.setBackground(Color.white);
 		panelPrincipal.setLayout(new GridLayout(2, 0));
 	    panelPrincipal.setBorder(BorderFactory.createTitledBorder("Enlever ressource du Projet"));
@@ -118,8 +85,7 @@ public class FenetreEnleverRessource extends JDialog{
 		}
 		this.add(panelPrincipal);		
 	}
-	
-	
+		
 	// creer le bouton pour enlever la ressource selectionné
 	private JButton creerBoutton() {
 		JButton bouton = new JButton("Enlever");
@@ -161,6 +127,30 @@ public class FenetreEnleverRessource extends JDialog{
 			tab[i] = listeNom.get(i);
 		}
 		return tab;
+	}
+
+	@Override
+	public void actionBoutonFin() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public JButton creerBoutonFin() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JButton creerBoutonAnnuler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JPanel ajoutBouton() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 
 }

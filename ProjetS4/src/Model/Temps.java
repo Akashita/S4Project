@@ -8,25 +8,31 @@ import java.util.Locale;
 
 public final class Temps {
 	
-	public static int getSemaine() {
-		LocalDate date = LocalDate.now();
-		TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear(); 
-		return date.get(woy);
+	public static LocalDate getAujourdhui() {
+		return LocalDate.now();
 	}
 	
+	public static int getSemaine() {
+		TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear(); 
+		return getAujourdhui().get(woy);
+	}
 	
-	//TODO Risque de poser problème lors du changement d'année
+	public static int getAnnee() {
+		return getAujourdhui().getYear();
+	}
+	
+	//TODO Risque de poser problï¿½me lors du changement d'annï¿½e
 	public static LocalDate[] getJourSemaine(int annee, int semaine) {
 		LocalDate[] tab = new LocalDate[5];
 		
-		//On récupère le numéro du premier jour (initialisé au lundi) de la semaine passée en paramètre
+		//On rï¿½cupï¿½re le numï¿½ro du premier jour (initialisï¿½ au lundi) de la semaine passï¿½e en paramï¿½tre
 		Calendar cal = Calendar.getInstance();
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
 		cal.setWeekDate(annee, semaine, Calendar.MONDAY);
 		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
 		
 		//On remplit le tableau avec les 5 jours ouvrables de la semaine (lundi -> vendredi)
-		// en incrémentant le numéro du jour 
+		// en incrï¿½mentant le numï¿½ro du jour 
 		for (int i = 0; i < 5; i++) {
 			tab[i] = LocalDate.ofYearDay(annee, numJour+i);
 		}

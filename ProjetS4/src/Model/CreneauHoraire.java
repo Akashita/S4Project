@@ -1,14 +1,17 @@
 package Model;
 
+import java.awt.Color;
+
 public class CreneauHoraire {
+	private String titre;
 	private int debut;
 	private int fin;
-	private boolean dispo;
-	
+	private boolean dispo; 
 	
 	//Un creneau horaire est une plage de temps d'une heure qui a un debut et une fin
 	//il s'agit d'un element qui est contenu dans une journee : une journee est composee de creneaux horaires
-	public CreneauHoraire(int debut, boolean occupe) {
+	public CreneauHoraire(String titre, int debut, boolean occupe) {
+		this.titre = titre;
 		this.debut = debut;
 		this.dispo = occupe;
 		fin = debut + 1; //On calcul la fin du creneau
@@ -22,6 +25,10 @@ public class CreneauHoraire {
 		return debut >= horaire.fin;
 	}
 
+	public String getTitre() {
+		return titre;
+	}
+	
 	public int getDebut() {
 		return debut;
 	}
@@ -39,16 +46,12 @@ public class CreneauHoraire {
 		this.fin = debut+1;
 	}
 	
-	public void decalerAvant(int heure) { //Decale le creneau d'un nombre d'heure donné dans le futur
+	public void decalerAvant(int heure) { //Decale le creneau d'un nombre d'heure donnï¿½ dans le futur
 		this.debut = this.debut + heure;
 		this.fin = this.debut + 1;
 	}
-	
-	public CreneauHoraire creneauSuivant(boolean occupe) { //Retourne le creneau suivant (un nouveau creneau)
-		return new CreneauHoraire(debut + 1, occupe);
-	}
-	
-	public void decalerAriere(int heure) { //Decale le creneau d'un nombre d'heure donné dans le passe
+		
+	public void decalerAriere(int heure) { //Decale le creneau d'un nombre d'heure donnï¿½ dans le passe
 		this.debut = this.debut - heure;
 		this.fin = this.debut + 1;
 	}

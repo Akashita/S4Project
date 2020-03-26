@@ -11,7 +11,7 @@ import Model.Entreprise;
 import Model.Projet;
 import Ressource.*;
 
-public class FenetreAjouterRessource extends JDialog{
+public class FenetreAjouterRessource extends JDialog implements FenetreInterface{
 	private static final long serialVersionUID = 1L;
 	
 	private Entreprise entreprise;
@@ -68,7 +68,8 @@ public class FenetreAjouterRessource extends JDialog{
 		}
 	}
 	
-	private void creationInterface() {
+	@Override
+	public void creationInterface() {
 		panelPrincipal.setBackground(Color.WHITE);
 		panelSecondaire.setBackground(Color.WHITE);
 		this.add(panelPrincipal);
@@ -177,13 +178,34 @@ public class FenetreAjouterRessource extends JDialog{
 	//ajoute la ressource  dans l'activité
 	private void ajouterRessource() {
 		int index = comboBoxRessource.getSelectedIndex();
-	    Ressource ressource = getRessource(index);
+	    Ressource ressource = listeRessource.get(index);
 		entreprise.ajouterRessourceActivite(ressource);
 	    dispose();			
 	}
-	
-	private Ressource getRessource(int index) {
-		return listeRessource.get(index);
+
+
+
+	@Override
+	public void actionBoutonFin() {
+		// TODO Auto-generated method stub
+		
 	}
 
+	@Override
+	public JButton creerBoutonFin() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JButton creerBoutonAnnuler() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JPanel ajoutBouton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

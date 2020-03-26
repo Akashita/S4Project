@@ -2,6 +2,7 @@ package Fenetre;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -15,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import EcouteurEvenement.SourisEmploieDuTempsListener;
+//import EcouteurEvenement.SourisEmploieDuTempsListener;
 import Model.CreneauHoraire;
 import Model.Entreprise;
 import Model.Projet;
@@ -27,8 +28,6 @@ public class FenetreEmploiDuTemps extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	private Ressource ressource;
-	private int nbJour = 5;
-	private	int nbHeure = 9;
 	
 	
 	public FenetreEmploiDuTemps(Ressource ressource) {
@@ -43,18 +42,18 @@ public class FenetreEmploiDuTemps extends JFrame{
 
 	
 	private JPanel afficherEmploiDuTemps() {
+		CreneauHoraire [][] tableauCreneau = ressource.getSemaineEDT(Temps.getAnnee(), Temps.getSemaine());
 		JPanel panel = new JPanel();		
 		panel.setLayout(new BorderLayout());
-		panel.add(afficheJour(), BorderLayout.NORTH);
-		panel.add(afficheHeure(), BorderLayout.WEST);
-		panel.add(afficheSemaine(), BorderLayout.CENTER);
+		panel.add(afficheJourDeLaSemaine(tableauCreneau.length), BorderLayout.NORTH);
+		panel.add(afficheHeure(tableauCreneau[0].length), BorderLayout.WEST);
+		panel.add(afficheSemaine(tableauCreneau), BorderLayout.CENTER);
 		panel.setBackground(Color.BLACK);
 		return panel;
 	}
 	
-		
-	private JPanel afficheJour() {
-		nbJour = 5;
+	
+	private JPanel afficheJourDeLaSemaine(int nbJour) {
 		LocalDate[] jours = Temps.getJourSemaine();
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0,nbJour));
@@ -68,9 +67,9 @@ public class FenetreEmploiDuTemps extends JFrame{
 		}
 		return panel;
 	}
+
 	
-	private JPanel afficheHeure() {
-		nbHeure = 9;
+	private JPanel afficheHeure(int nbHeure) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(nbHeure,0));
 		for (int i=0; i<nbHeure; i++) {
@@ -83,79 +82,44 @@ public class FenetreEmploiDuTemps extends JFrame{
 		return panel;
 	}
 
-	private JPanel afficheSemaine() {
-		ArrayList<CreneauHoraire>listeCreneau = ressource.getCreneauTravail(Temps.getJourSemaine());
+	private JPanel afficheSemaine(CreneauHoraire [][] tableauCreneau) {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(0,nbJour));
+		int nbJour = tableauCreneau.length;
+		panel.setLayout(new GridLayout(0, nbJour));
 		for (int i=0; i<nbJour; i++) {
-			panel.add(afficheJour(listeCreneau));
+			panel.add(afficheJour(tableauCreneau[i]));
 		}
 		return panel;
 	}
 	
-	private JPanel afficheJour(ArrayList<CreneauHoraire>listeCreneau) {
+	private JPanel afficheJour(CreneauHoraire [] tableauCreneau) {
 		JPanel panel = new JPanel();
+		int nbHeure = tableauCreneau.length;
 		panel.setLayout(new GridLayout(nbHeure,0));
 		for (int i=0; i<nbHeure; i++) {
-			int heure = i+8;
-			LocalDateTime debut = null;
-			LocalDateTime fin = null;
-			if (listePlage.size() > i) {
-				if(listePlage.get(i).getDebut().getHour() == heure) {
-					panel.add(creerLabelAffiche(ressource.getNom(), ressource.getType(), projet.getNom()));
-				}
-				else {
-					panel.add(creerLabelAjout("", "aucun", projet.getNom(), debut, fin));
-				}				
-			}
-			else {
-				panel.add(creerLabelAjout("", "aucun", projet.getNom(), debut, fin));			
+			CreneauHoraire creneau = tableauCreneau[i];
+			if (creneau != null) {
+				panel.add(creerLabelCreneau(creneau));
 			}
 		}
 		return panel;
 	}
-	
-	private JLabel creerLabelAjout(String texte, String type, String nomProjet, LocalDate date) {
+
+
+	private JLabel creerLabelCreneau(CreneauHoraire creneau) {
 		JLabel label = new JLabel();
-		label.setText(texte);
-		label.setBackground(donneCouleur(type));
-		label.addMouseListener(new SourisEmploieDuTempsListener(this, ressource, nomProjet, date));
-		Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
-		label.setBorder(border);
+		if (creneau != null) {
+			label.setText(creneau.getTitre());
+			label.setOpaque(true);
+			label.setBackground(Color.GREEN);			
+		}
 		return label;
 	}
 	
-	private JLabel creerLabelAffiche(String texte, String type, String nomProjet) {
-		JLabel label = new JLabel();
-		label.setText(texte);
-		label.setBackground(donneCouleur(type));
-		Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
-		label.setBorder(border);
-		return label;
-	}
-	
-	private Color donneCouleur(String type) {
-		Color couleur = null;
-		if (type == Ressource.PERSONNE) {
-			couleur = Color.CYAN;
-		}
-		if (type == Ressource.SALLE) {
-			couleur = Color.GREEN;
-		}
-		if (type == Ressource.CALCULATEUR) {
-			couleur = Color.MAGENTA;
-		}
-		else {
-			couleur = Color.WHITE;
-		}
-		return couleur;
-	}
 	
 
 	private JLabel creerLabelInterface(String texte) {
-		JLabel label = new JLabel();
-		LocalDate tabDate[] = Temps.getJourSemaine(numeroSemaine);
-		label.setText(texte + );
+		JLabel label = new JLabel(texte);
 		label.setBackground(Color.GRAY);
 		Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
 		label.setBorder(border);
