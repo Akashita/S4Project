@@ -1,7 +1,6 @@
 package Model;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 import Ressource.Ressource;
@@ -29,21 +28,12 @@ public class Activite implements Comparable<Activite>{
 	public void ajouterRessource(Ressource res) {
 		ressources.add(res);
 	}
-
-	public void enleverRessource(Ressource res) {
-		for (int i=0; i<ressources.size(); i++) {
-			if (res.getId() == ressources.get(i).getId()) {
-				ressources.remove(i);
-				break;
-			}
-		}
-	}
-
-	public boolean creneauDispo(LocalDate date, LocalTime heure){
-		Boolean dispo = false;
+	
+	public boolean creneauDispo(LocalDate date, int heure){
+		Boolean dispo = true;
 		for (int i = 0; i < ressources.size(); i++) {
-			if(ressources.get(i).creneauDispo(date, heure) == true) {
-				
+			if(!ressources.get(i).creneauDispo(date, heure)) {
+				dispo = false;
 			}
 		}
 		return dispo;
@@ -71,6 +61,16 @@ public class Activite implements Comparable<Activite>{
 		return suppr;
 	}
 	
+	public ArrayList<Ressource> getListeRessourceType(String type){
+		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
+		for (int i=0; i<ressources.size(); i++) {
+			Ressource ressource = ressources.get(i);
+			if(ressource.getType() == type) {
+				nouvelleListe.add(ressource);
+			}
+		}
+		return nouvelleListe;
+	}
 	
 	/*@Override
 	public String toString() {
@@ -109,17 +109,6 @@ public class Activite implements Comparable<Activite>{
 		return ressources;
 	}
 	
-	public ArrayList<Ressource> getListeRessourceType(String type){
-		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
-		for (int i=0; i<ressources.size(); i++) {
-			Ressource ressource = ressources.get(i);
-			if(ressource.getType() == type) {
-				nouvelleListe.add(ressource);
-			}
-		}
-		return nouvelleListe;
-	}
-
 	public String getJourDebut() {
 		String jour = Integer.toString(debut.getDayOfMonth());
 		String mois = Integer.toString(debut.getMonthValue());
@@ -146,4 +135,5 @@ public class Activite implements Comparable<Activite>{
 	public int compareTo(Activite act) {
 		return ordre.compareTo(act.ordre);
 	}
+
 }

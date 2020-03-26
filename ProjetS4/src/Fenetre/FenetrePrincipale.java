@@ -92,10 +92,10 @@ public class FenetrePrincipale extends JFrame{
 	    itemEnlever.setAccelerator(ctrlEnlever);
 	    itemEnlever.addActionListener(new EnleverRessourceListener(entreprise));
 
-	    JMenuItem itemNouvelleActivité = new JMenuItem("Ajoutre activité", KeyEvent.VK_Y);
-	    KeyStroke ctrlNouvelleActivité = KeyStroke.getKeyStroke("control Y");
-	    itemNouvelleActivité.setAccelerator(ctrlNouvelleActivité);
-	    itemNouvelleActivité.addActionListener(new nouvelleActiviteListener(entreprise));
+	    JMenuItem itemNouvelleActivite = new JMenuItem("Ajoutre Activite", KeyEvent.VK_Y);
+	    KeyStroke ctrlNouvelleActivite = KeyStroke.getKeyStroke("control Y");
+	    itemNouvelleActivite.setAccelerator(ctrlNouvelleActivite);
+	    itemNouvelleActivite.addActionListener(new nouvelleActiviteListener(entreprise));
 
 		JMenuItem itemModifier = new JMenuItem("Modifier");
 		JMenuItem itemSupprimer = new JMenuItem("Supprimer Projet");
@@ -112,7 +112,7 @@ public class FenetrePrincipale extends JFrame{
 		
 		menuEditer.add(itemAjout);
 		menuEditer.add(itemEnlever);
-		menuEditer.add(itemNouvelleActivité);
+		menuEditer.add(itemNouvelleActivite);
 		menuEditer.add(itemModifier);
 		menuEditer.add(itemSupprimer);
 		

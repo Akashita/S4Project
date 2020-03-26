@@ -1,6 +1,7 @@
 package Model;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -23,6 +24,12 @@ public class Entreprise extends Observable{
 		private int idAct; //id des activités
 		private ArrayList<JPanel> lPanel = new ArrayList<JPanel>();
 
+		public static final int HEURE_DEBUT_MATIN = 8;
+		public static final int HEURE_FIN_MATIN = 12;
+		public static final int HEURE_DEBUT_APREM = 13;
+		public static final int HEURE_FIN_APREM = 17;
+		public static final int NB_HEURE_JOUR = 8;
+		
 		//cr�ation de l'entreprise unique il faudra lui ajouter un nom si on d�sire �tendre nos activit�s
 		public Entreprise() {
 			this.lProjet =  new ArrayList<Projet>();
@@ -46,7 +53,7 @@ public class Entreprise extends Observable{
 		public void majEDT() {
 			ArrayList<Activite> lActivite;
 			 for (int i = 0; i < lProjet.size(); i++) {
-				 lActivite = lProjet.get(i).getListeActivite();
+				 lActivite = lProjet.get(i).getListe();
 				 for (int j = 0; j < lActivite.size(); j++) {
 					creerLCreneaux(lActivite.get(i));
 				}
@@ -55,12 +62,41 @@ public class Entreprise extends Observable{
 		
 		private void creerLCreneaux(Activite act) {
 			int charge = act.getCharge();
-			LocalDateTime debut = act.getDebut();
-			ArrayList<LocalDateTime> lCreneau;
 			int chargeAloue = 0;
+			
+			LocalDate jourCourant = act.getDebut();
+			int heureCourante = HEURE_DEBUT_MATIN;
+				
 			while (chargeAloue < charge) {	
-				//TODO A TERMINER
+				if(act.creneauDispo(jourCourant, heureCourante)) { //Si le creneau est disponible pour toutes les ressources de l'activite
+					act.ajouterCreneau(new CreneauHoraire(heureCourante, false), jourCourant);
+				}
+				
+				heureCourante = heureSuivante(heureCourante);
+				if(heureCourante == HEURE_DEBUT_MATIN) {
+					jourCourant = jourSuivant(jourCourant);
+				}
 			}
+		}
+		
+		private LocalDate jourSuivant(LocalDate jourCourant) {
+			if(jourCourant.getDayOfWeek() == DayOfWeek.FRIDAY) {
+				jourCourant.plus(3, ChronoUnit.DAYS);
+			} else {
+				jourCourant.plus(1, ChronoUnit.DAYS);
+			}
+			
+			return jourCourant;
+		}
+		
+		private int heureSuivante(int heureCourante) {
+			int heureSuivante = heureCourante + 1;
+			if(heureSuivante == HEURE_FIN_MATIN) {
+				heureSuivante = HEURE_DEBUT_APREM;
+			} else if (heureSuivante == HEURE_FIN_APREM){
+				heureSuivante = HEURE_DEBUT_MATIN;
+			} 
+			return heureSuivante;
 		}
 		
 		
@@ -119,7 +155,7 @@ public class Entreprise extends Observable{
 		
 		public void selectionnerActivite(int id) {
 			Projet projet = getProjetSelectionner();
-			ArrayList<Activite> listeAct = projet.getListeActivite();
+			ArrayList<Activite> listeAct = projet.getListe();
 			for (int i=0; i<listeAct.size(); i++) {
 				Activite act = listeAct.get(i);
 				if (act.getId() == id) {
@@ -130,7 +166,7 @@ public class Entreprise extends Observable{
 		}
 		
 		public void deselectionnerActivite() { //utile pour le graphique
-			ArrayList<Activite> listeAct = getProjetSelectionner().getListeActivite();
+			ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
 			for (int i=0; i<listeAct.size(); i++) {
 				listeAct.get(i).deselectionner();
 			}
@@ -138,7 +174,7 @@ public class Entreprise extends Observable{
 
 		public Activite getActiviteSelectionner() {
 			//Projet projet = getProjetSelectionner();
-			ArrayList<Activite> listeAct = getProjetSelectionner().getListeActivite();
+			ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
 			Activite act = null;
 			for (int i=0; i<listeAct.size();i++) {
 				if (listeAct.get(i).getSelectionner()) {
@@ -328,12 +364,12 @@ public class Entreprise extends Observable{
 		
 		public void enleverRessourceActivite(Ressource res) {
 			Activite act = getActiviteSelectionner();
-			act.enleverRessource(res);
+			//act.enleverRessource(res); TODO
 			update();
 		}
 		
 		public void afficheInfoRessource(Ressource res) {
-			p
+			//TODO
 		}
 		
 		public void update() {
