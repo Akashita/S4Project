@@ -9,7 +9,7 @@ import Ressource.Personne;
 public class Main {
 	public static void main (String[] args) {
 		Entreprise entreprise = new Entreprise();
-		new FenetrePrincipale(entreprise);
+		//new FenetrePrincipale(entreprise);
 		
 
 		Personne p1 = new Personne("azert", "yolo", "chef", 1555);
@@ -23,6 +23,18 @@ public class Main {
 		p1.ajouterCreneau(new CreneauHoraire(13, false), LocalDate.of(2020, 03, 27));
 
 		
+		CreneauHoraire[][] edt = p1.getSemaineEDT(2020, 13);
+		for (int i = 0; i < edt.length; i++) {
+			for (int j = 0; j < edt[0].length; j++) {
+				if(edt[i][j] == null) {
+					System.out.print(" rien ");
+				} else {
+					System.out.print(" "+edt[i][j].toString()+ " ");
+				}
+			} 
+			System.out.println("");
+		}
+		/*
 		System.out.println(p1.getCreneauxLibres());
 		
 		Personne p2 = new Personne("az", "yo", "ch", 1554);
@@ -41,7 +53,7 @@ public class Main {
 		Projet proj = new Projet("yolo", 1);
 		proj.ajouter(act1);
 		
-		
+		*/
 	
 	}		
 }

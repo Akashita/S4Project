@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 import Model.CreneauHoraire;
 import Model.Entreprise;
+import Model.Temps;
 
 public class Ressource {
 	protected String nom;
@@ -25,6 +26,30 @@ public class Ressource {
 		this.type = type;
 		this.jours = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>(); 
 		//La hashtable tri les creneaux horaires par jour (la clé est un LocalDate)
+	}
+	
+	public CreneauHoraire[][] getSemaineEDT(int annee, int semaine) {
+		CreneauHoraire[][] semaineEDT = new CreneauHoraire[5][Entreprise.NB_HEURE_JOUR];
+		LocalDate[] dateJours = Temps.getJourSemaine(annee, semaine);
+		CreneauHoraire creneauTMP;
+
+		for (int i = 0; i < dateJours.length; i++) {
+			if(jours.containsKey(dateJours[i])){
+				for (int j = 0; j < Entreprise.NB_HEURE_JOUR; j++) {
+					creneauTMP = jours.get(dateJours[i]).get(j);
+					if(creneauTMP.getDispo()) {
+						semaineEDT[i][j] = null;
+					} else {
+						semaineEDT[i][j] = creneauTMP;
+					}				
+				}
+			} else {
+				for (int j = 0; j < Entreprise.NB_HEURE_JOUR; j++) {
+					semaineEDT[i][j] = null;
+				}	
+			}
+		}
+		return semaineEDT;
 	}
 	
 	private ArrayList<CreneauHoraire> creeJourneeCreneauLibre() {

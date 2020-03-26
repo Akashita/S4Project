@@ -55,7 +55,7 @@ public class CreneauHoraire {
 	
 	@Override 
 	public String toString() {
-		return "Creneau : " + debut + '\n';
+		return "Cr" + debut;
 	}
 	
 	@Override
