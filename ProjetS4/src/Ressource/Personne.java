@@ -34,7 +34,7 @@ public class Personne extends Ressource{
 	
 	@Override
 	public String toString() {
-			return "PAS FAIT";
+			return "Personne : " + super.nom + " " + prenom + ", " + role + "";
 		}
 	
 	

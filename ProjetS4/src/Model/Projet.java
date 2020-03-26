@@ -4,37 +4,43 @@ import java.util.ArrayList;
 
 
 
-public class Projet {
+public class Projet implements Comparable<Projet>{
 
-	private ArrayList<Activite> listeActivite;//liste des activites
-	private String nom;//nom des projets, clefs primaires (sert ï¿½ les diffï¿½rencier)
-	private boolean selectionner = false;
+	private ArrayList<Activite> lActivite;//liste des activites
+	//trié par ordre de priorité
 	
-	public Projet(String nom) {
-		this.listeActivite =  new ArrayList<Activite>();
+	private String nom;//nom des projets, clefs primaires (sert ï¿½ les diffï¿½rencier)
+	private boolean selectionner;
+	private float priorite;
+	
+	public Projet(String nom, float priorite) {
+		this.lActivite =  new ArrayList<Activite>();
 		this.nom = nom;
+		this.selectionner = false;
+		this.priorite = priorite;
 	}
 	
 	public String getNom() {
 		return this.nom;
 	}
-	
+		
 	public String toString() {
 		String liste = "Nom du projet : " + this.nom + ". \nIl contient les activites suivantes : ";
 		
-		for(int i = 0; i < this.listeActivite.size(); i++){
-			liste += this.listeActivite.get(i).toString();
+		for(int i = 0; i < this.lActivite.size(); i++){
+			liste += this.lActivite.get(i).toString();
 			liste += "\n";
 		}
 		return liste;
 	}
+
 	
 	public boolean getSelectionner() {
 		return selectionner;
 	}
 
 	public ArrayList<Activite> getListe(){
-		return listeActivite;
+		return lActivite;
 	}
 	
 	public void selectionner() {
@@ -49,7 +55,17 @@ public class Projet {
 		int[] test = this.chercherActivite(activite);
 		
 		if (test[0]==0) {
-			this.listeActivite.add(activite);
+			Boolean place = false;
+			int i = 0;
+			while (i < lActivite.size() && !place) {
+				if (activite.compareTo(lActivite.get(i)) == 1) { //Si activite > lActivite.egt(i)
+					lActivite.add(i, activite);
+					place = true;
+				}
+			}
+			if (place = false) {
+				lActivite.add(activite);
+			}
 		}
 	}
 	
@@ -57,7 +73,7 @@ public class Projet {
 		int[] test = this.chercherActivite(activite);
 		
 		if (test[0]==1) {
-			this.listeActivite.remove(test[1]);
+			this.lActivite.remove(test[1]);
 		}
 	}
 	
@@ -65,13 +81,13 @@ public class Projet {
 		Boolean pasTrouve = true;
 		int[] res = {0,0};//a droite la place du projet cherchï¿½ et a gauche si il est trouvï¿½ 0 non/1 oui
 		
-		if (this.listeActivite.size()==0) {
+		if (this.lActivite.size()==0) {
 			return res;
 		}
 		else {
 			
 			do{
-				if (this.listeActivite.get(res[1]).equals(activite)) {
+				if (this.lActivite.get(res[1]).equals(activite)) {
 					res[0] = 1;
 					pasTrouve = false;
 				}
@@ -80,7 +96,7 @@ public class Projet {
 				}
 				
 			}
-			while((pasTrouve) && (res[1] < this.listeActivite.size()));
+			while((pasTrouve) && (res[1] < this.lActivite.size()));
 			return res;
 		}
 	}
@@ -93,5 +109,19 @@ public class Projet {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public int compareTo(Projet proj) {
+		int res;
+		if(priorite == proj.priorite) {
+			res = 0;
+		} else if(priorite < proj.priorite) {
+			res = -1;
+		} else {
+			res = 1;
+		}
+		
+		return res;
 	}	
 }

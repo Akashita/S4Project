@@ -9,7 +9,6 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -70,7 +69,7 @@ public class PanelRessource extends JPanel{
 	private JLabel creerLabel(String nom) {
 		JLabel label = new JLabel(nom);
 		label.setFont(new Font("Arial", Font.BOLD, 15));
-		label.addMouseListener(new SourisRessourceListener(this, label));
+		//label.addMouseListener(new SourisRessourceListener(this, label));
 		return label;
 	}
 	

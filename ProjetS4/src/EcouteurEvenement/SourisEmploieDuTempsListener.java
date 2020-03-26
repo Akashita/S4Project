@@ -2,25 +2,45 @@ package EcouteurEvenement;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.LocalDateTime;
 
-import javax.swing.JLabel;
+import Fenetre.FenetreEmploiDuTemps;
+import Ressource.Plage;
+import Ressource.Ressource;
 
-import Panel.PanelEmploiDuTemps;
-import Panel.PanelProjet;
+/**
+ * Cette classe permet l'interaction utilisateur machine avec l'emploi du temps
+ * pour pouvoir generer une nouvelle plage horaire pour une ressource
+ * 
+ * @author damien planchamp
+ *
+ */
 
 public class SourisEmploieDuTempsListener  implements MouseListener{
-	PanelEmploiDuTemps p;
-	JLabel label;
+	private FenetreEmploiDuTemps p;
+	private Ressource ressource;
+	private String nomProjet;
+	private String date;
+	private int jourHomme;
+	private int pourcent;
 	
-	public SourisEmploieDuTempsListener(PanelEmploiDuTemps p, JLabel label) {
+	public SourisEmploieDuTempsListener(FenetreEmploiDuTemps p, Ressource ressource, String nomProjet, String date, int jourHomme, int pourcent) {
 		this.p = p;
-		this.label = label;
+		this.ressource = ressource;
+		this.nomProjet = nomProjet;
+		this.date = date;
+		this.jourHomme = jourHomme;
+		this.pourcent = pourcent;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		Plage plage = new Plage(nomProjet, date, jourHomme, pourcent);
+		ressource.addPlage(plage);
+		p.dispose();
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package Fenetre;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,22 +9,30 @@ import java.awt.event.ItemListener;
 import javax.swing.*;
 
 import Model.Entreprise;
-import Panel.PanelRessource;
-import Ressource.Personne;
 import Ressource.Ressource;
 
+/**
+ * Cette fenetre affiche à l'utilisateur les données à rentrer pour
+ * creer une nouvelle ressource (Personne, Salle, Calculateur)
+ * 
+ * @author damien planchamp
+ *
+ */
 public class FenetreNouvelleRessource extends JDialog{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
 	private JPanel panelPrincipal = new JPanel();
     private JComboBox<String> comboBoxType;
 	private JPanel panelSecondaire = new JPanel();
 	
 	private JTextField nom, prenom, capacite;
-	private JRadioButton tranche1, tranche2, tranche3;
 
 	private final String NOM = "nom", PRENOM = "prenom", CAPACITE = "capacité";
 	
-	private final int tailleLargeurPersonne = 360,
+	private final int tailleLargeurPersonne = 400,
 			tailleHauteurPersonne = 220,
 			tailleLargeurSalle = 360,		
 			tailleHauteurSalle = 220,
@@ -39,10 +46,16 @@ public class FenetreNouvelleRessource extends JDialog{
 		this.addWindowListener(new FermerFenetre(this));
 		this.setVisible(true);
 		creationInterface();
-		//creationRessource(choixType());
 	}
 	
+	/**
+	 * creation de l'interface 
+	 */
 	private void creationInterface() {
+		/*
+		 * le panel principal gere le type de la ressource
+		 * le panel secondaire gere les informations de saisie pour la ressource 
+		 */
 		panelPrincipal.setBackground(Color.WHITE);
 		panelSecondaire.setBackground(Color.WHITE);
 		this.add(panelPrincipal);
@@ -53,13 +66,14 @@ public class FenetreNouvelleRessource extends JDialog{
 				String type = (String)comboBoxType.getSelectedItem();
 				changeTailleFenetre(type);
 				panelSecondaire.removeAll();
-				panelSecondaire.add(creationRessource(type));
+				panelSecondaire.add(creationRessourceInterface(type));
 				panelPrincipal.add(panelSecondaire);
 				panelPrincipal.revalidate();
 			}
 		});
 	}
 	
+	//adapte la taille de la fenetre en fonction du type de la ressource
 	private void changeTailleFenetre(String type) {
 		if (type == Ressource.PERSONNE) {
 			this.setSize(tailleLargeurPersonne, tailleHauteurPersonne);
@@ -72,6 +86,10 @@ public class FenetreNouvelleRessource extends JDialog{
 		}
 	}
 
+	/**
+	 * 
+	 * @return un panel contenant la combobox pour le choix du type
+	 */
 	private JPanel choixType() {
 	    String[] type = {"Choisissez le type de la ressource", Ressource.PERSONNE, Ressource.SALLE, Ressource.CALCULATEUR};
 	    comboBoxType = new JComboBox<String>(type);
@@ -82,7 +100,12 @@ public class FenetreNouvelleRessource extends JDialog{
 	    return panel;
 	}
 	
-	private JPanel creationRessource(String type) {
+	/**
+	 * 
+	 * @param type 
+	 * @return un panel contenant les champs à saisir en fonction de la ressource
+	 */
+	private JPanel creationRessourceInterface(String type) {
 	    JPanel panelPrincipal= new JPanel();
 	    panelPrincipal.setBackground(Color.white);
 	    panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
@@ -138,6 +161,9 @@ public class FenetreNouvelleRessource extends JDialog{
 	}
 
 	private JPanel creerJTextField(String type) {
+		/*
+		 * retourne un panel avec le champs de saisie et un label
+		 */
 	    JPanel panel = new JPanel();
 	    panel.setLayout(new GridLayout(1, 1));
 	    panel.add(new JLabel("Veillez saisir son " + type + ": "));
@@ -156,6 +182,11 @@ public class FenetreNouvelleRessource extends JDialog{
 		return panel;
 	}
 
+	/**
+	 * 
+	 * @param type
+	 * @return le bouton qui permet l'action pour creer la nouvelle ressource
+	 */
 	private JButton creerBouttonNouv(String type) {
 		JButton bouton = new JButton("Creer");
 	    bouton.addActionListener(new ActionListener() {  
@@ -166,6 +197,10 @@ public class FenetreNouvelleRessource extends JDialog{
 	    return bouton;
 	}
 	
+	/**
+	 * 
+	 * @return le bouton qui permet l'action pour fermer la fenetre
+	 */
 	private JButton creerBouttonAnnuler() {
 		JButton bouton = new JButton("Annuler");
 	    bouton.addActionListener(new ActionListener() {  
@@ -176,6 +211,9 @@ public class FenetreNouvelleRessource extends JDialog{
 	    return bouton;
 	}
 	
+	/**
+	 * verifie les informations saisie et ajoute la ressource au model (Entreprise)
+	 */
 	private void ajouterRessourceAEntreprise(String type) {
 		if (!nom.getText().isEmpty()) {
 			if (type == Ressource.PERSONNE) {
@@ -210,7 +248,6 @@ public class FenetreNouvelleRessource extends JDialog{
 		} catch (NumberFormatException e){
 			return false;
 		}
- 
 		return true;
 	}
 }

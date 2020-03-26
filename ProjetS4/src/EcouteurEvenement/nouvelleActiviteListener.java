@@ -1,31 +1,31 @@
 package EcouteurEvenement;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import Fenetre.FenetreEnleverRessource;
+import Fenetre.FenetreNouvelleActivite;
 import Model.Entreprise;
 
 /**
  * Cette classe permet l'interaction utilisateur machine avec la barre du menu
- * pour pouvoir enlever une ressource du projet selectionné
+ * pour pouvoir creer une activité au projet selectionner
  * 
  * @author damien planchamp
  *
  */
-public class EnleverRessourceListener implements ActionListener {
-	Entreprise entreprise;
+public class nouvelleActiviteListener implements ActionListener {
+	private Entreprise entreprise;
 	
-	public EnleverRessourceListener(Entreprise entreprise) {
+	public nouvelleActiviteListener(Entreprise entreprise) {
 		this.entreprise = entreprise;
 	}
-
+	
 	/**
 	 * creer une fenetre pour l'utilisateur pour 
-	 * qu'il choisisse quelle ressource à enlever
+	 * qu'il choisisse quelle ressource à ajouter
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new FenetreEnleverRessource(entreprise);
+		new FenetreNouvelleActivite(entreprise);
 	}
 
 }

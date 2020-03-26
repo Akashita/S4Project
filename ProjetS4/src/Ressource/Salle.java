@@ -34,7 +34,7 @@ public class Salle extends Ressource{
 	
 	
 	public String toString() {
-		return "PAS FAIT";
+		return "Salle : " + super.nom + ", de capacite : " + capacite;
 	}
 
 }

@@ -5,13 +5,24 @@ import java.awt.event.ActionListener;
 import Fenetre.FenetreAjouterRessource;
 import Model.Entreprise;
 
+/**
+ * Cette classe permet l'interaction utilisateur machine avec la barre du menu
+ * pour pouvoir ajouter une ressource à l'activité selectionner
+ * 
+ * @author damien planchamp
+ *
+ */
 public class AjouterRessourceListener implements ActionListener {
 	private Entreprise entreprise;
-	private String type;
 	
 	public AjouterRessourceListener(Entreprise entreprise) {
 		this.entreprise = entreprise;
 	}
+	
+	/**
+	 * creer une fenetre pour l'utilisateur pour 
+	 * qu'il choisisse quelle ressource à ajouter
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		new FenetreAjouterRessource(entreprise);

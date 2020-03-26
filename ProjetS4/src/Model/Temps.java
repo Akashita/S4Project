@@ -34,5 +34,42 @@ public final class Temps {
 		return tab;	
 	}
 	
+	public static String getLocalDateString(LocalDate date) {
+		String res = "";
+		switch (date.getDayOfWeek()) {
+		case MONDAY:
+			res += "Lundi";
+			break;
+		case TUESDAY:
+			res += "Mardi";
+			break;
+		case WEDNESDAY:
+			res += "Mercredi";
+			break;
+		case THURSDAY:
+			res += "Jeudi";
+			break;
+		case FRIDAY:
+			res += "Vendredi";
+			break;
+		case SATURDAY:
+			res += "Samedi";
+			break;
+		case SUNDAY:
+			res += "Dimanche";
+			break;
+
+		default:
+			res += "Jour inconnu";
+			break;
+		}
+		res += " ";
+		res += date.getDayOfMonth() + " ";
+		res += date.getMonth() + " ";
+		res += date.getYear();
+		
+		return res;
+	}
+	
 	
 }

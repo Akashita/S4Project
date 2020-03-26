@@ -8,6 +8,6 @@ public class Calculateur extends Ressource{
 		super(numCalculateur, nom, "Calculateur");
 	}
 	public String toString() {
-		return "PAS FAIT";
+		return "Calculateur : " + super.nom;
 	}
 }
