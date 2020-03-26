@@ -4,19 +4,20 @@ import java.util.ArrayList;
 
 public class Salle extends Ressource{
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 	private ArrayList<Materiel> lMatos; 
 	private int capacite;
 	
-	//Diff�rents constructeurs:
-	
-	
-	//cr�ation avec tous les �l�ments et avec une liste de Mat�riel
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEURS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Salle(int numSalle, String nom, int capacite, ArrayList<Materiel> matos) {
-		//attribut classe m�re
 		super(numSalle, nom, "Salle");
-		//attribut classse fille
-		this.lMatos = matos;
-		this.capacite = capacite;
+		
+		this.lMatos = matos; //La liste du matos qui compose la salle
+		this.capacite = capacite; //Capacite de la salle en terme d'effectif
 	}
 	
 	public Salle(int numSalle) {
@@ -27,12 +28,16 @@ public class Salle extends Ressource{
 		this(numSalle, nom,capacite, new ArrayList<Materiel>());
 	}
 	
-	public int getCapacite() {//r�cup�ration de la capacit� de la salle
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
+	public int getCapacite() {
 		return this.capacite;
 	}
 
-	
-	
+	//--------------------------------------------------------------------------------->>>>> toString
 	public String toString() {
 		return "Salle : " + super.nom + ", de capacite : " + capacite;
 	}

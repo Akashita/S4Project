@@ -13,10 +13,26 @@ public class Main {
 		
 		/*
 		CreneauHoraire cr = new CreneauHoraire("titre", 15);
-		System.out.println(cr.getPosition());
-		*/
 
-		/*Personne p1 = new Personne("azert", "yolo", "chef", 1555);
+
+		Personne p1 = new Personne("azert", "yolo", "chef", 1555);
+
+		Activite act1 = new Activite(1, "titre", 25, "A", LocalDate.of(2020, 03, 26));	
+		act1.ajouterRessource(p1);
+		
+		act1.ajouterCreneau(cr, LocalDate.of(2020, 03, 26));
+		
+		CreneauHoraire[][] edt = p1.getSemaineEDT(2020, 13);
+		for (int i = 0; i < edt.length; i++) {
+			for (int j = 0; j < edt[0].length; j++) {
+				if(edt[i][j] == null) {
+					System.out.print(" rien ");
+				} else {
+					System.out.print(" "+edt[i][j].toString()+ " ");
+				}
+			} 
+			System.out.println("");
+		}
 
 		p1.ajouterCreneau(new CreneauHoraire("titre", 8), LocalDate.of(2020, 03, 26));
 		p1.ajouterCreneau(new CreneauHoraire("titre", 10), LocalDate.of(2020, 03, 26));
@@ -49,8 +65,6 @@ public class Main {
 			
 		System.out.println(p2.getCreneauxLibres());
 
-		Activite act1 = new Activite(1, "titre", 25, "A", LocalDate.of(2020, 03, 26));	
-		act1.ajouterRessource(p1);
 		act1.ajouterRessource(p2);
 		
 		System.out.println(act1.creneauDispo(LocalDate.of(2020, 03, 26), 16));

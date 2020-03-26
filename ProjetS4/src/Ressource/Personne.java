@@ -3,17 +3,22 @@ package Ressource;
 
 public class Personne extends Ressource{
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 	private String prenom;
 	public static final String COLLABORATEUR = "Collaborateur";
 	public static final String CHEFDEPROJET = "Chef de projet";
 	public static final String ADMINISTRATEUR = "Administrateur";
 	private String role;
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEURS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Personne(String nom, String prenom, String role, int numSalarie){
-		//attributs de la classe m�re.
 		super(numSalarie, nom, "Personne");
-		//attribut de la classe fille.
-		this.role = role;
+		
+		this.role = role; //Role dans l'entreprise (voir constante ci-dessus)
 		this.prenom = prenom;
 		
 	}
@@ -24,14 +29,19 @@ public class Personne extends Ressource{
 		this.prenom = prenom;		
 	}
 	
-	public String getRole() {//r�cup�ration du r�le de la personne
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
+	
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
+	public String getRole() {
 		return this.role;
 	}
-	public String getPrenom() {//r�cup�ration du pr�nom de la personne
+	public String getPrenom() {
 		return this.prenom;
 	}
 	
-	
+	//--------------------------------------------------------------------------------->>>>> toString
 	@Override
 	public String toString() {
 			return "Personne : " + super.nom + " " + prenom + ", " + role + "";
