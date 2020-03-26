@@ -1,13 +1,11 @@
 package Ressource;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import Model.CreneauHoraire;
 import Model.Entreprise;
-import Model.Temps;
 
 public class Ressource {
 	protected String nom;
@@ -18,7 +16,7 @@ public class Ressource {
 	protected int id;
 	
 	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> jours; 
-	//Contient l'ensemble des jours qui possï¿½dent un crï¿½neau horaire, la clï¿½ est une LocalDate du jour choisi
+	//Contient l'ensemble des jours qui possedent un creneau horaire, la cle est une LocalDate du jour choisi
 
 	
 	public Ressource(int id, String nom, String type) {
@@ -29,44 +27,52 @@ public class Ressource {
 		//La hashtable tri les creneaux horaires par jour (la clé est un LocalDate)
 	}
 	
+	private ArrayList<CreneauHoraire> creeJourneeCreneauLibre() {
+		ArrayList<CreneauHoraire> creneaux = new ArrayList<CreneauHoraire>();
+		int heure = Entreprise.HEURE_DEBUT_MATIN;
+		for (int i = 0; i < Entreprise.NB_HEURE_JOUR; i++) {
+			if (heure == Entreprise.HEURE_FIN_MATIN) {
+				heure = Entreprise.HEURE_DEBUT_APREM;
+			} 
+			creneaux.add(new CreneauHoraire(heure, true));
+			heure += 1;
+		}
+		return creneaux;
+	}
+	
 	public boolean ajouterCreneau(CreneauHoraire creneau, LocalDate jour) {
 		
 		boolean place = false;
+		ArrayList<CreneauHoraire> listTMP;
 		
 		if(jours.containsKey(jour)) { //Si le jour existe (il y a deja un creneau dedans)
-			ArrayList<CreneauHoraire> creneauxExistant = jours.get(jour); //On recupere le creneau
-			int taille = creneauxExistant.size();
-			int i = 0;
-			place = false;
-			while(i < taille && !place) { //On fait une recherche optimisee de l'emplacement du creneau (pour l'ajouter)
-				if(creneau.estApres(creneauxExistant.get(i))) {
-					if(i == taille - 1) {
-						jours.get(jour).add(i+1, creneau);
-						place = true;
-					}
-				} else {
-					jours.get(jour).add(i, creneau);
-					place = true;
-				}
-				i++;
-			}
+			listTMP = jours.get(jour); //On recupere le creneau
 		} else { //S'il n'existe pas on cree l'emplacement
-			ArrayList<CreneauHoraire> listTMP = new ArrayList<CreneauHoraire>();
-			listTMP.add(creneau);
-			jours.put(jour, listTMP); //On creee un nouveau jour avec une arraylist de creneaux (qui n'en contient que un seul pour le moment)
-			place = true;
+			listTMP = creeJourneeCreneauLibre();
+		}
+
+		for (int i = 0; i < listTMP.size(); i++) {
+			if (listTMP.get(i).equals(creneau) && listTMP.get(i).getDispo()) {
+				listTMP.set(i, creneau);
+				place = true;
+				jours.put(jour, listTMP); //On creee un nouveau jour avec une arraylist de creneaux (qui n'en contient que un seul pour le moment)
+			}
 		}
 		return place;
 	}
 	
 	//Dit si un creneau est dispo pour le jour et l'heure en parametre
-	public boolean creneauDispo(LocalDate date, LocalTime heure) {
+	public boolean creneauDispo(LocalDate date, int heure) {
+		boolean dispo = false;
 		if(jours.containsKey(date)) {
 			ArrayList<CreneauHoraire> jour = jours.get(date);
-			return !jour.contains(new CreneauHoraire(heure));
-		} else {
-			return false;
+			for (int i = 0; i < jour.size(); i++) {
+				if(jour.get(i).equals(new CreneauHoraire(heure, false))) {
+					return jour.get(i).getDispo();
+				}
+			}
 		}
+		return dispo;
 		
 	}
 
@@ -93,37 +99,16 @@ public class Ressource {
 	}
 	
 	private ArrayList<CreneauHoraire> getCreneauxLibresJour(ArrayList<CreneauHoraire> jourCourant) { //Retourne les crï¿½neaux libres d'une journï¿½e
-		ArrayList<CreneauHoraire> creneauxTMP = listeCreneauTMP(); //Journee de creneaux libres (tmp)
 		ArrayList<CreneauHoraire> creneauxLibres = new ArrayList<CreneauHoraire>();
-		for (int j = 0; j < creneauxTMP.size(); j++) {
-			if (!jourCourant.contains(creneauxTMP.get(j))) { //Si la journee contient le creneaulibre courant 
-				creneauxLibres.add(creneauxTMP.get(j)); //On l'ajoute a la liste de retour
+		for (int j = 0; j < jourCourant.size(); j++) {
+			if(jourCourant.get(j).getDispo()) {
+				creneauxLibres.add(jourCourant.get(j));
 			}
 		}
 		return creneauxLibres;
 		
 	}
-		
-	private ArrayList<CreneauHoraire> listeCreneauTMP(){ //renvoie une journée type (avec que des creneaux libres)
-		ArrayList<CreneauHoraire> creneauxLibres = new ArrayList<CreneauHoraire>();
-		CreneauHoraire creneauTMP = new CreneauHoraire(Entreprise.HEURE_DEBUT_MATIN);
-		creneauxLibres.add(creneauTMP);
-		
-		while (creneauTMP.getFin() != Entreprise.HEURE_FIN_APREM) { //Tant qu'on est pas a la fin de la journee
 
-			//Si on arrive a une heure de fin de matinee, on saute la pause repas	
-			if (creneauTMP.getFin() == Entreprise.HEURE_FIN_MATIN) {
-				creneauTMP = new CreneauHoraire(Entreprise.HEURE_DEBUT_APREM);
-			} else {
-				creneauTMP = creneauTMP.creneauSuivant();
-			}
-			creneauxLibres.add(creneauTMP);
-		}	
-		return creneauxLibres;
-	}
-	
-
-	
 
 	public String getNom() {//rï¿½cupï¿½ration du nom
 		return this.nom;

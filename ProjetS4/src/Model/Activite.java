@@ -1,7 +1,6 @@
 package Model;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 import Ressource.Ressource;
@@ -30,7 +29,7 @@ public class Activite implements Comparable<Activite>{
 		ressources.add(res);
 	}
 	
-	public boolean creneauDispo(LocalDate date, LocalTime heure){
+	public boolean creneauDispo(LocalDate date, int heure){
 		Boolean dispo = true;
 		for (int i = 0; i < ressources.size(); i++) {
 			if(!ressources.get(i).creneauDispo(date, heure)) {

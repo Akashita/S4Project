@@ -1,8 +1,6 @@
 package Model;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -26,10 +24,10 @@ public class Entreprise extends Observable{
 		private int idAct; //id des activit√©s
 		private ArrayList<JPanel> lPanel = new ArrayList<JPanel>();
 		
-		public static final LocalTime HEURE_DEBUT_MATIN = LocalTime.of(8, 0);
-		public static final LocalTime HEURE_FIN_MATIN = LocalTime.of(12, 0);
-		public static final LocalTime HEURE_DEBUT_APREM = LocalTime.of(13, 0);
-		public static final LocalTime HEURE_FIN_APREM = LocalTime.of(17, 0);
+		public static final int HEURE_DEBUT_MATIN = 8;
+		public static final int HEURE_FIN_MATIN = 12;
+		public static final int HEURE_DEBUT_APREM = 13;
+		public static final int HEURE_FIN_APREM = 17;
 		public static final int NB_HEURE_JOUR = 8;
 
 		
@@ -69,12 +67,11 @@ public class Entreprise extends Observable{
 			int chargeAloue = 0;
 			
 			LocalDate jourCourant = act.getDebut();
-			ArrayList<Ressource> lRessource = act.getLRessource();
-			LocalTime heureCourante = HEURE_DEBUT_MATIN;
+			int heureCourante = HEURE_DEBUT_MATIN;
 				
 			while (chargeAloue < charge) {	
 				if(act.creneauDispo(jourCourant, heureCourante)) { //Si le crÈneau est disponible pour toutes les ressources de l'activitÈ
-					act.ajouterCreneau(new CreneauHoraire(heureCourante), jourCourant);
+					act.ajouterCreneau(new CreneauHoraire(heureCourante, false), jourCourant);
 				}
 				
 				heureCourante = heureSuivante(heureCourante);
@@ -94,8 +91,8 @@ public class Entreprise extends Observable{
 			return jourCourant;
 		}
 
-		private LocalTime heureSuivante(LocalTime heureCourante) {
-			LocalTime heureSuivante = heureCourante.plus(1, ChronoUnit.HOURS);
+		private int heureSuivante(int heureCourante) {
+			int heureSuivante = heureCourante + 1;
 			if(heureSuivante == HEURE_FIN_MATIN) {
 				heureSuivante = HEURE_DEBUT_APREM;
 			} else if (heureSuivante == HEURE_FIN_APREM){

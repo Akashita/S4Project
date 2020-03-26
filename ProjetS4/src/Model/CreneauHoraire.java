@@ -1,73 +1,61 @@
 package Model;
 
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-
-import Ressource.Ressource;
-
 public class CreneauHoraire {
-	private LocalTime debut;
-	private Duration duree;
-	private LocalTime fin;
+	private int debut;
+	private int fin;
+	private boolean dispo;
 	
 	
 	//Un creneau horaire est une plage de temps d'une heure qui a un debut et une fin
 	//il s'agit d'un element qui est contenu dans une journee : une journee est composee de creneaux horaires
-	public CreneauHoraire(LocalTime debut) {
+	public CreneauHoraire(int debut, boolean occupe) {
 		this.debut = debut;
-		this.duree = Duration.of(1, ChronoUnit.HOURS);
-		
-		fin = this.debut.plus(duree.toHours(), ChronoUnit.HOURS); //On calcul la fin du creneau
+		this.dispo = occupe;
+		fin = debut + 1; //On calcul la fin du creneau
 	}
 	
-	public boolean estAvant(CreneauHoraire horaire) { //Les creneaux ne se superposent pas
-		return fin.isBefore(horaire.debut);
+	public boolean estAvant(CreneauHoraire horaire) {
+		return fin <= horaire.debut;
 	}
 	
 	public boolean estApres(CreneauHoraire horaire) {;
-		return debut.isAfter(horaire.fin);
+		return debut >= horaire.fin;
 	}
-	
-	public Duration getDuree() {
-		return duree;
-	}
-	
-	public LocalTime getDebut() {
+
+	public int getDebut() {
 		return debut;
 	}
 	
-	public LocalTime getFin() {
+	public int getFin() {
 		return fin;
 	}
 	
-	public void setDebut(LocalTime debut) {
+	public boolean getDispo() {
+		return dispo;
+	}
+	
+	public void setDebut(int debut) {
 		this.debut = debut;
-		calculerFin();
+		this.fin = debut+1;
 	}
 	
 	public void decalerAvant(int heure) { //Decale le creneau d'un nombre d'heure donné dans le futur
-		this.debut = this.debut.plus(heure, ChronoUnit.HOURS);
-		calculerFin();
+		this.debut = this.debut + heure;
+		this.fin = this.debut + 1;
 	}
 	
-	public CreneauHoraire creneauSuivant() { //Retourne le creneau suivant (un nouveau creneau)
-		return new CreneauHoraire(this.debut.plus(1, ChronoUnit.HOURS));
+	public CreneauHoraire creneauSuivant(boolean occupe) { //Retourne le creneau suivant (un nouveau creneau)
+		return new CreneauHoraire(debut + 1, occupe);
 	}
 	
 	public void decalerAriere(int heure) { //Decale le creneau d'un nombre d'heure donné dans le passe
-		this.debut = this.debut.plus(heure, ChronoUnit.HOURS);
-		calculerFin();
-	}
-	
-	private void calculerFin() {
-		fin = this.debut.plus(duree.toHours(), ChronoUnit.HOURS);
-		fin.plus(duree.toMinutes(), ChronoUnit.MINUTES);
+		this.debut = this.debut - heure;
+		this.fin = this.debut + 1;
 	}
 	
 	@Override 
 	public String toString() {
-		return "Creneau : " + debut.toString() + " ; " + duree.toString() + '\n';
+		return "Creneau : " + debut + '\n';
 	}
 	
 	@Override
