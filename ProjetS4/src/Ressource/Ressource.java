@@ -9,25 +9,67 @@ import Model.Entreprise;
 import Model.Temps;
 
 public class Ressource {
-	protected String nom;
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	protected String nom; 
 	public static final String PERSONNE = "Personne";
 	public static final String SALLE = "Salle";
 	public static final String CALCULATEUR = "Calculateur";
-	protected String type;
+	protected String type; //Type de la ressource (personne/salle/...)
 	protected int id;
 	
 	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> jours; 
 	//Contient l'ensemble des jours qui possedent un creneau horaire, la cle est une LocalDate du jour choisi
-
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEUR
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Ressource(int id, String nom, String type) {
 		this.id = id;
 		this.nom = nom;
 		this.type = type;
 		this.jours = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>(); 
-		//La hashtable tri les creneaux horaires par jour (la clé est un LocalDate)
 	}
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
+	
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
+	public String getNom() {
+		return this.nom;
+	}
+
+	public String getType() {
+		return this.type;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+	
+	//--------------------------------------------------------------------------------->>>>> Comparaison
+	@Override
+	public boolean equals(Object obj) { //test si deux ressources sont ï¿½gales
+		if(obj instanceof Ressource && obj != null) {
+			Ressource res = (Ressource)obj;
+			return id == res.id;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	//--------------------------------------------------------------------------------->>>>> Gestion de l'EDT
+
+	/**
+	 * Retourne l'EDT d'une ressource en fonction de la semaine et de l'annee.
+	 * @param annee   	Annee pour laquelle on veut l'EDT
+	 * @param semaine   Semaine choisi pour afficher l'EDT
+	 * @return Un tableau a deux dimensions compose de CreaneauxHoraires ou de la valeur null
+	 */
 	public CreneauHoraire[][] getSemaineEDT(int annee, int semaine) {
 		CreneauHoraire[][] semaineEDT = new CreneauHoraire[5][Entreprise.NB_HEURE_JOUR];
 		LocalDate[] dateJours = Temps.getJourSemaine(annee, semaine);
@@ -48,6 +90,11 @@ public class Ressource {
 		return semaineEDT;
 	}
 	
+
+	/**
+	 * Cree une journee entierement disponible
+	 * @return Un tableau de CreneauHoraire init à null
+	 */
 	private ArrayList<CreneauHoraire> creeJourneeCreneauLibre() {
 		ArrayList<CreneauHoraire> creneaux = new ArrayList<CreneauHoraire>();
 		for (int i = 0; i < Entreprise.NB_HEURE_JOUR; i++) {
@@ -56,6 +103,13 @@ public class Ressource {
 		return creneaux;
 	}
 	
+
+	/**
+	 * Ajoute un creneau à la ressource (si possible)
+	 * @param creneau   Le creneau a ajouter
+	 * @param jour   	Le jour ou le creneau doit etre ajoute
+	 * @return true si le creneau a ete ajoute
+	 */
 	public boolean ajouterCreneau(CreneauHoraire creneau, LocalDate jour) {
 		
 		boolean place = false;
@@ -76,7 +130,13 @@ public class Ressource {
 		return place;
 	}
 	
-	//Dit si un creneau est dispo pour le jour et l'heure en parametre
+	
+	/**
+	 * Dit si le creneau (en parametre) est dispo pour la ressource courante 
+	 * @param date   La date du creneau
+	 * @param heure  L'heure du creneau
+	 * @return true si le creneau est dispo
+	 */
 	public boolean creneauDispo(LocalDate date, int heure) {
 		boolean dispo = true;
 		if(jours.containsKey(date)) {
@@ -88,10 +148,15 @@ public class Ressource {
 			}
 		}
 		return dispo;
-		
 	}
 
 	
+	/**
+	 * Genere une hashtable compose des creneaux libres de la ressource 
+	 * pour les journee qui possedent deja au moins un creneau (les autres 
+	 * ont forcement tous leurs creneaux de libres)
+	 * @return une hashtable contenant tous les creneaux libres
+	 */
 	public Hashtable<LocalDate, ArrayList<CreneauHoraire>> getCreneauxLibres(){ //Retourne une hashtable de jour avec tous les crï¿½neaux libres
 		Hashtable<LocalDate, ArrayList<CreneauHoraire>> creneauxLibres = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
 		
@@ -113,6 +178,12 @@ public class Ressource {
 		return creneauxLibres;
 	}
 	
+	
+	/**
+	 * Methode utilisee par getCreneauxLibres qui donne la liste des creneaux libres de la journee en parametre
+	 * @param jourCourant   Le jour a traiter
+	 * @return la liste des creneaux libres de la journee
+	 */
 	private ArrayList<CreneauHoraire> getCreneauxLibresJour(ArrayList<CreneauHoraire> jourCourant) { //Retourne les crï¿½neaux libres d'une journï¿½e
 		ArrayList<CreneauHoraire> creneauxLibres = new ArrayList<CreneauHoraire>();
 		for (int j = 0; j < jourCourant.size(); j++) {
@@ -124,30 +195,5 @@ public class Ressource {
 		
 	}
 
-
-	public String getNom() {//rï¿½cupï¿½ration du nom
-		return this.nom;
-	}
-
-	public String getType() {//rï¿½cupï¿½ration du type
-		return this.type;
-	}
-
-	public int getId() {//rï¿½cupï¿½ration de l'Id de chaque ressource pour les diffï¿½rencier
-		return this.id;
-	}
-
-	
-	@Override
-	public boolean equals(Object obj) { //test si deux ressources sont ï¿½gales
-		if(obj instanceof Ressource && obj != null) {
-			Ressource res = (Ressource)obj;
-			return id == res.id;
-		} else {
-			return false;
-		}
-		
-	}
-	
 
 }
