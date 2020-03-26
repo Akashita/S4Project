@@ -59,9 +59,9 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 		panelPrincipal.add(panelDebut());
 		
 		
-		/*panelPrincipal.add(creerBouttonAnnuler());
-		panelPrincipal.add(creerBouttonAjout());*/
-		panelPrincipal.add(ajoutBouton());
+		panelPrincipal.add(creerBouttonAnnuler());
+		panelPrincipal.add(creerBouttonAjout());
+		//panelPrincipal.add(ajoutBouton());
 		
 		
 		this.add(panelPrincipal);
