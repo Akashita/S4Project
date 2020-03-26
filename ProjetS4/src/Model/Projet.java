@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Projet implements Comparable<Projet>{
 
 	private ArrayList<Activite> lActivite;//liste des activites
-	//trié par ordre de priorité
+	//triï¿½ par ordre de prioritï¿½
 	
 	private String nom;//nom des projets, clefs primaires (sert ï¿½ les diffï¿½rencier)
 	private boolean selectionner;
@@ -52,7 +52,8 @@ public class Projet implements Comparable<Projet>{
 	}
 		
 	public void ajouter(Activite activite) { //test si la activite est dï¿½jï¿½ dans le projet sinon la rajoute
-		int[] test = this.chercherActivite(activite);
+		lActivite.add(activite);
+		/*int[] test = this.chercherActivite(activite);
 		
 		if (test[0]==0) {
 			Boolean place = false;
@@ -66,7 +67,7 @@ public class Projet implements Comparable<Projet>{
 			if (place = false) {
 				lActivite.add(activite);
 			}
-		}
+		}*/
 	}
 	
 	public void enlever(Activite activite) { //test si la activite est dï¿½jï¿½ dans le projet si oui l'enlï¿½ve

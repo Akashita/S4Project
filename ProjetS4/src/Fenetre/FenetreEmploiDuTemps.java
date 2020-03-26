@@ -56,13 +56,15 @@ public class FenetreEmploiDuTemps extends JFrame{
 	private JPanel afficheJourDeLaSemaine(int nbJour) {
 		LocalDate[] jours = Temps.getJourSemaine();
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(0,nbJour));
+		panel.setLayout(new GridLayout(2,nbJour));
 		for (int i=0; i<nbJour; i++) {
 			LocalDate jourActuel = jours[i];
-			String jour = jourActuel.getDayOfWeek().toString();
-			String date = jourActuel.getDayOfMonth() + "/" + jourActuel.getMonthValue() + "/" + jourActuel.getYear();
-			
+			String jour = jourActuel.getDayOfWeek().toString();			
 			panel.add(creerLabelInterface(jour));
+		}
+		for (int i=0; i<nbJour; i++) {
+			LocalDate jourActuel = jours[i];
+			String date = jourActuel.getDayOfMonth() + "/" + jourActuel.getMonthValue() + "/" + jourActuel.getYear();			
 			panel.add(creerLabelInterface(date));
 		}
 		return panel;
@@ -73,11 +75,7 @@ public class FenetreEmploiDuTemps extends JFrame{
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(nbHeure,0));
 		for (int i=0; i<nbHeure; i++) {
-			JPanel panelHeure = new JPanel();
-			panelHeure.setLayout(new GridLayout(2,0));
-			panelHeure.add(creerLabelInterface(Integer.toString(i+8)+"h"));
-			//panelHeure.add(creerLabelInterface(Integer.toString(i+9)+"h"));
-			panel.add(panelHeure);
+			panel.add(creerLabelInterface(Integer.toString(i+8)+"h"));
 		}
 		return panel;
 	}
@@ -98,9 +96,8 @@ public class FenetreEmploiDuTemps extends JFrame{
 		panel.setLayout(new GridLayout(nbHeure,0));
 		for (int i=0; i<nbHeure; i++) {
 			CreneauHoraire creneau = tableauCreneau[i];
-			if (creneau != null) {
-				panel.add(creerLabelCreneau(creneau));
-			}
+			panel.add(creerLabelCreneau(creneau));
+			
 		}
 		return panel;
 	}
@@ -112,6 +109,11 @@ public class FenetreEmploiDuTemps extends JFrame{
 			label.setText(creneau.getTitre());
 			label.setOpaque(true);
 			label.setBackground(Color.GREEN);			
+		}
+		else {
+			label.setText("        ");
+			label.setOpaque(true);
+			label.setBackground(Color.WHITE);			
 		}
 		return label;
 	}

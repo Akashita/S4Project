@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import Model.Entreprise;
 import Model.Projet;
+import Model.Temps;
 
 /**
  * Cette fenetre affiche à l'utilisateur les données à rentrer pour
@@ -59,9 +60,9 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 		panelPrincipal.add(panelDebut());
 		
 		
-		panelPrincipal.add(creerBouttonAnnuler());
-		panelPrincipal.add(creerBouttonAjout());
-		//panelPrincipal.add(ajoutBouton());
+		/*panelPrincipal.add(creerBouttonAnnuler());
+		panelPrincipal.add(creerBouttonAjout());*/
+		panelPrincipal.add(ajoutBouton());
 		
 		
 		this.add(panelPrincipal);
@@ -114,10 +115,12 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 	    String[] mois = {"Janvier", "Février", "Mars", "Avril",
 	    		"Mai", "Juin", "Juillet", "Aout",
 	    		"Septembre", "Octobre", "Novembre", "Décembre"};
-	    String[] annees = {"2020", "2021", "2022"};
+	    String[] annees = {"2020", "2021", "2022", "2023"};
 	    
 	    jour = new JComboBox<String>(jours);
+	    jour.setSelectedIndex(Temps.getAujourdhui().getDayOfMonth()-1);;
 	    this.mois = new JComboBox<String>(mois);
+	    this.mois.setSelectedIndex(Temps.getAujourdhui().getMonthValue()-1);;
 	    annee = new JComboBox<String>(annees);
 
 	    panel.add(jour);
