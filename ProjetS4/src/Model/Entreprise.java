@@ -85,9 +85,11 @@ public class Entreprise extends Observable{
 		LocalDate jourCourant = act.getDebut();
 		int heureCourante = HEURE_DEBUT_MATIN;
 			
-		while (chargeAloue < charge) {					
+		while (chargeAloue < charge) {	
+			System.out.println(jourCourant);
+			System.out.println(heureCourante);
 			if(act.creneauDispo(jourCourant, heureCourante)) { //Si le creneau est disponible pour toutes les ressources de l'activite
-				act.ajouterCreneau(new CreneauHoraire("TODO : REMPLACER LE TITRE", heureCourante), jourCourant);
+				act.ajouterCreneau(new CreneauHoraire(act.getTitre(), heureCourante), jourCourant);
 				chargeAloue++;
 			}
 			
@@ -100,12 +102,10 @@ public class Entreprise extends Observable{
 	
 	private LocalDate jourSuivant(LocalDate jourCourant) {
 		if(jourCourant.getDayOfWeek() == DayOfWeek.FRIDAY) {
-			jourCourant.plus(3, ChronoUnit.DAYS);
+			return jourCourant.plus(3, ChronoUnit.DAYS);
 		} else {
-			jourCourant.plus(1, ChronoUnit.DAYS);
+			return jourCourant.plus(1, ChronoUnit.DAYS);
 		}
-		
-		return jourCourant;
 	}
 	
 	private int heureSuivante(int heureCourante) {
@@ -217,42 +217,19 @@ public class Entreprise extends Observable{
 		return nouvelleListe;
 	}
 			
-	public void ajouterRessource(Ressource resCour) {
-		this.lRessource.add(resCour);
+	public boolean ajouterRessource(Ressource ressource) {
+		if(!lRessource.contains(ressource)) {
+			lRessource.add(ressource);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
-	public void supprimerRessource(int idRessource) {
-		
-		int[] place = this.chercherRessource(idRessource);
-		if (place[0] == 1) {
-			int rangRessource = place[1];
-			Ressource resCour = this.lRessource.get(rangRessource);
-			this.lRessource.remove(resCour);
-		}
-		
+	public boolean supprimerRessource(int idRessource) {
+		return lRessource.remove(new Ressource(idRessource));
 	}
-	
-	public int[] chercherRessource(int idCour) {
-		Boolean pasTrouve = true;
-		int[] res = {0,0};//a droite la place du projet cherch� et a gauche si il est trouv� 0 non/1 oui
-		if (this.lRessource.size()==0) {
-			return res;
-		}
-		else {
-			do{
-				if (this.lRessource.get(res[1]).getId() == idCour) {
-					res[0] = 1;
-					pasTrouve = false;
-				}
-				else {
-					res[1] = res[1] + 1;
-				}
-			}
-			while((pasTrouve) && (res[1] < this.lRessource.size()));
-			return res;
-		}
-	}	
-	
+
 	public int[] chercheProjet(String nomProjet) {
 		
 		Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
