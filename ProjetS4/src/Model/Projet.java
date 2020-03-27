@@ -13,7 +13,7 @@ public class Projet implements Comparable<Projet>{
 	
 	private String nom;
 	private boolean selectionner;
-	private float priorite; //Priorite du projet (relation d'ordre)
+	private float priorite; //Priorite du projet 
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
@@ -154,6 +154,10 @@ public class Projet implements Comparable<Projet>{
 			while((pasTrouve) && (res[1] < this.lActivite.size()));
 			return res;
 		}
+	}
+
+	public float getPriorite() {
+		return priorite;
 	}
 	
 

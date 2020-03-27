@@ -10,6 +10,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
@@ -57,7 +58,9 @@ public class FenetrePrincipale extends JFrame{
 		//this.add(pp, BorderLayout.CENTER);
 		this.add(panelRessource, BorderLayout.WEST);
 		//this.add(panelProjet, BorderLayout.SOUTH);
-		this.add(onglet, BorderLayout.CENTER);
+		JPanel panel = new JPanel();
+		this.add(panel, BorderLayout.CENTER);
+		panel.add(onglet, BorderLayout.CENTER);
 
 
 		creationBarreMenu();
