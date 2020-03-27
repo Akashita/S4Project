@@ -34,6 +34,7 @@ public class FenetreEnleverRessource extends JDialog implements FenetreInterface
 	ArrayList<Ressource> listeRessource;
 
     public FenetreEnleverRessource(Entreprise entreprise) {
+		super(entreprise.getFenetrePrincipale(), "enlever une ressource d'une activité", true);
 		this.entreprise= entreprise;
 		if (entreprise.getProjetSelectionner() != null) { // on vérifie qu'un projet est selectionné
 			if (entreprise.getActiviteSelectionner() != null) {
@@ -42,8 +43,9 @@ public class FenetreEnleverRessource extends JDialog implements FenetreInterface
 					this.setTitle("Enlever ressource");
 					this.setSize(300,200);
 					this.setLocationRelativeTo(null);
+					this.setResizable(false);
+
 					this.addWindowListener(new FermerFenetre(this));
-					this.setVisible(true);
 					JRootPane rootPane = this.getRootPane(); //le rootPane permet la supression de la fenetre avec la touche "echap"
 					rootPane.getInputMap().put(
 							KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
@@ -56,7 +58,8 @@ public class FenetreEnleverRessource extends JDialog implements FenetreInterface
 							dispose();
 						}
 					});
-					creationInterface();				
+					creationInterface();	
+					this.setVisible(true);
 				}
 				else {
 			    	JOptionPane.showMessageDialog(null, "Aucune ressource presente", "Erreur", JOptionPane.ERROR_MESSAGE);							

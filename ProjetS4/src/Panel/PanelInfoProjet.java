@@ -28,22 +28,51 @@ import Ressource.Salle;
 
 public class PanelInfoProjet extends JPanel{
 	
-	Entreprise entreprise;
-	
-	public PanelInfoProjet(Entreprise entreprise) {
+	private Entreprise entreprise;
+	private Projet projet;
+	private JPanel paneCompletlInfoAct = new JPanel();
+	private JPanel panelInfoAct = new JPanel();
+
+	public PanelInfoProjet(Entreprise entreprise, Projet projet) {
 		this.entreprise = entreprise;
-		if (entreprise.getProjetSelectionner() != null) {
-			if (entreprise.getProjetSelectionner().getListe().size()>0) {//on vérifie qu'il y a au moins une activité
-				afficheInterface();
-			}
-		}
+		this.projet = projet;
+		afficheInterface();
+		
 	}
 	
-	private void afficheInterface() {
-	    this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-	    
-		this.add(afficheActivite());
-		this.add(afficheRessource());
+	public void afficheInterface() {
+		this.removeAll();
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.add(infoProjet());
+		paneCompletlInfoAct.setLayout(new BoxLayout(paneCompletlInfoAct, BoxLayout.X_AXIS));
+		paneCompletlInfoAct.add(panelInfoAct);
+		this.add(paneCompletlInfoAct);
+		if (projet.getListe().size()>0) {//on vérifie qu'il y a au moins une activité
+			infoAct();
+		}
+		this.revalidate();	
+
+	}
+	
+	private JPanel infoProjet() {
+		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createTitledBorder("Information du projet"));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(Color.WHITE);		
+		panel.add(creerLabel("Nom: "+projet.getNom()));
+		panel.add(creerLabel("Priorité: "+projet.getPriorite()));
+		panel.add(creerLabel("Chef du projet: pas encore implementé"));
+
+		return panel;
+	}
+	
+	private void infoAct() {
+		paneCompletlInfoAct.remove(panelInfoAct);
+		panelInfoAct = new JPanel();
+		panelInfoAct.add(afficheActivite());
+		panelInfoAct.add(afficheRessource());
+		paneCompletlInfoAct.add(panelInfoAct);
+		this.revalidate();
 	}
 	
 	private JPanel afficheActivite() {
@@ -52,7 +81,6 @@ public class PanelInfoProjet extends JPanel{
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(Color.WHITE);			
 
-		Projet projet = entreprise.getProjetSelectionner();
 		ArrayList<Activite> listeActivite = projet.getListe();
 
 		for (int i=0; i<listeActivite.size(); i++) {
@@ -91,7 +119,7 @@ public class PanelInfoProjet extends JPanel{
 			panel.setBorder(BorderFactory.createTitledBorder("Liste des ressources de l'activité"));
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 			panel.setBackground(Color.WHITE);		
-			panel.add(creerLabel("                                    "));
+			//panel.add(creerLabel("                                    "));
 
 			Activite act = entreprise.getActiviteSelectionner();
 			if (act.getLRessource().size() > 0) {
@@ -112,7 +140,7 @@ public class PanelInfoProjet extends JPanel{
 		panel.setBackground(Color.WHITE);	
 		ArrayList<Ressource> listeR = act.getListeRessourceType(type);
 		if (listeR.size() > 0) {
-			panel.add(creerLabel("                                    "));
+			//panel.add(creerLabel("                                    "));
 			panel.setBorder(BorderFactory.createTitledBorder("Liste de " + type));
 			for(int i=0; i<listeR.size(); i++) {
 				Ressource res = null;
@@ -131,7 +159,7 @@ public class PanelInfoProjet extends JPanel{
 					label = creerLabel(res.getNom());					
 					
 				}
-				label.addMouseListener(new SourisRessourceListener(this, res));
+				label.addMouseListener(new SourisRessourceListener(entreprise, res));
 				panel.add(label);
 			}				
 		}		
@@ -145,8 +173,8 @@ public class PanelInfoProjet extends JPanel{
 		return label;
 	}
 
-	public void afficheInfoRessource(Ressource res) {
-		this.removeAll();
+	/*public void afficheInfoRessource(Ressource res) {
+		//this.removeAll();
 		afficheInterface();
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder("Information de la ressource: "));
@@ -165,7 +193,7 @@ public class PanelInfoProjet extends JPanel{
 			panel.add(creerLabel("Nom: " + res.getNom()));	
 		}
 		panel.add(bouttonEmploiDuTemps(res));
-		this.add(panel);
+		panelInfoAct.add(panel);
 		this.revalidate();
 	}
 
@@ -177,10 +205,18 @@ public class PanelInfoProjet extends JPanel{
 	        }
 	    });			
 	    return bouton;
-	}
+	}*/
 
 	public void selectionnerActivite(int idActiviteSelectionner) {
 		entreprise.deselectionnerActivite();
 		entreprise.selectionnerActivite(idActiviteSelectionner);
 	} 
+	
+	public String getProjetNom() {
+		return projet.getNom();
+	}
+	
+	public Projet getProjet() {
+		return projet;
+	}
 }

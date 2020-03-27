@@ -2,12 +2,16 @@ package Fenetre;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -16,32 +20,75 @@ import javax.swing.event.ChangeListener;
 
 import EcouteurEvenement.SourisSemaineListener;
 import Model.CreneauHoraire;
+import Model.Entreprise;
 import Model.Temps;
+import Ressource.Personne;
 import Ressource.Ressource;
+import Ressource.Salle;
 
-public class FenetreEmploiDuTemps extends JFrame{
-	
-	private static final long serialVersionUID = 1L;
-	
+public class FenetreInfoRessource extends JDialog{
+	private Entreprise entreprise;
 	private Ressource ressource;
 	private CreneauHoraire [][] tableauCreneau;
+	private int semaineSelectionner;
+	
 	private JSlider slide = new JSlider();
+	
 	private JPanel panelSemaine = new JPanel();
 	private JPanel panelListeSemaine = new JPanel();
 	private JPanel panelCompletJourDeLasemaine = new JPanel();
 	private JPanel panelJourDeLasemaine = new JPanel();
-	private int semaineSelectionner;
-	
-	public FenetreEmploiDuTemps(Ressource ressource) {
+	private JPanel panelCompletSemaineCreneau = new JPanel();
+	private JPanel panelSemaineCreneau = new JPanel();
+
+	public FenetreInfoRessource(Entreprise entreprise, Ressource ressource) {
+		super(entreprise.getFenetrePrincipale(), "Information de la ressource");
+		this.entreprise = entreprise;
 		this.ressource = ressource;
-		this.setSize(700, 550);
-		this.setLayout(new BorderLayout());
-		this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);
+		this.setSize(800,770);
 		this.setLocationRelativeTo(null);
 		this.addWindowListener(new FermerFenetre(this));
+	    this.setResizable(false);
+	    creationInterface();
 		this.setVisible(true);
+
 	}
 
+	private void creationInterface() {
+		this.setLayout(new BorderLayout());
+		this.add(afficheInfoRessource(), BorderLayout.NORTH);
+		this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);
+		this.revalidate();
+
+	}
+	
+	private JPanel afficheInfoRessource() {
+		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createTitledBorder("Information de la ressource: "));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(Color.WHITE);	
+		if(ressource.getType() == Ressource.PERSONNE) {
+			panel.add(creerLabel("Nom: " + ((Personne) ressource).getPrenom() + " " + ressource.getNom()));
+			panel.add(creerLabel("Compétence: "));			
+	
+		}
+		if(ressource.getType() == Ressource.SALLE) {
+			panel.add(creerLabel("Nom: " + ressource.getNom()));
+			panel.add(creerLabel("Capacité: " + ((Salle)ressource).getCapacite()));			
+		}
+		if(ressource.getType() == Ressource.CALCULATEUR) {
+			panel.add(creerLabel("Nom: " + ressource.getNom()));	
+		}
+		return panel;
+	}
+
+	
+	private JLabel creerLabel(String nom) {
+		JLabel label = new JLabel(nom);
+		label.setFont(new Font("Arial", Font.BOLD, 15));
+		//label.addMouseListener(new SourisRessourceListener(this, label));
+		return label;
+	}
 	
 	private JPanel afficherEmploiDuTemps() {
 		semaineSelectionner = Temps.getSemaine();
@@ -50,7 +97,6 @@ public class FenetreEmploiDuTemps extends JFrame{
 		panel.setLayout(new BorderLayout());
 		
 		panel.add(panelCompletJourDeLasemaine, BorderLayout.NORTH);
-		panelCompletJourDeLasemaine.setBackground(Color.PINK);
 		panelCompletJourDeLasemaine.setLayout(new BorderLayout());
 		afficheJourDeLaSemaine();
 		
@@ -58,7 +104,10 @@ public class FenetreEmploiDuTemps extends JFrame{
 		
 		afficherListeSemaine();
 		
-		panel.add(afficheCreneauDeLaSemaine(tableauCreneau), BorderLayout.CENTER);
+		panel.add(panelCompletSemaineCreneau, BorderLayout.CENTER);
+		panelCompletSemaineCreneau.setLayout(new BorderLayout());
+		afficheCreneauDeLaSemaine();
+		
 		return panel;
 	}
 	
@@ -149,16 +198,20 @@ public class FenetreEmploiDuTemps extends JFrame{
 		semaineSelectionner = Integer.parseInt(label.getText());
 		changeSemaine();
     	afficheJourDeLaSemaine();
+		tableauCreneau = ressource.getSemaineEDT(Temps.getAnnee(), semaineSelectionner);
+		afficheCreneauDeLaSemaine();
 	} 
 	
-	private JPanel afficheCreneauDeLaSemaine(CreneauHoraire [][] tableauCreneau) {
-		JPanel panel = new JPanel();
+	private void afficheCreneauDeLaSemaine() {
+		panelCompletSemaineCreneau.remove(panelCompletSemaineCreneau);
+		panelSemaineCreneau = new JPanel();
 		int nbJour = tableauCreneau.length;
-		panel.setLayout(new GridLayout(0, nbJour));
+		panelSemaineCreneau.setLayout(new GridLayout(0, nbJour));
 		for (int i=0; i<nbJour; i++) {
-			panel.add(afficheJour(tableauCreneau[i]));
+			panelSemaineCreneau.add(afficheJour(tableauCreneau[i]));
 		}
-		return panel;
+		panelCompletSemaineCreneau.add(panelSemaineCreneau, BorderLayout.CENTER);
+		this.revalidate();
 	}
 	
 	private JPanel afficheJour(CreneauHoraire [] tableauCreneau) {
@@ -168,7 +221,6 @@ public class FenetreEmploiDuTemps extends JFrame{
 		for (int i=0; i<nbHeure; i++) {
 			CreneauHoraire creneau = tableauCreneau[i];
 			panel.add(creerLabelCreneau(creneau));
-			
 		}
 		return panel;
 	}
@@ -182,7 +234,7 @@ public class FenetreEmploiDuTemps extends JFrame{
 			label.setBackground(Color.GREEN);			
 		}
 		else {
-			label.setText("        ");
+			label.setText("---");
 			label.setOpaque(true);
 			label.setBackground(Color.WHITE);			
 		}

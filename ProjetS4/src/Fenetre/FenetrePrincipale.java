@@ -4,10 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import EcouteurEvenement.AjouterRessourceListener;
@@ -37,7 +42,8 @@ public class FenetrePrincipale extends JFrame{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	
+	private JTabbedPane onglet = new JTabbedPane();
+
 	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
 		this.setTitle("ProjetS4");
@@ -47,20 +53,24 @@ public class FenetrePrincipale extends JFrame{
 		PanelProjet panelProjet = new PanelProjet(entreprise);
 		PanelRessource panelRessource = new PanelRessource(entreprise);
 		PanelPrincipal pp = new PanelPrincipal(entreprise, 
-				panelRessource, panelProjet);	
-
-		this.add(pp, BorderLayout.CENTER);
+				panelRessource, panelProjet, this);	
+		
+		
+		//this.add(pp, BorderLayout.CENTER);
 		this.add(panelRessource, BorderLayout.WEST);
-		this.add(panelProjet, BorderLayout.SOUTH);
+		//this.add(panelProjet, BorderLayout.SOUTH);
+		JPanel panel = new JPanel();
+		this.add(panel, BorderLayout.CENTER);
+		panel.add(onglet, BorderLayout.CENTER);
 
-		creationBarreMenu(panelProjet, panelRessource);
+		creationBarreMenu();
 		
 		this.addWindowListener(new FermerFenetre(this));
 		this.setVisible(true);	
 		pp.setVisible(true);
 	}
 	
-	private void creationBarreMenu(PanelProjet panelProjet, PanelRessource panelRessource) {
+	private void creationBarreMenu() {
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu menuFichier = new JMenu("Fichier");
@@ -70,8 +80,7 @@ public class FenetrePrincipale extends JFrame{
 		JMenuItem itemNouveau = new JMenuItem("Nouveau", KeyEvent.VK_N);
 	    KeyStroke ctrlNouveau = KeyStroke.getKeyStroke("control N");
 	    itemNouveau.setAccelerator(ctrlNouveau);
-	    itemNouveau.addActionListener(new NouveauListener(entreprise, 
-	    		panelProjet, panelRessource));
+	    itemNouveau.addActionListener(new NouveauListener(entreprise));
 
 		JMenuItem itemQuitter = new JMenuItem("Quitter", KeyEvent.VK_Q);
 	    KeyStroke ctrlQuitter = KeyStroke.getKeyStroke("control Q");
@@ -102,9 +111,6 @@ public class FenetrePrincipale extends JFrame{
 
 		JMenuItem itemPropos = new JMenuItem("Projet");
 
-		//itemNouvelleRessource.setMnemonic(KeyEvent.VK_N);
-//		menuNouveau.add(itemNouvelleRessource);
-//		menuNouveau.add(itemNouveauProjet);
 		
 		
 		menuFichier.add(itemNouveau);
@@ -123,5 +129,12 @@ public class FenetrePrincipale extends JFrame{
 		menuBar.add(menuPropos);
 		this.setJMenuBar(menuBar);	
 	}
+
+	public void ajouterProjet(PanelInfoProjet pip) {
+		onglet.add(pip.getProjetNom(), pip);
+	}
 	
+	public PanelInfoProjet getPanelInfoProjet() {
+		return (PanelInfoProjet) onglet.getSelectedComponent();
+	}
 }

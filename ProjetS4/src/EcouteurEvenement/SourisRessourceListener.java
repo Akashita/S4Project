@@ -4,6 +4,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
 
+import Fenetre.FenetreInfoRessource;
 import Model.Entreprise;
 import Panel.PanelInfoProjet;
 import Panel.PanelRessource;
@@ -19,18 +20,20 @@ import Ressource.Ressource;
  *
  */
  public class SourisRessourceListener implements MouseListener {
-	 PanelInfoProjet pip;
+	 //PanelInfoProjet pip;
 	 Ressource res;
+	 Entreprise entreprise;
 	
-	public SourisRessourceListener(PanelInfoProjet pip, Ressource res) {
-		this.pip = pip;
+	public SourisRessourceListener(Entreprise entreprise, Ressource res) {
+		this.entreprise = entreprise;
 		this.res = res;
 	}
 	
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		pip.afficheInfoRessource(res);
+		//pip.afficheInfoRessource(res);
+		new FenetreInfoRessource(entreprise, res);
 	}
 
 	@Override

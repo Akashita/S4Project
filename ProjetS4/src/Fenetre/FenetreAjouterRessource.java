@@ -36,14 +36,14 @@ public class FenetreAjouterRessource extends JDialog implements FenetreInterface
 
 
 	public FenetreAjouterRessource(Entreprise entreprise) {
+		super(entreprise.getFenetrePrincipale(), "ajouter une ressource à une activité", true);
 		this.entreprise = entreprise;
 		if (entreprise.getProjetSelectionner() != null) {
 			if (entreprise.getActiviteSelectionner() != null) {
-				this.setTitle("Ajout ressource");
 				this.setSize(tailleLargeurDefaut,tailleHauteurDefaut);
 				this.setLocationRelativeTo(null);
+				this.setResizable(false);
 				this.addWindowListener(new FermerFenetre(this));
-				this.setVisible(true);
 				
 				JRootPane rootPane = this.getRootPane();
 				rootPane.getInputMap().put(
@@ -55,9 +55,8 @@ public class FenetreAjouterRessource extends JDialog implements FenetreInterface
 						dispose();
 					}
 				});
-
-
-				creationInterface();							
+				creationInterface();	
+				this.setVisible(true);
 			}
 			else {
 		    	JOptionPane.showMessageDialog(null, "Aucune activité selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			

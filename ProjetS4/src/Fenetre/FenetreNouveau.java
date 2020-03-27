@@ -20,17 +20,15 @@ public class FenetreNouveau extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public FenetreNouveau(Entreprise entreprise, 
-			PanelProjet pp, PanelRessource pr) {
+	public FenetreNouveau(Entreprise entreprise) {
 		
 		this.addWindowListener(new FermerFenetre(this));
 		
-		choix(entreprise, pp, pr);
+		choix(entreprise);
 
 	}
 	
-	private void choix(Entreprise entreprise, 
-			PanelProjet pp, PanelRessource pr) {
+	private void choix(Entreprise entreprise) {
 	    String[] choix = {"Ressource", "Projet"};
 	    String nom = (String)JOptionPane.showInputDialog(null, 
 	      "Type de votre nouveauté",
@@ -41,9 +39,10 @@ public class FenetreNouveau extends JFrame{
 	      choix[0]);
 	    
 	    if(nom == "Projet") {
-	    	new FenetreNouveauProjet(entreprise, pp);
+	    	new FenetreNouveauProjet(entreprise);
 	    }
 	    if(nom == "Ressource") {
+
 	    	new FenetreNouvelleRessource(entreprise);
 	    }
 	    

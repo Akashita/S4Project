@@ -2,16 +2,16 @@ package Model;
 import java.util.ArrayList;
 
 public class Projet implements Comparable<Projet>{
-	
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private ArrayList<Activite> lActivite;//liste des activites (ordonnees par ordre)
-	
+
 	private String nom;
 	private boolean selectionner;
-	private float priorite; //Priorite du projet (relation d'ordre)
-	
+	private float priorite; //Priorite du projet
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -21,33 +21,33 @@ public class Projet implements Comparable<Projet>{
 		this.selectionner = false;
 		this.priorite = priorite;
 	}
-	
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
+
 	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public String getNom() {
 		return this.nom;
 	}
-	
+
 	public boolean getSelectionner() {
 		return selectionner;
 	}
-	
+
 	public ArrayList<Activite> getListe(){
 		return lActivite;
 	}
-	
+
 	//--------------------------------------------------------------------------------->>>>> Setteurs simples
 	public void selectionner() {
 		this.selectionner = true;
 	}
-	
+
 	public void deselectionner() {
 		this.selectionner = false;
 	}
-	
+
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {//permet de tester si deux projets ont le m�me nom.
@@ -69,11 +69,11 @@ public class Projet implements Comparable<Projet>{
 		} else {
 			res = 1;
 		}
-		
+
 		return res;
-	}	
-	
-	//--------------------------------------------------------------------------------->>>>> toString	
+	}
+
+	//--------------------------------------------------------------------------------->>>>> toString
 	public String toString() {
 		String liste = "Projet : " + this.nom + ". \n Il contient les activites suivantes : ";
 		for(int i = 0; i < this.lActivite.size(); i++){
@@ -82,11 +82,11 @@ public class Projet implements Comparable<Projet>{
 		}
 		return liste;
 	}
-	
+
 	//--------------------------------------------------------------------------------->>>>> Gestion des activites
 
 	/**
-	 * Ajoute une activite au projet 
+	 * Ajoute une activite au projet
 	 * @param activite   L'activite a ajouter
 	 * @return true si l'activite a ete ajoutee
 	 */
@@ -97,18 +97,18 @@ public class Projet implements Comparable<Projet>{
 		} else {
 			return false;
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Enleve une activite du projet
 	 * @param activite   L'activite a enlever
 	 * @return true si l'activite a ete enlevee
 	 */
-	public boolean enlever(Activite activite) { 
+	public boolean enlever(Activite activite) {
 		return lActivite.remove(activite);
 	}
-		
+
 
 }

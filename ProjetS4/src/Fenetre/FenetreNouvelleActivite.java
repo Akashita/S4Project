@@ -33,14 +33,16 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 
 	
 	public FenetreNouvelleActivite(Entreprise entreprise) {
+		super(entreprise.getFenetrePrincipale(), "ajouter une activité au projet", true);
 		this.entreprise = entreprise;
 		projet = entreprise.getProjetSelectionner();
 		if (entreprise.getProjetSelectionner() != null) {
 			this.setSize(700,300);
+			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.addWindowListener(new FermerFenetre(this));
+			creationInterface();	
 			this.setVisible(true);
-			creationInterface();			
 		}
 		else {
 	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			

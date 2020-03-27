@@ -3,6 +3,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
+import Fenetre.FenetrePrincipale;
 import Model.Entreprise;
 import Model.Projet;
 import Ressource.Calculateur;
@@ -15,12 +16,14 @@ public class PanelPrincipal extends JPanel implements Observer{
 	private Entreprise entreprise;
 	private PanelRessource panelRessource;
 	private PanelProjet panelProjet;
+	private FenetrePrincipale fp;
 	
 	public PanelPrincipal (Entreprise entreprise,
-			PanelRessource panelRessource, PanelProjet panelProjet) {
+			PanelRessource panelRessource, PanelProjet panelProjet, FenetrePrincipale fp) {
 		this.entreprise = entreprise;
 		this.panelRessource = panelRessource;
 		this.panelProjet = panelProjet;
+		this.fp = fp;
         this.setLayout(new BorderLayout());
 		this.setSize(this.getWidth(), this.getHeight());
 		entreprise.addObserver(this);
@@ -29,9 +32,13 @@ public class PanelPrincipal extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		this.removeAll();
-		panelProjet.afficherProjet();
+		//panelProjet.afficherProjet();
 		panelRessource.afficherRessource();
-		this.add(new PanelInfoProjet(entreprise), BorderLayout.WEST);
+		PanelInfoProjet pip = fp.getPanelInfoProjet();
+		if (pip != null) {
+			pip.afficheInterface();
+		}
+		//this.add(new PanelInfoProjet(entreprise), BorderLayout.WEST);
 		this.repaint();	
 	}
 
