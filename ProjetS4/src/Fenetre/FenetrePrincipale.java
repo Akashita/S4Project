@@ -10,6 +10,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import EcouteurEvenement.AjouterRessourceListener;
@@ -39,6 +40,7 @@ public class FenetrePrincipale extends JFrame{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
+	private JTabbedPane onglet = new JTabbedPane();
 
 	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
@@ -49,12 +51,13 @@ public class FenetrePrincipale extends JFrame{
 		PanelProjet panelProjet = new PanelProjet(entreprise);
 		PanelRessource panelRessource = new PanelRessource(entreprise);
 		PanelPrincipal pp = new PanelPrincipal(entreprise, 
-				panelRessource, panelProjet);	
+				panelRessource, panelProjet, this);	
 		
 		
-		this.add(pp, BorderLayout.CENTER);
+		//this.add(pp, BorderLayout.CENTER);
 		this.add(panelRessource, BorderLayout.WEST);
-		this.add(panelProjet, BorderLayout.SOUTH);
+		//this.add(panelProjet, BorderLayout.SOUTH);
+		this.add(onglet, BorderLayout.CENTER);
 
 
 		creationBarreMenu();
@@ -124,4 +127,11 @@ public class FenetrePrincipale extends JFrame{
 		this.setJMenuBar(menuBar);	
 	}
 
+	public void ajouterProjet(PanelInfoProjet pip) {
+		onglet.add(pip.getProjetNom(), pip);
+	}
+	
+	public PanelInfoProjet getPanelInfoProjet() {
+		return (PanelInfoProjet) onglet.getSelectedComponent();
+	}
 }

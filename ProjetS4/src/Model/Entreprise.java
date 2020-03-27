@@ -11,6 +11,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
 import Fenetre.FenetrePrincipale;
+import Panel.PanelInfoProjet;
 import Ressource.Calculateur;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -87,7 +88,6 @@ public class Entreprise extends Observable{
 		while (chargeAloue < charge) {					
 			if(act.creneauDispo(jourCourant, heureCourante)) { //Si le creneau est disponible pour toutes les ressources de l'activite
 				act.ajouterCreneau(new CreneauHoraire("TODO : REMPLACER LE TITRE", heureCourante), jourCourant);
-				System.out.println("yolo1");
 				chargeAloue++;
 			}
 			
@@ -135,8 +135,11 @@ public class Entreprise extends Observable{
 		return lProjet;
 	}
 
-
 	public Projet getProjetSelectionner() {
+		return fenetrePrincipale.getPanelInfoProjet().getProjet();
+	}
+
+	/*public Projet getProjetSelectionner() {
 		Projet projet = null;
 		for (int i=0; i<lProjet.size();i++) {
 			if (lProjet.get(i).getSelectionner()) {
@@ -144,7 +147,7 @@ public class Entreprise extends Observable{
 			}
 		}
 		return projet;
-	}
+	}*/
 	
 	public void selectionnerProjet(String nom) {
 		for (int i=0; i<lProjet.size(); i++) {
@@ -311,6 +314,7 @@ public class Entreprise extends Observable{
 			this.lProjet.add(newProjet);
 			newProjet.selectionner();
 			this.lPanel.add(new JPanel());
+			fenetrePrincipale.ajouterProjet(new PanelInfoProjet(this, newProjet));
 		}
 		update();
 	}

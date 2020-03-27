@@ -28,22 +28,26 @@ import Ressource.Salle;
 
 public class PanelInfoProjet extends JPanel{
 	
-	Entreprise entreprise;
+	private Entreprise entreprise;
+	private Projet projet;
 	
-	public PanelInfoProjet(Entreprise entreprise) {
+	public PanelInfoProjet(Entreprise entreprise, Projet projet) {
 		this.entreprise = entreprise;
-		if (entreprise.getProjetSelectionner() != null) {
-			if (entreprise.getProjetSelectionner().getListe().size()>0) {//on vérifie qu'il y a au moins une activité
-				afficheInterface();
-			}
-		}
+		this.projet = projet;
+			afficheInterface();
+		
 	}
 	
-	private void afficheInterface() {
-	    this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+	public void afficheInterface() {
+		if (projet.getListe().size()>0) {//on vérifie qu'il y a au moins une activité
+			this.removeAll();
+			this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 	    
-		this.add(afficheActivite());
-		this.add(afficheRessource());
+			this.add(afficheActivite());
+			this.add(afficheRessource());
+			this.revalidate();	
+		}
+
 	}
 	
 	private JPanel afficheActivite() {
@@ -52,7 +56,6 @@ public class PanelInfoProjet extends JPanel{
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(Color.WHITE);			
 
-		Projet projet = entreprise.getProjetSelectionner();
 		ArrayList<Activite> listeActivite = projet.getListe();
 
 		for (int i=0; i<listeActivite.size(); i++) {
@@ -183,4 +186,12 @@ public class PanelInfoProjet extends JPanel{
 		entreprise.deselectionnerActivite();
 		entreprise.selectionnerActivite(idActiviteSelectionner);
 	} 
+	
+	public String getProjetNom() {
+		return projet.getNom();
+	}
+	
+	public Projet getProjet() {
+		return projet;
+	}
 }
