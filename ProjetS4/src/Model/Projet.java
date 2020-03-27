@@ -1,5 +1,7 @@
 package Model;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 
 
@@ -91,39 +93,28 @@ public class Projet implements Comparable<Projet>{
 	/**
 	 * Ajoute une activite au projet 
 	 * @param activite   L'activite a ajouter
+	 * @return true si l'activite a ete ajoutee
 	 */
-	public void ajouter(Activite activite) { //test si la activite est d�j� dans le projet sinon la rajoute
-		lActivite.add(activite);
-		//TODO
-		//TODO
-		/*int[] test = this.chercherActivite(activite);
-		
-		if (test[0]==0) {
-			Boolean place = false;
-			int i = 0;
-			while (i < lActivite.size() && !place) {
-				if (activite.compareTo(lActivite.get(i)) == 1) { //Si activite > lActivite.egt(i)
-					lActivite.add(i, activite);
-					place = true;
-				}
-			}
-			if (place = false) {
-				lActivite.add(activite);
-			}
-		}*/
+	public boolean ajouter(Activite activite) {
+		int pos = this.chercherActivite(activite);
+		if(pos != -1) {
+			lActivite.add(pos, activite);
+		}
+		return pos != -1;
 	}
 	
 	
 	/**
 	 * Enleve une activite du projet
 	 * @param activite   L'activite a enlever
+	 * @return true si l'activite a ete enlevee
 	 */
-	public void enlever(Activite activite) { //test si la activite est d�j� dans le projet si oui l'enl�ve
-		int[] test = this.chercherActivite(activite);
-		
-		if (test[0]==1) {
-			this.lActivite.remove(test[1]);
+	public boolean enlever(Activite activite) { 
+		int pos = this.chercherActivite(activite);
+		if(pos != -1) {
+			lActivite.remove(pos);
 		}
+		return pos != -1;
 	}
 	
 	
@@ -132,28 +123,31 @@ public class Projet implements Comparable<Projet>{
 	 * @param activite   L'activite a chercher
 	 * @return un doublet qui indique la position de l'activite et si elle a ete trouvee
 	 */
-	public int[] chercherActivite(Activite activite) { 
-		Boolean pasTrouve = true;
-		int[] res = {0,0};
+	public int chercherActivite(Activite activite) { 
+		Boolean trouve = false; //Indique si l'indice a ete trouve
+		Boolean depasse = false; //Indique si la position a ete depacee
 		
-		if (this.lActivite.size()==0) {
-			return res;
-		}
-		else {
-			
-			do{
-				if (this.lActivite.get(res[1]).equals(activite)) {
-					res[0] = 1;
-					pasTrouve = false;
-				}
-				else {
-					res[1] = res[1] + 1;
-				}
-				
+		int res = 0;
+		Iterator<Activite> itt = lActivite.listIterator();
+		Activite actTMP;
+		
+		while(!trouve && itt.hasNext() && !depasse){
+			actTMP = itt.next();
+			if(activite.compareTo(actTMP) == 0) {
+				trouve = true;
+			} else if(activite.compareTo(actTMP) < 0) {
+				depasse = true;
+			} else {
+				res++;
 			}
-			while((pasTrouve) && (res[1] < this.lActivite.size()));
-			return res;
 		}
+		
+		//Si l'activite n'a pas ete trouvee ou a ete depasse, on retourne -1
+		if((res + 1) == lActivite.size() && !trouve && !depasse) { 
+			res = -1;
+		}
+		
+		return res;
 	}
 	
 

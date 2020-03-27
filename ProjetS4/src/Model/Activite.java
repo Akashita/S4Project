@@ -100,9 +100,14 @@ public class Activite implements Comparable<Activite>{
 		return ordre.compareTo(act.ordre);
 	}
 	
+	//--------------------------------------------------------------------------------->>>>> toString
+	@Override
+	public String toString() {
+		return "activite" + ordre;
+	}
+	
 	
 	//--------------------------------------------------------------------------------->>>>> Gestion de l'EDT
-	
 	public void ajouterRessource(Ressource res) {
 		ressources.add(res);
 	}
