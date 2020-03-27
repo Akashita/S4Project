@@ -2,6 +2,7 @@ package Model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import Ressource.Ressource;
 
@@ -18,7 +19,7 @@ public class Activite implements Comparable<Activite>{
 	private boolean selectionner = false;
 
 		
-	private ArrayList<Ressource> ressources; //Contient les cr�neaux horaires d'une journ�e
+	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
@@ -29,7 +30,7 @@ public class Activite implements Comparable<Activite>{
 		this.charge = charge; //La charge de travail de l'activitee en jourHomme
 		this.ordre = ordre; //Permet d'etablir une relation d'ordre entre toutes les activites
 		this.debut = debut;
-		ressources = new ArrayList<Ressource>();
+		lRessources = new ArrayList<Ressource>();
 	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -58,7 +59,7 @@ public class Activite implements Comparable<Activite>{
 	}
 	
 	public ArrayList<Ressource> getLRessource(){
-		return ressources;
+		return lRessources;
 	}
 	
 	public String getJourDebut() {
@@ -103,26 +104,26 @@ public class Activite implements Comparable<Activite>{
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override
 	public String toString() {
-		return "activite" + ordre;
+		String res = "Activite " + ordre;
+		for (int i = 0; i < lRessources.size(); i++) {
+			res += "\n" + lRessources.get(i);
+		}
+		return res;
 	}
 	
 	
 	//--------------------------------------------------------------------------------->>>>> Gestion de l'EDT
-	public void ajouterRessource(Ressource res) {
-		ressources.add(res);
-	}
-	
-	
+
 	/**
-	 * Dit si un creneau est dispo pour toutes ressources associees
+	 * Dit si un creneau est dispo pour toutes lRessources associees
 	 * @param date   La date du creneau
 	 * @param heure  L'heure du creneau
-	 * @return vrai si le creneau est dispo pour toutes les ressources associees
+	 * @return vrai si le creneau est dispo pour toutes les lRessources associees
 	 */
 	public boolean creneauDispo(LocalDate date, int heure){
 		Boolean dispo = true;
-		for (int i = 0; i < ressources.size(); i++) {
-			if(!ressources.get(i).creneauDispo(date, heure)) {
+		for (int i = 0; i < lRessources.size(); i++) {
+			if(!lRessources.get(i).creneauDispo(date, heure)) {
 				dispo = false;
 			}
 		}
@@ -131,13 +132,13 @@ public class Activite implements Comparable<Activite>{
 	
 	
 	/**
-	 * Ajoute un creneau a toutes les ressources associees
+	 * Ajoute un creneau a toutes les lRessources associees
 	 * @param cr   	Le creneau a ajouter
 	 * @param jour 	Le jour auquel ajouter le creneau
 	 */
 	public void ajouterCreneau(CreneauHoraire cr, LocalDate jour) {
-		for (int i = 0; i < ressources.size(); i++) {
-			ressources.get(i).ajouterCreneau(cr, jour);
+		for (int i = 0; i < lRessources.size(); i++) {
+			lRessources.get(i).ajouterCreneau(cr, jour);
 		}
 	}
 
@@ -145,33 +146,64 @@ public class Activite implements Comparable<Activite>{
 	/**
 	 * Supprime une ressource de l'activite
 	 * @param id  L'ID de la ressource
-	 * @return vrai si la ressource a ete supprimee
+	 * @return true si la ressource a ete supprimee
 	 */
 	public boolean supprimerRessource(int id) {
-		boolean suppr = false;
-		int i = 0;
-		Ressource ressourceCourrante;
-		while(i < ressources.size() && !suppr) {
-			ressourceCourrante = ressources.get(i);
-			if (ressourceCourrante.getId() == id) {
-				ressources.remove(i);
-				suppr = true;
-			}	
-			i++;
-		}
-		return suppr;
+		return lRessources.remove(new Ressource(id));
 	}
 	
 	
 	/**
-	 * Selectionne des ressources de l'activite par type
+	 * Ajouter une ressource a l'activite
+	 * @param ressource  La ressource
+	 * @return true si la ressource a ete ajoutee
+	 */
+	public boolean ajouterRessource(Ressource ressource) {		
+		if(!lRessources.contains(ressource)) {
+			lRessources.add(ressource);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * Cherche une ressource dans le projet
+	 * @param ressource   La ressource a chercher
+	 * @return un entier qui indique si elle a ete trouvee et sa position
+	 */
+	public int[] chercherRessource(int id) { 
+		Boolean trouve = false; //Indique si l'indice a ete trouve
+		Boolean depasse = false; //Indique si la position a ete depacee
+		
+		int[] res = {0,0};
+		Iterator<Ressource> itt = lRessources.listIterator();
+		Ressource resTMP;
+		
+		while(!trouve && itt.hasNext() && !depasse){
+			resTMP = itt.next();
+			if(id <= resTMP.getId()) {
+				trouve = true;
+				res[1] = 1;
+			} else {
+				res[0]++;
+			}
+		}
+				
+		return res;
+	}
+	
+	
+	/**
+	 * Selectionne des lRessources de l'activite par type
 	 * @param type  Le type de la ressource
-	 * @return la liste des ressources selectionnees
+	 * @return la liste des lRessources selectionnees
 	 */
 	public ArrayList<Ressource> getListeRessourceType(String type){
 		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
-		for (int i=0; i<ressources.size(); i++) {
-			Ressource ressource = ressources.get(i);
+		for (int i=0; i<lRessources.size(); i++) {
+			Ressource ressource = lRessources.get(i);
 			if(ressource.getType() == type) {
 				nouvelleListe.add(ressource);
 			}

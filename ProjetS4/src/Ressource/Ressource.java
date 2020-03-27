@@ -8,7 +8,7 @@ import Model.CreneauHoraire;
 import Model.Entreprise;
 import Model.Temps;
 
-public class Ressource {
+public class Ressource implements Comparable<Ressource>{
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
@@ -31,6 +31,10 @@ public class Ressource {
 		this.nom = nom;
 		this.type = type;
 		this.jours = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>(); 
+	}
+	
+	public Ressource(int id) {
+		this(id, null, null);
 	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -60,6 +64,21 @@ public class Ressource {
 			return false;
 		}
 	}
+	
+	@Override
+	public int compareTo(Ressource ressource) {
+		int res;
+		if(id == ressource.id) {
+			res = 0;
+		} else if(id < ressource.id) {
+			res = -1;
+		} else {
+			res = 1;
+		}
+		
+		return res;
+	}
+	
 	
 	
 	//--------------------------------------------------------------------------------->>>>> Gestion de l'EDT
@@ -194,6 +213,7 @@ public class Ressource {
 		return creneauxLibres;
 		
 	}
+
 
 
 }
