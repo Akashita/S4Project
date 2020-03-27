@@ -161,8 +161,10 @@ public class Ressource implements Comparable<Ressource>{
 		if(jours.containsKey(date)) {
 			ArrayList<CreneauHoraire> jour = jours.get(date);
 			for (int i = 0; i < jour.size(); i++) {
-				if(jour.get(i).getDebut() == heure){ //equals(new CreneauHoraire(heure, false))) {
-					return jour.get(i) == null;
+				if(jour.get(i) != null) {
+					if(jour.get(i).getDebut() == heure){
+					dispo = false;
+					}
 				}
 			}
 		}

@@ -38,6 +38,10 @@ public class Projet implements Comparable<Projet>{
 	public ArrayList<Activite> getListe(){
 		return lActivite;
 	}
+	
+	public float getPriorite() {
+		return priorite;
+	}
 
 	//--------------------------------------------------------------------------------->>>>> Setteurs simples
 	public void selectionner() {

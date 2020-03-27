@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 
 import EcouteurEvenement.SourisActiviteListener;
 import EcouteurEvenement.SourisRessourceListener;
-import Fenetre.FenetreEmploiDuTemps;
+//import Fenetre.FenetreEmploiDuTemps;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
