@@ -18,14 +18,9 @@ import Panel.PanelRessource;
 
 public class NouveauListener implements ActionListener{
 	Entreprise entreprise;
-	PanelProjet pp;
-	PanelRessource pr;
 	
-	public NouveauListener(Entreprise entreprise, 
-			PanelProjet pp, PanelRessource pr) {
+	public NouveauListener(Entreprise entreprise) {
 		this.entreprise = entreprise;
-		this.pp = pp;
-		this.pr = pr;
 	}
 	
 	/**
@@ -34,7 +29,7 @@ public class NouveauListener implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new FenetreNouveau(entreprise, pp, pr);
+		new FenetreNouveau(entreprise);
 	}
 
 }

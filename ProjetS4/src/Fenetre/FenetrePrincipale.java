@@ -4,7 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -37,7 +39,8 @@ public class FenetrePrincipale extends JFrame{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	
+	private JDesktopPane desktop = new JDesktopPane();
+
 	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
 		this.setTitle("ProjetS4");
@@ -49,18 +52,21 @@ public class FenetrePrincipale extends JFrame{
 		PanelPrincipal pp = new PanelPrincipal(entreprise, 
 				panelRessource, panelProjet);	
 
-		this.add(pp, BorderLayout.CENTER);
+	    this.add(desktop, BorderLayout.CENTER);
+
+		this.add(pp, BorderLayout.EAST);
 		this.add(panelRessource, BorderLayout.WEST);
 		this.add(panelProjet, BorderLayout.SOUTH);
 
-		creationBarreMenu(panelProjet, panelRessource);
+
+		creationBarreMenu();
 		
 		this.addWindowListener(new FermerFenetre(this));
 		this.setVisible(true);	
 		pp.setVisible(true);
 	}
 	
-	private void creationBarreMenu(PanelProjet panelProjet, PanelRessource panelRessource) {
+	private void creationBarreMenu() {
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu menuFichier = new JMenu("Fichier");
@@ -70,8 +76,7 @@ public class FenetrePrincipale extends JFrame{
 		JMenuItem itemNouveau = new JMenuItem("Nouveau", KeyEvent.VK_N);
 	    KeyStroke ctrlNouveau = KeyStroke.getKeyStroke("control N");
 	    itemNouveau.setAccelerator(ctrlNouveau);
-	    itemNouveau.addActionListener(new NouveauListener(entreprise, 
-	    		panelProjet, panelRessource));
+	    itemNouveau.addActionListener(new NouveauListener(entreprise));
 
 		JMenuItem itemQuitter = new JMenuItem("Quitter", KeyEvent.VK_Q);
 	    KeyStroke ctrlQuitter = KeyStroke.getKeyStroke("control Q");
@@ -102,9 +107,6 @@ public class FenetrePrincipale extends JFrame{
 
 		JMenuItem itemPropos = new JMenuItem("Projet");
 
-		//itemNouvelleRessource.setMnemonic(KeyEvent.VK_N);
-//		menuNouveau.add(itemNouvelleRessource);
-//		menuNouveau.add(itemNouveauProjet);
 		
 		
 		menuFichier.add(itemNouveau);
@@ -124,4 +126,8 @@ public class FenetrePrincipale extends JFrame{
 		this.setJMenuBar(menuBar);	
 	}
 	
+	public void ajouteFenetreInterne(JInternalFrame fenetre) {
+		desktop.add(fenetre, 1);
+	}
+
 }

@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,7 +27,7 @@ import Panel.PanelProjet;
  * @author damien planchamp
  *
  */
-public class FenetreNouveauProjet extends JDialog implements FenetreInterface{
+public class FenetreNouveauProjet extends /*JDialog*/ JInternalFrame implements FenetreInterface{
 	/**
 	 * 
 	 */
@@ -36,12 +37,17 @@ public class FenetreNouveauProjet extends JDialog implements FenetreInterface{
 	private JTextField nom, priorite;
 
 	
-	public FenetreNouveauProjet(Entreprise entreprise, PanelProjet pp) {		
+	public FenetreNouveauProjet(Entreprise entreprise) {		
 		this.entreprise = entreprise;
-		this.setSize(480,150);
-		this.setLocationRelativeTo(null);
-		this.addWindowListener(new FermerFenetre(this));
+		this.setSize(500,170);
+		/*this.setLocationRelativeTo(null);
+		this.addWindowListener(new FermerFenetre(this));*/
+	    this.setResizable(false);
+	    this.setClosable(true);
 		this.setVisible(true);
+		
+		
+		
 		creationInterface();			
 	}
 	

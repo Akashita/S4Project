@@ -25,12 +25,16 @@ public class FenetreEmploiDuTemps extends JFrame{
 	
 	private Ressource ressource;
 	private CreneauHoraire [][] tableauCreneau;
+	private int semaineSelectionner;
+	
 	private JSlider slide = new JSlider();
+	
 	private JPanel panelSemaine = new JPanel();
 	private JPanel panelListeSemaine = new JPanel();
 	private JPanel panelCompletJourDeLasemaine = new JPanel();
 	private JPanel panelJourDeLasemaine = new JPanel();
-	private int semaineSelectionner;
+	private JPanel panelCompletSemaineCreneau = new JPanel();
+	private JPanel panelSemaineCreneau = new JPanel();
 	
 	public FenetreEmploiDuTemps(Ressource ressource) {
 		this.ressource = ressource;
@@ -50,7 +54,6 @@ public class FenetreEmploiDuTemps extends JFrame{
 		panel.setLayout(new BorderLayout());
 		
 		panel.add(panelCompletJourDeLasemaine, BorderLayout.NORTH);
-		panelCompletJourDeLasemaine.setBackground(Color.PINK);
 		panelCompletJourDeLasemaine.setLayout(new BorderLayout());
 		afficheJourDeLaSemaine();
 		
@@ -58,7 +61,10 @@ public class FenetreEmploiDuTemps extends JFrame{
 		
 		afficherListeSemaine();
 		
-		panel.add(afficheCreneauDeLaSemaine(tableauCreneau), BorderLayout.CENTER);
+		panel.add(panelCompletSemaineCreneau, BorderLayout.CENTER);
+		panelCompletSemaineCreneau.setLayout(new BorderLayout());
+		afficheCreneauDeLaSemaine();
+		
 		return panel;
 	}
 	
@@ -149,16 +155,20 @@ public class FenetreEmploiDuTemps extends JFrame{
 		semaineSelectionner = Integer.parseInt(label.getText());
 		changeSemaine();
     	afficheJourDeLaSemaine();
+		tableauCreneau = ressource.getSemaineEDT(Temps.getAnnee(), semaineSelectionner);
+		afficheCreneauDeLaSemaine();
 	} 
 	
-	private JPanel afficheCreneauDeLaSemaine(CreneauHoraire [][] tableauCreneau) {
-		JPanel panel = new JPanel();
+	private void afficheCreneauDeLaSemaine() {
+		panelCompletSemaineCreneau.remove(panelCompletSemaineCreneau);
+		panelSemaineCreneau = new JPanel();
 		int nbJour = tableauCreneau.length;
-		panel.setLayout(new GridLayout(0, nbJour));
+		panelSemaineCreneau.setLayout(new GridLayout(0, nbJour));
 		for (int i=0; i<nbJour; i++) {
-			panel.add(afficheJour(tableauCreneau[i]));
+			panelSemaineCreneau.add(afficheJour(tableauCreneau[i]));
 		}
-		return panel;
+		panelCompletSemaineCreneau.add(panelSemaineCreneau, BorderLayout.CENTER);
+		this.revalidate();
 	}
 	
 	private JPanel afficheJour(CreneauHoraire [] tableauCreneau) {
@@ -168,7 +178,6 @@ public class FenetreEmploiDuTemps extends JFrame{
 		for (int i=0; i<nbHeure; i++) {
 			CreneauHoraire creneau = tableauCreneau[i];
 			panel.add(creerLabelCreneau(creneau));
-			
 		}
 		return panel;
 	}
@@ -182,7 +191,7 @@ public class FenetreEmploiDuTemps extends JFrame{
 			label.setBackground(Color.GREEN);			
 		}
 		else {
-			label.setText("        ");
+			label.setText("---");
 			label.setOpaque(true);
 			label.setBackground(Color.WHITE);			
 		}

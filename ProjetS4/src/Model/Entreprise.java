@@ -5,8 +5,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
+import Fenetre.FenetrePrincipale;
 import Ressource.Calculateur;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -35,6 +39,7 @@ public class Entreprise extends Observable{
 	
 	public static final int NB_HEURE_JOUR = 8;
 	
+	private FenetrePrincipale fenetrePrincipale;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -44,7 +49,8 @@ public class Entreprise extends Observable{
 		this.lType =  new ArrayList<String>();
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
-		
+		fenetrePrincipale = new FenetrePrincipale(this);
+
 	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -385,6 +391,11 @@ public class Entreprise extends Observable{
 	public void afficheInfoRessource(Ressource res) {
 		//TODO
 	}
+	
+	public void ajouteFenetreInterne(JInternalFrame fenetre) {
+		fenetrePrincipale.ajouteFenetreInterne(fenetre);
+	}
+	
 	
 	public void update() {
 		this.setChanged();

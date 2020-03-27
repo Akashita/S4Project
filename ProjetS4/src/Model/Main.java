@@ -9,7 +9,6 @@ import Ressource.Personne;
 public class Main {
 	public static void main (String[] args) {
 		Entreprise entreprise = new Entreprise();
-		new FenetrePrincipale(entreprise);
 		
 		/*
 		CreneauHoraire cr = new CreneauHoraire("titre", 15);
