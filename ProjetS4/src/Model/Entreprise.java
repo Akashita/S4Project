@@ -392,10 +392,9 @@ public class Entreprise extends Observable{
 		//TODO
 	}
 	
-	public void ajouteFenetreInterne(JInternalFrame fenetre) {
-		fenetrePrincipale.ajouteFenetreInterne(fenetre);
+	public JFrame getFenetrePrincipale() {
+		return fenetrePrincipale;
 	}
-	
 	
 	public void update() {
 		this.setChanged();

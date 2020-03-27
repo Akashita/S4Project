@@ -27,7 +27,7 @@ import Panel.PanelProjet;
  * @author damien planchamp
  *
  */
-public class FenetreNouveauProjet extends /*JDialog*/ JInternalFrame implements FenetreInterface{
+public class FenetreNouveauProjet extends JDialog implements FenetreInterface{
 	/**
 	 * 
 	 */
@@ -37,18 +37,15 @@ public class FenetreNouveauProjet extends /*JDialog*/ JInternalFrame implements 
 	private JTextField nom, priorite;
 
 	
-	public FenetreNouveauProjet(Entreprise entreprise) {		
+	public FenetreNouveauProjet(Entreprise entreprise) {	
+		super(entreprise.getFenetrePrincipale(), "nouveau projet", true);
 		this.entreprise = entreprise;
 		this.setSize(500,170);
-		/*this.setLocationRelativeTo(null);
-		this.addWindowListener(new FermerFenetre(this));*/
+		this.setLocationRelativeTo(null);
+		this.addWindowListener(new FermerFenetre(this));
 	    this.setResizable(false);
-	    this.setClosable(true);
-		this.setVisible(true);
-		
-		
-		
 		creationInterface();			
+		this.setVisible(true);
 	}
 	
 	/**

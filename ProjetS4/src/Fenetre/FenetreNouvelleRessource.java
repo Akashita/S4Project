@@ -42,12 +42,14 @@ public class FenetreNouvelleRessource extends JDialog implements FenetreInterfac
 	private String type;
 	
 	public FenetreNouvelleRessource(Entreprise entreprise) {
+		super(entreprise.getFenetrePrincipale(), "creer une nouvelle ressource", true);
 		this.entreprise = entreprise;
 		this.setSize(300,100);
+		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.addWindowListener(new FermerFenetre(this));
-		this.setVisible(true);
 		creationInterface();
+		this.setVisible(true);
 	}
 	
 	/**

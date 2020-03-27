@@ -39,9 +39,7 @@ public class FenetreNouveau extends JFrame{
 	      choix[0]);
 	    
 	    if(nom == "Projet") {
-			entreprise.ajouteFenetreInterne(new FenetreNouveauProjet(entreprise));
-
-	    	//new FenetreNouveauProjet(entreprise, pp);
+	    	new FenetreNouveauProjet(entreprise);
 	    }
 	    if(nom == "Ressource") {
 

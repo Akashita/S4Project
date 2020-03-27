@@ -39,7 +39,6 @@ public class FenetrePrincipale extends JFrame{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	private JDesktopPane desktop = new JDesktopPane();
 
 	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
@@ -51,10 +50,9 @@ public class FenetrePrincipale extends JFrame{
 		PanelRessource panelRessource = new PanelRessource(entreprise);
 		PanelPrincipal pp = new PanelPrincipal(entreprise, 
 				panelRessource, panelProjet);	
-
-	    this.add(desktop, BorderLayout.CENTER);
-
-		this.add(pp, BorderLayout.EAST);
+		
+		
+		this.add(pp, BorderLayout.CENTER);
 		this.add(panelRessource, BorderLayout.WEST);
 		this.add(panelProjet, BorderLayout.SOUTH);
 
@@ -124,10 +122,6 @@ public class FenetrePrincipale extends JFrame{
 		menuBar.add(menuEditer);
 		menuBar.add(menuPropos);
 		this.setJMenuBar(menuBar);	
-	}
-	
-	public void ajouteFenetreInterne(JInternalFrame fenetre) {
-		desktop.add(fenetre, 1);
 	}
 
 }
