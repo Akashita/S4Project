@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -61,7 +62,6 @@ public class FenetrePrincipale extends JFrame{
 		JPanel panel = new JPanel();
 		this.add(panel, BorderLayout.CENTER);
 		panel.add(onglet, BorderLayout.CENTER);
-
 
 		creationBarreMenu();
 		

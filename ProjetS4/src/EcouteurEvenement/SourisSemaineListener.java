@@ -4,7 +4,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
 
-import Fenetre.FenetreEmploiDuTemps;
+import Fenetre.FenetreInfoRessource;
 import Panel.PanelProjet;
 
 /**
@@ -15,11 +15,12 @@ import Panel.PanelProjet;
  *
  */
 public class SourisSemaineListener implements MouseListener {
-	FenetreEmploiDuTemps fenetreEDT;
+	//FenetreEmploiDuTemps fenetreEDT;
+	FenetreInfoRessource fenetreIR;
 	JLabel label;
 	
-	public SourisSemaineListener(FenetreEmploiDuTemps fenetreEDT, JLabel label) {
-		this.fenetreEDT = fenetreEDT;
+	public SourisSemaineListener(FenetreInfoRessource fenetreIR, JLabel label) {
+		this.fenetreIR = fenetreIR;
 		this.label = label;
 	}
 	
@@ -30,7 +31,7 @@ public class SourisSemaineListener implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent arg0) { 
-		fenetreEDT.selectionnerProjet(label);
+		fenetreIR.selectionnerProjet(label);
 	}
 
 	@Override

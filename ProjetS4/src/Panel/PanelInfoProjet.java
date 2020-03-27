@@ -159,7 +159,7 @@ public class PanelInfoProjet extends JPanel{
 					label = creerLabel(res.getNom());					
 					
 				}
-				label.addMouseListener(new SourisRessourceListener(this, res));
+				label.addMouseListener(new SourisRessourceListener(entreprise, res));
 				panel.add(label);
 			}				
 		}		
@@ -173,7 +173,7 @@ public class PanelInfoProjet extends JPanel{
 		return label;
 	}
 
-	public void afficheInfoRessource(Ressource res) {
+	/*public void afficheInfoRessource(Ressource res) {
 		//this.removeAll();
 		afficheInterface();
 		JPanel panel = new JPanel();
@@ -205,7 +205,7 @@ public class PanelInfoProjet extends JPanel{
 	        }
 	    });			
 	    return bouton;
-	}
+	}*/
 
 	public void selectionnerActivite(int idActiviteSelectionner) {
 		entreprise.deselectionnerActivite();

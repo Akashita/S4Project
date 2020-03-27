@@ -47,7 +47,7 @@ public class PanelRessource extends JPanel{
 		ArrayList<Ressource> listeRessource = entreprise.getListeRessourceType(type);
 		JPanel panel = new JPanel();
 		if (listeRessource.size() > 0) {
-			panel.add(creerLabel("                                    "));
+			//panel.add(creerLabel("                                    "));
 		    panel.setBackground(Color.white);
 		    panel.setBorder(BorderFactory.createTitledBorder("liste de " + type));
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -60,16 +60,16 @@ public class PanelRessource extends JPanel{
 				else {
 					nom = ressource.getNom();
 				}
-				panel.add(creerLabel(nom));
+				panel.add(creerLabel(nom, ressource));
 			}
 		}
 		return panel;			
 	}
 	
-	private JLabel creerLabel(String nom) {
+	private JLabel creerLabel(String nom, Ressource ressource) {
 		JLabel label = new JLabel(nom);
 		label.setFont(new Font("Arial", Font.BOLD, 15));
-		//label.addMouseListener(new SourisRessourceListener(this, label));
+		label.addMouseListener(new SourisRessourceListener(entreprise, ressource));
 		return label;
 	}
 	
