@@ -13,7 +13,8 @@ public class Activite implements Comparable<Activite>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private int id;
 	private String titre;
-	private int charge;
+	private int chargeJHomme;
+	private int chargeHeure;
 	private String ordre;
 	private LocalDate debut;
 	private boolean selectionner = false;
@@ -24,10 +25,11 @@ public class Activite implements Comparable<Activite>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Activite(int id, String titre, int charge, String ordre, LocalDate debut) {
+	public Activite(int id, String titre, int chargeJH, String ordre, LocalDate debut) {
 		this.id = id;
 		this.titre = titre; 
-		this.charge = charge; //La charge de travail de l'activitee en jourHomme
+		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
+		this.chargeHeure = chargeJH * Entreprise.NB_HEURE_JOUR;
 		this.ordre = ordre; //Permet d'etablir une relation d'ordre entre toutes les activites
 		this.debut = debut;
 		lRessources = new ArrayList<Ressource>();
@@ -46,8 +48,12 @@ public class Activite implements Comparable<Activite>{
 		return titre;
 	}
 	
-	public int getCharge() {
-		return charge;
+	public int getChargeJHomme() {
+		return chargeJHomme;
+	}
+	
+	public int getChargeHeure() {
+		return chargeHeure;
 	}
 
 	public String getOrdre() {

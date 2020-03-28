@@ -107,7 +107,7 @@ public class PanelInfoProjet extends JPanel{
 			panel.setBackground(Color.WHITE);			
 		}
 	    panel.setBorder(BorderFactory.createTitledBorder(act.getTitre()));
-	    panel.add(new JLabel("Charge de travail: " + act.getCharge() + " jour/homme"));
+	    panel.add(new JLabel("Charge de travail: " + act.getChargeJHomme() + " jour/homme"));
 	    panel.add(new JLabel("Ordre: " + act.getOrdre()));
 	    panel.add(new JLabel("Commence le: " + act.getJourDebut()));
 		return panel;
