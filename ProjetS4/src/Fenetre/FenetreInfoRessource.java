@@ -90,6 +90,8 @@ public class FenetreInfoRessource extends JDialog{
 		return label;
 	}
 	
+	//============ Affichage de l'emploi du temps ========///
+	
 	private JPanel afficherEmploiDuTemps() {
 		semaineSelectionner = Temps.getSemaine();
 		tableauCreneau = ressource.getSemaineEDT(Temps.getAnnee(), Temps.getSemaine());
@@ -136,8 +138,8 @@ public class FenetreInfoRessource extends JDialog{
 	
 	private JPanel afficheHeure(int nbHeure) {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(nbHeure,0));
-		for (int i=0; i<nbHeure; i++) {
+		panel.setLayout(new GridLayout(nbHeure+2,0));
+		for (int i=0; i<=nbHeure; i++) {
 			panel.add(creerLabelInterface(Integer.toString(i+8)+"h"));
 		}
 		return panel;
@@ -217,10 +219,15 @@ public class FenetreInfoRessource extends JDialog{
 	private JPanel afficheJour(CreneauHoraire [] tableauCreneau) {
 		JPanel panel = new JPanel();
 		int nbHeure = tableauCreneau.length;
-		panel.setLayout(new GridLayout(nbHeure,0));
+		panel.setLayout(new GridLayout(nbHeure+1,0));
 		for (int i=0; i<nbHeure; i++) {
-			CreneauHoraire creneau = tableauCreneau[i];
-			panel.add(creerLabelCreneau(creneau));
+			if (i == 5) {
+				panel.add(creerLabelCreneau(creneau));
+			}
+			else {
+				CreneauHoraire creneau = tableauCreneau[i];
+				panel.add(creerLabelCreneau(creneau));				
+			}
 		}
 		return panel;
 	}
@@ -250,5 +257,7 @@ public class FenetreInfoRessource extends JDialog{
 		return label;
 	}
 
-
+	public int getIdRessource() {
+		return ressource.getId();
+	}
 }

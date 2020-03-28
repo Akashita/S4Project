@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
+import Fenetre.FenetreInfoRessource;
 import Fenetre.FenetrePrincipale;
 import Panel.PanelInfoProjet;
 import Ressource.Calculateur;
@@ -41,6 +42,7 @@ public class Entreprise extends Observable{
 	public static final int NB_HEURE_JOUR = 8;
 	
 	private FenetrePrincipale fenetrePrincipale;
+	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -125,84 +127,6 @@ public class Entreprise extends Observable{
 		return this.idCour;
 	}
 	
-	public Projet getDernierProjet() { //retourne le dernier projet creer, pour PanelProjet
-		return lProjet.get(lProjet.size()-1);
-	}
-	
-	public ArrayList<Projet> getListeProjet(){
-		return lProjet;
-	}
-
-	public Projet getProjetSelectionner() {
-		return fenetrePrincipale.getPanelInfoProjet().getProjet();
-	}
-
-	/*public Projet getProjetSelectionner() {
-		Projet projet = null;
-		for (int i=0; i<lProjet.size();i++) {
-			if (lProjet.get(i).getSelectionner()) {
-				projet = lProjet.get(i);
-			}
-		}
-		return projet;
-	}*/
-	
-	public void selectionnerProjet(String nom) {
-		for (int i=0; i<lProjet.size(); i++) {
-			Projet projet = lProjet.get(i);
-			if (projet.getNom() == nom) {
-				projet.selectionner();
-			}
-		}
-		update();
-	}
-	
-	public void deselectionnerProjet() { //utile pour le graphique
-		for (int i=0; i<lProjet.size(); i++) {
-			lProjet.get(i).deselectionner();
-		}
-	}
-	
-	public JPanel getPanelDuProjet() {
-		JPanel panel = null;
-		for (int i=0; i<lProjet.size();i++) {
-			if (lProjet.get(i).getSelectionner()) {
-				panel = lPanel.get(i);
-			}
-		}
-		return panel;
-	}
-	
-	public void selectionnerActivite(int id) {
-		Projet projet = getProjetSelectionner();
-		ArrayList<Activite> listeAct = projet.getListe();
-		for (int i=0; i<listeAct.size(); i++) {
-			Activite act = listeAct.get(i);
-			if (act.getId() == id) {
-				act.selectionner();
-			}
-		}
-		update();
-	}
-	
-	public void deselectionnerActivite() { //utile pour le graphique
-		ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
-		for (int i=0; i<listeAct.size(); i++) {
-			listeAct.get(i).deselectionner();
-		}
-	}
-
-	public Activite getActiviteSelectionner() {
-		//Projet projet = getProjetSelectionner();
-		ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
-		Activite act = null;
-		for (int i=0; i<listeAct.size();i++) {
-			if (listeAct.get(i).getSelectionner()) {
-				act = listeAct.get(i);
-			}
-		}
-		return act;
-	}
 
 	public ArrayList<Ressource> getListeRessourceType(String type){
 		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
@@ -366,17 +290,112 @@ public class Entreprise extends Observable{
 		update();
 	}
 	
-	public void afficheInfoRessource(Ressource res) {
-		//TODO
+	
+	
+	//================ Partie Graphique ==========//
+	
+	public Projet getDernierProjet() { //retourne le dernier projet creer, pour PanelProjet
+		return lProjet.get(lProjet.size()-1);
 	}
 	
+	public ArrayList<Projet> getListeProjet(){
+		return lProjet;
+	}
+
+	public Projet getProjetSelectionner() {
+		return fenetrePrincipale.getPanelInfoProjet().getProjet();
+	}
+
+	/*public Projet getProjetSelectionner() {
+		Projet projet = null;
+		for (int i=0; i<lProjet.size();i++) {
+			if (lProjet.get(i).getSelectionner()) {
+				projet = lProjet.get(i);
+			}
+		}
+		return projet;
+	}*/
+	
+	public void selectionnerProjet(String nom) {
+		for (int i=0; i<lProjet.size(); i++) {
+			Projet projet = lProjet.get(i);
+			if (projet.getNom() == nom) {
+				projet.selectionner();
+			}
+		}
+		update();
+	}
+	
+	public void deselectionnerProjet() { //utile pour le graphique
+		for (int i=0; i<lProjet.size(); i++) {
+			lProjet.get(i).deselectionner();
+		}
+	}
+	
+	public JPanel getPanelDuProjet() {
+		JPanel panel = null;
+		for (int i=0; i<lProjet.size();i++) {
+			if (lProjet.get(i).getSelectionner()) {
+				panel = lPanel.get(i);
+			}
+		}
+		return panel;
+	}
+	
+	public void selectionnerActivite(int id) {
+		Projet projet = getProjetSelectionner();
+		ArrayList<Activite> listeAct = projet.getListe();
+		for (int i=0; i<listeAct.size(); i++) {
+			Activite act = listeAct.get(i);
+			if (act.getId() == id) {
+				act.selectionner();
+			}
+		}
+		update();
+	}
+	
+	public void deselectionnerActivite() { //utile pour le graphique
+		ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
+		for (int i=0; i<listeAct.size(); i++) {
+			listeAct.get(i).deselectionner();
+		}
+	}
+
+	public Activite getActiviteSelectionner() {
+		//Projet projet = getProjetSelectionner();
+		ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
+		Activite act = null;
+		for (int i=0; i<listeAct.size();i++) {
+			if (listeAct.get(i).getSelectionner()) {
+				act = listeAct.get(i);
+			}
+		}
+		return act;
+	}
+
 	public JFrame getFenetrePrincipale() {
 		return fenetrePrincipale;
+	}
+
+	public void afficheInfoRessource(Ressource res) {
+		int exist = -1;
+		for (int i=0; i<listeFenetreInfoRessource.size(); i++) {
+			if (res.getId() == listeFenetreInfoRessource.get(i).getIdRessource()) {
+				exist = i;
+			}
+		}
+		if (exist > -1) {
+			listeFenetreInfoRessource.get(exist).dispose();
+			listeFenetreInfoRessource.remove(exist);
+		}
+		listeFenetreInfoRessource.add(new FenetreInfoRessource(this, res));
 	}
 	
 	public void update() {
 		this.setChanged();
 		this.notifyObservers();	
 	}
+	
+
 }
 
