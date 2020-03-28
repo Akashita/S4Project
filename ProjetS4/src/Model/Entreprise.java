@@ -81,7 +81,7 @@ public class Entreprise extends Observable{
 	}
 	
 	private void creerLCreneaux(Activite act) {
-		int charge = act.getCharge();
+		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
 		
 		LocalDate jourCourant = act.getDebut();
@@ -244,8 +244,7 @@ public class Entreprise extends Observable{
 		update();
 	}
 	
-	public void nouvPersonne (String nom, String prenom/*, String role*/) {
-		//Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);
+	public void nouvPersonne (String nom, String prenom) {
 		Personne nouvPersonne = new Personne(nom,prenom, this.idCour);
 		this.incrementId();
 		this.ajouterRessource(nouvPersonne);
