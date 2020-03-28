@@ -95,15 +95,13 @@ public class Ressource implements Comparable<Ressource>{
 		CreneauHoraire creneauTMP;
 
 		for (int i = 0; i < dateJours.length; i++) {
-			if(jours.containsKey(dateJours[i])){
-				for (int j = 0; j < Entreprise.NB_HEURE_JOUR; j++) {
+			for (int j = 0; j < Entreprise.NB_HEURE_JOUR; j++) {
+				if(jours.containsKey(dateJours[i])){
 					creneauTMP = jours.get(dateJours[i]).get(j);
-					semaineEDT[i][j] = creneauTMP;				
-				}
-			} else {
-				for (int j = 0; j < Entreprise.NB_HEURE_JOUR; j++) {
+					semaineEDT[i][j] = creneauTMP;	
+				} else {
 					semaineEDT[i][j] = null;
-				}	
+				}
 			}
 		}
 		return semaineEDT;

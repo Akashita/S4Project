@@ -86,8 +86,6 @@ public class Entreprise extends Observable{
 		int heureCourante = HEURE_DEBUT_MATIN;
 			
 		while (chargeAloue < charge) {	
-			System.out.println(jourCourant);
-			System.out.println(heureCourante);
 			if(act.creneauDispo(jourCourant, heureCourante)) { //Si le creneau est disponible pour toutes les ressources de l'activite
 				act.ajouterCreneau(new CreneauHoraire(act.getTitre(), heureCourante), jourCourant);
 				chargeAloue++;
