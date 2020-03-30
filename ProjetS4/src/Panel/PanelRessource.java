@@ -12,7 +12,11 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import EcouteurEvenement.SourisRessourceListener;
 import Fenetre.FenetrePrincipale;
@@ -29,6 +33,7 @@ public class PanelRessource extends JPanel{
 	}
 
 	public void afficherRessource() {
+		this.removeAll();
 		this.setLayout(new BorderLayout());
 		this.add(creerPanel(), BorderLayout.CENTER);
 		this.revalidate();
@@ -43,6 +48,33 @@ public class PanelRessource extends JPanel{
 		return panel;
 	}
 		
+	/*private JTextArea creerPanelRessource(String type) {
+		ArrayList<Ressource> listeRessource = entreprise.getListeRessourceType(type);
+		JTextArea ta = new JTextArea();
+		ta.setEditable(false);
+		ta.setLineWrap(true);
+		JScrollPane scroll = new JScrollPane(ta);
+	    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		if (listeRessource.size() > 0) {
+			//panel.add(creerLabel("                                    "));
+			ta.setBackground(Color.white);
+			ta.setBorder(BorderFactory.createTitledBorder("liste de " + type));
+			ta.setLayout(new BoxLayout(ta, BoxLayout.Y_AXIS));
+			for (int i=0; i<listeRessource.size(); i++) {
+				Ressource ressource = listeRessource.get(i);
+				String nom;
+				if (ressource.getType() == Ressource.PERSONNE) {
+					nom = (((Personne) ressource).getPrenom()) + " " + ressource.getNom();
+				}
+				else {
+					nom = ressource.getNom();
+				}
+				ta.setText(creerLabel(nom, ressource).getText()+"\n"+ta.getText());
+			}
+		}
+		return ta;			
+	}*/
+	
 	private JPanel creerPanelRessource(String type) {
 		ArrayList<Ressource> listeRessource = entreprise.getListeRessourceType(type);
 		JPanel panel = new JPanel();
@@ -51,6 +83,10 @@ public class PanelRessource extends JPanel{
 		    panel.setBackground(Color.white);
 		    panel.setBorder(BorderFactory.createTitledBorder("liste de " + type));
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+			panel.setPreferredSize(new Dimension(180,this.getHeight()));
+
+	        JScrollPane scrollPane = new JScrollPane(panel);
+	 
 			for (int i=0; i<listeRessource.size(); i++) {
 				Ressource ressource = listeRessource.get(i);
 				String nom;

@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JLabel;
 
 import Fenetre.FenetreInfoRessource;
+import Panel.PanelEDT;
 import Panel.PanelProjet;
 
 /**
@@ -16,10 +17,10 @@ import Panel.PanelProjet;
  */
 public class SourisSemaineListener implements MouseListener {
 	//FenetreEmploiDuTemps fenetreEDT;
-	FenetreInfoRessource fenetreIR;
+	PanelEDT fenetreIR;
 	JLabel label;
 	
-	public SourisSemaineListener(FenetreInfoRessource fenetreIR, JLabel label) {
+	public SourisSemaineListener(PanelEDT fenetreIR, JLabel label) {
 		this.fenetreIR = fenetreIR;
 		this.label = label;
 	}
