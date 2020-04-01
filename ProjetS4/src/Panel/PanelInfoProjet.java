@@ -2,18 +2,15 @@ package Panel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import EcouteurEvenement.SourisActiviteListener;
 import EcouteurEvenement.SourisRessourceListener;
@@ -30,8 +27,9 @@ public class PanelInfoProjet extends JPanel{
 	
 	private Entreprise entreprise;
 	private Projet projet;
-	private JPanel paneCompletlInfoAct = new JPanel();
-	private JPanel panelInfoAct = new JPanel();
+	private Activite activite;
+	private JTabbedPane onglet = new JTabbedPane();
+	private int largeurDimension = 220;
 
 	public PanelInfoProjet(Entreprise entreprise, Projet projet) {
 		this.entreprise = entreprise;
@@ -42,105 +40,164 @@ public class PanelInfoProjet extends JPanel{
 	
 	public void afficheInterface() {
 		this.removeAll();
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.add(infoProjet());
-		paneCompletlInfoAct.setLayout(new BoxLayout(paneCompletlInfoAct, BoxLayout.X_AXIS));
-		paneCompletlInfoAct.add(panelInfoAct);
-		this.add(paneCompletlInfoAct);
-		if (projet.getListe().size()>0) {//on vérifie qu'il y a au moins une activité
-			infoAct();
-		}
-		this.revalidate();	
+		this.setLayout(new BorderLayout());
+		this.add(panelProjetActivite(), BorderLayout.WEST);
+		onglet.add(projet.getNom(), projet.getTextArea());
+		//this.add(panelJournal(), BorderLayout.CENTER);
+	}
 
+	private JPanel panelProjetActivite() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.add(panelProjet(), BorderLayout.WEST);
+		if(activite!=null) {
+			panel.add(panelActivite(), BorderLayout.EAST);
+		}
+		return panel;
 	}
 	
+//	==================PANEL PROJET============================================
+	/**
+	 * Creer le panel qui affiche les informations du projet et sa liste d'activite
+	 * @return panel
+	 */
+	private JPanel panelProjet() {
+		JPanel panel = new JPanel();
+		panel.setPreferredSize(new Dimension(largeurDimension,this.getHeight()));
+		panel.setLayout(new BorderLayout());
+		panel.add(infoProjet(), BorderLayout.NORTH);
+		panel.add(listeActivite(), BorderLayout.CENTER);
+		return panel;		
+	}
+	
+	/**
+	 * Creer le panel qui affiche les informations du projet
+	 * @return panel
+	 */
 	private JPanel infoProjet() {
 		JPanel panel = new JPanel();
-		panel.setBorder(BorderFactory.createTitledBorder("Information du projet"));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.WHITE);		
+		panel.setBackground(Color.WHITE);	
+		panel.setBorder(BorderFactory.createTitledBorder("Information du projet"));
 		panel.add(creerLabel("Nom: "+projet.getNom()));
 		panel.add(creerLabel("Priorité: "+projet.getPriorite()));
 		panel.add(creerLabel("Chef du projet: pas encore implementé"));
-
 		return panel;
 	}
 	
-	private void infoAct() {
-		paneCompletlInfoAct.remove(panelInfoAct);
-		panelInfoAct = new JPanel();
-		panelInfoAct.add(afficheActivite());
-		panelInfoAct.add(afficheRessource());
-		paneCompletlInfoAct.add(panelInfoAct);
+	/**
+	 * Creer le panel qui  la liste d'activite du projet
+	 * @return panel
+	 */
+	private JPanel listeActivite() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(Color.WHITE);	
+		panel.setBorder(BorderFactory.createTitledBorder("Liste des activités"));
+
+		ArrayList<Activite> listeActivite = projet.getListe();
+		if (listeActivite.size() > 0) {
+			for (int i=0; i<listeActivite.size(); i++) {
+				Activite act = listeActivite.get(i);
+				panel.add(panelActivite(act));
+			}				
+		}
+		else {
+			panel.add(creerLabel("aucune activité présente"));
+		}
+		return panel;
+	}
+	
+	/**
+	 * Creer le label qui affiche le titre de l'activite et le lit avec un listener.
+	 * @return panel
+	 */
+	private JLabel panelActivite(Activite activite) {
+		JLabel label = new JLabel(activite.getTitre());
+		label.addMouseListener(new SourisActiviteListener(this, activite));
+		return label;
+	}
+
+	/**
+	 * quand on clique à une activite dans la liste, 
+	 * on reaffiche le panel avec le panelActivité qui à été modifié
+	 */
+	public void activiteSelectionner(Activite activite) {
+		this.activite = activite;
+		this.removeAll();
+		this.afficheInterface();
+		this.ajouterOngletJournal();
 		this.revalidate();
 	}
 	
-	private JPanel afficheActivite() {
-		JPanel panel = new JPanel ();
-		panel.setBorder(BorderFactory.createTitledBorder("Liste des activités"));
+//	==================PANEL ACTIVITE============================================	
+	
+	/**
+	 * Creer le panel qui affiche les informations de l'activite et sa liste de ressource
+	 * @return panel
+	 */
+	private JPanel panelActivite() {
+		JPanel panel = new JPanel();
+		panel.setPreferredSize(new Dimension(largeurDimension,this.getHeight()));
+		panel.setLayout(new BorderLayout());
+		panel.add(infoActivite(), BorderLayout.NORTH);
+		panel.add(listeRessource(), BorderLayout.CENTER);
+		return panel;		
+	}
+
+	/**
+	 * Creer le panel qui affiche les informations de l'activite 
+	 * @return panel
+	 */
+	private JPanel infoActivite() {
+		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.WHITE);			
+		panel.setBackground(Color.WHITE);		
+	    panel.setBorder(BorderFactory.createTitledBorder(activite.getTitre()));
+	    panel.add(creerLabel("Charge de travail: " + activite.getChargeJHomme() + " jour/homme"));
+	    panel.add(creerLabel("Ordre: " + activite.getOrdre()));
+	    panel.add(creerLabel("Commence le: " + activite.getJourDebut()));
 
-		ArrayList<Activite> listeActivite = projet.getListe();
-
-		for (int i=0; i<listeActivite.size(); i++) {
-			Activite act = listeActivite.get(i);
-			boolean selectionner = false;
-			int idActiviteSelectionner = entreprise.getActiviteSelectionner().getId();
-			if(act.getId() == idActiviteSelectionner) {
-				selectionner = true;
-			}
-			panel.add(panelActivite(act, selectionner));
-		}
 		return panel;
 	}
 
-	private JPanel panelActivite(Activite act, boolean selectionner) {
+	/**
+	 * Creer le panel qui affiche la liste de ressource de l'activite
+	 * @return panel
+	 */
+	private JPanel listeRessource() {
 		JPanel panel = new JPanel();
-	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setBackground(Color.WHITE);		
 
-		panel.addMouseListener(new SourisActiviteListener(this, act.getId()));
-		if(selectionner) {
-			panel.setBackground(Color.BLUE);
+		panel.setBorder(BorderFactory.createTitledBorder("Liste des ressources de l'activité"));
+		if (activite.getLRessource().size() > 0) {
+			if (activite.getListeRessourceType(Ressource.PERSONNE).size() > 0) {
+				panel.add(afficheRessourceType(Ressource.PERSONNE));
+			}
+			if (activite.getListeRessourceType(Ressource.SALLE).size() > 0) {
+				panel.add(afficheRessourceType(Ressource.SALLE));
+			}
+			if (activite.getListeRessourceType(Ressource.CALCULATEUR).size() > 0) {
+				panel.add(afficheRessourceType(Ressource.CALCULATEUR));
+			}
 		}
 		else {
-			panel.setBackground(Color.WHITE);			
-		}
-	    panel.setBorder(BorderFactory.createTitledBorder(act.getTitre()));
-	    panel.add(new JLabel("Charge de travail: " + act.getChargeJHomme() + " jour/homme"));
-	    panel.add(new JLabel("Ordre: " + act.getOrdre()));
-	    panel.add(new JLabel("Commence le: " + act.getJourDebut()));
-		return panel;
-	}
-	
-	private JPanel afficheRessource() {
-		JPanel panel = new JPanel ();
-		if(entreprise.getActiviteSelectionner() != null) {
-			panel.setBorder(BorderFactory.createTitledBorder("Liste des ressources de l'activité"));
-			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-			panel.setBackground(Color.WHITE);		
-			//panel.add(creerLabel("                                    "));
-
-			Activite act = entreprise.getActiviteSelectionner();
-			if (act.getLRessource().size() > 0) {
-				panel.add(afficheRessourceType(act, Ressource.PERSONNE));
-				panel.add(afficheRessourceType(act, Ressource.SALLE));
-				panel.add(afficheRessourceType(act, Ressource.CALCULATEUR));
-			}
-			else {
-				panel.add(creerLabel("aucune ressource présente"));
-			}
+			panel.add(creerLabel("aucune ressource présente"));
 		}
 		return panel;
 	}
 
-	private JPanel afficheRessourceType (Activite act, String type) {
+	/**
+	 * Creer le panel qui affiche la liste de la ressource choisie
+	 * @return panel
+	 */
+	private JPanel afficheRessourceType (String type) {
 		JPanel panel = new JPanel ();
+		panel.setPreferredSize(new Dimension(largeurDimension,this.getHeight()));
 	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(Color.WHITE);	
-		ArrayList<Ressource> listeR = act.getListeRessourceType(type);
-		if (listeR.size() > 0) {
-			//panel.add(creerLabel("                                    "));
+		ArrayList<Ressource> listeR = activite.getListeRessourceType(type);
 			panel.setBorder(BorderFactory.createTitledBorder("Liste de " + type));
 			for(int i=0; i<listeR.size(); i++) {
 				Ressource res = null;
@@ -160,56 +217,43 @@ public class PanelInfoProjet extends JPanel{
 					
 				}
 				label.addMouseListener(new SourisRessourceListener(entreprise, res));
-				panel.add(label);
-			}				
+				panel.add(label);				
 		}		
 		return panel;
 	}
+
+//	==================PANEL JOURNAL============================================	
+	
+	/**
+	 * Creer le panel qui affiche la liste des journals sous forme d'onglet 
+	 * et le champ de texte du journal selectionner
+	 * @return panel
+	 */
+	private JPanel panelJournal() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.add(onglet, BorderLayout.CENTER);
+		return panel;
+	}
+	
+	public void ajouterOngletJournal() {
+		entreprise.selectionnerActivite(activite);
+		onglet.add(activite.getTitre(), activite.getTextArea());
+	}
+
+	
+
+//	==================METHODE GENERAL============================================	
 	
 	private JLabel creerLabel(String nom) {
 		JLabel label = new JLabel(nom);
-		label.setFont(new Font("Arial", Font.BOLD, 15));
-		//label.addMouseListener(new SourisRessourceListener(this, label));
+		//label.setFont(new Font("Arial", Font.BOLD, 15));
 		return label;
 	}
 
-	/*public void afficheInfoRessource(Ressource res) {
-		//this.removeAll();
-		afficheInterface();
-		JPanel panel = new JPanel();
-		panel.setBorder(BorderFactory.createTitledBorder("Information de la ressource: "));
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.WHITE);	
-		if(res.getType() == Ressource.PERSONNE) {
-			panel.add(creerLabel("Nom: " + ((Personne) res).getPrenom() + " " + res.getNom()));
-			panel.add(creerLabel("Compétence: "));			
-
-		}
-		if(res.getType() == Ressource.SALLE) {
-			panel.add(creerLabel("Nom: " + res.getNom()));
-			panel.add(creerLabel("Capacité: " + ((Salle)res).getCapacite()));			
-		}
-		if(res.getType() == Ressource.CALCULATEUR) {
-			panel.add(creerLabel("Nom: " + res.getNom()));	
-		}
-		panel.add(bouttonEmploiDuTemps(res));
-		panelInfoAct.add(panel);
-		this.revalidate();
-	}
-
-	private JButton bouttonEmploiDuTemps(Ressource res) {
-		JButton bouton = new JButton("Afficher emploi du temps");
-	    bouton.addActionListener(new ActionListener() {  
-	        public void actionPerformed(ActionEvent e) {
-	        	new FenetreEmploiDuTemps(res);
-	        }
-	    });			
-	    return bouton;
-	}*/
-
 	public void selectionnerActivite(int idActiviteSelectionner) {
 		entreprise.deselectionnerActivite();
-		entreprise.selectionnerActivite(idActiviteSelectionner);
+		entreprise.selectionnerActivite(activite);
 	} 
 	
 	public String getProjetNom() {

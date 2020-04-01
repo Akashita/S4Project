@@ -79,7 +79,6 @@ public class PanelRessource extends JPanel{
 		ArrayList<Ressource> listeRessource = entreprise.getListeRessourceType(type);
 		JPanel panel = new JPanel();
 		if (listeRessource.size() > 0) {
-			//panel.add(creerLabel("                                    "));
 		    panel.setBackground(Color.white);
 		    panel.setBorder(BorderFactory.createTitledBorder("liste de " + type));
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

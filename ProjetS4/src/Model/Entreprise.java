@@ -42,6 +42,7 @@ public class Entreprise extends Observable{
 	public static final int NB_HEURE_JOUR = 8;
 	
 	private FenetrePrincipale fenetrePrincipale;
+	private Activite activiteSelectionner;
 	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
@@ -303,7 +304,13 @@ public class Entreprise extends Observable{
 	}
 
 	public Projet getProjetSelectionner() {
-		return fenetrePrincipale.getPanelInfoProjet().getProjet();
+		PanelInfoProjet pip = fenetrePrincipale.getPanelInfoProjet();
+		if (pip != null) {
+			return pip.getProjet();
+		}
+		else {
+			return null;
+		}
 	}
 
 	/*public Projet getProjetSelectionner() {
@@ -342,36 +349,18 @@ public class Entreprise extends Observable{
 		return panel;
 	}
 	
-	public void selectionnerActivite(int id) {
-		Projet projet = getProjetSelectionner();
-		ArrayList<Activite> listeAct = projet.getListe();
-		for (int i=0; i<listeAct.size(); i++) {
-			Activite act = listeAct.get(i);
-			if (act.getId() == id) {
-				act.selectionner();
-			}
-		}
-		update();
-	}
-	
-	public void deselectionnerActivite() { //utile pour le graphique
-		ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
-		for (int i=0; i<listeAct.size(); i++) {
-			listeAct.get(i).deselectionner();
-		}
+	public void selectionnerActivite(Activite act) {
+		activiteSelectionner = act;
 	}
 
-	public Activite getActiviteSelectionner() {
-		//Projet projet = getProjetSelectionner();
-		ArrayList<Activite> listeAct = getProjetSelectionner().getListe();
-		Activite act = null;
-		for (int i=0; i<listeAct.size();i++) {
-			if (listeAct.get(i).getSelectionner()) {
-				act = listeAct.get(i);
-			}
-		}
-		return act;
+	public void deselectionnerActivite() {
+		activiteSelectionner = null;
 	}
+	
+	public Activite getActiviteSelectionner() {
+		return activiteSelectionner;
+	}
+
 
 	public JFrame getFenetrePrincipale() {
 		return fenetrePrincipale;

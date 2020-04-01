@@ -1,6 +1,8 @@
 package Model;
 import java.util.ArrayList;
 
+import javax.swing.JTextArea;
+
 public class Projet implements Comparable<Projet>{
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -11,6 +13,7 @@ public class Projet implements Comparable<Projet>{
 	private String nom;
 	private boolean selectionner;
 	private float priorite; //Priorite du projet
+	private JTextArea textArea = new JTextArea();
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
@@ -43,6 +46,9 @@ public class Projet implements Comparable<Projet>{
 		return priorite;
 	}
 
+	public JTextArea getTextArea() {
+		return textArea;
+	}
 	//--------------------------------------------------------------------------------->>>>> Setteurs simples
 	public void selectionner() {
 		this.selectionner = true;

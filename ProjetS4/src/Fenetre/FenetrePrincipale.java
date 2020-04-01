@@ -59,9 +59,7 @@ public class FenetrePrincipale extends JFrame{
 		//this.add(pp, BorderLayout.CENTER);
 		this.add(panelRessource, BorderLayout.WEST);
 		//this.add(panelProjet, BorderLayout.SOUTH);
-		JPanel panel = new JPanel();
-		this.add(panel, BorderLayout.CENTER);
-		panel.add(onglet, BorderLayout.CENTER);
+		this.add(onglet, BorderLayout.CENTER);
 
 		creationBarreMenu();
 		
@@ -135,6 +133,11 @@ public class FenetrePrincipale extends JFrame{
 	}
 	
 	public PanelInfoProjet getPanelInfoProjet() {
-		return (PanelInfoProjet) onglet.getSelectedComponent();
+		if (onglet.getSelectedComponent()!=null) {
+			return (PanelInfoProjet) onglet.getSelectedComponent();
+		}
+		else {
+			return null;
+		}
 	}
 }

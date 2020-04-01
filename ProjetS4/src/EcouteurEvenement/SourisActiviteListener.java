@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Model.Activite;
 import Panel.PanelInfoProjet;
 import Panel.PanelProjet;
 
@@ -17,11 +18,11 @@ import Panel.PanelProjet;
  */
 public class SourisActiviteListener implements MouseListener {
 	PanelInfoProjet pip;
-	int idActiviteSelectionner;
+	Activite act;
 	
-	public SourisActiviteListener(PanelInfoProjet pip, int idActiviteSelectionner) {
+	public SourisActiviteListener(PanelInfoProjet pip, Activite act) {
 		this.pip = pip;
-		this.idActiviteSelectionner = idActiviteSelectionner;
+		this.act = act;
 	}
 	
 
@@ -31,7 +32,7 @@ public class SourisActiviteListener implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent arg0) { 
-		pip.selectionnerActivite(idActiviteSelectionner);
+		pip.activiteSelectionner(act);
 	}
 
 	@Override

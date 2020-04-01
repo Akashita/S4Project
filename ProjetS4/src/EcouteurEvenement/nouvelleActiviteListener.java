@@ -25,7 +25,7 @@ public class nouvelleActiviteListener implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new FenetreNouvelleActivite(entreprise);
+			new FenetreNouvelleActivite(entreprise);
+		
 	}
-
 }

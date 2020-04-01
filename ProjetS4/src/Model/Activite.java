@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JTextArea;
+
 import Ressource.Ressource;
 
 public class Activite implements Comparable<Activite>{
@@ -18,6 +20,7 @@ public class Activite implements Comparable<Activite>{
 	private String ordre;
 	private LocalDate debut;
 	private boolean selectionner = false;
+	private JTextArea textArea = new JTextArea();
 
 		
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
@@ -81,7 +84,7 @@ public class Activite implements Comparable<Activite>{
 	}
 	
 	
-	//--------------------------------------------------------------------------------->>>>> Setteurs simples
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public void selectionner() {
 		this.selectionner = true;
 	}
@@ -90,7 +93,10 @@ public class Activite implements Comparable<Activite>{
 		this.selectionner = false;
 	}
 	
-	
+	public JTextArea getTextArea() {
+		return textArea;
+	}
+
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {
