@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Model.Entreprise;
-import Panel.PanelEDT;
+import Panel.PanelEDTRessource;
 import Ressource.Personne;
 import Ressource.Ressource;
 import Ressource.Salle;
@@ -42,7 +42,7 @@ public class FenetreInfoRessource extends JDialog{
 	private void creationInterface() {
 		this.setLayout(new BorderLayout());
 		this.add(afficheInfoRessource(), BorderLayout.NORTH);
-		this.add(new PanelEDT(ressource), BorderLayout.CENTER);
+		this.add(new PanelEDTRessource(ressource), BorderLayout.CENTER);
 		//this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);
 		this.revalidate();
 

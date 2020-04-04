@@ -13,7 +13,6 @@ public class Projet implements Comparable<Projet>{
 	private String nom;
 	private boolean selectionner;
 	private float priorite; //Priorite du projet
-	private JTextArea textArea = new JTextArea();
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
@@ -46,9 +45,6 @@ public class Projet implements Comparable<Projet>{
 		return priorite;
 	}
 
-	public JTextArea getTextArea() {
-		return textArea;
-	}
 	//--------------------------------------------------------------------------------->>>>> Setteurs simples
 	public void selectionner() {
 		this.selectionner = true;
@@ -118,6 +114,10 @@ public class Projet implements Comparable<Projet>{
 	 */
 	public boolean enlever(Activite activite) {
 		return lActivite.remove(activite);
+	}
+
+	public void adapterListe(ArrayList<Activite> listeAct) {
+		lActivite = listeAct;
 	}
 
 

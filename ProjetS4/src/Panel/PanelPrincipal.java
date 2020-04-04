@@ -37,6 +37,10 @@ public class PanelPrincipal extends JPanel implements Observer{
 		PanelInfoProjet pip = fp.getPanelInfoProjet();
 		if (pip != null) {
 			pip.afficheInterface();
+			PanelInfoActivite pia = pip.getPanelInfoActivite();
+			if (pia != null) {
+				pia.afficheInterface();
+			}
 		}
 		//this.add(new PanelInfoProjet(entreprise), BorderLayout.WEST);
 		this.repaint();	

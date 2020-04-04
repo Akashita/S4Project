@@ -5,9 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
+import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
 import Model.Temps;
@@ -27,9 +29,10 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 	private Entreprise entreprise;
 	private Projet projet;
 	private JPanel panelPrincipal = new JPanel();	
+	private JCheckBox checkAvant = new JCheckBox("Placer avant");
 	
-	private JTextField titre, charge, ordre;
-	private JComboBox<String> jour, mois, annee;
+	private JTextField titre, charge;
+	private JComboBox<String> ordre, jour, mois, annee;
 
 	
 	public FenetreNouvelleActivite(Entreprise entreprise) {
@@ -101,12 +104,24 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 	    }
 	    if (type == "ordre") {
 		    panel.add(new JLabel("Veillez indiquez l'ordre (A étant le premier ordre): "));
-	    	ordre = new JTextField();
-		    panel.add(ordre);	    	
+		    ArrayList<Activite> lAct = projet.getListe();
+		    String [] tAct = new String [lAct.size()];
+		    for (int i=0; i<lAct.size(); i++) {
+		    	tAct[i] = lAct.get(i).getTitre();
+		    }
+		    ordre = new JComboBox<String>(tAct);
+		    panel.add(ordre);
+		    /*checkAvant.addActionListener(new ActionListener() {  
+		        public void actionPerformed(ActionEvent e) {
+		        	checkClique();
+		        }
+		    });	*/
+		    panel.add(checkAvant);
 	    }
 		return panel;
 	}
 
+	
 	private JPanel panelDebut() {
 		JPanel panel = new JPanel();
 	    panel.setBorder(BorderFactory.createTitledBorder("Indiquez quand commencera l'activité"));
@@ -137,39 +152,12 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 	public JPanel ajoutBouton() {
 		JPanel panel = new JPanel();
 		panel.setSize(this.getWidth(),10);
-		panel.add(creerBouttonAnnuler());
-		panel.add(creerBouttonAjout());
+		panel.add(creerBoutonAnnuler());
+		panel.add(creerBoutonFin());
 		return panel;
 	}
 	
-	/**
-	 * 
-	 * @param type
-	 * @return le bouton qui permet l'action pour creer la nouvelle activité
-	 */
-	private JButton creerBouttonAjout() {
-		JButton bouton = new JButton("Creer");
-	    bouton.addActionListener(new ActionListener() {  
-	        public void actionPerformed(ActionEvent e) {
-	        	creertActivite();	 
-	        }
-	    });			
-	    return bouton;
-	}
-	
-	/**
-	 * 
-	 * @return le bouton qui permet l'action pour fermer la fenetre
-	 */
-	private JButton creerBouttonAnnuler() {
-		JButton bouton = new JButton("Annuler");
-	    bouton.addActionListener(new ActionListener() {  
-	        public void actionPerformed(ActionEvent e) {
-	        	dispose();
-	        }
-	    });			
-	    return bouton;
-	}
+
 	
 	
 	
@@ -179,19 +167,21 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 	private void creertActivite() {
 		if (!titre.getText().isEmpty()) {
 			if (!charge.getText().isEmpty()) {
-				if (!ordre.getText().isEmpty()) {
-					if (estUnEntier(charge.getText())) {
+				if (estUnEntier(charge.getText())) {
 						LocalDate debut = creerLaDate();
+						int ordre = this.ordre.getSelectedIndex();
+						if (checkAvant.isSelected()) {
+							ordre --;
+							if (ordre < 0) {
+								ordre = 0;
+							}
+						}
 						entreprise.creerActivite(projet, 
-								titre.getText(), Integer.parseInt(charge.getText()), ordre.getText(), debut);
+								titre.getText(), Integer.parseInt(charge.getText()), ordre, debut);
 						dispose();
-					}
-					else {
-				    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
-					}
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Veillez ecrire son ordre", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
@@ -242,16 +232,34 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 		
 	}
 
+	/**
+	 * 
+	 * @return le bouton qui permet l'action pour creer la nouvelle activité
+	 */
 	@Override
 	public JButton creerBoutonFin() {
-		// TODO Auto-generated method stub
-		return null;
+		JButton bouton = new JButton("Creer");
+	    bouton.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	creertActivite();	 
+	        }
+	    });			
+	    return bouton;
 	}
 
+	/**
+	 * 
+	 * @return le bouton qui permet l'action pour fermer la fenetre
+	 */
 	@Override
 	public JButton creerBoutonAnnuler() {
-		// TODO Auto-generated method stub
-		return null;
+		JButton bouton = new JButton("Annuler");
+	    bouton.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	dispose();
+	        }
+	    });			
+	    return bouton;
 	}
 
 }

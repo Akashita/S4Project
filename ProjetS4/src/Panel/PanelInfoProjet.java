@@ -3,18 +3,18 @@ package Panel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-
+import java.awt.Font;
+import java.awt.Panel;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import EcouteurEvenement.SourisActiviteListener;
 import EcouteurEvenement.SourisRessourceListener;
-//import Fenetre.FenetreEmploiDuTemps;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
@@ -28,8 +28,8 @@ public class PanelInfoProjet extends JPanel{
 	private Entreprise entreprise;
 	private Projet projet;
 	private Activite activite;
-	private JTabbedPane onglet = new JTabbedPane();
 	private int largeurDimension = 220;
+	private JTabbedPane onglet = new JTabbedPane(JTabbedPane.LEFT);
 
 	public PanelInfoProjet(Entreprise entreprise, Projet projet) {
 		this.entreprise = entreprise;
@@ -41,12 +41,31 @@ public class PanelInfoProjet extends JPanel{
 	public void afficheInterface() {
 		this.removeAll();
 		this.setLayout(new BorderLayout());
-		this.add(panelProjetActivite(), BorderLayout.WEST);
-		onglet.add(projet.getNom(), projet.getTextArea());
-		//this.add(panelJournal(), BorderLayout.CENTER);
+		this.add(panelProjet(), BorderLayout.NORTH);
+		this.add(panelActivite(), BorderLayout.CENTER);
+	}
+	
+	private JPanel panelActivite() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.add(onglet, BorderLayout.CENTER);
+		return panel;
 	}
 
-	private JPanel panelProjetActivite() {
+	
+	public void ajouterActivite(PanelInfoActivite pia) {
+		onglet.add(pia.getActivite().getTitre(), pia);
+	}
+	
+	public PanelInfoActivite getPanelInfoActivite() {
+		if (onglet.getSelectedComponent()!=null) {
+			return (PanelInfoActivite) onglet.getSelectedComponent();
+		}
+		else {
+			return null;
+		}
+	}
+	/*private JPanel panelProjetActivite() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		panel.add(panelProjet(), BorderLayout.WEST);
@@ -54,7 +73,7 @@ public class PanelInfoProjet extends JPanel{
 			panel.add(panelActivite(), BorderLayout.EAST);
 		}
 		return panel;
-	}
+	}*/
 	
 //	==================PANEL PROJET============================================
 	/**
@@ -63,10 +82,10 @@ public class PanelInfoProjet extends JPanel{
 	 */
 	private JPanel panelProjet() {
 		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(largeurDimension,this.getHeight()));
+		//panel.setPreferredSize(new Dimension(largeurDimension,this.getHeight()));
 		panel.setLayout(new BorderLayout());
-		panel.add(infoProjet(), BorderLayout.NORTH);
-		panel.add(listeActivite(), BorderLayout.CENTER);
+		panel.add(infoProjet(), BorderLayout.CENTER);
+		//panel.add(listeActivite(), BorderLayout.CENTER);
 		return panel;		
 	}
 	
@@ -89,7 +108,7 @@ public class PanelInfoProjet extends JPanel{
 	 * Creer le panel qui  la liste d'activite du projet
 	 * @return panel
 	 */
-	private JPanel listeActivite() {
+	/*private JPanel listeActivite() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(Color.WHITE);	
@@ -111,7 +130,7 @@ public class PanelInfoProjet extends JPanel{
 	/**
 	 * Creer le label qui affiche le titre de l'activite et le lit avec un listener.
 	 * @return panel
-	 */
+	 *
 	private JLabel panelActivite(Activite activite) {
 		JLabel label = new JLabel(activite.getTitre());
 		label.addMouseListener(new SourisActiviteListener(this, activite));
@@ -121,140 +140,24 @@ public class PanelInfoProjet extends JPanel{
 	/**
 	 * quand on clique à une activite dans la liste, 
 	 * on reaffiche le panel avec le panelActivité qui à été modifié
-	 */
+	 *
 	public void activiteSelectionner(Activite activite) {
 		this.activite = activite;
 		this.removeAll();
 		this.afficheInterface();
-		this.ajouterOngletJournal();
 		this.revalidate();
-	}
+	}*/
 	
 //	==================PANEL ACTIVITE============================================	
 	
-	/**
-	 * Creer le panel qui affiche les informations de l'activite et sa liste de ressource
-	 * @return panel
-	 */
-	private JPanel panelActivite() {
-		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(largeurDimension,this.getHeight()));
-		panel.setLayout(new BorderLayout());
-		panel.add(infoActivite(), BorderLayout.NORTH);
-		panel.add(listeRessource(), BorderLayout.CENTER);
-		return panel;		
-	}
-
-	/**
-	 * Creer le panel qui affiche les informations de l'activite 
-	 * @return panel
-	 */
-	private JPanel infoActivite() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.WHITE);		
-	    panel.setBorder(BorderFactory.createTitledBorder(activite.getTitre()));
-	    panel.add(creerLabel("Charge de travail: " + activite.getChargeJHomme() + " jour/homme"));
-	    panel.add(creerLabel("Ordre: " + activite.getOrdre()));
-	    panel.add(creerLabel("Commence le: " + activite.getJourDebut()));
-
-		return panel;
-	}
-
-	/**
-	 * Creer le panel qui affiche la liste de ressource de l'activite
-	 * @return panel
-	 */
-	private JPanel listeRessource() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.WHITE);		
-
-		panel.setBorder(BorderFactory.createTitledBorder("Liste des ressources de l'activité"));
-		if (activite.getLRessource().size() > 0) {
-			if (activite.getListeRessourceType(Ressource.PERSONNE).size() > 0) {
-				panel.add(afficheRessourceType(Ressource.PERSONNE));
-			}
-			if (activite.getListeRessourceType(Ressource.SALLE).size() > 0) {
-				panel.add(afficheRessourceType(Ressource.SALLE));
-			}
-			if (activite.getListeRessourceType(Ressource.CALCULATEUR).size() > 0) {
-				panel.add(afficheRessourceType(Ressource.CALCULATEUR));
-			}
-		}
-		else {
-			panel.add(creerLabel("aucune ressource présente"));
-		}
-		return panel;
-	}
-
-	/**
-	 * Creer le panel qui affiche la liste de la ressource choisie
-	 * @return panel
-	 */
-	private JPanel afficheRessourceType (String type) {
-		JPanel panel = new JPanel ();
-		panel.setPreferredSize(new Dimension(largeurDimension,this.getHeight()));
-	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.WHITE);	
-		ArrayList<Ressource> listeR = activite.getListeRessourceType(type);
-			panel.setBorder(BorderFactory.createTitledBorder("Liste de " + type));
-			for(int i=0; i<listeR.size(); i++) {
-				Ressource res = null;
-				JLabel label = null;
-				if (type == Ressource.PERSONNE) {
-					res = (Personne)listeR.get(i);
-					label = creerLabel(((Personne) res).getPrenom() + " " + res.getNom());					
-				}
-				if (type == Ressource.SALLE) {
-					res = (Salle)listeR.get(i);
-					label = creerLabel(res.getNom());					
-					
-				}
-				if (type == Ressource.CALCULATEUR) {
-					res = (Calculateur)listeR.get(i);
-					label = creerLabel(res.getNom());					
-					
-				}
-				label.addMouseListener(new SourisRessourceListener(entreprise, res));
-				panel.add(label);				
-		}		
-		return panel;
-	}
-
-//	==================PANEL JOURNAL============================================	
-	
-	/**
-	 * Creer le panel qui affiche la liste des journals sous forme d'onglet 
-	 * et le champ de texte du journal selectionner
-	 * @return panel
-	 */
-	private JPanel panelJournal() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.add(onglet, BorderLayout.CENTER);
-		return panel;
-	}
-	
-	public void ajouterOngletJournal() {
-		entreprise.selectionnerActivite(activite);
-		onglet.add(activite.getTitre(), activite.getTextArea());
-	}
-
-	
-
 //	==================METHODE GENERAL============================================	
 	
 	private JLabel creerLabel(String nom) {
 		JLabel label = new JLabel(nom);
-		//label.setFont(new Font("Arial", Font.BOLD, 15));
+		label.setFont(new Font("Arial", Font.BOLD, 15));
 		return label;
 	}
 
-	public void selectionnerActivite(int idActiviteSelectionner) {
-		entreprise.deselectionnerActivite();
-		entreprise.selectionnerActivite(activite);
-	} 
 	
 	public String getProjetNom() {
 		return projet.getNom();

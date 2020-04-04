@@ -10,7 +10,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import EcouteurEvenement.SourisProjetListener;
 import Model.Entreprise;
 import Model.Projet;
 
@@ -44,7 +43,6 @@ public class PanelProjet extends JPanel{
 	private JLabel creerLabel(String nom, boolean selectionner) {
 		JLabel label = new JLabel(nom);
 		label.setFont(new Font("Arial", Font.BOLD, 30));
-		label.addMouseListener(new SourisProjetListener(this, label));
 		if(selectionner) {
 			label.setOpaque(true);
 			label.setBackground(Color.BLUE);
@@ -53,8 +51,4 @@ public class PanelProjet extends JPanel{
 	}
 
 	
-	public void selectionnerProjet(JLabel label) {
-		entreprise.deselectionnerProjet();
-		entreprise.selectionnerProjet(label.getText());
-	} 
 }

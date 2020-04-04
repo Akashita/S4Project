@@ -17,10 +17,8 @@ public class Activite implements Comparable<Activite>{
 	private String titre;
 	private int chargeJHomme;
 	private int chargeHeure;
-	private String ordre;
 	private LocalDate debut;
 	private boolean selectionner = false;
-	private JTextArea textArea = new JTextArea();
 
 		
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
@@ -28,12 +26,11 @@ public class Activite implements Comparable<Activite>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Activite(int id, String titre, int chargeJH, String ordre, LocalDate debut) {
+	public Activite(int id, String titre, int chargeJH, LocalDate debut) {
 		this.id = id;
 		this.titre = titre; 
 		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
 		this.chargeHeure = chargeJH * Entreprise.NB_HEURE_JOUR;
-		this.ordre = ordre; //Permet d'etablir une relation d'ordre entre toutes les activites
 		this.debut = debut;
 		lRessources = new ArrayList<Ressource>();
 	}
@@ -57,10 +54,6 @@ public class Activite implements Comparable<Activite>{
 	
 	public int getChargeHeure() {
 		return chargeHeure;
-	}
-
-	public String getOrdre() {
-		return ordre;
 	}
 	
 	public LocalDate getDebut() {
@@ -92,10 +85,6 @@ public class Activite implements Comparable<Activite>{
 	public void deselectionner() {
 		this.selectionner = false;
 	}
-	
-	public JTextArea getTextArea() {
-		return textArea;
-	}
 
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
@@ -110,13 +99,15 @@ public class Activite implements Comparable<Activite>{
 
 	@Override
 	public int compareTo(Activite act) {
-		return ordre.compareTo(act.ordre);
+		//return ordre.compareTo(act.ordre);
+		return 0;
 	}
 	
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override
 	public String toString() {
-		String res = "Activite " + ordre;
+		//String res = "Activite " + ordre;
+		String res = "Activite ";
 		for (int i = 0; i < lRessources.size(); i++) {
 			res += "\n" + lRessources.get(i);
 		}

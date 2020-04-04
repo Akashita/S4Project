@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import Fenetre.FenetreInfoRessource;
 import Fenetre.FenetrePrincipale;
+import Panel.PanelInfoActivite;
 import Panel.PanelInfoProjet;
 import Ressource.Calculateur;
 import Ressource.Personne;
@@ -42,7 +43,6 @@ public class Entreprise extends Observable{
 	public static final int NB_HEURE_JOUR = 8;
 	
 	private FenetrePrincipale fenetrePrincipale;
-	private Activite activiteSelectionner;
 	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
@@ -235,12 +235,23 @@ public class Entreprise extends Observable{
 	}
 
 	
-	public void creerActivite(Projet projet, String titre, int charge, String ordre, LocalDate debut) {
+	public void creerActivite(Projet projet, String titre, int charge, int ordre, LocalDate debut) {
 		this.idAct++;
-		Activite act = new Activite(idAct, titre, charge, ordre, debut);
+		Activite act = new Activite(idAct, titre, charge, debut);
 		act.selectionner();
+		ajouterActiviter(projet, act, ordre);
+		
 		projet.ajouter(act);
+
+		fenetrePrincipale.getPanelInfoProjet().ajouterActivite(
+				new PanelInfoActivite(this, act));
 		update();
+	}
+	
+	private void ajouterActiviter(Projet projet, Activite act, int ordre) {
+		ArrayList<Activite> listeAct = projet.getListe();
+		listeAct.add(ordre, act);
+		projet.adapterListe(listeAct);
 	}
 	
 	public void nouvPersonne (String nom, String prenom) {
@@ -323,21 +334,6 @@ public class Entreprise extends Observable{
 		return projet;
 	}*/
 	
-	public void selectionnerProjet(String nom) {
-		for (int i=0; i<lProjet.size(); i++) {
-			Projet projet = lProjet.get(i);
-			if (projet.getNom() == nom) {
-				projet.selectionner();
-			}
-		}
-		update();
-	}
-	
-	public void deselectionnerProjet() { //utile pour le graphique
-		for (int i=0; i<lProjet.size(); i++) {
-			lProjet.get(i).deselectionner();
-		}
-	}
 	
 	public JPanel getPanelDuProjet() {
 		JPanel panel = null;
@@ -349,16 +345,8 @@ public class Entreprise extends Observable{
 		return panel;
 	}
 	
-	public void selectionnerActivite(Activite act) {
-		activiteSelectionner = act;
-	}
-
-	public void deselectionnerActivite() {
-		activiteSelectionner = null;
-	}
-	
 	public Activite getActiviteSelectionner() {
-		return activiteSelectionner;
+		return fenetrePrincipale.getPanelInfoProjet().getPanelInfoActivite().getActivite();
 	}
 
 
