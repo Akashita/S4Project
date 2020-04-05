@@ -3,48 +3,38 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-import Fenetre.FenetrePrincipale;
 import Model.Entreprise;
-import Model.Projet;
-import Ressource.Calculateur;
-import Ressource.Personne;
-import Ressource.Ressource;
-import Ressource.Salle;
 
 public class PanelPrincipal extends JPanel implements Observer{
-
-	private Entreprise entreprise;
-	private PanelRessource panelRessource;
-	private PanelProjet panelProjet;
-	private FenetrePrincipale fp;
 	
-	public PanelPrincipal (Entreprise entreprise,
-			PanelRessource panelRessource, PanelProjet panelProjet, FenetrePrincipale fp) {
+	private static final long serialVersionUID = 1L;
+
+	public static final Color BLEU1 = new Color(32,86,174),
+			BLEU2 = new Color(212,220,239),
+			BLEU3 = new Color(245,246,251),
+			GRIS1 = new Color(231,234,235),
+			GRIS2 = Color.GRAY,
+		    BLANC = new Color(255,255,255),
+	        NOIR = new Color(0,0,0);
+	
+	private Entreprise entreprise;
+	
+	public PanelPrincipal (Entreprise entreprise) {
 		this.entreprise = entreprise;
-		this.panelRessource = panelRessource;
-		this.panelProjet = panelProjet;
-		this.fp = fp;
-        this.setLayout(new BorderLayout());
-		this.setSize(this.getWidth(), this.getHeight());
 		entreprise.addObserver(this);
+        this.setLayout(new BorderLayout());
+        this.setBackground(BLANC);
 	}	
 		
 	@Override
 	public void update(Observable o, Object arg) {
 		this.removeAll();
-		//panelProjet.afficherProjet();
-		panelRessource.afficherRessource();
-		PanelInfoProjet pip = fp.getPanelInfoProjet();
-		if (pip != null) {
-			pip.afficheInterface();
-			PanelInfoActivite pia = pip.getPanelInfoActivite();
-			if (pia != null) {
-				pia.afficheInterface();
-			}
-		}
-		//this.add(new PanelInfoProjet(entreprise), BorderLayout.WEST);
-		this.repaint();	
+        this.add(new PanelRessource(entreprise), BorderLayout.WEST);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(new PanelProjet(entreprise), BorderLayout.NORTH);
+        panel.add(new PanelInfoProjet(entreprise), BorderLayout.CENTER);
+        this.add(panel, BorderLayout.CENTER);
+		this.revalidate();	
 	}
-
-
 }

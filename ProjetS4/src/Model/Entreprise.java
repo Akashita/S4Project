@@ -33,6 +33,7 @@ public class Entreprise extends Observable{
 	private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de l’entrepris
 	private int idCour;//id des ressources
 	private int idAct; //id des activités
+	private int idProjet;
 	private ArrayList<JPanel> lPanel = new ArrayList<JPanel>();
 
 	public static final int HEURE_DEBUT_MATIN = 8;
@@ -44,6 +45,11 @@ public class Entreprise extends Observable{
 	
 	private FenetrePrincipale fenetrePrincipale;
 	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
+	
+	private Projet projetSelectionner;
+	private Activite activiteSelectionner;
+	private ArrayList<String> ressourceAfficher = new ArrayList<String>();
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -54,7 +60,7 @@ public class Entreprise extends Observable{
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
 		fenetrePrincipale = new FenetrePrincipale(this);
-
+		this.update();
 	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -209,13 +215,11 @@ public class Entreprise extends Observable{
 	//les m�thodes sont doubl�s -> direct dans un projet ou dans l'entreprise
 	
 	public void creerProjet(String nom, float priorite) {//cr�e un projet si son nom n'est pas d�j� utilis�
-		Projet newProjet = new Projet(nom, priorite);
-		if (this.chercheProjet(newProjet.getNom())[0] == 0) {
-			this.lProjet.add(newProjet);
-			newProjet.selectionner();
-			this.lPanel.add(new JPanel());
-			fenetrePrincipale.ajouterProjet(new PanelInfoProjet(this, newProjet));
-		}
+		idProjet ++;
+		Projet newProjet = new Projet(nom, priorite, idProjet);
+		this.lProjet.add(newProjet);
+		this.lPanel.add(new JPanel());
+		this.selectionnerProjet(newProjet);
 		update();
 	}
 	
@@ -239,12 +243,8 @@ public class Entreprise extends Observable{
 		this.idAct++;
 		Activite act = new Activite(idAct, titre, charge, debut);
 		act.selectionner();
-		ajouterActiviter(projet, act, ordre);
-		
-		projet.ajouter(act);
-
-		fenetrePrincipale.getPanelInfoProjet().ajouterActivite(
-				new PanelInfoActivite(this, act));
+		ajouterActiviter(projet, act, ordre);		
+		selectionnerActivite(act);
 		update();
 	}
 	
@@ -314,41 +314,77 @@ public class Entreprise extends Observable{
 		return lProjet;
 	}
 
+	public void selectionnerProjet(Projet projet) {
+		projetSelectionner = projet;
+		selectionnerActivite(null);
+		update();
+	}
+	
 	public Projet getProjetSelectionner() {
-		PanelInfoProjet pip = fenetrePrincipale.getPanelInfoProjet();
-		if (pip != null) {
-			return pip.getProjet();
-		}
-		else {
-			return null;
-		}
+		return projetSelectionner;
 	}
 
-	/*public Projet getProjetSelectionner() {
-		Projet projet = null;
-		for (int i=0; i<lProjet.size();i++) {
-			if (lProjet.get(i).getSelectionner()) {
-				projet = lProjet.get(i);
-			}
-		}
-		return projet;
-	}*/
-	
-	
-	public JPanel getPanelDuProjet() {
-		JPanel panel = null;
-		for (int i=0; i<lProjet.size();i++) {
-			if (lProjet.get(i).getSelectionner()) {
-				panel = lPanel.get(i);
-			}
-		}
-		return panel;
+	public void selectionnerActivite(Activite activite) {
+		activiteSelectionner = activite;
+		update();
 	}
 	
 	public Activite getActiviteSelectionner() {
-		return fenetrePrincipale.getPanelInfoProjet().getPanelInfoActivite().getActivite();
+		return activiteSelectionner;
 	}
 
+	public void selectionnerListeRessource(String type) {
+		boolean estPresent = false;
+		for (int i=0; i<ressourceAfficher.size(); i++) {
+			if (ressourceAfficher.get(i) == type) {
+				estPresent = true;
+				ressourceAfficher.remove(i);
+				break;
+			}
+		}
+		if (!estPresent) {
+			ressourceAfficher.add(type);
+		}
+		adapteListeRessourceAfficher();
+		update();
+	}
+	
+	private void adapteListeRessourceAfficher() {
+		int taille = ressourceAfficher.size();
+		for (int i=0; i<taille; i++) {
+			if (ressourceAfficher.get(i) == Ressource.PERSONNE) {
+				ressourceAfficher.remove(i);
+				ressourceAfficher.add(0, Ressource.PERSONNE);
+			}
+			if (ressourceAfficher.get(i) == Ressource.SALLE) {
+				ressourceAfficher.remove(i);
+				if (taille==1) {
+					ressourceAfficher.add(0, Ressource.SALLE);
+				}
+				else {
+					ressourceAfficher.add(1, Ressource.SALLE);
+				}
+			}
+			if (ressourceAfficher.get(i) == Ressource.CALCULATEUR) {
+				ressourceAfficher.remove(i);
+				if (taille==1) {
+					ressourceAfficher.add(0, Ressource.CALCULATEUR);
+				}
+				else {
+					if (taille==2) {
+						ressourceAfficher.add(1, Ressource.CALCULATEUR);
+					}
+					else {
+						ressourceAfficher.add(2, Ressource.CALCULATEUR);
+					}
+				}
+			}
+		}
+	}
+	
+	public ArrayList<String> getListeRessourceAfficher(){
+		return ressourceAfficher;
+	}
 
 	public JFrame getFenetrePrincipale() {
 		return fenetrePrincipale;

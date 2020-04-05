@@ -42,25 +42,18 @@ public class FenetrePrincipale extends JFrame{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	private JTabbedPane onglet = new JTabbedPane();
 
 	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
 		this.setTitle("ProjetS4");
 		this.setSize(LARGEUR,HAUTEUR);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setBackground(PanelPrincipal.BLANC);
 		setLayout(new BorderLayout());
-		PanelProjet panelProjet = new PanelProjet(entreprise);
-		PanelRessource panelRessource = new PanelRessource(entreprise);
-		PanelPrincipal pp = new PanelPrincipal(entreprise, 
-				panelRessource, panelProjet, this);	
+		PanelPrincipal pp = new PanelPrincipal(entreprise);	
 		
 		
-		//this.add(pp, BorderLayout.CENTER);
-		this.add(panelRessource, BorderLayout.WEST);
-		//this.add(panelProjet, BorderLayout.SOUTH);
-		this.add(onglet, BorderLayout.CENTER);
-
+		this.add(pp, BorderLayout.CENTER);
 		creationBarreMenu();
 		
 		this.addWindowListener(new FermerFenetre(this));
@@ -128,16 +121,4 @@ public class FenetrePrincipale extends JFrame{
 		this.setJMenuBar(menuBar);	
 	}
 
-	public void ajouterProjet(PanelInfoProjet pip) {
-		onglet.add(pip.getProjetNom(), pip);
-	}
-	
-	public PanelInfoProjet getPanelInfoProjet() {
-		if (onglet.getSelectedComponent()!=null) {
-			return (PanelInfoProjet) onglet.getSelectedComponent();
-		}
-		else {
-			return null;
-		}
-	}
 }

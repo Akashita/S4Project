@@ -110,12 +110,8 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 		    	tAct[i] = lAct.get(i).getTitre();
 		    }
 		    ordre = new JComboBox<String>(tAct);
+		    ordre.setSelectedIndex(tAct.length-1);
 		    panel.add(ordre);
-		    /*checkAvant.addActionListener(new ActionListener() {  
-		        public void actionPerformed(ActionEvent e) {
-		        	checkClique();
-		        }
-		    });	*/
 		    panel.add(checkAvant);
 	    }
 		return panel;
@@ -169,12 +165,12 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 			if (!charge.getText().isEmpty()) {
 				if (estUnEntier(charge.getText())) {
 						LocalDate debut = creerLaDate();
-						int ordre = this.ordre.getSelectedIndex();
+						int ordre = this.ordre.getSelectedIndex()+1;
 						if (checkAvant.isSelected()) {
 							ordre --;
-							if (ordre < 0) {
-								ordre = 0;
-							}
+						}
+						if (ordre < 0) {
+							ordre = 0;
 						}
 						entreprise.creerActivite(projet, 
 								titre.getText(), Integer.parseInt(charge.getText()), ordre, debut);

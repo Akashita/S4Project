@@ -11,17 +11,17 @@ public class Projet implements Comparable<Projet>{
 	private ArrayList<Activite> lActivite;//liste des activites (ordonnees par ordre)
 
 	private String nom;
-	private boolean selectionner;
 	private float priorite; //Priorite du projet
+	private int id;
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Projet(String nom, float priorite) {
+	public Projet(String nom, float priorite, int id) {
 		this.lActivite =  new ArrayList<Activite>();
 		this.nom = nom;
-		this.selectionner = false;
 		this.priorite = priorite;
+		this.id = id;
 	}
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -33,10 +33,6 @@ public class Projet implements Comparable<Projet>{
 		return this.nom;
 	}
 
-	public boolean getSelectionner() {
-		return selectionner;
-	}
-
 	public ArrayList<Activite> getListe(){
 		return lActivite;
 	}
@@ -45,13 +41,8 @@ public class Projet implements Comparable<Projet>{
 		return priorite;
 	}
 
-	//--------------------------------------------------------------------------------->>>>> Setteurs simples
-	public void selectionner() {
-		this.selectionner = true;
-	}
-
-	public void deselectionner() {
-		this.selectionner = false;
+	public int getId() {
+		return id;
 	}
 
 	//--------------------------------------------------------------------------------->>>>> Comparaison
