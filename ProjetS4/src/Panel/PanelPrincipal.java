@@ -25,6 +25,10 @@ public class PanelPrincipal extends JPanel implements Observer{
         this.setLayout(new BorderLayout());
         this.setBackground(BLANC);
 	}	
+	
+	private void afficheInterface() {
+		
+	}
 		
 	@Override
 	public void update(Observable o, Object arg) {

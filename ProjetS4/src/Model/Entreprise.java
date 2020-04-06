@@ -1,9 +1,11 @@
 package Model;
+import java.awt.Color;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Random;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -96,7 +98,8 @@ public class Entreprise extends Observable{
 			
 		while (chargeAloue < charge) {	
 			if(act.creneauDispo(jourCourant, heureCourante)) { //Si le creneau est disponible pour toutes les ressources de l'activite
-				act.ajouterCreneau(new CreneauHoraire(act.getTitre(), heureCourante), jourCourant);
+				act.ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getProjet().getCouleur(), act.getCouleur()),
+						jourCourant);
 				chargeAloue++;
 			}
 			
@@ -216,7 +219,7 @@ public class Entreprise extends Observable{
 	
 	public void creerProjet(String nom, float priorite) {//cr�e un projet si son nom n'est pas d�j� utilis�
 		idProjet ++;
-		Projet newProjet = new Projet(nom, priorite, idProjet);
+		Projet newProjet = new Projet(nom, priorite, idProjet, couleurAleatoire());
 		this.lProjet.add(newProjet);
 		this.lPanel.add(new JPanel());
 		this.selectionnerProjet(newProjet);
@@ -241,8 +244,7 @@ public class Entreprise extends Observable{
 	
 	public void creerActivite(Projet projet, String titre, int charge, int ordre, LocalDate debut) {
 		this.idAct++;
-		Activite act = new Activite(idAct, titre, charge, debut);
-		act.selectionner();
+		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), projetSelectionner);
 		ajouterActiviter(projet, act, ordre);		
 		selectionnerActivite(act);
 		update();
@@ -305,6 +307,15 @@ public class Entreprise extends Observable{
 	
 	
 	//================ Partie Graphique ==========//
+	
+	private Color couleurAleatoire() {
+		Random rand = new Random();
+		float r = rand.nextFloat();
+		float g = rand.nextFloat();
+		float b = rand.nextFloat();
+		Color couleur = new Color(r, g, b);
+		return couleur;
+	}
 	
 	public Projet getDernierProjet() { //retourne le dernier projet creer, pour PanelProjet
 		return lProjet.get(lProjet.size()-1);

@@ -199,7 +199,7 @@ public class PanelEDTRessource extends JPanel{
 		if (creneau != null) {
 			label.setText(creneau.getTitre());
 			label.setOpaque(true);
-			label.setBackground(Color.GREEN);			
+			label.setBackground(acti);			
 		}
 		else {
 			label.setText("---");

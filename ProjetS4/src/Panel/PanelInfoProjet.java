@@ -11,6 +11,7 @@ import java.awt.Panel;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -125,6 +126,8 @@ public class PanelInfoProjet extends JPanel{
 					}					
 				}
 				panel.add(creerLabel(act, selectionner));
+				panel.add(Box.createRigidArea(new Dimension(0, 10)));		
+
 			}				
 		}
 		else {
@@ -133,11 +136,11 @@ public class PanelInfoProjet extends JPanel{
 		return panel;
 	}
 
-	private JPanel creerLabel(Activite activite, boolean selectionner) {
-		JPanel panel = new JPanel();
-		panel.setBackground(PanelPrincipal.BLANC);
+	private JLabel creerLabel(Activite activite, boolean selectionner) {
+		//JPanel panel = new JPanel();
+		//panel.setBackground(PanelPrincipal.BLANC);
 		//panel.setPreferredSize(new Dimension( this.getWidth(),130));
-		panel.setLayout(new BorderLayout());
+		//panel.setLayout(new BorderLayout());
 		JLabel label = new JLabel(activite.getTitre());
 		if(selectionner) {	
 			label.setFont(new Font("Arial", Font.BOLD, 30));
@@ -148,9 +151,9 @@ public class PanelInfoProjet extends JPanel{
 			label.setForeground(PanelPrincipal.BLEU2);			
 		}
 		label.addMouseListener(new SourisActiviteListener(entreprise, activite));
-	    label.setHorizontalAlignment(JLabel.CENTER);
-		panel.add(label);
-		return panel;
+	    //label.setHorizontalAlignment(JLabel.CENTER);
+		//panel.add(label);
+		return label;
 	}
 
 //	==================METHODE GENERAL============================================	

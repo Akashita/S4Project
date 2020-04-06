@@ -1,5 +1,6 @@
 package Model;
 
+import java.awt.Color;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,20 +19,22 @@ public class Activite implements Comparable<Activite>{
 	private int chargeJHomme;
 	private int chargeHeure;
 	private LocalDate debut;
-	private boolean selectionner = false;
-
+	private Color couleur;
+	private Projet projet;
 		
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Activite(int id, String titre, int chargeJH, LocalDate debut) {
+	public Activite(int id, String titre, int chargeJH, LocalDate debut, Color couleur, Projet projet) {
 		this.id = id;
 		this.titre = titre; 
 		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
 		this.chargeHeure = chargeJH * Entreprise.NB_HEURE_JOUR;
 		this.debut = debut;
+		this.couleur = couleur;
+		this.projet = projet;
 		lRessources = new ArrayList<Ressource>();
 	}
 	
@@ -40,10 +43,6 @@ public class Activite implements Comparable<Activite>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 	
 	//--------------------------------------------------------------------------------->>>>> Getteurs simples
-	public boolean getSelectionner() {
-		return selectionner;
-	}
-
 	public String getTitre() {
 		return titre;
 	}
@@ -76,16 +75,14 @@ public class Activite implements Comparable<Activite>{
 		return id;
 	}
 	
-	
-	//--------------------------------------------------------------------------------->>>>> Getteurs simples
-	public void selectionner() {
-		this.selectionner = true;
+	public Color getCouleur() {
+		return couleur;
 	}
 	
-	public void deselectionner() {
-		this.selectionner = false;
+	public Projet getProjet() {
+		return projet;
 	}
-
+	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {

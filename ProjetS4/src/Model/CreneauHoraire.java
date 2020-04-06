@@ -11,14 +11,20 @@ public class CreneauHoraire {
 	private int debut;
 	private int fin;
 	private int position;
+	private Color couleurProjet;
+	private Color couleurActivite;
+	private Activite activite;
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	public CreneauHoraire(String titre, int debut) {
-		this.titre = titre;
+	public CreneauHoraire(Activite activite, int debut, Color couleurProjet, Color couleurActivite) {
+		this.activite = activite;
+		titre = activite.getProjet().getNom()+"%"+activite.getTitre();
 		this.debut = debut;
 		fin = debut + 1; //On calcul la fin du creneau
+		this.couleurProjet = couleurProjet;
+		this.couleurActivite = couleurActivite;
 		
 		
 		//On cherche la position du creneau dans une journe (les creneaux sont tous les uns apres mes autres)
@@ -46,6 +52,10 @@ public class CreneauHoraire {
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 	
 	//--------------------------------------------------------------------------------->>>>> Getteurs simples
+	public Activite getActivite() {
+		return activite;
+	}
+	
 	public int getPosition() {
 		return position;
 	}
@@ -62,6 +72,14 @@ public class CreneauHoraire {
 		return fin;
 	}
 	
+	public Color getCouleurProjet() {
+		return couleurProjet;
+	}
+
+	public Color getCouleurActivite() {
+		return couleurActivite;
+	}
+
 	//--------------------------------------------------------------------------------->>>>> Comparaison	
 	public boolean estAvant(CreneauHoraire horaire) {
 		return fin <= horaire.debut;

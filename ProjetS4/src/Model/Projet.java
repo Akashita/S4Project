@@ -1,4 +1,5 @@
 package Model;
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JTextArea;
@@ -13,15 +14,16 @@ public class Projet implements Comparable<Projet>{
 	private String nom;
 	private float priorite; //Priorite du projet
 	private int id;
-
+	private Color couleur;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Projet(String nom, float priorite, int id) {
+	public Projet(String nom, float priorite, int id, Color couleur) {
 		this.lActivite =  new ArrayList<Activite>();
 		this.nom = nom;
 		this.priorite = priorite;
 		this.id = id;
+		this.couleur = couleur;
 	}
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -43,6 +45,10 @@ public class Projet implements Comparable<Projet>{
 
 	public int getId() {
 		return id;
+	}
+	
+	public Color getCouleur() {
+		return couleur;
 	}
 
 	//--------------------------------------------------------------------------------->>>>> Comparaison
