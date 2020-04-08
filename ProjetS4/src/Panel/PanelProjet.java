@@ -1,6 +1,5 @@
 package Panel;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -18,6 +17,10 @@ import Model.Entreprise;
 import Model.Projet;
 
 public class PanelProjet extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
 	private JTextField rechercher;
 	private Font font = new Font("Arial", Font.PLAIN, 30);

@@ -2,20 +2,13 @@ package Panel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Panel;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -29,13 +22,24 @@ import Ressource.Ressource;
 
 public class PanelEDTActivite extends JPanel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Activite activite;
 	private int nbPersonne;
 	private Entreprise entreprise;
-	
+	private Color couleurFond;
+
 	public PanelEDTActivite(Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;
 		this.activite = activite;
+		couleurFond = PanelPrincipal.BLEU3;
+		if (entreprise.getActiviteSelectionner() != null) {
+			if (activite.getId() == entreprise.getActiviteSelectionner().getId()) {
+				couleurFond = PanelPrincipal.BLEU2;
+			}					
+		}
 		nbPersonne = activite.getListeRessourceType(Ressource.PERSONNE).size();
 		this.setLayout(new BorderLayout());
 		if (nbPersonne > 0) {
@@ -45,7 +49,7 @@ public class PanelEDTActivite extends JPanel{
 	
 	private JPanel afficherEmploiDuTemps() {
 		JPanel panel = new JPanel();
-		panel.setBackground(PanelPrincipal.BLEU2);
+		panel.setBackground(couleurFond);
 		panel.setLayout(new GridBagLayout());
 		
 		/* Le gridBagConstraints va définir la position et la taille des éléments */
@@ -74,6 +78,7 @@ public class PanelEDTActivite extends JPanel{
 		gc.gridy = 0;
 		
 		
+		panel.add(creerLabel(activite.getTitre(), true), gc);
 
 		for (int i=0; i<nbMois; i++) {
 			gc.gridx ++;
@@ -111,7 +116,7 @@ public class PanelEDTActivite extends JPanel{
 					}
 					panel.add(semaine);
 		}
-		panel.setBackground(PanelPrincipal.BLEU2);
+		panel.setBackground(couleurFond);
 		return panel;
 	}
 	
@@ -133,7 +138,7 @@ public class PanelEDTActivite extends JPanel{
 	
 	private JLabel creerLabel(String nom, Ressource ressource) {
 		JLabel label = new JLabel(nom);
-		label.setBackground(PanelPrincipal.BLEU2);
+		label.setBackground(couleurFond);
 		label.setFont(new Font("Arial", Font.PLAIN, 15));
 		label.addMouseListener(new SourisRessourceListener(entreprise, ressource));
 		return label;
@@ -181,8 +186,20 @@ public class PanelEDTActivite extends JPanel{
 		
 		}
 		JPanel panel = new JPanel();
-		panel.setBackground(PanelPrincipal.BLEU2);
+		panel.setBackground(couleurFond);
 		panel.add(label);
 		return panel;
 	}
+	
+	private JLabel creerLabel(String nom, boolean estGras) {
+		JLabel label = new JLabel(nom);
+		if(estGras) {
+			label.setFont(new Font("Arial", Font.BOLD, 15));
+		}
+		else {
+			label.setFont(new Font("Arial", Font.PLAIN, 15));
+		}
+		return label;
+	}
+
 }

@@ -1,38 +1,29 @@
 package Panel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Panel;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 import EcouteurEvenement.SourisActiviteListener;
-import EcouteurEvenement.SourisProjetListener;
-import EcouteurEvenement.SourisRessourceListener;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
-import Ressource.Calculateur;
-import Ressource.Personne;
 import Ressource.Ressource;
-import Ressource.Salle;
 
 public class PanelInfoProjet extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
 	private Projet projet;
 
@@ -181,113 +172,8 @@ public class PanelInfoProjet extends JPanel{
 			}
 			return label;
 		}
-
-	private JPanel marge() {
-		JPanel panel = new JPanel();
-		panel.setBackground(PanelPrincipal.BLANC);	
-		panel.setPreferredSize(new Dimension(20,20));
-		return panel;
-	}
-
-//	==================PANEL PROJET============================================
 	
-	/**
-	 * Creer le panel qui affiche les informations du projet
-	 * @return panel
-	 */
-	private JPanel infoProjet() {
-		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(this.getWidth(),200));
-		panel.setLayout(new GridBagLayout());
-		panel.setBackground(Color.WHITE);	
-
-		GridBagConstraints c = new GridBagConstraints();
-		c.weightx = 1;
-		c.weighty = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-
-		c.gridx = 0;
-		c.gridwidth = 1;
-		c.gridy = 0;
-		panel.add(creerLabel("Chef de projet: pas encore implementé"), c);
-
-		c.gridx = 1;
-		c.gridwidth = 1;
-		c.gridy = 0;
-		panel.add(creerLabel("Priorité: "+(int)projet.getPriorite()), c);
-
-		c.gridx = 2;
-		c.gridwidth = 1;
-		c.gridy = 0;
-		panel.add(creerLabel("DeadLine: pas encore implementé"), c);
-
-		return panel;
-	}
 	
-//	==================PANEL ACTIVITE============================================	
-	
-	/*private JPanel panelActivite() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.add(listeActivite(), BorderLayout.WEST);
-		panel.add(new PanelInfoActivite(entreprise), BorderLayout.CENTER);
-		return panel;
-	}
-
-	private JPanel listeActivite() {
-		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(180, this.getHeight()));
-		panel.setBackground(PanelPrincipal.BLANC);	
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-	
-		ArrayList<Activite> listeActivite = projet.getListe();
-		if (listeActivite.size() > 0) {
-			for (int i=0; i<listeActivite.size(); i++) {
-				Activite act = listeActivite.get(i);
-				boolean selectionner = false;
-				if (entreprise.getActiviteSelectionner() != null) {
-					if (act.getId() == entreprise.getActiviteSelectionner().getId()) {
-						selectionner = true;
-					}					
-				}
-				panel.add(creerLabel(act, selectionner));
-				panel.add(Box.createRigidArea(new Dimension(0, 10)));		
-
-			}				
-		}
-		else {
-			panel.add(new JLabel("aucune activité présente"));
-		}
-		return panel;
-	}*/
-
-	private JLabel creerLabel(Activite activite, boolean selectionner) {
-	//JPanel panel = new JPanel();
-	//panel.setBackground(PanelPrincipal.BLANC);
-	//panel.setPreferredSize(new Dimension( this.getWidth(),130));
-	//panel.setLayout(new BorderLayout());
-	JLabel label = new JLabel(activite.getTitre());
-	if(selectionner) {	
-		label.setFont(new Font("Arial", Font.BOLD, 35));
-		label.setForeground(PanelPrincipal.BLEU1);
-	}
-	else {
-		label.setFont(new Font("Arial", Font.BOLD, 30));
-		label.setForeground(PanelPrincipal.BLEU2);			
-	}
-	label.addMouseListener(new SourisActiviteListener(entreprise, activite));
-    //label.setHorizontalAlignment(JLabel.CENTER);
-	//panel.add(label);
-	return label;
-}
-	private JLabel creerLabel(Activite activite) {
-		JLabel label = new JLabel(activite.getTitre());
-		label.setFont(new Font("Arial", Font.PLAIN, 30));
-		label.setForeground(PanelPrincipal.BLEU1);
-		label.addMouseListener(new SourisActiviteListener(entreprise, activite));
-		return label;
-	}
-
 //	==================METHODE GENERAL============================================	
 	
 
