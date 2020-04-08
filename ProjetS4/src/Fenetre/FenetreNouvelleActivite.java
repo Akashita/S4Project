@@ -194,7 +194,7 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 		int mois = this.mois.getSelectedIndex()+1;
 		int annee = Integer.parseInt((String) this.annee.getSelectedItem());
 		LocalDate debut = null;
-		if (jourValide (jour, mois, annee)) {
+		if (Temps.jourValide (jour, mois, annee)) {
 			debut = LocalDate.of(annee, mois, jour);
 		}
 		else {
@@ -204,14 +204,6 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 		return debut;
 	}
 	
-	private boolean jourValide(int jour, int mois, int annee){
-		try {
-			LocalDate.of(annee, mois, jour);
-		}catch(DateTimeException e) {
-			return false;
-		}
-		return true;
-	}
 
 	private boolean estUnEntier(String chaine) {
 		try {

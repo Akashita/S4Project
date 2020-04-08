@@ -1,5 +1,6 @@
 package Model;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
@@ -8,18 +9,21 @@ import java.util.Locale;
 
 public final class Temps {
 	
+		
 	public static LocalDate getAujourdhui() {
 		return LocalDate.now();
 	}
+	
+	public static int getAnnee() {
+		return getAujourdhui().getYear();
+	}
+	
 	
 	public static int getSemaine() {
 		TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear(); 
 		return getAujourdhui().get(woy);
 	}
 	
-	public static int getAnnee() {
-		return getAujourdhui().getYear();
-	}
 	
 	//TODO Risque de poser probl�me lors du changement d'ann�e
 	public static LocalDate[] getJourSemaine(int annee, int semaine) {
@@ -94,6 +98,16 @@ public final class Temps {
 		
 		return res;
 	}
+
+
 	
-	
+	public static boolean jourValide(int jour, int mois, int annee){
+		try {
+			LocalDate.of(annee, mois, jour);
+		}catch(DateTimeException e) {
+			return false;
+		}
+		return true;
+	}
+
 }

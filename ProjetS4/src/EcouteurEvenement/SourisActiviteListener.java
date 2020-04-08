@@ -17,6 +17,9 @@ public class SourisActiviteListener implements MouseListener {
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		/*if (e.getClickCount()==2) {
+			entreprise.afficheEDTActivite(activite);
+		}*/
 		entreprise.selectionnerActivite(activite);
 	}
 

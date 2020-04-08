@@ -21,9 +21,9 @@ public class Activite implements Comparable<Activite>{
 	private LocalDate debut;
 	private Color couleur;
 	private Projet projet;
-		
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	
+	private boolean afficheEDT = false; //inutile de le stocké dans la bdd
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -82,6 +82,22 @@ public class Activite implements Comparable<Activite>{
 	public Projet getProjet() {
 		return projet;
 	}
+	
+	public boolean getAfficheEDT() {
+		return afficheEDT;
+	}
+	
+	//--------------------------------------------------------------------------------->>>>> change la valeur
+	
+	public void afficheEDT() {
+		if (afficheEDT) {
+			afficheEDT = false;
+		}
+		else {
+			afficheEDT = true;
+		}
+	}
+	
 	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override

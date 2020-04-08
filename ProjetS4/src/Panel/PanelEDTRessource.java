@@ -86,7 +86,7 @@ public class PanelEDTRessource extends JPanel{
 			LocalDate jourActuel = jours[i];
 			String jour = jourActuel.getDayOfWeek().toString();	
 			String date = jourActuel.getDayOfMonth() + "/" + jourActuel.getMonthValue() + "/" + jourActuel.getYear();			
-			panelJourDeLasemaine.add(creerLabelInterface(jour+" "+date, false));
+			panelJourDeLasemaine.add(creerLabelInterface("<html>"+jour+"<br>"+date+"</html>", false));
 		}
 		panelCompletJourDeLasemaine.add(panelJourDeLasemaine,BorderLayout.CENTER);
 		this.revalidate();
@@ -197,12 +197,15 @@ public class PanelEDTRessource extends JPanel{
 	private JLabel creerLabelCreneau(CreneauHoraire creneau) {
 		JLabel label = new JLabel();
 		if (creneau != null) {
-			label.setText(creneau.getTitre());
+			
+            String[] regex = creneau.getTitre().split("%", 2); 
+            
+			label.setText("<html>"+regex[0]+"<br>"+regex[1]+"</html>");
 			label.setOpaque(true);
-			label.setBackground(acti);			
+			label.setBackground(creneau.getCouleurActivite());			
 		}
 		else {
-			label.setText("---");
+			label.setText(" ");
 			label.setOpaque(true);
 			label.setBackground(Color.WHITE);			
 		}

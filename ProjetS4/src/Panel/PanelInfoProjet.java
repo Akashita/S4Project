@@ -7,12 +7,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Panel;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,11 +40,13 @@ public class PanelInfoProjet extends JPanel{
 		this.entreprise = entreprise;
 		this.projet = entreprise.getProjetSelectionner();
 		if (projet != null) {
-			afficheInterface();
+			this.setBackground(PanelPrincipal.BLANC);
+			this.setLayout(new BorderLayout());
+			this.add(afficheInterface(), BorderLayout.CENTER);
 		}
 	}
 	
-	public void afficheInterface() {
+	/*public void afficheInterface() {
 		this.removeAll();
 		this.setLayout(new BorderLayout());
 		this.add(marge(), BorderLayout.WEST);
@@ -55,8 +59,129 @@ public class PanelInfoProjet extends JPanel{
 		panel.add(panelActivite(), BorderLayout.CENTER);
 		this.add(panel, BorderLayout.CENTER);
 
-	}
+	}*/
 	
+	public JPanel afficheInterface() {
+		JPanel panel = new JPanel();
+		panel.setBackground(PanelPrincipal.BLANC);
+		panel.setLayout(new GridBagLayout());
+		
+		/* Le gridBagConstraints va définir la position et la taille des éléments */
+		GridBagConstraints gc = new GridBagConstraints();
+		
+		/* le parametre fill sert à définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
+		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
+		 */
+		gc.fill = GridBagConstraints.BOTH;
+		
+		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
+		gc.insets = new Insets(5, 5, 5, 5);
+		
+		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+
+		/* weightx définit le nombre de cases en abscisse */
+		gc.weightx = 5;
+		
+		/* weightx définit le nombre de cases en ordonnée */
+		int nbActivite = 5;
+		gc.weighty = nbActivite+1;
+		
+		
+		gc.gridx = 0;
+		gc.gridy = 0;
+		panel.add(creerLabel("Chef de projet: pas encore implementé"), gc);
+		gc.gridx = 1;
+		panel.add(creerLabel("Priorité: "+(int)projet.getPriorite()), gc);
+		gc.gridx = 2;
+		panel.add(creerLabel("DeadLine: pas encore implementé"), gc);
+
+		for (int i=0; i<3; i++) {
+			String type = null;
+			switch (i){
+			case 0: type = Ressource.PERSONNE;
+			break;
+			case 1: type = Ressource.SALLE;
+			break;
+			case 2: type = Ressource.CALCULATEUR;
+			break;
+			}
+				gc.gridx = i+3;
+				gc.gridy = 0;
+				panel.add(creerLabelInterfaceRessource(type), gc);
+		}
+		
+		//affiche les activité
+		if (nbActivite > 0) {
+			gc.gridy = 0;
+			
+			ArrayList<Activite> listeActivite = projet.getListe();
+			gc.gridx = 0;
+			gc.gridwidth = GridBagConstraints.REMAINDER;
+			for (int i=0; i<nbActivite; i++) {
+				gc.gridy ++;
+				if (i<projet.getListe().size()) {
+					
+					Activite activite = listeActivite.get(i);
+					
+					JPanel panelActivite;
+					ArrayList<Ressource> listeRes = activite.getListeRessourceType(Ressource.PERSONNE);
+					if (activite.getAfficheEDT() && listeRes.size() > 0) { //on affiche son edt
+						panelActivite = new PanelEDTActivite(entreprise, activite);
+					}
+					else { // sinon on affiche ses infos
+						panelActivite = new PanelInfoActivite(entreprise, activite);
+					}
+					panelActivite.addMouseListener(new SourisActiviteListener(entreprise, activite));
+					panel.add(panelActivite, gc);			
+
+				}
+				else {
+					JPanel caseVide = new JPanel();
+					caseVide.setBackground(PanelPrincipal.BLANC);
+					panel.add(caseVide, gc);					
+				}
+			}
+		}
+		
+		return panel;
+	}
+		
+		
+		private JPanel creerLabelInterfaceRessource(String type) {
+			JPanel panel = new JPanel();
+			panel.setBackground(PanelPrincipal.BLANC);		
+		    panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+			JLabel labelTxt = new JLabel();
+			JLabel labelIco = new JLabel();
+			if (type == Ressource.PERSONNE) {
+				labelIco = new JLabel(new ImageIcon("images/user_grey.png"));
+				labelTxt = creerLabel("  "+Ressource.PERSONNE+"s", true);
+			}
+			if (type == Ressource.SALLE) {
+				labelIco = new JLabel(new ImageIcon("images/door_grey.png"));
+				labelTxt = creerLabel("  "+Ressource.SALLE+"s", true);					
+			}
+			if (type == Ressource.CALCULATEUR) {
+				labelIco = new JLabel(new ImageIcon("images/computer_grey.png"));	
+				labelTxt = creerLabel("  "+Ressource.CALCULATEUR+"s", true);	
+			}
+			panel.add(labelIco);
+			panel.add(labelTxt);
+			return panel;
+		}
+
+		private JLabel creerLabel(String nom, boolean estGras) {
+			JLabel label = new JLabel(nom);
+			if(estGras) {
+				label.setFont(new Font("Arial", Font.BOLD, 15));
+			}
+			else {
+				label.setFont(new Font("Arial", Font.PLAIN, 15));
+			}
+			return label;
+		}
+
 	private JPanel marge() {
 		JPanel panel = new JPanel();
 		panel.setBackground(PanelPrincipal.BLANC);	
@@ -101,7 +226,7 @@ public class PanelInfoProjet extends JPanel{
 	
 //	==================PANEL ACTIVITE============================================	
 	
-	private JPanel panelActivite() {
+	/*private JPanel panelActivite() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		panel.add(listeActivite(), BorderLayout.WEST);
@@ -134,25 +259,32 @@ public class PanelInfoProjet extends JPanel{
 			panel.add(new JLabel("aucune activité présente"));
 		}
 		return panel;
-	}
+	}*/
 
 	private JLabel creerLabel(Activite activite, boolean selectionner) {
-		//JPanel panel = new JPanel();
-		//panel.setBackground(PanelPrincipal.BLANC);
-		//panel.setPreferredSize(new Dimension( this.getWidth(),130));
-		//panel.setLayout(new BorderLayout());
+	//JPanel panel = new JPanel();
+	//panel.setBackground(PanelPrincipal.BLANC);
+	//panel.setPreferredSize(new Dimension( this.getWidth(),130));
+	//panel.setLayout(new BorderLayout());
+	JLabel label = new JLabel(activite.getTitre());
+	if(selectionner) {	
+		label.setFont(new Font("Arial", Font.BOLD, 35));
+		label.setForeground(PanelPrincipal.BLEU1);
+	}
+	else {
+		label.setFont(new Font("Arial", Font.BOLD, 30));
+		label.setForeground(PanelPrincipal.BLEU2);			
+	}
+	label.addMouseListener(new SourisActiviteListener(entreprise, activite));
+    //label.setHorizontalAlignment(JLabel.CENTER);
+	//panel.add(label);
+	return label;
+}
+	private JLabel creerLabel(Activite activite) {
 		JLabel label = new JLabel(activite.getTitre());
-		if(selectionner) {	
-			label.setFont(new Font("Arial", Font.BOLD, 30));
-			label.setForeground(PanelPrincipal.BLEU1);
-		}
-		else {
-			label.setFont(new Font("Arial", Font.PLAIN, 30));
-			label.setForeground(PanelPrincipal.BLEU2);			
-		}
+		label.setFont(new Font("Arial", Font.PLAIN, 30));
+		label.setForeground(PanelPrincipal.BLEU1);
 		label.addMouseListener(new SourisActiviteListener(entreprise, activite));
-	    //label.setHorizontalAlignment(JLabel.CENTER);
-		//panel.add(label);
 		return label;
 	}
 

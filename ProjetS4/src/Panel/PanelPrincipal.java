@@ -15,7 +15,7 @@ public class PanelPrincipal extends JPanel implements Observer{
 			GRIS1 = new Color(231,234,235),
 			GRIS2 = Color.GRAY,
 		    BLANC = new Color(255,255,255),
-	        NOIR = new Color(0,0,0);
+			NOIR = new Color(0,0,0);
 	
 	private Entreprise entreprise;
 	
@@ -25,10 +25,6 @@ public class PanelPrincipal extends JPanel implements Observer{
         this.setLayout(new BorderLayout());
         this.setBackground(BLANC);
 	}	
-	
-	private void afficheInterface() {
-		
-	}
 		
 	@Override
 	public void update(Observable o, Object arg) {

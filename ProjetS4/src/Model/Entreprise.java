@@ -336,7 +336,17 @@ public class Entreprise extends Observable{
 	}
 
 	public void selectionnerActivite(Activite activite) {
-		activiteSelectionner = activite;
+		if (activiteSelectionner != null) {
+			if (activite.getId() == activiteSelectionner.getId()) {
+				activite.afficheEDT();
+			}
+			else {
+				activiteSelectionner = activite;
+			}			
+		}
+		else {
+			activiteSelectionner = activite;
+		}			
 		update();
 	}
 	
@@ -393,6 +403,7 @@ public class Entreprise extends Observable{
 		}
 	}
 	
+	
 	public ArrayList<String> getListeRessourceAfficher(){
 		return ressourceAfficher;
 	}
@@ -415,10 +426,16 @@ public class Entreprise extends Observable{
 		listeFenetreInfoRessource.add(new FenetreInfoRessource(this, res));
 	}
 	
+	public void afficheEDTActivite(Activite activite) {
+		activite.afficheEDT();
+		update();
+	}
+
 	public void update() {
 		this.setChanged();
 		this.notifyObservers();	
 	}
+
 	
 
 }

@@ -107,10 +107,14 @@ public class Ressource implements Comparable<Ressource>{
 		return semaineEDT;
 	}
 	
+	public CreneauHoraire getMoisEDT(int numeroMois) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	/**
 	 * Cree une journee entierement disponible
-	 * @return Un tableau de CreneauHoraire init à null
+	 * @return Un tableau de CreneauHoraire init ï¿½ null
 	 */
 	private ArrayList<CreneauHoraire> creeJourneeCreneauLibre() {
 		ArrayList<CreneauHoraire> creneaux = new ArrayList<CreneauHoraire>();
@@ -122,7 +126,7 @@ public class Ressource implements Comparable<Ressource>{
 	
 
 	/**
-	 * Ajoute un creneau à la ressource (si possible)
+	 * Ajoute un creneau ï¿½ la ressource (si possible)
 	 * @param creneau   Le creneau a ajouter
 	 * @param jour   	Le jour ou le creneau doit etre ajoute
 	 * @return true si le creneau a ete ajoute
@@ -213,6 +217,7 @@ public class Ressource implements Comparable<Ressource>{
 		return creneauxLibres;
 		
 	}
+
 
 
 
