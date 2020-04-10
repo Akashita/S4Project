@@ -337,7 +337,7 @@ public class Entreprise extends Observable{
 
 	public void selectionnerProjet(Projet projet) {
 		projetSelectionner = projet;
-		selectionnerActivite(null);
+		activiteSelectionner = null;
 		update();
 	}
 	
