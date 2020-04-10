@@ -248,24 +248,16 @@ public class Entreprise extends Observable{
 		if (place = false) {
 			lProjet.add(proj);
 		}
-		
 	}
-
 	
 	public void creerActivite(Projet projet, String titre, int charge, int ordre, LocalDate debut) {
 		this.idAct++;
 		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), projetSelectionner);
-		ajouterActiviter(projet, act, ordre);		
+		projet.ajouterActivite(act, ordre);		
 		selectionnerActivite(act);
 		update();
 	}
-	
-	private void ajouterActiviter(Projet projet, Activite act, int ordre) {
-		ArrayList<Activite> listeAct = projet.getListe();
-		listeAct.add(ordre, act);
-		projet.adapterListe(listeAct);
-	}
-	
+		
 	public void nouvPersonne (String nom, String prenom) {
 		Personne nouvPersonne = new Personne(nom,prenom, this.idCour);
 		this.incrementId();
@@ -273,7 +265,6 @@ public class Entreprise extends Observable{
 		update();
 
 	}
-	
 	
 	public void nouvSalle (String nom, int capacite) {
 		Salle nouvSalle = new Salle(this.idCour,nom, capacite);

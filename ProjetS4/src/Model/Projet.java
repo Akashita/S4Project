@@ -127,8 +127,8 @@ public class Projet implements Comparable<Projet>{
 		return lActivite.remove(activite);
 	}
 
-	public void adapterListe(ArrayList<Activite> listeAct) {
-		lActivite = listeAct;
+	public void ajouterActivite(Activite act, int ordre) {
+		lActivite.add(ordre, act);
 	}
 
 
