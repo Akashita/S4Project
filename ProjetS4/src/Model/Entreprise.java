@@ -81,22 +81,22 @@ public class Entreprise extends Observable{
 
 	public void majEDT() {
 		ArrayList<Activite> lActivite;
+		viderProjets();
 		 for (int i = 0; i < lProjet.size(); i++) {
 			 lActivite = lProjet.get(i).getListe();
-			 lActivite = vider(lActivite);
 			 for (int j = 0; j < lActivite.size(); j++) {
 				creerLCreneaux(lActivite.get(j));
 			}
 		}
 	}
 	
-	private ArrayList<Activite> vider(ArrayList<Activite> act){
-		for (int i = 0; i < act.size(); i++) {
-			act.get(i).vider();
+	private void viderProjets() {
+		ArrayList<Activite> lAct;
+		for (int i = 0; i < lProjet.size(); i++) {
+			lProjet.get(i).vider();
 		}
-		
-		return act;	
 	}
+
 	
 	private void creerLCreneaux(Activite act) {
 		System.out.println(act.toString());

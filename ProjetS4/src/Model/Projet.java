@@ -110,6 +110,12 @@ public class Projet implements Comparable<Projet>{
 		}
 
 	}
+	
+	public void vider() {
+		for (int i = 0; i < lActivite.size(); i++) {
+			lActivite.get(i).vider();
+		}
+	}
 
 
 	/**
