@@ -89,7 +89,7 @@ public class PanelInfoActivite extends JPanel{
 			panel.add(creerLabel(activite.getTitre(), true), gc);
 			gc.gridx = 0;
 			gc.gridy = 1;
-			panel.add(labelInfo("Chef de projet: pas encore implementé"), gc);
+			panel.add(labelInfo("Travail achevée: pas encore implementé"), gc);
 			
 			gc.gridx = 1;
 			gc.gridy = 0;
@@ -158,10 +158,10 @@ public class PanelInfoActivite extends JPanel{
 	private JLabel creerLabel(String nom, boolean estGras) {
 		JLabel label = new JLabel(nom);
 		if(estGras) {
-			label.setFont(new Font("Arial", Font.BOLD, 15));
+			label.setFont(new Font("Arial", Font.BOLD, 30));
 		}
 		else {
-			label.setFont(new Font("Arial", Font.PLAIN, 15));
+			label.setFont(new Font("Arial", Font.PLAIN, 30));
 		}
 		return label;
 	}

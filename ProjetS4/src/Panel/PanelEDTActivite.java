@@ -79,15 +79,20 @@ public class PanelEDTActivite extends JPanel{
 		
 		
 		panel.add(creerLabel(activite.getTitre(), true), gc);
+		
+		gc.fill = GridBagConstraints.NONE;
+		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
 
 		for (int i=0; i<nbMois; i++) {
 			gc.gridx ++;
 			panel.add(labelMois(i), gc);
 		}
 		
-		
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		gc.insets = new Insets(5, 2, 2, 5);
+
 		for (int i=0; i<nbPersonne;i++) {
-			gc.insets = new Insets(5, 5, 20, 5);
 			gc.gridwidth = 1;
 			gc.gridx = 0;
 			gc.gridy ++;
@@ -144,7 +149,7 @@ public class PanelEDTActivite extends JPanel{
 		return label;
 	}
 
-	private JPanel labelMois(int numeroMois) {
+	private JLabel labelMois(int numeroMois) {
 		JLabel label = new JLabel();
 		switch (numeroMois) {
 		case 0:
@@ -188,16 +193,16 @@ public class PanelEDTActivite extends JPanel{
 		JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
 		panel.add(label);
-		return panel;
+		return label;
 	}
 	
 	private JLabel creerLabel(String nom, boolean estGras) {
 		JLabel label = new JLabel(nom);
 		if(estGras) {
-			label.setFont(new Font("Arial", Font.BOLD, 15));
+			label.setFont(new Font("Arial", Font.BOLD, 30));
 		}
 		else {
-			label.setFont(new Font("Arial", Font.PLAIN, 15));
+			label.setFont(new Font("Arial", Font.PLAIN, 30));
 		}
 		return label;
 	}

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -20,6 +21,8 @@ import javax.swing.JTextField;
 
 import Model.Entreprise;
 import Panel.PanelProjet;
+import Ressource.Personne;
+import Ressource.Ressource;
 
 /**
  * Cette fenetre permet la creation d'un projet
@@ -35,7 +38,8 @@ public class FenetreNouveauProjet extends JDialog implements FenetreInterface{
 	private Entreprise entreprise;
 	private JPanel panelPrincipal = new JPanel();
 	private JTextField nom, priorite;
-
+    private JComboBox<String> comboBoxPersonne;
+    private ArrayList<Ressource> listePersonne;
 	
 	public FenetreNouveauProjet(Entreprise entreprise) {	
 		super(entreprise.getFenetrePrincipale(), "nouveau projet", true);
@@ -72,6 +76,11 @@ public class FenetreNouveauProjet extends JDialog implements FenetreInterface{
 	    panel.setBorder(BorderFactory.createTitledBorder("Rentrez les informations de l'activité"));
 		panel.add(creerJTextField("nom"));
 		panel.add(creerJTextField("priorite"));
+		
+		listePersonne = entreprise.getListeRessourceType(Ressource.PERSONNE);
+		comboBoxPersonne = new JComboBox<String>(convertirArrayEnTab(listePersonne));
+		panel.add(comboBoxPersonne);
+
 
 		return panel;
 	}  
@@ -142,7 +151,9 @@ public class FenetreNouveauProjet extends JDialog implements FenetreInterface{
 		if (!nom.getText().isEmpty()) {
 			if (!priorite.getText().isEmpty()) {
 				if (estUnEntier(priorite.getText())) {
-					entreprise.creerProjet(nom.getText(), Integer.parseInt(priorite.getText()));
+					int index = comboBoxPersonne.getSelectedIndex();
+				    Ressource ressource = listePersonne.get(index);
+					entreprise.creerProjet((Personne)ressource, nom.getText(), Integer.parseInt(priorite.getText()));
 					dispose();
 				}
 				else {
@@ -167,6 +178,15 @@ public class FenetreNouveauProjet extends JDialog implements FenetreInterface{
 		return true;
 	}
 
+
+	private String[] convertirArrayEnTab(ArrayList<Ressource> listePersonne) {
+		String[] tab = new String[listePersonne.size()];
+		for (int i=0; i<tab.length; i++) {
+			Personne pers = (Personne) listePersonne.get(i);
+			tab[i] = pers.getPrenom()+" " +pers.getNom();
+		}
+		return tab;
+	}	
 
 	@Override
 	public void actionBoutonFin() {

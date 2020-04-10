@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JTextArea;
 
+import Ressource.Personne;
+
 public class Projet implements Comparable<Projet>{
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -15,10 +17,12 @@ public class Projet implements Comparable<Projet>{
 	private float priorite; //Priorite du projet
 	private int id;
 	private Color couleur;
+	private Personne chefDeProjet;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Projet(String nom, float priorite, int id, Color couleur) {
+	public Projet(Personne chefDeProjet, String nom, float priorite, int id, Color couleur) {
+		this.chefDeProjet = chefDeProjet;
 		this.lActivite =  new ArrayList<Activite>();
 		this.nom = nom;
 		this.priorite = priorite;
@@ -51,6 +55,10 @@ public class Projet implements Comparable<Projet>{
 		return couleur;
 	}
 
+	public Personne getChefDeProjet() {
+		return chefDeProjet;
+	}
+	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {//permet de tester si deux projets ont le m�me nom.

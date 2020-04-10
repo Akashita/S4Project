@@ -217,9 +217,9 @@ public class Entreprise extends Observable{
 	//fonctions de cr�ations d'�l�ments de l'entreprise, les ressources ainsi que les projets
 	//les m�thodes sont doubl�s -> direct dans un projet ou dans l'entreprise
 	
-	public void creerProjet(String nom, float priorite) {//cr�e un projet si son nom n'est pas d�j� utilis�
+	public void creerProjet(Personne chefDeProjet, String nom, float priorite) {//cr�e un projet si son nom n'est pas d�j� utilis�
 		idProjet ++;
-		Projet newProjet = new Projet(nom, priorite, idProjet, couleurAleatoire());
+		Projet newProjet = new Projet(chefDeProjet, nom, priorite, idProjet, couleurAleatoire());
 		this.lProjet.add(newProjet);
 		this.lPanel.add(new JPanel());
 		this.selectionnerProjet(newProjet);

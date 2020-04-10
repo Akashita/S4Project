@@ -81,7 +81,8 @@ public class PanelInfoProjet extends JPanel{
 		
 		gc.gridx = 0;
 		gc.gridy = 0;
-		panel.add(creerLabel("Chef de projet: pas encore implementé"), gc);
+		String nom = projet.getChefDeProjet().getPrenom() + " " + projet.getChefDeProjet().getNom();
+		panel.add(creerLabel("Chef de projet: "+ nom), gc);
 		gc.gridx = 1;
 		panel.add(creerLabel("Priorité: "+(int)projet.getPriorite()), gc);
 		gc.gridx = 2;
