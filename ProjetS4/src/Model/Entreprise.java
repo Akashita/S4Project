@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Observable;
 import java.util.Random;
 
@@ -230,9 +231,10 @@ public class Entreprise extends Observable{
 		idProjet ++;
 		Projet newProjet = new Projet(chefDeProjet, nom, priorite, idProjet, couleurAleatoire());
 		chefDeProjet.ajouterProjet(newProjet);
-		this.lProjet.add(newProjet);
-		this.lPanel.add(new JPanel());
-		this.selectionnerProjet(newProjet);
+		lProjet.add(newProjet);
+		Collections.sort(lProjet);
+		lPanel.add(new JPanel());
+		selectionnerProjet(newProjet);
 		update();
 	}
 	
@@ -252,8 +254,8 @@ public class Entreprise extends Observable{
 	
 	public void creerActivite(Projet projet, String titre, int charge, int ordre, LocalDate debut) {
 		this.idAct++;
-		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), projetSelectionner);
-		projet.ajouterActivite(act, ordre);		
+		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), projetSelectionner, ordre);
+		projet.ajouter(act);		
 		selectionnerActivite(act);
 		update();
 	}

@@ -1,6 +1,7 @@
 package Model;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JTextArea;
 
@@ -104,6 +105,7 @@ public class Projet implements Comparable<Projet>{
 	public boolean ajouter(Activite activite) {
 		if(!lActivite.contains(activite)) {
 			lActivite.add(activite);
+			Collections.sort(lActivite);
 			return true;
 		} else {
 			return false;
@@ -125,10 +127,6 @@ public class Projet implements Comparable<Projet>{
 	 */
 	public boolean enlever(Activite activite) {
 		return lActivite.remove(activite);
-	}
-
-	public void ajouterActivite(Activite act, int ordre) {
-		lActivite.add(ordre, act);
 	}
 
 

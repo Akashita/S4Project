@@ -21,13 +21,14 @@ public class Activite implements Comparable<Activite>{
 	private LocalDate debut;
 	private Color couleur;
 	private Projet projet;
+	private int ordre;
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	
 	private boolean afficheEDT = false; //inutile de le stocké dans la bdd
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Activite(int id, String titre, int chargeJH, LocalDate debut, Color couleur, Projet projet) {
+	public Activite(int id, String titre, int chargeJH, LocalDate debut, Color couleur, Projet projet, int ordre) {
 		this.id = id;
 		this.titre = titre; 
 		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
@@ -112,9 +113,18 @@ public class Activite implements Comparable<Activite>{
 
 	@Override
 	public int compareTo(Activite act) {
-		//return ordre.compareTo(act.ordre);
-		return 0;
+		int res;
+		if(ordre == act.ordre) {
+			res = 0;
+		} else if(ordre < act.ordre) {
+			res = -1;
+		} else {
+			res = 1;
+		}
+
+		return res;
 	}
+
 	
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override
