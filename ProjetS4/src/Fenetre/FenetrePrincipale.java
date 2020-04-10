@@ -92,7 +92,7 @@ public class FenetrePrincipale extends JFrame{
 	    itemEnlever.setAccelerator(ctrlEnlever);
 	    itemEnlever.addActionListener(new EnleverRessourceListener(entreprise));
 
-	    JMenuItem itemNouvelleActivite = new JMenuItem("Ajoutre Activite", KeyEvent.VK_Y);
+	    JMenuItem itemNouvelleActivite = new JMenuItem("Ajouter Activite", KeyEvent.VK_Y);
 	    KeyStroke ctrlNouvelleActivite = KeyStroke.getKeyStroke("control Y");
 	    itemNouvelleActivite.setAccelerator(ctrlNouvelleActivite);
 	    itemNouvelleActivite.addActionListener(new nouvelleActiviteListener(entreprise));
