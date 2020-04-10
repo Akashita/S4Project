@@ -354,6 +354,9 @@ public class Entreprise extends Observable{
 				activiteSelectionner = activite;
 			}			
 		}
+		else {
+			activiteSelectionner = activite;
+		}			
 		update();
 	}
 	
