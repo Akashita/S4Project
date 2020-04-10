@@ -120,7 +120,7 @@ public class Activite implements Comparable<Activite>{
 	@Override
 	public String toString() {
 		//String res = "Activite " + ordre;
-		String res = "Activite ";
+		String res = "Activite " + titre + " ";
 		for (int i = 0; i < lRessources.size(); i++) {
 			res += "\n" + lRessources.get(i);
 		}

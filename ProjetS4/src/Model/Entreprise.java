@@ -85,7 +85,7 @@ public class Entreprise extends Observable{
 			 lActivite = lProjet.get(i).getListe();
 			 lActivite = vider(lActivite);
 			 for (int j = 0; j < lActivite.size(); j++) {
-				creerLCreneaux(lActivite.get(i));
+				creerLCreneaux(lActivite.get(j));
 			}
 		}
 	}
@@ -99,6 +99,7 @@ public class Entreprise extends Observable{
 	}
 	
 	private void creerLCreneaux(Activite act) {
+		System.out.println(act.toString());
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
 		
@@ -107,8 +108,7 @@ public class Entreprise extends Observable{
 			
 		while (chargeAloue < charge) {	
 			if(act.creneauDispo(jourCourant, heureCourante)) { //Si le creneau est disponible pour toutes les ressources de l'activite
-				act.ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getProjet().getCouleur(), act.getCouleur()),
-						jourCourant);
+				act.ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getProjet().getCouleur(), act.getCouleur()),jourCourant);
 				chargeAloue++;
 			}
 			
