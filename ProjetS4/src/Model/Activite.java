@@ -178,7 +178,7 @@ public class Activite implements Comparable<Activite>{
 	 * @param id  L'ID de la ressource
 	 * @return true si la ressource a ete supprimee
 	 */
-	public boolean supprimerRessource(int id) {
+	public boolean enleverRessource(int id) {
 		return lRessources.remove(new Ressource(id));
 	}
 	

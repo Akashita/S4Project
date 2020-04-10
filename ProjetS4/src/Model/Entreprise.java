@@ -303,7 +303,8 @@ public class Entreprise extends Observable{
 	
 	public void enleverRessourceActivite(Ressource res) {
 		Activite act = getActiviteSelectionner();
-		//act.enleverRessource(res); TODO
+		act.enleverRessource(res.getId());
+		majEDT();
 		update();
 	}
 	
