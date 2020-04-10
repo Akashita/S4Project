@@ -201,10 +201,4 @@ public class FenetreAjouterRessource extends JDialog implements FenetreInterface
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public JPanel ajoutBouton() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

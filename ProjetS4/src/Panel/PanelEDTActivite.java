@@ -129,7 +129,7 @@ public class PanelEDTActivite extends JPanel{
 		boolean travaille = false;
 		for (int i=0; i<liste.length; i++) {
 			for (int j=0; j<liste[0].length; j++) {
-				if (liste[i][j] != null) {
+				if (liste[i][j] != null && liste[i][j].getActivite().getId() == activite.getId()) {
 					travaille = true;
 					break;
 				}
