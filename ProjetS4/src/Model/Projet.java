@@ -1,7 +1,9 @@
 package Model;
 import java.awt.Color;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 
 import javax.swing.JTextArea;
 
@@ -58,6 +60,15 @@ public class Projet implements Comparable<Projet>{
 
 	public Personne getChefDeProjet() {
 		return chefDeProjet;
+	}
+	
+	public Hashtable<String, Integer> getActiviteOrdre(){
+		Hashtable<String, Integer> ht = new Hashtable<String, Integer>();
+		for (int i = 0; i < lActivite.size(); i++) {
+			Activite actCC = lActivite.get(i);
+			ht.put(actCC.getTitre(), actCC.getOrdre());
+		}
+		return ht;
 	}
 	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
@@ -128,6 +139,7 @@ public class Projet implements Comparable<Projet>{
 	public boolean enlever(Activite activite) {
 		return lActivite.remove(activite);
 	}
+
 
 
 }

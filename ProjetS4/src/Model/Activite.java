@@ -88,6 +88,10 @@ public class Activite implements Comparable<Activite>{
 		return afficheEDT;
 	}
 	
+	public int getOrdre() {
+		return ordre;
+	}
+	
 	//--------------------------------------------------------------------------------->>>>> change la valeur
 	
 	public void afficheEDT() {
