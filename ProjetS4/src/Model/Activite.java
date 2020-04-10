@@ -210,6 +210,12 @@ public class Activite implements Comparable<Activite>{
 		return res;
 	}
 	
+	public void vider() {
+		for (int i = 0; i < lRessources.size(); i++) {
+			lRessources.get(i).vider();
+		} 
+	}
+	
 	
 	/**
 	 * Selectionne des lRessources de l'activite par type

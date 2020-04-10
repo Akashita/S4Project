@@ -111,6 +111,11 @@ public class Ressource implements Comparable<Ressource>{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public void vider() {
+		jours.clear();
+	}
+	
 
 	/**
 	 * Cree une journee entierement disponible

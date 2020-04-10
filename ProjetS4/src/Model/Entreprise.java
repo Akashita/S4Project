@@ -83,10 +83,19 @@ public class Entreprise extends Observable{
 		ArrayList<Activite> lActivite;
 		 for (int i = 0; i < lProjet.size(); i++) {
 			 lActivite = lProjet.get(i).getListe();
+			 lActivite = vider(lActivite);
 			 for (int j = 0; j < lActivite.size(); j++) {
 				creerLCreneaux(lActivite.get(i));
 			}
 		}
+	}
+	
+	private ArrayList<Activite> vider(ArrayList<Activite> act){
+		for (int i = 0; i < act.size(); i++) {
+			act.get(i).vider();
+		}
+		
+		return act;	
 	}
 	
 	private void creerLCreneaux(Activite act) {
@@ -295,7 +304,7 @@ public class Entreprise extends Observable{
 	public void ajouterRessourceActivite(Ressource res) {
 		Activite act = getActiviteSelectionner();
 		act.ajouterRessource(res);
-		creerLCreneaux(act);
+		majEDT();
 		update();
 	}
 	
