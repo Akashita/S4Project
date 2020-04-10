@@ -3,6 +3,7 @@ package Fenetre;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -11,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Model.Entreprise;
+import Model.Projet;
 import Panel.PanelEDTRessource;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -55,8 +57,15 @@ public class FenetreInfoRessource extends JDialog{
 		panel.setBackground(Color.WHITE);	
 		if(ressource.getType() == Ressource.PERSONNE) {
 			panel.add(creerLabel("Nom: " + ((Personne) ressource).getPrenom() + " " + ressource.getNom()));
-			panel.add(creerLabel("Compétence: "));			
-	
+			panel.add(creerLabel("Compétence: pas encore implementer"));
+			ArrayList<Projet> listeProjet =  ((Personne) ressource).getListeDeProjet();
+			if (listeProjet.size()>0){
+				String liste = "";
+				for (int i=0; i<listeProjet.size(); i++) {
+					liste += listeProjet.get(i).getNom()+" / ";
+				}
+				panel.add(creerLabel("Liste de projet dirigé: "+liste));
+			}
 		}
 		if(ressource.getType() == Ressource.SALLE) {
 			panel.add(creerLabel("Nom: " + ressource.getNom()));

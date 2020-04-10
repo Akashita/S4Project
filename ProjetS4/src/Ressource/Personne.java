@@ -1,5 +1,8 @@
 package Ressource;
 
+import java.util.ArrayList;
+
+import Model.Projet;
 
 public class Personne extends Ressource{
 	
@@ -11,6 +14,7 @@ public class Personne extends Ressource{
 	public static final String CHEFDEPROJET = "Chef de projet";
 	public static final String ADMINISTRATEUR = "Administrateur";
 	private String role;
+	private ArrayList<Projet> listeDeProjet = new ArrayList<Projet>();
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEURS
@@ -33,12 +37,21 @@ public class Personne extends Ressource{
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 	
+	public void ajouterProjet(Projet projet) {
+		listeDeProjet.add(projet);
+	}
+	
 	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public String getRole() {
 		return this.role;
 	}
+	
 	public String getPrenom() {
 		return this.prenom;
+	}
+	
+	public ArrayList<Projet> getListeDeProjet() {
+		return this.listeDeProjet;
 	}
 	
 	//--------------------------------------------------------------------------------->>>>> toString

@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import Model.Entreprise;
+import Panel.PanelPrincipal;
 import Panel.PanelProjet;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -59,7 +60,7 @@ public class FenetreNouveauProjet extends JDialog implements FenetreInterface{
 	public void creationInterface() {
 
 		panelPrincipal.removeAll();
-		panelPrincipal.setBackground(Color.WHITE);
+		panelPrincipal.setBackground(PanelPrincipal.BLANC);
 		
 		panelPrincipal.add(infoAEcrire());
 		panelPrincipal.add(ajoutBouton());

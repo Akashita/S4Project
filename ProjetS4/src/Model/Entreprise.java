@@ -220,6 +220,7 @@ public class Entreprise extends Observable{
 	public void creerProjet(Personne chefDeProjet, String nom, float priorite) {//cr�e un projet si son nom n'est pas d�j� utilis�
 		idProjet ++;
 		Projet newProjet = new Projet(chefDeProjet, nom, priorite, idProjet, couleurAleatoire());
+		chefDeProjet.ajouterProjet(newProjet);
 		this.lProjet.add(newProjet);
 		this.lPanel.add(new JPanel());
 		this.selectionnerProjet(newProjet);

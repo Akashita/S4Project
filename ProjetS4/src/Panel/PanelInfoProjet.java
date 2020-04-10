@@ -37,25 +37,11 @@ public class PanelInfoProjet extends JPanel{
 		}
 	}
 	
-	/*public void afficheInterface() {
-		this.removeAll();
-		this.setLayout(new BorderLayout());
-		this.add(marge(), BorderLayout.WEST);
-		this.add(marge(), BorderLayout.EAST);
-		this.add(marge(), BorderLayout.SOUTH);
-		
-		JPanel panel = new JPanel();
-		panel.setLayout(new  BorderLayout());
-		panel.add(infoProjet(), BorderLayout.NORTH);
-		panel.add(panelActivite(), BorderLayout.CENTER);
-		this.add(panel, BorderLayout.CENTER);
-
-	}*/
-	
 	public JPanel afficheInterface() {
 		JPanel panel = new JPanel();
 		panel.setBackground(PanelPrincipal.BLANC);
 		panel.setLayout(new GridBagLayout());
+		
 		
 		/* Le gridBagConstraints va définir la position et la taille des éléments */
 		GridBagConstraints gc = new GridBagConstraints();
