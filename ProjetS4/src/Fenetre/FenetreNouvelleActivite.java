@@ -1,8 +1,9 @@
 package Fenetre;
 import java.awt.BorderLayout;
 
+
 import Model.Entreprise;
-import Panel_Fenetre.PanelNouveauProjet;
+import Panel_Fenetre.PanelNouvelleActivite;
 
 /**
  * Cette fenetre affiche à l'utilisateur les données à rentrer pour
@@ -11,7 +12,7 @@ import Panel_Fenetre.PanelNouveauProjet;
  * @author damien planchamp
  *
  */
-public class FenetreNouveauProjet extends FenetreModal{
+public class FenetreNouvelleActivite extends FenetreModal{
 
 	
 	/**
@@ -19,9 +20,9 @@ public class FenetreNouveauProjet extends FenetreModal{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public FenetreNouveauProjet(Entreprise entreprise) {
-		super(entreprise, "Creation projet", 400, 300);
-		panelInterface = new PanelNouveauProjet(entreprise, this);
+	public FenetreNouvelleActivite(Entreprise entreprise) {
+		super(entreprise, "Creation activite", 400, 300);
+		panelInterface = new PanelNouvelleActivite(entreprise, this);
 		this.setLayout(new BorderLayout());
 		this.add(panelInterface, BorderLayout.CENTER);
 		this.setResizable(false);

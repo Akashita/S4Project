@@ -4,85 +4,37 @@ import java.util.*;
 import javax.swing.*;
 
 import Model.Entreprise;
-import Model.Projet;
-import Ressource.Calculateur;
-import Ressource.Personne;
-import Ressource.Ressource;
-import Ressource.Salle;
 
 public class PanelPrincipal extends JPanel implements Observer{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
+
+	public static final Color BLEU1 = new Color(32,86,174),
+			BLEU2 = new Color(212,220,239),
+			BLEU3 = new Color(245,246,251),
+			GRIS1 = new Color(231,234,235),
+			GRIS2 = Color.GRAY,
+		    BLANC = new Color(255,255,255),
+			NOIR = new Color(0,0,0);
+	
 	private Entreprise entreprise;
 	
 	public PanelPrincipal (Entreprise entreprise) {
 		this.entreprise = entreprise;
-        this.setLayout(new BorderLayout());
-		this.setSize(this.getWidth(), this.getHeight());
 		entreprise.addObserver(this);
-	}
+        this.setLayout(new BorderLayout());
+        this.setBackground(BLANC);
+	}	
 		
-	private void afficheRessourceProjet() {
-		Projet projet = entreprise.getProjetSelectionner();
-		JPanel panelProjet = entreprise.getPanelDuProjet();
-		if (projet != null) {
-			ArrayList<Ressource> listeRessource = projet.getListe();
-	
-			panelProjet.removeAll();
-			panelProjet.setSize(this.getWidth(), this.getHeight());
-			//panelProjet.setLayout(new BorderLayout());
-			panelProjet.setLayout(new GridLayout(0, 3));
-
-			panelProjet.add(creerPanelRessource(listeRessource, Ressource.PERSONNE));
-			panelProjet.add(creerPanelRessource(listeRessource, Ressource.SALLE));
-			panelProjet.add(creerPanelRessource(listeRessource, Ressource.CALCULATEUR));
-			
-			this.add(panelProjet, BorderLayout.CENTER);
-			this.revalidate();
-		}
-	}
-	
-	
-	private JPanel creerPanelRessource(ArrayList<Ressource> listeRessource, String type) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		for (int i=0; i<listeRessource.size(); i++) {
-			if (listeRessource.get(i).getType() == type) {
-				panel.add(Box.createRigidArea(new Dimension(0,20)));
-				panel.add(creerJLabelRessource(listeRessource.get(i)), "Center");
-			}
-		}
-		return panel;
-	}
-	
-	private JLabel creerJLabelRessource(Ressource ressource) {
-		JLabel label = null;
-		String texte = null;
-		
-		if (ressource.getType() == Ressource.PERSONNE) {
-			Personne personne = (Personne) ressource;
-			texte = personne.getRole()+ " " + personne.getPrenom()+ " " +personne.getNom();
-		}
-		if (ressource.getType() == Ressource.SALLE) {
-			texte = "Salle: " + ressource.getNom();
-		}
-		if (ressource.getType() == Ressource.CALCULATEUR) {
-			texte = "Calculateur: " + ressource.getNom();
-		}
-		
-		label = new JLabel(texte);
-		label.setFont(new Font("Arial", Font.BOLD, 20));
-		return label;
-	}
-	
 	@Override
 	public void update(Observable o, Object arg) {
 		this.removeAll();
-		this.afficheRessourceProjet();
-		this.repaint();	
+        this.add(new PanelRessource(entreprise), BorderLayout.WEST);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(new PanelProjet(entreprise), BorderLayout.NORTH);
+        panel.add(new PanelInfoProjet(entreprise), BorderLayout.CENTER);
+        this.add(panel, BorderLayout.CENTER);
+		this.revalidate();	
 	}
-
-
 }

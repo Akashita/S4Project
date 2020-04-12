@@ -1,94 +1,83 @@
 package Model;
 import java.awt.Color;
-import java.awt.Graphics;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Hashtable;
 
-import Ressource.Ressource;
+import javax.swing.JTextArea;
 
+import Ressource.Personne;
 
+public class Projet implements Comparable<Projet>{
 
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	private ArrayList<Activite> lActivite;//liste des activites (ordonnees par ordre)
 
-public class Projet {
-
-	private ArrayList<Ressource> listeRessource;//liste des ressources
-	private String nom;//nom des projets, clefs primaires (sert � les diff�rencier)
-	private boolean selectionner=false;
-	
-	public Projet(String nom) {
-		this.listeRessource =  new ArrayList<Ressource>();
+	private String nom;
+	private float priorite; //Priorite du projet
+	private int id;
+	private LocalDate deadline;
+	private Color couleur;
+	private Personne chefDeProjet;
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEUR
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	public Projet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
+		this.chefDeProjet = chefDeProjet;
+		this.lActivite =  new ArrayList<Activite>();
 		this.nom = nom;
+		this.priorite = priorite;
+		this.deadline = deadline;
+		this.id = id;
+		this.couleur = couleur;
 	}
-	
+
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public String getNom() {
 		return this.nom;
 	}
-	
-	public String toString() {
-		String liste = "Nom du projet : " + this.nom + ". \nIl contient les ressources suivantes : ";
-		
-		for(int i = 0; i < this.listeRessource.size(); i++){
-			liste += this.listeRessource.get(i).toString();
-			liste += "\n";
-		}
-		return liste;
+
+	public ArrayList<Activite> getListe(){
+		return lActivite;
 	}
 	
-	public boolean getSelectionner() {
-		return selectionner;
+	public float getPriorite() {
+		return priorite;
+	}
+	
+	public LocalDate getDeadline() {
+		return deadline;
 	}
 
-	public ArrayList<Ressource> getListe(){
-		return listeRessource;
+	public int getId() {
+		return id;
 	}
 	
-	public void selectionner() {
-		this.selectionner = true;
+	public Color getCouleur() {
+		return couleur;
+	}
+
+	public Personne getChefDeProjet() {
+		return chefDeProjet;
 	}
 	
-	public void deselectionner() {
-		this.selectionner = false;
-	}
-		
-	public void ajouter(Ressource ressource) { //test si la ressource est d�j� dans le projet sinon la rajoute
-		int[] test = this.chercherRessource(ressource);
-		
-		if (test[0]==0) {
-			this.listeRessource.add(ressource);
+	public Hashtable<String, Integer> getActiviteOrdre(){
+		Hashtable<String, Integer> ht = new Hashtable<String, Integer>();
+		for (int i = 0; i < lActivite.size(); i++) {
+			Activite actCC = lActivite.get(i);
+			ht.put(actCC.getTitre(), actCC.getOrdre());
 		}
+		return ht;
 	}
 	
-	public void enlever(Ressource ressource) { //test si la ressource est d�j� dans le projet si oui l'enl�ve
-		int[] test = this.chercherRessource(ressource);
-		
-		if (test[0]==1) {
-			this.listeRessource.remove(test[1]);
-		}
-	}
-	
-	public int[] chercherRessource(Ressource ressource) { //cherche la ressource dans le projet et donne la place si trouv�
-		Boolean pasTrouve = true;
-		int[] res = {0,0};//a droite la place du projet cherch� et a gauche si il est trouv� 0 non/1 oui
-		
-		if (this.listeRessource.size()==0) {
-			return res;
-		}
-		else {
-			
-			do{
-				if (this.listeRessource.get(res[1]).equals(ressource)) {
-					res[0] = 1;
-					pasTrouve = false;
-				}
-				else {
-					res[1] = res[1] + 1;
-				}
-				
-			}
-			while((pasTrouve) && (res[1] < this.listeRessource.size()));
-			return res;
-		}
-	}
-	
+	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {//permet de tester si deux projets ont le m�me nom.
 		if(obj instanceof Projet && obj != null) {
@@ -97,5 +86,66 @@ public class Projet {
 		} else {
 			return false;
 		}
-	}	
+	}
+
+	@Override
+	public int compareTo(Projet proj) {
+		int res;
+		if(priorite == proj.priorite) {
+			res = 0;
+		} else if(priorite < proj.priorite) {
+			res = -1;
+		} else {
+			res = 1;
+		}
+
+		return res;
+	}
+
+	//--------------------------------------------------------------------------------->>>>> toString
+	public String toString() {
+		String liste = "Projet : " + this.nom + ". \n Il contient les activites suivantes : ";
+		for(int i = 0; i < this.lActivite.size(); i++){
+			liste += this.lActivite.get(i).toString();
+			liste += "\n";
+		}
+		return liste;
+	}
+
+	//--------------------------------------------------------------------------------->>>>> Gestion des activites
+
+	/**
+	 * Ajoute une activite au projet
+	 * @param activite   L'activite a ajouter
+	 * @return true si l'activite a ete ajoutee
+	 */
+	public boolean ajouter(Activite activite) {
+		if(!lActivite.contains(activite)) {
+			lActivite.add(activite);
+			Collections.sort(lActivite);
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	
+	public void vider() {
+		for (int i = 0; i < lActivite.size(); i++) {
+			lActivite.get(i).vider();
+		}
+	}
+
+
+	/**
+	 * Enleve une activite du projet
+	 * @param activite   L'activite a enlever
+	 * @return true si l'activite a ete enlevee
+	 */
+	public boolean enlever(Activite activite) {
+		return lActivite.remove(activite);
+	}
+
+
+
 }

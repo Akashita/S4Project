@@ -3,14 +3,20 @@ package Ressource;
 
 public class RessourceAutre extends Ressource{
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEUR
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public RessourceAutre(String nom,String type, int idRessource) {
-		
-		//Attribut classe m�re commune aux ressources.
 		super(idRessource, nom, type);
 	}
-
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	//--------------------------------------------------------------------------------->>>>> toString
 	public String toString() {
-		return "cette ressource personnalisable " + this.nom + " est un(e) " + this.type + " est matricul� " + this.id;
+		return "Ressource autre : " + this.nom + " / " + this.type + " / id : " + this.id;
 	}
 	
 }

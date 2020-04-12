@@ -3,21 +3,24 @@ package EcouteurEvenement;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import Model.Activite;
 import Model.Entreprise;
-import Model.Projet;
 
-public class SourisProjetListener implements MouseListener {
+public class SourisActiviteListener implements MouseListener {
 
 	private Entreprise entreprise;
-	private Projet projet;
+	private Activite activite;
 	
-	public SourisProjetListener(Entreprise entreprise, Projet projet) {
+	public SourisActiviteListener(Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;
-		this.projet = projet;
+		this.activite = activite;
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		entreprise.selectionnerProjet(projet);
+		/*if (e.getClickCount()==2) {
+			entreprise.afficheEDTActivite(activite);
+		}*/
+		entreprise.selectionnerActivite(activite);
 	}
 
 	@Override

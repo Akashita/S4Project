@@ -1,59 +1,113 @@
 package Panel;
-import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import EcouteurEvenement.SourisProjetListener;
 import Model.Entreprise;
 import Model.Projet;
 
 public class PanelProjet extends JPanel{
-	private ArrayList<Projet> listeProjet = new ArrayList<Projet>();
-	private ArrayList<JLabel> listeLabel = new ArrayList<JLabel>();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Entreprise entreprise;
+	private JTextField rechercher;
+	private Font font = new Font("Arial", Font.PLAIN, 30);
 	
-	Entreprise entreprise;
-	
-	public void nouveauProjet(Entreprise entreprise, String nom) {
+	public PanelProjet(Entreprise entreprise) {
 		this.entreprise = entreprise;
-		this.entreprise.creerProjet(nom);
-		ajoutProjet(entreprise.getDernierProjet());
-	}
-
-	public void ajoutProjet(Projet projet) {
-		listeProjet.add(projet);
-		creerLabel(projet.getNom());
-		this.revalidate();
-	}
-	
-	private void creerLabel(String nom) {
-		JLabel label = new JLabel(nom);
-		label.setFont(new Font("Arial", Font.BOLD, 30));
-		label.addMouseListener(new SourisProjetListener(this, label));
-		this.add(label);
-		listeLabel.add(label);
-		selectionnerProjet (label);
+		this.setBackground(PanelPrincipal.BLEU2);
+		this.setLayout(new BorderLayout());
+		this.add(afficherProjet(), BorderLayout.WEST);
+		this.add(afficherRechercher(), BorderLayout.EAST);
+		this.setPreferredSize(new Dimension(this.getWidth(),100));
 
 	}
+		
 	
-	public void selectionnerProjet (JLabel label) {
-		deselectionnerLabel();
-		label.setForeground(new Color(255,255,255));
-		label.setOpaque(true);
-		label.setBackground(Color.BLUE);
-		String nom = label.getText();
-		entreprise.selectionnerProjet(nom);
-	}
-	
-	private void deselectionnerLabel() {
-		entreprise.deselectionnerProjet();
-		for(int i=0; i<listeLabel.size();i++) {
-			JLabel label = listeLabel.get(i);
-			label.setForeground(new Color(0,0,0));
-			label.setOpaque(true);
-			label.setBackground(Color.WHITE);
+	public JPanel afficherProjet() {
+		JPanel panel = new JPanel();
+		panel.setBackground(PanelPrincipal.BLEU2);
+		ArrayList<Projet> listeProjet = entreprise.getListeProjet();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		if (listeProjet.size()>0) {
+			for (int i=0; i<listeProjet.size(); i++) {
+				Projet projet = listeProjet.get(i);
+				boolean selectionner = false;
+				if(projet.getId() == entreprise.getProjetSelectionner().getId()) {
+					selectionner = true;
+				}
+				panel.add(creerLabel(projet, selectionner));
+			}			
 		}
+		return panel;
 	}
+	
+	private JPanel creerLabel(Projet projet, boolean selectionner) {
+		JPanel panel = new JPanel();
+		panel.setPreferredSize(new Dimension(150,this.getHeight()));
 
+		panel.setLayout(new BorderLayout());
+		JLabel label = new JLabel(projet.getNom());
+		label.setFont(font);
+	    label.setHorizontalAlignment(JLabel.CENTER);
+
+		label.setOpaque(true);
+		if(selectionner) {
+			label.setForeground(PanelPrincipal.BLEU1);
+			label.setBackground(PanelPrincipal.BLANC);
+			panel.setBackground(PanelPrincipal.BLANC);
+		}
+		else {
+			label.setForeground(PanelPrincipal.NOIR);
+			label.setBackground(PanelPrincipal.BLEU2);
+			panel.setBackground(PanelPrincipal.BLEU2);
+		}
+		label.addMouseListener(new SourisProjetListener(entreprise, projet));
+		panel.add(label, BorderLayout.CENTER);
+		return panel;
+	}
+	
+	
+	private JPanel afficherRechercher() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(3,3));
+		panel.setBackground(PanelPrincipal.BLEU2);
+    	rechercher = new JTextField("rechercher                             ");
+    	rechercher.getFont().deriveFont(Font.ITALIC);
+    	rechercher.setForeground(PanelPrincipal.GRIS2);
+    	rechercher.addMouseListener(new MouseListener() {           
+			@Override
+			public void mouseClicked(MouseEvent e) {
+    	        JTextField texteField = ((JTextField)e.getSource());
+    	        texteField.setText("");
+    	        texteField.getFont().deriveFont(Font.PLAIN);
+    	        texteField.setForeground(PanelPrincipal.NOIR);
+    	        texteField.removeMouseListener(this);
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+    	});
+    	panel.add(new JLabel(" "));
+    	panel.add(rechercher);
+    	panel.add(new JLabel(" "));
+		return panel;
+	}	
 }

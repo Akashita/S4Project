@@ -1,10 +1,22 @@
 package Model;
-import  java.awt.Graphics;
+import java.awt.Color;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Observable;
+import java.util.Random;
 
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
+import Fenetre.FenetreInfoRessource;
+import Fenetre.FenetrePrincipale;
+import Panel.PanelInfoActivite;
+import Panel.PanelInfoProjet;
 import Ressource.Calculateur;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -15,362 +27,420 @@ import Ressource.Salle;
 //model il sert a cr�er des projets puis leur donne des ressources.
 
 public class Entreprise extends Observable{
-		private ArrayList<Projet> listeProjet;//liste qui contient tous les projets de l'entreprise
-		private ArrayList<String> listeType;//liste qui contient tous les types de ressourceAutre qui ont d�j� �t� cr�e pour les r�utiliser
-		private ArrayList<Ressource> listeRessource;//liste qui contient 
-		private int idCour;//id des ressources
-		private ArrayList<JPanel> listePanel = new ArrayList<JPanel>();
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	private ArrayList<Projet> lProjet;//liste qui contient tous les projets de l'entreprise
+	private ArrayList<String> lType;//liste qui contient tous les types de ressourceAutre qui ont d�j� �t� cr�e pour les r�utiliser
+	private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de l’entrepris
+	private int idCour;//id des ressources
+	private int idAct; //id des activités
+	private int idProjet;
+	private ArrayList<JPanel> lPanel = new ArrayList<JPanel>();
 
-		//cr�ation de l'entreprise unique il faudra lui ajouter un nom si on d�sire �tendre nos activit�s
-		public Entreprise() {
-			this.listeProjet =  new ArrayList<Projet>();
-			this.listeType =  new ArrayList<String>();
-			this.listeRessource =  new ArrayList<Ressource>();
-			this.idCour = 0;
+	public static final int HEURE_DEBUT_MATIN = 8;
+	public static final int HEURE_FIN_MATIN = 12;
+	public static final int HEURE_DEBUT_APREM = 13;
+	public static final int HEURE_FIN_APREM = 17;
+	
+	public static final int NB_HEURE_JOUR = 8;
+	
+	private FenetrePrincipale fenetrePrincipale;
+	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
+	
+	private Projet projetSelectionner;
+	private Activite activiteSelectionner;
+	private ArrayList<String> ressourceAfficher = new ArrayList<String>();
+
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEUR
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//cr�ation de l'entreprise unique il faudra lui ajouter un nom si on d�sire �tendre nos activit�s
+	public Entreprise() {
+		this.lProjet =  new ArrayList<Projet>();
+		this.lType =  new ArrayList<String>();
+		this.lRessource =  new ArrayList<Ressource>();
+		this.idCour = 0;
+		fenetrePrincipale = new FenetrePrincipale(this);
+		this.update();
+	}
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//classe de base qui permettent de voir la cha�ne et r�cup�rer les infos de la classe
+	@Override
+	public String toString() {
+		String chaineActProjet = "Voici la liste des projets ainsi que leurs activites : ";
+		for (int i = 0; i < this.lProjet.size(); i++) {
+			chaineActProjet += this.lProjet.get(i).toString(); 
 			
 		}
+		return chaineActProjet;
+	}
+
+	public void majEDT() {
+		ArrayList<Activite> lActivite;
+		viderProjets();
+		 for (int i = 0; i < lProjet.size(); i++) {
+			 lActivite = lProjet.get(i).getListe();
+			 for (int j = 0; j < lActivite.size(); j++) {
+				creerLCreneaux(lActivite.get(j));
+			}
+		}
+	}
+	
+	private void viderProjets() {
+		ArrayList<Activite> lAct;
+		for (int i = 0; i < lProjet.size(); i++) {
+			lProjet.get(i).vider();
+		}
+	}
+
+	
+	private void creerLCreneaux(Activite act) {
+		int charge = act.getChargeHeure();
+		int chargeAloue = 0;
 		
-		//classe de base qui permettent de voir la cha�ne et r�cup�rer les infos de la classe
-		@Override
-		public String toString() {
-			String chaineRessourceProjet = "voici la liste des projets ainsi que leurs ressources : ";
-			for (int i = 0; i < this.listeProjet.size(); i++) {
-				chaineRessourceProjet += this.listeProjet.get(i).toString(); 
+		LocalDate jourCourant = act.getDebut();
+		int heureCourante = HEURE_DEBUT_MATIN;
+			
+		while (chargeAloue < charge) {	
+			if(act.creneauDispo(jourCourant, heureCourante)) { //Si le creneau est disponible pour toutes les ressources de l'activite
+				act.ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getProjet().getCouleur(), act.getCouleur()),jourCourant);
+				chargeAloue++;
+			}
+			
+			heureCourante = heureSuivante(heureCourante);
+			if(heureCourante == HEURE_DEBUT_MATIN) {
+				jourCourant = jourSuivant(jourCourant);
+			}
+		}
+	}
+	
+	private LocalDate jourSuivant(LocalDate jourCourant) {
+		if(jourCourant.getDayOfWeek() == DayOfWeek.FRIDAY) {
+			return jourCourant.plus(3, ChronoUnit.DAYS);
+		} else {
+			return jourCourant.plus(1, ChronoUnit.DAYS);
+		}
+	}
+	
+	private int heureSuivante(int heureCourante) {
+		int heureSuivante = heureCourante + 1;
+		if(heureSuivante == HEURE_FIN_MATIN) {
+			heureSuivante = HEURE_DEBUT_APREM;
+		} else if (heureSuivante == HEURE_FIN_APREM){
+			heureSuivante = HEURE_DEBUT_MATIN;
+		} 
+		return heureSuivante;
+	}
+	
+	
+	public void incrementId (){ //fonction a utiliser sur chaque nouvelle ressource pour leur attribuer un iD
+		this.idCour = this.idCour +1 ;
+	}
+	
+	public int getId() {
+		return this.idCour;
+	}
+	
+
+	public ArrayList<Ressource> getListeRessourceType(String type){
+		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
+		for (int i=0; i<lRessource.size(); i++) {
+			Ressource ressource = lRessource.get(i);
+			if(ressource.getType() == type) {
+				nouvelleListe.add(ressource);
+			}
+		}
+		return nouvelleListe;
+	}
+			
+	public boolean ajouterRessource(Ressource ressource) {
+		if(!lRessource.contains(ressource)) {
+			lRessource.add(ressource);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean supprimerRessource(int idRessource) {
+		return lRessource.remove(new Ressource(idRessource));
+	}
+
+	public int[] chercheProjet(String nomProjet) {
+		
+		Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
+		int[] res = {0,0};//a droite la place du projet cherch� et a gauche si il est trouv� 0 non/1 oui
+		
+		if (this.lProjet.size()== 0) {//si l'arrayList est vide il n'y a pas d�j� ce projet.
+			
+			return res;
+		}
+		else {
+			
+			do{
+				if (this.lProjet.get(res[1]).getNom() == nomProjet) {
+					res[0] = 1;
+					pasTrouve = false;
+				}
+				else {
+					res[1] = res[1] + 1; //on incr�mente res pour acc�der � chercher plus loin.
+				}
 				
 			}
-			chaineRessourceProjet += ". \n Liste des Ressource de l'entreprise et leurs disponibilit�s : ";
+			while((pasTrouve) && (res[1] < this.lProjet.size()));
+			return res ;
+		}
+		
+	}
+	
+	//m�thode pour rajouter un type de RessourceAutre
+	public void nouvTypeRessource(String nouvType) {
+		Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
+		int i = 0;
+		if (this.lType.size()== 0) {//si l'arrayList est vide il n'y a pas d�j� ce projet.
+			this.lType.add(nouvType);
 
-			for (int i = 0; i < this.listeRessource.size(); i++) {
-				Ressource resCour;
-				chaineRessourceProjet += " \n";
-				resCour =  this.listeRessource.get(i);
-				chaineRessourceProjet += resCour.getNom() + "    ---disponible : ";
-				chaineRessourceProjet += resCour.getDispo() + "    ---matricule : ";
-				chaineRessourceProjet += resCour.getId() + ".";
-			}
-			
-			chaineRessourceProjet += ".  \nIl y a aussi ces types disponibles : ";
-			
-			for (int i = 0; i < this.listeType.size(); i++) {
-				chaineRessourceProjet += this.listeType.get(i).toString(); 
-				chaineRessourceProjet += ", ";
-			}
-			
-			
-			return chaineRessourceProjet;
 		}
-		
-		public void incrementId (){ //fonction a utiliser sur chaque nouvelle ressource pour leur attribuer un iD
-			this.idCour = this.idCour +1 ;
-		}
-		
-		public int getId() {
-			return this.idCour;
-		}
-		
-		public Projet getDernierProjet() { //retourne le dernier projet creer, pour PanelProjet
-			return listeProjet.get(listeProjet.size()-1);
-		}
-		
-		public Projet getProjetSelectionner() {
-			Projet projet = null;
-			for (int i=0; i<listeProjet.size();i++) {
-				if (listeProjet.get(i).getSelectionner()) {
-					projet = listeProjet.get(i);
+		else {
+			
+			do{
+				if (this.lType.get(i) == nouvType) {//teste si le nom est d�j� pr�sent dans les types de ressources
+					pasTrouve = false;//sort de la boucle sans rien faire
 				}
-			}
-			return projet;
-		}
-		
-		public void selectionnerProjet(String nom) {
-			for (int i=0; i<listeProjet.size(); i++) {
-				Projet projet = listeProjet.get(i);
-				if (projet.getNom() == nom) {
-					projet.selectionner();
+				else {
+					i++; //on incr�mente i pour acc�der � chercher plus loin.
 				}
-			}
-			update();
-		}
-		
-		public void deselectionnerProjet() { //utile pour le graphique
-			for (int i=0; i<listeProjet.size(); i++) {
-				listeProjet.get(i).deselectionner();
-			}
-		}
-		
-		public JPanel getPanelDuProjet() {
-			JPanel panel = null;
-			for (int i=0; i<listeProjet.size();i++) {
-				if (listeProjet.get(i).getSelectionner()) {
-					panel = listePanel.get(i);
-				}
-			}
-			return panel;
-		}
-		
-		public ArrayList<Ressource> getListeRessourceType(String type){
-			ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
-			for (int i=0; i<listeRessource.size(); i++) {
-				Ressource ressource = listeRessource.get(i);
-				if(ressource.getType() == type) {
-					nouvelleListe.add(ressource);
-				}
-			}
-			return nouvelleListe;
-		}
-				
-		public void ajouterRessource(Ressource resCour) {
-			this.listeRessource.add(resCour);
-		}
-		
-		public void supprimerRessource(int idRessource) {
-			
-			int[] place = this.chercherRessource(idRessource);
-			if (place[0] == 1) {
-				int rangRessource = place[1];
-				Ressource resCour = this.listeRessource.get(rangRessource);
-
-				if (resCour.getDispo() == true) {//on enleve la ressource si elle est disponible 
-					this.listeRessource.remove(resCour);
-
-						}
 				
 			}
-			
+			while((pasTrouve) && (i < this.lType.size()));
+			this.lType.add(nouvType);
 		}
-		
-		public int[] chercherRessource(int idCour) {
-			Boolean pasTrouve = true;
-			int[] res = {0,0};//a droite la place du projet cherch� et a gauche si il est trouv� 0 non/1 oui
-			if (this.listeRessource.size()==0) {
-				return res;
-			}
-			else {
-				do{
-					if (this.listeRessource.get(res[1]).getId() == idCour) {
-						res[0] = 1;
-						pasTrouve = false;
-					}
-					else {
-						res[1] = res[1] + 1;
-					}
-				}
-				while((pasTrouve) && (res[1] < this.listeRessource.size()));
-				return res;
-			}
-		}	
-		
-		public int[] chercheProjet(String nomProjet) {
-			
-			Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
-			int[] res = {0,0};//a droite la place du projet cherch� et a gauche si il est trouv� 0 non/1 oui
-			
-			if (this.listeProjet.size()== 0) {//si l'arrayList est vide il n'y a pas d�j� ce projet.
-				
-				return res;
-			}
-			else {
-				
-				do{
-					if (this.listeProjet.get(res[1]).getNom() == nomProjet) {
-						res[0] = 1;
-						pasTrouve = false;
-					}
-					else {
-						res[1] = res[1] + 1; //on incr�mente res pour acc�der � chercher plus loin.
-					}
-					
-				}
-				while((pasTrouve) && (res[1] < this.listeProjet.size()));
-				return res ;
-			}
-			
-		}
-		
-		//m�thode pour rajouter un type de RessourceAutre
-				public void nouvTypeRessource(String nouvType) {
-					Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
-					int i = 0;
-					if (this.listeType.size()== 0) {//si l'arrayList est vide il n'y a pas d�j� ce projet.
-						this.listeType.add(nouvType);
 
-					}
-					else {
-						
-						do{
-							if (this.listeType.get(i) == nouvType) {//teste si le nom est d�j� pr�sent dans les types de ressources
-								pasTrouve = false;//sort de la boucle sans rien faire
-							}
-							else {
-								i++; //on incr�mente i pour acc�der � chercher plus loin.
-							}
+	}
 							
-						}
-						while((pasTrouve) && (i < this.listeType.size()));
-						this.listeType.add(nouvType);
-					}
+	//fonctions de cr�ations d'�l�ments de l'entreprise, les ressources ainsi que les projets
+	//les m�thodes sont doubl�s -> direct dans un projet ou dans l'entreprise
+	
+	public void creerProjet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline) {//cr�e un projet si son nom n'est pas d�j� utilis�
+		idProjet ++;
+		Projet newProjet = new Projet(chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());
+		chefDeProjet.ajouterProjet(newProjet);
+		lProjet.add(newProjet);
+		Collections.sort(lProjet);
+		lPanel.add(new JPanel());
+		selectionnerProjet(newProjet);
+		update();
+	}
+	
+	public void ajouterProjet(Projet proj) { //Les projets sont ajout�s � la liste en les triant par ordre de priorite
+		Boolean place = false;
+		int i = 0;
+		while (i < lProjet.size() && !place) {
+			if (proj.compareTo(lProjet.get(i)) == 1) { //Si proj > lProjet.egt(i)
+				lProjet.add(i, proj);
+				place = true;
+			}
+		}
+		if (place = false) {
+			lProjet.add(proj);
+		}
+	}
+	
+	public void creerActivite(Projet projet, String titre, int charge, LocalDate debut) {
+		this.idAct++;
+		int ordre = projet.getListe().size();
+		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), projetSelectionner, ordre);
+		projet.ajouter(act);		
+		selectionnerActivite(act);
+		update();
+	}
+		
+	public void nouvPersonne (String nom, String prenom) {
+		Personne nouvPersonne = new Personne(nom,prenom, this.idCour);
+		this.incrementId();
+		this.ajouterRessource(nouvPersonne);
+		update();
 
+	}
+	
+	public void nouvSalle (String nom, int capacite) {
+		Salle nouvSalle = new Salle(this.idCour,nom, capacite);
+		this.incrementId();
+		this.ajouterRessource(nouvSalle);
+		update();
+
+		}
+	
+	
+	public void nouvRessourceAutre (String nom, String type) {
+		RessourceAutre nouvRessourceAutre = new RessourceAutre(nom, type, this.idCour);
+		this.incrementId();
+		this.ajouterRessource(nouvRessourceAutre);
+		this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
+
+		update();
+
+	}
+	
+	public void nouvCalculateur (String nom) {
+		Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
+		this.incrementId();
+		this.ajouterRessource(nouvCalculateur);
+		update();
+	}
+	
+	public void ajouterRessourceActivite(Ressource res) {
+		Activite act = getActiviteSelectionner();
+		act.ajouterRessource(res);
+		majEDT();
+		update();
+	}
+	
+	public void enleverRessourceActivite(Ressource res) {
+		Activite act = getActiviteSelectionner();
+		act.enleverRessource(res.getId());
+		majEDT();
+		update();
+	}
+	
+	
+	
+	//================ Partie Graphique ==========//
+	
+	private Color couleurAleatoire() {
+		Random rand = new Random();
+		float r = rand.nextFloat();
+		float g = rand.nextFloat();
+		float b = rand.nextFloat();
+		Color couleur = new Color(r, g, b);
+		return couleur;
+	}
+	
+	public Projet getDernierProjet() { //retourne le dernier projet creer, pour PanelProjet
+		return lProjet.get(lProjet.size()-1);
+	}
+	
+	public ArrayList<Projet> getListeProjet(){
+		return lProjet;
+	}
+
+	public void selectionnerProjet(Projet projet) {
+		projetSelectionner = projet;
+		activiteSelectionner = null;
+		update();
+	}
+	
+	public Projet getProjetSelectionner() {
+		return projetSelectionner;
+	}
+
+	public void selectionnerActivite(Activite activite) {
+		if (activiteSelectionner != null) {
+			if (activite.getId() == activiteSelectionner.getId()) {
+				activite.afficheEDT();
+			}
+			else {
+				activiteSelectionner = activite;
+			}			
+		}
+		else {
+			activiteSelectionner = activite;
+		}			
+		update();
+	}
+	
+	public Activite getActiviteSelectionner() {
+		return activiteSelectionner;
+	}
+
+	public void selectionnerListeRessource(String type) {
+		boolean estPresent = false;
+		for (int i=0; i<ressourceAfficher.size(); i++) {
+			if (ressourceAfficher.get(i) == type) {
+				estPresent = true;
+				ressourceAfficher.remove(i);
+				break;
+			}
+		}
+		if (!estPresent) {
+			ressourceAfficher.add(type);
+		}
+		adapteListeRessourceAfficher();
+		update();
+	}
+	
+	private void adapteListeRessourceAfficher() {
+		int taille = ressourceAfficher.size();
+		for (int i=0; i<taille; i++) {
+			if (ressourceAfficher.get(i) == Ressource.PERSONNE) {
+				ressourceAfficher.remove(i);
+				ressourceAfficher.add(0, Ressource.PERSONNE);
+			}
+			if (ressourceAfficher.get(i) == Ressource.SALLE) {
+				ressourceAfficher.remove(i);
+				if (taille==1) {
+					ressourceAfficher.add(0, Ressource.SALLE);
 				}
-								
-		//fonctions de cr�ations d'�l�ments de l'entreprise, les ressources ainsi que les projets
-		//les m�thodes sont doubl�s -> direct dans un projet ou dans l'entreprise
-		
-		public void creerProjet(String nom) {//cr�e un projet si son nom n'est pas d�j� utilis�
-			Projet newProjet = new Projet(nom);
-			if (this.chercheProjet(newProjet.getNom())[0] == 0) {
-				this.listeProjet.add(newProjet);
-				newProjet.selectionner();
-				this.listePanel.add(new JPanel());
+				else {
+					ressourceAfficher.add(1, Ressource.SALLE);
+				}
 			}
-			update();
-		}
-		
-		//m�thode pour cr�er des ressources et les attribuer a des projets
-		public void nouvPersonne (String nomProjet, String nom, String prenom, String role) {
-			Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);
-			int [] place = 	this.chercheProjet(nomProjet);
-			this.incrementId();
-			this.ajouterRessource(nouvPersonne);
-			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.listeProjet.get(place[1]);
-				projetCour.ajouter(nouvPersonne);	
-				nouvPersonne.rendIndisponible();
-				nouvPersonne.setProjet(projetCour);
-
-				
-			}
-			else {
-				nouvPersonne.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
-
-			}
-		}
-		
-		public void nouvPersonne (String nom, String prenom, String role) {
-			Personne nouvPersonne = new Personne(nom,prenom,role, this.idCour);
-			this.incrementId();
-			this.ajouterRessource(nouvPersonne);
-			nouvPersonne.rendDisponible();
-		}
-		
-		public void nouvSalle (String nomProjet, String nom, int capacite) {
-			Salle nouvSalle = new Salle(this.idCour,nom, capacite);
-			int [] place = 	this.chercheProjet(nomProjet);
-			this.incrementId();
-			this.ajouterRessource(nouvSalle);
-			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.listeProjet.get(place[1]);
-				projetCour.ajouter(nouvSalle);	
-				nouvSalle.rendIndisponible();
-				nouvSalle.setProjet(projetCour);
-			}
-			else {
-				nouvSalle.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
-
-			}
-		}
-		
-		public void nouvSalle (String nom, int capacite) {
-			Salle nouvSalle = new Salle(this.idCour,nom, capacite);
-			this.incrementId();
-			this.ajouterRessource(nouvSalle);
-			nouvSalle.rendDisponible();
-		}
-		
-		//m�thode de cr�ation des RessourceAutre personnalisable et qui permettent de cr�er des types diff�rents
-		public void nouvRessourceAutre (String nomProjet, String nom,String type) {
-			RessourceAutre nouvRessourceAutre = new RessourceAutre(nom, type, this.idCour);
-			int [] place = 	this.chercheProjet(nomProjet);
-			this.incrementId();
-			this.ajouterRessource(nouvRessourceAutre);
-			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.listeProjet.get(place[1]);
-				projetCour.ajouter(nouvRessourceAutre);	
-				nouvRessourceAutre.rendIndisponible();
-				nouvRessourceAutre.setProjet(projetCour);
-				this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
-			}
-			else {
-				nouvRessourceAutre.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
-
-			}
-		}
-		
-		public void nouvRessourceAutre (String nom,String type) {
-			RessourceAutre nouvRessourceAutre = new RessourceAutre(nom, type, this.idCour);
-			this.incrementId();
-			this.ajouterRessource(nouvRessourceAutre);
-			nouvRessourceAutre.rendDisponible();
-			this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
-
-
-		}
-		
-		public void nouvCalculateur(String nomProjet, String nom) {
-			Calculateur nouvCalculateur = new Calculateur(nom, idCour);
-			int [] place = 	this.chercheProjet(nomProjet);
-			this.incrementId();
-			this.ajouterRessource(nouvCalculateur);
-			if (place[0] == 1) {//cherche si le projet existe si oui rajoute la ressource
-				Projet projetCour = this.listeProjet.get(place[1]);
-				projetCour.ajouter(nouvCalculateur);	
-				nouvCalculateur.rendIndisponible();
-				nouvCalculateur.setProjet(projetCour);
-			}
-			else {
-				nouvCalculateur.rendDisponible();//si le nom du projet est mal �crit ou faux la ressource vas dans la liste de ressource disponible
-
-			}
-			
-		}
-		
-		public void nouvCalculateur (String nom) {
-			Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
-			this.incrementId();
-			this.ajouterRessource(nouvCalculateur);
-			nouvCalculateur.rendDisponible();
-
-		}
-		
-		//M�thodes pour changer une ressource de projet en rajouter ou en enlever 
-		public void ajouterRessourceProjet(int idRessource,String nomProjet) {//ajouter une ressource a un projet � l'aide de son identifiant
-			int[] placeRessource = this.chercherRessource(idRessource);
-			if (placeRessource[0] == 1) {
-				int rangRessource = placeRessource[1];
-					Ressource resCour = this.listeRessource.get(rangRessource);
-					if (resCour.getDispo() == true) {//v�rifie la disponibilit� de la ressource
-						int[] placeProjet = this.chercheProjet(nomProjet);
-						if (placeProjet[0] == 1) {
-							Projet projetCour = this.listeProjet.get(placeProjet[1]);
-							projetCour.ajouter(resCour);	//on ajoute au projet la ressource
-							resCour.setProjet(projetCour);
-							resCour.rendIndisponible();
-							
-						}
+			if (ressourceAfficher.get(i) == Ressource.CALCULATEUR) {
+				ressourceAfficher.remove(i);
+				if (taille==1) {
+					ressourceAfficher.add(0, Ressource.CALCULATEUR);
+				}
+				else {
+					if (taille==2) {
+						ressourceAfficher.add(1, Ressource.CALCULATEUR);
 					}
+					else {
+						ressourceAfficher.add(2, Ressource.CALCULATEUR);
+					}
+				}
 			}
-			update();
 		}
-		
-		public void enleverRessourceProjet(int idRessource) {
-			int[] placeRessource = this.chercherRessource(idRessource);
-			if (placeRessource[0] == 1) {
-				int rangRessource = placeRessource[1];
-				Ressource resCour = this.listeRessource.get(rangRessource);
-				resCour.getProjet().enlever(resCour);
-				resCour.unsetProjet();
-				resCour.rendDisponible();
-			}
-			update();
-		}
+	}
+	
+	
+	public ArrayList<String> getListeRessourceAfficher(){
+		return ressourceAfficher;
+	}
 
-		public void deplacerRessourceProjet(int idRessource, String nomProjet) {
-			//d�place la ressource d'iD vers le projet entr� sauf si il est dans aucun projet il est mis dans le projet si le nom est faux il est juste retir�
-			this.enleverRessourceProjet(idRessource);
-			this.ajouterRessourceProjet(idRessource, nomProjet);
+	public JFrame getFenetrePrincipale() {
+		return fenetrePrincipale;
+	}
+
+	public void afficheInfoRessource(Ressource res) {
+		int exist = -1;
+		for (int i=0; i<listeFenetreInfoRessource.size(); i++) {
+			if (res.getId() == listeFenetreInfoRessource.get(i).getIdRessource()) {
+				exist = i;
+			}
 		}
-			
-		public void update() {
-			this.setChanged();
-			this.notifyObservers();	
+		if (exist > -1) {
+			listeFenetreInfoRessource.get(exist).dispose();
+			listeFenetreInfoRessource.remove(exist);
 		}
+		listeFenetreInfoRessource.add(new FenetreInfoRessource(this, res));
+	}
+	
+	public void afficheEDTActivite(Activite activite) {
+		activite.afficheEDT();
+		update();
+	}
+
+	public void update() {
+		this.setChanged();
+		this.notifyObservers();	
+	}
+
+	
+
 }
+
