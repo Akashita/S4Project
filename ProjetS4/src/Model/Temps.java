@@ -29,6 +29,9 @@ public final class Temps {
 	
 	//TODO Risque de poser probl�me lors du changement d'ann�e
 	public static LocalDate[] getJourSemaine(int annee, int semaine) {
+		/**
+		 * Decale l'edt vers la droite
+		 * 
 		LocalDate[] tab = new LocalDate[5];
 		
 		Calendar cal = Calendar.getInstance();
@@ -44,8 +47,8 @@ public final class Temps {
 		}
 		return tab;
 		
+		**/
 		
-		/**
 		LocalDate[] tab = new LocalDate[5];
 		
 		//On r�cup�re le num�ro du premier jour (initialis� au lundi) de la semaine pass�e en param�tre
@@ -61,7 +64,7 @@ public final class Temps {
 		}
 		
 		return tab;	
-		**/
+
 	}
 	
 	public static LocalDate[] getJourSemaine() {
