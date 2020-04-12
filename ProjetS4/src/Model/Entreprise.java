@@ -69,7 +69,7 @@ public class Entreprise extends Observable{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//classe de base qui permettent de voir la cha�ne et r�cup�rer les infos de la classe
+	//classe de base qui permettent de voir la chaîne et récupérer les infos de la classe
 	@Override
 	public String toString() {
 		String chaineActProjet = "Voici la liste des projets ainsi que leurs activites : ";
@@ -86,7 +86,9 @@ public class Entreprise extends Observable{
 		 for (int i = 0; i < lProjet.size(); i++) {
 			 lActivite = lProjet.get(i).getListe();
 			 for (int j = 0; j < lActivite.size(); j++) {
-				creerLCreneaux(lActivite.get(j));
+				 if(lActivite.get(j).hasRessource()) {
+					creerLCreneaux(lActivite.get(j));
+				 }
 			}
 		}
 	}
@@ -107,11 +109,14 @@ public class Entreprise extends Observable{
 		int heureCourante = HEURE_DEBUT_MATIN;
 			
 		while (chargeAloue < charge) {	
-			if(act.creneauDispo(jourCourant, heureCourante)) { //Si le creneau est disponible pour toutes les ressources de l'activite
-				act.ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getProjet().getCouleur(), act.getCouleur()),jourCourant);
-				chargeAloue++;
+			ArrayList<Ressource> res = act.getLRessource();
+			for (int i = 0; i < res.size(); i++) {
+				if(res.get(i).creneauDispo(jourCourant, heureCourante)) {
+					res.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getProjet().getCouleur(), act.getCouleur()), jourCourant);
+					chargeAloue++;
+				}
 			}
-			
+	
 			heureCourante = heureSuivante(heureCourante);
 			if(heureCourante == HEURE_DEBUT_MATIN) {
 				jourCourant = jourSuivant(jourCourant);

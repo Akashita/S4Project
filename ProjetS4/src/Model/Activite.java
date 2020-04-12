@@ -92,6 +92,10 @@ public class Activite implements Comparable<Activite>{
 		return ordre;
 	}
 	
+	public boolean hasRessource() {
+		return lRessources.size() != 0;
+ 	}
+	
 	//--------------------------------------------------------------------------------->>>>> change la valeur
 	
 	public void afficheEDT() {
