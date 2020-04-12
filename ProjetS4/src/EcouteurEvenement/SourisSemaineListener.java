@@ -4,9 +4,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
 
-import Fenetre.FenetreInfoRessource;
 import Panel.PanelEDTRessource;
-import Panel.PanelProjet;
 
 /**
  * Cette classe permet l'interaction utilisateur machine avec la souris

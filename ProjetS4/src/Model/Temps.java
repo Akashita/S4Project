@@ -2,6 +2,7 @@ package Model;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.Calendar;
@@ -108,6 +109,20 @@ public final class Temps {
 			return false;
 		}
 		return true;
+	}
+
+	public static int getJourMois(int annee, int mois) {
+		YearMonth anneeMois = YearMonth.of(annee, mois);
+		int nbJour = anneeMois.lengthOfMonth(); //28  		
+		return nbJour;
+	}
+
+	public static int getIndexMois() {
+		return getAujourdhui().getMonthValue();
+	}
+
+	public static int getIndexJour() {
+		return getAujourdhui().getDayOfMonth();
 	}
 
 }

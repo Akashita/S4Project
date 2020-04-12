@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -72,7 +73,11 @@ public class PanelInfoProjet extends JPanel{
 		gc.gridx = 1;
 		panel.add(creerLabel("Priorité: "+(int)projet.getPriorite()), gc);
 		gc.gridx = 2;
-		panel.add(creerLabel("DeadLine: pas encore implementé"), gc);
+		
+		LocalDate deadline = projet.getDeadline();
+		String date = deadline.getDayOfMonth() + "/" + deadline.getMonthValue() + "/" + deadline.getYear();			
+
+		panel.add(creerLabel("DeadLine: "+date), gc);
 
 		for (int i=0; i<3; i++) {
 			String type = null;

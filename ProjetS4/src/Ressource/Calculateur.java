@@ -15,6 +15,6 @@ public class Calculateur extends Ressource{
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public String toString() {
-		return "Calculateur : " + super.nom;
+		return nom;
 	}
 }

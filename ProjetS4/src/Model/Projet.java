@@ -1,5 +1,6 @@
 package Model;
 import java.awt.Color;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -18,16 +19,18 @@ public class Projet implements Comparable<Projet>{
 	private String nom;
 	private float priorite; //Priorite du projet
 	private int id;
+	private LocalDate deadline;
 	private Color couleur;
 	private Personne chefDeProjet;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Projet(Personne chefDeProjet, String nom, float priorite, int id, Color couleur) {
+	public Projet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
 		this.chefDeProjet = chefDeProjet;
 		this.lActivite =  new ArrayList<Activite>();
 		this.nom = nom;
 		this.priorite = priorite;
+		this.deadline = deadline;
 		this.id = id;
 		this.couleur = couleur;
 	}
@@ -47,6 +50,10 @@ public class Projet implements Comparable<Projet>{
 	
 	public float getPriorite() {
 		return priorite;
+	}
+	
+	public LocalDate getDeadline() {
+		return deadline;
 	}
 
 	public int getId() {

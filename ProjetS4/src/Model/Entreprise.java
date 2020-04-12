@@ -100,7 +100,6 @@ public class Entreprise extends Observable{
 
 	
 	private void creerLCreneaux(Activite act) {
-		System.out.println(act.toString());
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
 		
@@ -227,9 +226,9 @@ public class Entreprise extends Observable{
 	//fonctions de cr�ations d'�l�ments de l'entreprise, les ressources ainsi que les projets
 	//les m�thodes sont doubl�s -> direct dans un projet ou dans l'entreprise
 	
-	public void creerProjet(Personne chefDeProjet, String nom, float priorite) {//cr�e un projet si son nom n'est pas d�j� utilis�
+	public void creerProjet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline) {//cr�e un projet si son nom n'est pas d�j� utilis�
 		idProjet ++;
-		Projet newProjet = new Projet(chefDeProjet, nom, priorite, idProjet, couleurAleatoire());
+		Projet newProjet = new Projet(chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());
 		chefDeProjet.ajouterProjet(newProjet);
 		lProjet.add(newProjet);
 		Collections.sort(lProjet);
@@ -252,8 +251,9 @@ public class Entreprise extends Observable{
 		}
 	}
 	
-	public void creerActivite(Projet projet, String titre, int charge, int ordre, LocalDate debut) {
+	public void creerActivite(Projet projet, String titre, int charge, LocalDate debut) {
 		this.idAct++;
+		int ordre = projet.getListe().size();
 		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), projetSelectionner, ordre);
 		projet.ajouter(act);		
 		selectionnerActivite(act);

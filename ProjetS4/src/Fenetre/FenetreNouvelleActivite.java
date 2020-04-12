@@ -1,64 +1,17 @@
 package Fenetre;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.awt.BorderLayout;
 
-import javax.swing.*;
 
-import Model.Activite;
 import Model.Entreprise;
-import Model.Projet;
-import Model.Temps;
+import Panel_Fenetre.PanelNouvelleActivite;
 
 /**
  * Cette fenetre affiche à l'utilisateur les données à rentrer pour
- * creer une nouvelle ressource (Personne, Salle, Calculateur)
+ * creer un nouveau projet 
  * 
  * @author damien planchamp
  *
  */
-public class FenetreNouvelleActivite extends JDialog implements FenetreInterface{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Entreprise entreprise;
-	private Projet projet;
-	private JPanel panelPrincipal = new JPanel();	
-	private JCheckBox checkAvant = new JCheckBox("Placer avant");
-	
-	private JTextField titre, charge;
-	private JComboBox<String> ordre, jour, mois, annee;
-
-	
-	public FenetreNouvelleActivite(Entreprise entreprise) {
-		super(entreprise.getFenetrePrincipale(), "ajouter une activité au projet", true);
-		this.entreprise = entreprise;
-		projet = entreprise.getProjetSelectionner();
-		if (entreprise.getProjetSelectionner() != null) {
-			this.setSize(700,300);
-			this.setResizable(false);
-			this.setLocationRelativeTo(null);
-			this.addWindowListener(new FermerFenetre(this));
-			creationInterface();	
-			this.setVisible(true);
-		}
-		else {
-	    	JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}
-	}
-	
-	/**
-	 * creation de l'interface 
-	 */
-	@Override
-	public void creationInterface() {
-
-		panelPrincipal.removeAll();
 		panelPrincipal.setBackground(Color.WHITE);
 		
 		panelPrincipal.add(infoAEcrire());
@@ -249,5 +202,4 @@ public class FenetreNouvelleActivite extends JDialog implements FenetreInterface
 	    });			
 	    return bouton;
 	}
-
 }

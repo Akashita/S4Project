@@ -1,92 +1,18 @@
 package Fenetre;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import java.awt.BorderLayout;
 
 import Model.Entreprise;
-import Panel.PanelPrincipal;
-import Panel.PanelProjet;
-import Ressource.Personne;
-import Ressource.Ressource;
+import Panel_Fenetre.PanelNouveauProjet;
 
 /**
- * Cette fenetre permet la creation d'un projet
+ * Cette fenetre affiche à l'utilisateur les données à rentrer pour
+ * creer un nouveau projet 
  * 
  * @author damien planchamp
  *
  */
-public class FenetreNouveauProjet extends JDialog implements FenetreInterface{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Entreprise entreprise;
-	private JPanel panelPrincipal = new JPanel();
-	private JTextField nom, priorite;
-    private JComboBox<String> comboBoxPersonne;
-    private ArrayList<Ressource> listePersonne;
-	
-	public FenetreNouveauProjet(Entreprise entreprise) {	
-		super(entreprise.getFenetrePrincipale(), "nouveau projet", true);
-		this.entreprise = entreprise;
-		this.setSize(500,170);
-		this.setLocationRelativeTo(null);
-		this.addWindowListener(new FermerFenetre(this));
-	    this.setResizable(false);
-		creationInterface();			
-		this.setVisible(true);
-	}
-	
-	/**
-	 * creation de l'interface 
-	 */
-	@Override
-	public void creationInterface() {
+public class FenetreNouveauProjet extends FenetreModal{
 
-		panelPrincipal.removeAll();
-		panelPrincipal.setBackground(PanelPrincipal.BLANC);
-		
-		panelPrincipal.add(infoAEcrire());
-		panelPrincipal.add(ajoutBouton());
-		
-		
-		this.add(panelPrincipal);
-		this.revalidate();
-	}
-
-	private JPanel infoAEcrire() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-	    panel.setBorder(BorderFactory.createTitledBorder("Rentrez les informations de l'activité"));
-		panel.add(creerJTextField("nom"));
-		panel.add(creerJTextField("priorite"));
-		
-		listePersonne = entreprise.getListeRessourceType(Ressource.PERSONNE);
-		comboBoxPersonne = new JComboBox<String>(convertirArrayEnTab(listePersonne));
-		panel.add(comboBoxPersonne);
-
-
-		return panel;
-	}  
-    
-	private JPanel creerJTextField(String type) {
 		/*
 		 * retourne un panel avec le champs de saisie et un label
 		 */
@@ -174,37 +100,14 @@ public class FenetreNouveauProjet extends JDialog implements FenetreInterface{
 		try {
 			Integer.parseInt(chaine);
 		} catch (NumberFormatException e){
-			return false;
-		}
-		return true;
+	private static final long serialVersionUID = 1L;
+
+	public FenetreNouveauProjet(Entreprise entreprise) {
+		super(entreprise, "Creation projet", 400, 300);
+		panelInterface = new PanelNouveauProjet(entreprise, this);
+		this.setLayout(new BorderLayout());
+		this.add(panelInterface, BorderLayout.CENTER);
+		this.setResizable(false);
+		this.setVisible(true);
 	}
-
-
-	private String[] convertirArrayEnTab(ArrayList<Ressource> listePersonne) {
-		String[] tab = new String[listePersonne.size()];
-		for (int i=0; i<tab.length; i++) {
-			Personne pers = (Personne) listePersonne.get(i);
-			tab[i] = pers.getPrenom()+" " +pers.getNom();
-		}
-		return tab;
-	}	
-
-	@Override
-	public void actionBoutonFin() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public JButton creerBoutonFin() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public JButton creerBoutonAnnuler() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

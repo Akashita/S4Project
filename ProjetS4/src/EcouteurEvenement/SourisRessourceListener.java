@@ -2,12 +2,8 @@ package EcouteurEvenement;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JLabel;
 
-import Fenetre.FenetreInfoRessource;
 import Model.Entreprise;
-import Panel.PanelInfoProjet;
-import Panel.PanelRessource;
 import Ressource.Ressource;
 
 /**
