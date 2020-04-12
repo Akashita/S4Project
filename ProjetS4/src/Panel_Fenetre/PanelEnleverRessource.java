@@ -19,7 +19,6 @@ public class PanelEnleverRessource extends PanelFenetre{
 		super(entreprise, fm);
 		initialiseComboBoxAnnee(this);
 		initialiseComboBoxMois(this);
-		adapteComboBoxJour();
 		creerInterface();
 	}
 	

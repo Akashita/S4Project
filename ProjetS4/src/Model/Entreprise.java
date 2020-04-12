@@ -261,6 +261,7 @@ public class Entreprise extends Observable{
 		projet.setPriorite(priorite);
 		projet.setChefDeProjet(chefDeProjet);
 		projet.setDeadline(deadline);
+		majEDT();
 		update();
 	}
 
@@ -278,6 +279,7 @@ public class Entreprise extends Observable{
 		activite.setTitre(nom);
 		activite.setCharge(charge);
 		activite.setDebut(date);
+		majEDT();
 		update();
 	}
 
