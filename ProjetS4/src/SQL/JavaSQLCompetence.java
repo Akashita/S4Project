@@ -23,7 +23,7 @@ public class JavaSQLCompetence extends JavaSQL{
 
 	public void creation() throws SQLException{
 		String sql = "CREATE TABLE IF NOT EXISTS Competence(numSalarie INT, tag VARCHAR(30), niveau INT NOT NULL,"
-				+ "CONSTRAINT fk_Competence_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne3(numSalarie),"
+				+ "CONSTRAINT fk_Competence_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
 				+ "CONSTRAINT fk_Competence_tag FOREIGN KEY(tag) REFERENCES Domaine(tag));";
 			try{
 				 this.connection();
