@@ -27,6 +27,7 @@ public class PanelInfoActivite extends JPanel{
 	private Entreprise entreprise;
 	private Activite activite;
 	private Color couleurFond;
+	private boolean estSurSouris;
 
 	public PanelInfoActivite (Entreprise entreprise) {
 		this.entreprise = entreprise;
@@ -53,6 +54,7 @@ public class PanelInfoActivite extends JPanel{
 		}
 	}
 
+	
 
 	public JPanel afficheInterface() {
 		JPanel panel = new JPanel();
