@@ -256,6 +256,15 @@ public class Entreprise extends Observable{
 		}
 	}
 	
+	public void modifierProjet(Projet projet, String nom, float priorite, Personne chefDeProjet, LocalDate deadline) {	
+		projet.setNom(nom);
+		projet.setPriorite(priorite);
+		projet.setChefDeProjet(chefDeProjet);
+		projet.setDeadline(deadline);
+		update();
+	}
+
+	
 	public void creerActivite(Projet projet, String titre, int charge, LocalDate debut) {
 		this.idAct++;
 		int ordre = projet.getListe().size();
@@ -264,7 +273,14 @@ public class Entreprise extends Observable{
 		selectionnerActivite(act);
 		update();
 	}
-		
+
+	public void modifierActivite(Activite activite, String nom, int charge, LocalDate date) {	
+		activite.setTitre(nom);
+		activite.setCharge(charge);
+		activite.setDebut(date);
+		update();
+	}
+
 	public void nouvPersonne (String nom, String prenom) {
 		Personne nouvPersonne = new Personne(nom,prenom, this.idCour);
 		this.incrementId();
@@ -444,6 +460,7 @@ public class Entreprise extends Observable{
 		this.setChanged();
 		this.notifyObservers();	
 	}
+
 
 	
 
