@@ -28,7 +28,7 @@ public class JavaSQLProjet extends JavaSQL{
 	
 	public void creation() throws SQLException{
 		String sql = "CREATE TABLE IF NOT EXISTS Projet(nom VARCHAR(30) PRIMARY KEY, priorite INT, deadline DATE, couleur VARCHAR(30), numSalarie INT,"
-				+ "CONSTRAINT fk_Projet_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne3(numSalarie) );";
+				+ "CONSTRAINT fk_Projet_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie) );";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();

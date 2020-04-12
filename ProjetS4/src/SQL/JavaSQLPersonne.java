@@ -28,7 +28,7 @@ public class JavaSQLPersonne extends JavaSQL{
 	}
 	
 	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Personne3(numSalarie INT PRIMARY KEY AUTO_INCREMENT,nom VARCHAR(30),prenom VARCHAR(30),role VARCHAR(30),motDePasse VARCHAR(30));";
+		String sql = "CREATE TABLE IF NOT EXISTS Personne(numSalarie INT PRIMARY KEY AUTO_INCREMENT,nom VARCHAR(30),prenom VARCHAR(30),role VARCHAR(30),motDePasse VARCHAR(30));";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
@@ -40,15 +40,53 @@ public class JavaSQLPersonne extends JavaSQL{
 			}
 
 	}
-	
+	public void drop() {
+		String sql = "DROP TABLE Competence";
+		try{
+			 this.connection();
+			 Statement stmt = getCon().createStatement();
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Competance";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Participation";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Activite";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Materiel";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Projet";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Creneaux";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Calculateur";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Domaine";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Personne";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Personne2";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Personne";
+			 stmt.executeUpdate(sql);
+			 sql = "DROP TABLE Salle";
+			 stmt.executeUpdate(sql);
+			 this.con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 
 	public void affiche() throws SQLException{
-		String sql = "SELECT * FROM Personne3;";
+		String sql = "SELECT * FROM Personne;";
+//		String sql = "SELECT TABLE_NAME\r\n" + 
+//				"FROM   INFORMATION_SCHEMA.TABLES\r\n" + 
+//				"WHERE Table_Type='BASE TABLE'";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
+//						 System.out.println(res.getString(1));
 						 System.out.println("numSalarie = " + res.getString("numSalarie") + ", nom = " + res.getString("nom") + ", prenom = " + res.getString("prenom") + ", role = " + res.getString("role") + ", motDePasse = " + res.getString("motDePasse"));
 					 }
 				 }
@@ -60,7 +98,7 @@ public class JavaSQLPersonne extends JavaSQL{
 	}
 
 	public void insertion() throws SQLException{
-			String sql = "INSERT INTO Personne3(numSalarie, nom, prenom, role, motDePasse) VALUE(NULL, '" + this.nom + "' ,  '"+this.prenom+"' , '"+this.role+"' , '"+this.motDePasse+"');";
+			String sql = "INSERT INTO Personne(numSalarie, nom, prenom, role, motDePasse) VALUE(NULL, '" + this.nom + "' ,  '"+this.prenom+"' , '"+this.role+"' , '"+this.motDePasse+"');";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
@@ -70,7 +108,7 @@ public class JavaSQLPersonne extends JavaSQL{
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
-			String sql2 = "SELECT * FROM Personne3 ORDER BY numSalarie DESC;";
+			String sql2 = "SELECT * FROM Personne ORDER BY numSalarie DESC;";
 			try{
 				 this.connection();
 				 Statement stmt2 = getCon().createStatement();
