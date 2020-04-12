@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import Ressource.Ressource;
 
 public class Activite implements Comparable<Activite>{
-	
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -23,14 +23,14 @@ public class Activite implements Comparable<Activite>{
 	private Projet projet;
 	private int ordre;
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
-	
+
 	private boolean afficheEDT = false; //inutile de le stocké dans la bdd
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Activite(int id, String titre, int chargeJH, LocalDate debut, Color couleur, Projet projet, int ordre) {
 		this.id = id;
-		this.titre = titre; 
+		this.titre = titre;
 		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
 		this.chargeHeure = chargeJH * Entreprise.NB_HEURE_JOUR;
 		this.debut = debut;
@@ -38,32 +38,32 @@ public class Activite implements Comparable<Activite>{
 		this.projet = projet;
 		lRessources = new ArrayList<Ressource>();
 	}
-	
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public String getTitre() {
 		return titre;
 	}
-	
+
 	public int getChargeJHomme() {
 		return chargeJHomme;
 	}
-	
+
 	public int getChargeHeure() {
 		return chargeHeure;
 	}
-	
+
 	public LocalDate getDebut() {
 		return debut;
 	}
-	
+
 	public ArrayList<Ressource> getLRessource(){
 		return lRessources;
 	}
-	
+
 	public String getJourDebut() {
 		String jour = Integer.toString(debut.getDayOfMonth());
 		String mois = Integer.toString(debut.getMonthValue());
@@ -75,26 +75,30 @@ public class Activite implements Comparable<Activite>{
 	public int getId() {
 		return id;
 	}
-	
+
 	public Color getCouleur() {
 		return couleur;
 	}
-	
+
 	public Projet getProjet() {
 		return projet;
 	}
-	
+
 	public boolean getAfficheEDT() {
 		return afficheEDT;
 	}
-	
+
 	public int getOrdre() {
 		return ordre;
 	}
-	
-	//--------------------------------------------------------------------------------->>>>> setteur
-	
-	
+
+	public boolean hasRessource() {
+		return lRessources.size() != 0;
+ 	}
+
+	//--------------------------------------------------------------------------------->>>>> change la valeur
+
+
 	public void setTitre(String titre) {
 		this.titre = titre;
 	}
@@ -115,8 +119,8 @@ public class Activite implements Comparable<Activite>{
 			afficheEDT = true;
 		}
 	}
-	
-	
+
+
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {
@@ -142,7 +146,7 @@ public class Activite implements Comparable<Activite>{
 		return res;
 	}
 
-	
+
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override
 	public String toString() {
@@ -153,8 +157,8 @@ public class Activite implements Comparable<Activite>{
 		}
 		return res;
 	}
-	
-	
+
+
 	//--------------------------------------------------------------------------------->>>>> Gestion de l'EDT
 
 	/**
@@ -172,8 +176,8 @@ public class Activite implements Comparable<Activite>{
 		}
 		return dispo;
 	}
-	
-	
+
+
 	/**
 	 * Ajoute un creneau a toutes les lRessources associees
 	 * @param cr   	Le creneau a ajouter
@@ -185,7 +189,7 @@ public class Activite implements Comparable<Activite>{
 		}
 	}
 
-	
+
 	/**
 	 * Supprime une ressource de l'activite
 	 * @param id  L'ID de la ressource
@@ -194,14 +198,14 @@ public class Activite implements Comparable<Activite>{
 	public boolean enleverRessource(int id) {
 		return lRessources.remove(new Ressource(id));
 	}
-	
-	
+
+
 	/**
 	 * Ajouter une ressource a l'activite
 	 * @param ressource  La ressource
 	 * @return true si la ressource a ete ajoutee
 	 */
-	public boolean ajouterRessource(Ressource ressource) {		
+	public boolean ajouterRessource(Ressource ressource) {
 		if(!lRessources.contains(ressource)) {
 			lRessources.add(ressource);
 			return true;
@@ -209,21 +213,21 @@ public class Activite implements Comparable<Activite>{
 			return false;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Cherche une ressource dans le projet
 	 * @param ressource   La ressource a chercher
 	 * @return un entier qui indique si elle a ete trouvee et sa position
 	 */
-	public int[] chercherRessource(int id) { 
+	public int[] chercherRessource(int id) {
 		Boolean trouve = false; //Indique si l'indice a ete trouve
 		Boolean depasse = false; //Indique si la position a ete depacee
-		
+
 		int[] res = {0,0};
 		Iterator<Ressource> itt = lRessources.listIterator();
 		Ressource resTMP;
-		
+
 		while(!trouve && itt.hasNext() && !depasse){
 			resTMP = itt.next();
 			if(id <= resTMP.getId()) {
@@ -233,17 +237,17 @@ public class Activite implements Comparable<Activite>{
 				res[0]++;
 			}
 		}
-				
+
 		return res;
 	}
-	
+
 	public void vider() {
 		for (int i = 0; i < lRessources.size(); i++) {
 			lRessources.get(i).vider();
-		} 
+		}
 	}
-	
-	
+
+
 	/**
 	 * Selectionne des lRessources de l'activite par type
 	 * @param type  Le type de la ressource
