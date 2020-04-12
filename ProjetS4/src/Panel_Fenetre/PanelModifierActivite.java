@@ -9,20 +9,31 @@ import javax.swing.JOptionPane;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
-import Model.Projet;
+import Ressource.Personne;
+import Ressource.Ressource;
 
-public class PanelNouvelleActivite extends PanelFenetre{
+public class PanelModifierActivite extends PanelFenetre{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	public PanelNouvelleActivite(Entreprise entreprise, FenetreModal fm) {
+	
+	
+	public PanelModifierActivite(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
 		initialiseComboBoxAnnee(this);
 		initialiseComboBoxMois(this);
 		initialiseComboBoxJour();
+
+		activite = entreprise.getActiviteSelectionner();
+		
+		textFieldNom.setText(activite.getTitre());
+		int charge = (int)activite.getChargeJHomme();
+		textFieldCharge.setText(Integer.toString(charge));
+
+		//initialseJMA(projet.getDeadline());
+
 		creerInterface();
 	}
 	
@@ -48,25 +59,21 @@ public class PanelNouvelleActivite extends PanelFenetre{
 		gc.weightx = 3;
 		
 		/* weightx définit le nombre de cases en ordonnée */
-		gc.weighty = 7;
+		gc.weighty = 6;
 
 		gc.gridx = 0;
 		gc.gridy = 0;
-		gc.gridwidth = 3;
-		//this.add(creerTitre("Creer un projet"), gc);
-		
-		gc.gridy = 1;
-		this.add(creerTitre("Indiquez ses informations"), gc);
+		gc.gridwidth = 3;		
+		this.add(creerTitre("Modifiez ses informations"), gc);
 
-		
 		
 		
 		
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
-		gc.gridy = 2;
-		this.add(creerTexte("Indiquez son nom"), gc);
+		gc.gridy = 1;
+		this.add(creerTexte("Nom"), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridwidth = 2;
 		gc.gridx = 1;
@@ -75,37 +82,35 @@ public class PanelNouvelleActivite extends PanelFenetre{
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
-		gc.gridy = 3;
-		this.add(creerTexte("<html>Indiquez sa charge <br>en jour/homme</html>"), gc);
+		gc.gridy = 2;
+		this.add(creerTexte("<html>Charge en jour/homme</html>"), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridwidth = 2;
 		gc.gridx = 1;
 		this.add(textFieldCharge, gc);			
-				
-		
 		
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridx = 0;
-		gc.gridy = 5;
+		gc.gridy = 3;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Commence à partir du"), gc);
+		this.add(creerTitre("A partir"), gc);
 		
 		gc.gridx = 0;
-		gc.gridy = 6;
+		gc.gridy = 4;
 		this.add(calendrier(), gc);
 	
 		
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridx = 1;
-		gc.gridy = 7;
+		gc.gridy = 5;
 		this.add(creerBoutonAnnuler(), gc);
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Créer"), gc);
+		this.add(creerBoutonFin(this, "Modifier"), gc);
 
 	}
 	
@@ -113,22 +118,22 @@ public class PanelNouvelleActivite extends PanelFenetre{
 		if (!textFieldNom.getText().isEmpty()) {
 			if (!textFieldCharge.getText().isEmpty()) {
 				if (estUnEntier(textFieldCharge.getText())) {
-					Projet projet = entreprise.getProjetSelectionner();
+					String nom = textFieldNom.getText();
 					int charge = Integer.parseInt(textFieldCharge.getText());
-					LocalDate debut = creerLaDate();
-					entreprise.creerActivite(projet, textFieldNom.getText(), charge, debut);
+					LocalDate date =  creerLaDate();
+					entreprise.modifierActivite(activite, nom, charge, date);
 					fm.dispose();
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Veillez ecrire sa charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veillez ecrire sa priorité", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-		   	JOptionPane.showMessageDialog(null, "Veillez ecrire son titre", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veillez ecrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 }

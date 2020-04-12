@@ -11,6 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import EcouteurEvenement.AjouterEnleverRessourceListener;
+import EcouteurEvenement.ModifierListener;
 import EcouteurEvenement.NouveauListener;
 import Model.Entreprise;
 import Panel.*;
@@ -36,7 +37,8 @@ public class FenetrePrincipale extends JFrame{
 			LARGEUR = 500;
 	private Entreprise entreprise;
 	public static final int NouveauProjet = 0, NouvelleRessource = 1, NouvelleActivite = 2,
-			AjouterRessource = 3, EnleverRessource = 4;
+			AjouterRessource = 3, EnleverRessource = 4,
+			ModifierProjet = 5, ModifierActivite = 6, ModifierRessource = 7;
 
 	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
@@ -61,6 +63,7 @@ public class FenetrePrincipale extends JFrame{
 		
 		JMenu menuFichier = new JMenu("Fichier");
 		JMenu menuEditer = new JMenu("Editer");
+		JMenu menuModifier = new JMenu("Modifier");
 		JMenu menuPropos = new JMenu("A propos");
 
 		JMenuItem itemNouveauProjet = new JMenuItem("Nouveau projet", KeyEvent.VK_P);
@@ -97,8 +100,28 @@ public class FenetrePrincipale extends JFrame{
 	    itemNouvelleActivite.setAccelerator(ctrlNouvelleActivite);
 	    itemNouvelleActivite.addActionListener(new NouveauListener(entreprise, NouvelleActivite));
 
-		JMenuItem itemModifier = new JMenuItem("Modifier");
-		JMenuItem itemSupprimer = new JMenuItem("Supprimer Projet");
+	    
+	    
+	    
+	    JMenuItem itemModifierProjet = new JMenuItem("Modifier Projet", KeyEvent.VK_O);
+	    KeyStroke ctrlModifierProjet = KeyStroke.getKeyStroke("control O");
+	    itemModifierProjet.setAccelerator(ctrlModifierProjet);
+	    itemModifierProjet.addActionListener(new ModifierListener(entreprise, ModifierProjet));
+
+	    JMenuItem itemModifierActivite = new JMenuItem("Modifier Activite", KeyEvent.VK_X);
+	    KeyStroke ctrlModifierActivite = KeyStroke.getKeyStroke("control X");
+	    itemModifierActivite.setAccelerator(ctrlModifierActivite);
+	    itemModifierActivite.addActionListener(new ModifierListener(entreprise, ModifierActivite));
+
+	    /*JMenuItem itemModifierRessource = new JMenuItem("Modifier Ressource", KeyEvent.VK_T);
+	    KeyStroke ctrlModifierRessource = KeyStroke.getKeyStroke("control T");
+	    itemModifierRessource.setAccelerator(ctrlModifierRessource);
+	    itemModifierRessource.addActionListener(new ModifierListener(entreprise, ModifierRessource));*/
+
+	    
+	    
+	    
+	    JMenuItem itemSupprimer = new JMenuItem("Supprimer Projet");
 
 		JMenuItem itemPropos = new JMenuItem("Projet");
 
@@ -111,7 +134,12 @@ public class FenetrePrincipale extends JFrame{
 		menuEditer.add(itemAjout);
 		menuEditer.add(itemEnlever);
 		menuEditer.add(itemNouvelleActivite);
-		menuEditer.add(itemModifier);
+		
+		menuModifier.add(itemModifierProjet);
+		menuModifier.add(itemModifierActivite);
+		//menuModifier.add(itemModifierRessource);
+		
+		menuEditer.add(menuModifier);
 		menuEditer.add(itemSupprimer);
 		
 		menuPropos.add(itemPropos);

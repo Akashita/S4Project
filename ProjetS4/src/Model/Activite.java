@@ -92,8 +92,21 @@ public class Activite implements Comparable<Activite>{
 		return ordre;
 	}
 	
-	//--------------------------------------------------------------------------------->>>>> change la valeur
+	//--------------------------------------------------------------------------------->>>>> setteur
 	
+	
+	public void setTitre(String titre) {
+		this.titre = titre;
+	}
+
+	public void setCharge(int charge) {
+		this.chargeJHomme = charge;
+	}
+
+	public void setDebut(LocalDate debut) {
+		this.debut = debut;
+	}
+
 	public void afficheEDT() {
 		if (afficheEDT) {
 			afficheEDT = false;

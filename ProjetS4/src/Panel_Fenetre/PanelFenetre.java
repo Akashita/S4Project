@@ -17,7 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import Fenetre.FenetreModal;
+import Model.Activite;
 import Model.Entreprise;
+import Model.Projet;
 import Model.Temps;
 import Panel.PanelPrincipal;
 import Ressource.Ressource;
@@ -43,6 +45,8 @@ public class PanelFenetre extends JPanel{
 	protected Entreprise entreprise;
     protected FenetreModal fm;
     protected Color couleurFond = PanelPrincipal.BLEU3;
+    protected Projet projet;
+    protected Activite activite;
 
     String [] jours;
     String[] mois = {"Janvier", "Février", "Mars", "Avril",
@@ -59,6 +63,23 @@ public class PanelFenetre extends JPanel{
 	
 	protected void creerInterface() {}
 	
+	
+	//----------------------------------------------------->>>> Gesion jour/mois/annee
+	
+	protected void initialseJMA(LocalDate date, PanelFenetre pf) {
+		int jour = date.getDayOfMonth()-1;
+		int mois = date.getMonthValue()-1;
+		int annee = date.getYear()-Temps.getAnnee();
+		
+		initialiseComboBoxAnnee(pf);
+		initialiseComboBoxMois(pf);
+		initialiseComboBoxJour();
+		
+		comboBoxJour.setSelectedIndex(jour);
+		comboBoxMois.setSelectedIndex(mois);
+		comboBoxAnnee.setSelectedIndex(annee);
+	}
+
 	protected void initialiseComboBoxAnnee(PanelFenetre pf) {
 		int anneeActuel = Temps.getAnnee();
 		 for (int i=0; i<annees.length; i++) {
@@ -84,10 +105,8 @@ public class PanelFenetre extends JPanel{
 			}
 		});	    	
 	}
-
 	
-	
-	protected void adapteComboBoxJour() {
+	protected void initialiseComboBoxJour() {
 		int annee = Integer.parseInt((String) comboBoxAnnee.getSelectedItem());
 		int mois = comboBoxMois.getSelectedIndex()+1;
 		int nbJour = Temps.getJourMois(annee, mois);
@@ -98,31 +117,29 @@ public class PanelFenetre extends JPanel{
 		comboBoxJour = new JComboBox<String>(jours);
 		comboBoxJour.setSelectedIndex(Temps.getIndexJour()-1);
 	}
-	
+
+	protected void adapteComboBoxJour() {
+		int index = comboBoxJour.getSelectedIndex();
+		int annee = Integer.parseInt((String) comboBoxAnnee.getSelectedItem());
+		int mois = comboBoxMois.getSelectedIndex()+1;
+		int nbJour = Temps.getJourMois(annee, mois);
+	    jours = new String [nbJour];
+		for (int i=0; i<nbJour; i++) {
+			jours[i] = Integer.toString(i+1);
+		}
+		comboBoxJour = new JComboBox<String>(jours);
+		if (index >= jours.length) {
+			index = jours.length-1;
+		}
+		comboBoxJour.setSelectedIndex(index);
+	}
+
 	public void metAJourCalendrier(PanelFenetre pf) {
 		adapteComboBoxJour();
 		pf.removeAll();
 		pf.creerInterface();
 		pf.revalidate();
 		pf.repaint();		
-	}
-
-	
-	protected void initialiseComboBoxType(PanelFenetre pf) {
-		comboBoxType.addActionListener (new ActionListener () {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				nouveauChoix(pf);
-			}
-		});	    	
-	}
-	
-	protected void nouveauChoix(PanelFenetre pf) {
-		typeChoisi = (String) comboBoxType.getSelectedItem();
-		pf.removeAll();
-		creerInterface();
-		pf.revalidate();
-		pf.repaint();
 	}
 
 	protected JPanel calendrier() {
@@ -145,6 +162,30 @@ public class PanelFenetre extends JPanel{
 		return panel;
 	}
 
+
+	//-----------------------------------------
+	
+	protected void initialiseComboBoxType(PanelFenetre pf) {
+		comboBoxType.addActionListener (new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				nouveauChoix(pf);
+			}
+		});	    	
+	}
+	
+	protected void nouveauChoix(PanelFenetre pf) {
+		typeChoisi = (String) comboBoxType.getSelectedItem();
+		pf.removeAll();
+		creerInterface();
+		pf.revalidate();
+		pf.repaint();
+	}
+
+	
+	
+	
+	
 	protected void initialiseComboBoxRessource(ArrayList<Ressource> listeRessource) {
 		Ressource [] tabRes = new Ressource[listeRessource.size()];
 		for (int i=0; i<tabRes.length; i++) {
@@ -153,7 +194,9 @@ public class PanelFenetre extends JPanel{
 		comboBoxRessource = new JComboBox<Ressource>(tabRes);
 	}
 
-
+	protected void adapteComboBoxRessource(Ressource ressource) {
+		comboBoxRessource.setSelectedItem(ressource);
+	}
 
 	protected JLabel creerTitre(String titre) {
 		JLabel label = new JLabel(titre);

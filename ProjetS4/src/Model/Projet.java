@@ -77,6 +77,25 @@ public class Projet implements Comparable<Projet>{
 		return ht;
 	}
 	
+	//------------------------------------------------------------------------------->>>>>>> Setteurs
+	
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public void setPriorite(float priorite) {
+		this.priorite = priorite;
+	}
+
+	public void setChefDeProjet(Personne chefDeProjet) {
+		this.chefDeProjet = chefDeProjet;
+	}
+
+	public void setDeadline(LocalDate deadline) {
+		this.deadline = deadline;
+	}
+
+	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {//permet de tester si deux projets ont le m�me nom.
