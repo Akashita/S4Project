@@ -153,13 +153,17 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			if (typeChoisi == Ressource.SALLE) {
 				if (estUnEntier(textFieldCapacite.getText())) {
 					entreprise.nouvSalle(textFieldNom.getText(), Integer.parseInt(textFieldCapacite.getText()));
+					fm.dispose();
 				}
 				else {
 			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			if (typeChoisi == Ressource.CALCULATEUR) {
-				entreprise.nouvCalculateur(textFieldNom.getText());
+				if (estUnEntier(textFieldCapacite.getText())) {
+					entreprise.nouvCalculateur(textFieldNom.getText());
+					fm.dispose();
+				}
 			}	
 		}
 		else {

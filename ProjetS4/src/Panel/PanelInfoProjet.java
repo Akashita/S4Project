@@ -9,9 +9,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import EcouteurEvenement.SourisActiviteListener;
 import Model.Activite;
@@ -127,9 +130,9 @@ public class PanelInfoProjet extends JPanel{
 			}
 		}
 		
+		
 		return panel;
 	}
-		
 		
 		private JPanel creerLabelInterfaceRessource(String type) {
 			JPanel panel = new JPanel();
