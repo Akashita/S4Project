@@ -19,7 +19,7 @@ public class PanelAjouterRessource extends PanelFenetre{
 		super(entreprise, fm);
 		initialiseComboBoxAnnee(this);
 		initialiseComboBoxMois(this);
-		adapteComboBoxJour();
+		initialiseComboBoxJour();
 		creerInterface();
 	}
 	
