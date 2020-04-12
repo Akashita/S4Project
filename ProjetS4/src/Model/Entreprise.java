@@ -105,7 +105,9 @@ public class Entreprise extends Observable{
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
 		
-		LocalDate jourCourant = act.getDebut();
+		System.out.println(act.getDebut());
+		LocalDate jourCourant = verifierJour(act.getDebut());
+		System.out.println(jourCourant);
 		int heureCourante = HEURE_DEBUT_MATIN;
 			
 		while (chargeAloue < charge) {	
@@ -119,19 +121,30 @@ public class Entreprise extends Observable{
 	
 			heureCourante = heureSuivante(heureCourante);
 			if(heureCourante == HEURE_DEBUT_MATIN) {
-				jourCourant = jourSuivant(jourCourant);
+				jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
 			}
 		}
 	}
 	
-	private LocalDate jourSuivant(LocalDate jourCourant) {
-		if(jourCourant.getDayOfWeek() == DayOfWeek.FRIDAY) {
-			return jourCourant.plus(3, ChronoUnit.DAYS);
-		} else {
-			return jourCourant.plus(1, ChronoUnit.DAYS);
+	private LocalDate verifierJour(LocalDate jourCourant) {
+		LocalDate jourVerifie;
+		switch (jourCourant.getDayOfWeek()) {
+		case FRIDAY:
+			jourVerifie = jourCourant.plus(3, ChronoUnit.DAYS);
+			break;
+		case SATURDAY:
+			jourVerifie = jourCourant.plus(2, ChronoUnit.DAYS);
+			break;
+		case SUNDAY:
+			jourVerifie = jourCourant.plus(1, ChronoUnit.DAYS);
+			break;
+		default:
+			jourVerifie = jourCourant;
+			break;
 		}
+		return jourVerifie;
 	}
-	
+
 	private int heureSuivante(int heureCourante) {
 		int heureSuivante = heureCourante + 1;
 		if(heureSuivante == HEURE_FIN_MATIN) {
