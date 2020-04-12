@@ -129,9 +129,6 @@ public class Entreprise extends Observable{
 	private LocalDate verifierJour(LocalDate jourCourant) {
 		LocalDate jourVerifie;
 		switch (jourCourant.getDayOfWeek()) {
-		case FRIDAY:
-			jourVerifie = jourCourant.plus(3, ChronoUnit.DAYS);
-			break;
 		case SATURDAY:
 			jourVerifie = jourCourant.plus(2, ChronoUnit.DAYS);
 			break;

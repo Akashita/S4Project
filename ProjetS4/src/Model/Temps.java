@@ -3,6 +3,7 @@ package Model;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.Calendar;
@@ -30,6 +31,23 @@ public final class Temps {
 	public static LocalDate[] getJourSemaine(int annee, int semaine) {
 		LocalDate[] tab = new LocalDate[5];
 		
+		Calendar cal = Calendar.getInstance();
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
+		cal.setWeekDate(annee, semaine, Calendar.MONDAY);
+		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
+		
+		LocalDate init = LocalDate.ofYearDay(annee, numJour);
+		
+		for (int i = 0; i < 5; i++) {
+			init = init.plus(1, ChronoUnit.DAYS);
+			tab[i] = init;
+		}
+		return tab;
+		
+		
+		/**
+		LocalDate[] tab = new LocalDate[5];
+		
 		//On r�cup�re le num�ro du premier jour (initialis� au lundi) de la semaine pass�e en param�tre
 		Calendar cal = Calendar.getInstance();
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
@@ -43,6 +61,7 @@ public final class Temps {
 		}
 		
 		return tab;	
+		**/
 	}
 	
 	public static LocalDate[] getJourSemaine() {
