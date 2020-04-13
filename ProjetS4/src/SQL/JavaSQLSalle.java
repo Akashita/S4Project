@@ -31,7 +31,7 @@ public class JavaSQLSalle extends JavaSQL{
 	
 	public ArrayList<Salle> affiche() throws SQLException{
 		ArrayList<Salle> salletab = new ArrayList<Salle>();
-		String sql = "SELECT * FROM place;";
+		String sql = "SELECT * FROM Salle;";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();

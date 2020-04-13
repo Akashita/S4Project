@@ -32,9 +32,8 @@ public class Main {
 //			
 //			testprojet.insertion();
 //			
-
-			ArrayList<Projet> test1 = testprojet.affiche();
-			
+			RecupInfoBDD.recupBDDProjet(e);
+			RecupInfoBDD.recupBDDRessource(e);
 //			test.affiche();
 //			test.drop();
 //			java.creation();
