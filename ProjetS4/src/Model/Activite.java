@@ -176,12 +176,15 @@ public class Activite implements Comparable<Activite>{
 	 * @param heure  L'heure du creneau
 	 * @return vrai si le creneau est dispo pour toutes les lRessources associees
 	 */
-	public boolean creneauDispo(LocalDate date, int heure){
+	public boolean creneauDispo(String type, LocalDate date, int heure){
 		Boolean dispo = true;
 		for (int i = 0; i < lRessources.size(); i++) {
-			if(!lRessources.get(i).creneauDispo(date, heure)) {
-				dispo = false;
+			if(lRessources.get(i).getType() == type) {
+				if(!lRessources.get(i).creneauDispo(date, heure)) {
+					dispo = false;
+				}
 			}
+			
 		}
 		return dispo;
 	}
@@ -192,9 +195,11 @@ public class Activite implements Comparable<Activite>{
 	 * @param cr   	Le creneau a ajouter
 	 * @param jour 	Le jour auquel ajouter le creneau
 	 */
-	public void ajouterCreneau(CreneauHoraire cr, LocalDate jour) {
+	public void ajouterCreneau(String type, CreneauHoraire cr, LocalDate jour) {
 		for (int i = 0; i < lRessources.size(); i++) {
-			lRessources.get(i).ajouterCreneau(cr, jour);
+			if(lRessources.get(i).getType() == type) {
+				lRessources.get(i).ajouterCreneau(cr, jour);
+			}
 		}
 	}
 

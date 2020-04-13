@@ -87,36 +87,54 @@ public class Entreprise extends Observable{
 			 lActivite = lProjet.get(i).getListe();
 			 for (int j = 0; j < lActivite.size(); j++) {
 				 if(lActivite.get(j).hasRessource()) {
-					creerLCreneaux(lActivite.get(j));
+					creerLCreneauxPersonnes(lActivite.get(j));
+					creerLCreneauxSalles(lActivite.get(j));
 				 }
 			}
 		}
 	}
 	
 	private void viderProjets() {
-		ArrayList<Activite> lAct;
 		for (int i = 0; i < lProjet.size(); i++) {
 			lProjet.get(i).vider();
 		}
 	}
 
 	
-	private void creerLCreneaux(Activite act) {
+	private void creerLCreneauxPersonnes(Activite act) {
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
 		
-		System.out.println(act.getDebut());
 		LocalDate jourCourant = verifierJour(act.getDebut());
-		System.out.println(jourCourant);
 		int heureCourante = HEURE_DEBUT_MATIN;
-			
+		ArrayList<Ressource> res = act.getListeRessourceType("Personne");
+
 		while (chargeAloue < charge) {	
-			ArrayList<Ressource> res = act.getLRessource();
 			for (int i = 0; i < res.size(); i++) {
 				if(res.get(i).creneauDispo(jourCourant, heureCourante)) {
 					res.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getProjet().getCouleur(), act.getCouleur()), jourCourant);
 					chargeAloue++;
 				}
+			}
+	
+			heureCourante = heureSuivante(heureCourante);
+			if(heureCourante == HEURE_DEBUT_MATIN) {
+				jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
+			}
+		}
+	}
+	
+	private void creerLCreneauxSalles(Activite act) {
+		int charge = act.getChargeHeure();
+		int chargeAloue = 0;
+		
+		LocalDate jourCourant = verifierJour(act.getDebut());
+		int heureCourante = HEURE_DEBUT_MATIN;
+
+		while (chargeAloue < charge) {	
+				if(act.creneauDispo("Salle", jourCourant, heureCourante)) {
+					act.ajouterCreneau("Salle", new CreneauHoraire(act, heureCourante, act.getProjet().getCouleur(), act.getCouleur()), jourCourant);
+					chargeAloue++;
 			}
 	
 			heureCourante = heureSuivante(heureCourante);
