@@ -1,5 +1,6 @@
 package SQL;
 
+import java.awt.Color;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class JavaSQLActivite extends JavaSQL{
 
 	}
 	
+	@SuppressWarnings("deprecation")
 	public ArrayList<Activite> affiche() throws SQLException{
 		ArrayList<Activite> acttab = new ArrayList<Activite>();
 		String sql = "SELECT * FROM Activite;";
@@ -61,7 +63,8 @@ public class JavaSQLActivite extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 acttab.add(new Activite(res.getInt("idA"),res.getString("titre"), res.getDouble("charge"), res.getDate("debut"), res.getInt("couleur") /*COULEUR A CHANGER PAR UN INT*/, res.getInt("ordre") ,res.getInt("nom") /*A CHANGER POUR L'ID DU PROJET*/));
+						 Date debut = res.getDate("debut");
+						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getDouble("charge"), LocalDate.of(debut.getYear(), debut.getMonth(), debut.getDay()), new Color(res.getInt("couleur")), null/*new Projet(....) avec idP*/, res.getInt("ordre")));
 						 System.out.println("idA = " + res.getString("idA") + ", titre = " + res.getString("titre") + ", debut = " + res.getString("debut") + ", charge = " + res.getString("charge") 
 						 + ", ordre = " + res.getString("ordre")+ ", couleur = " + res.getString("couleur") + ", idC = " + res.getString("idC") + ", nom = " + res.getString("nom"));
 					 }
