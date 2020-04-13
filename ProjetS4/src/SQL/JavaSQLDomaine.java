@@ -22,19 +22,7 @@ public class JavaSQLDomaine extends JavaSQL{
 		super.connection();
 	}
 
-	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Domaine(tag VARCHAR(30) PRIMARY KEY);";
-			try{
-				 this.connection();
-				 Statement stmt = getCon().createStatement();
-				 stmt.executeUpdate(sql);
-				 System.out.println("creation fait");
-				 this.con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
 
-	}
 
 	public ArrayList<String> affiche() throws SQLException{
 		String sql = "SELECT * FROM Domaine;";

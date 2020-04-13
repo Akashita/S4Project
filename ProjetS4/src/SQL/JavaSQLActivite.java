@@ -37,21 +37,7 @@ public class JavaSQLActivite extends JavaSQL{
 		super.connection();
 	}
 
-	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Activite(idA INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), debut DATE, charge DECIMAL(4,2), ordre INT, couleur INT, indC INT, idP INT, "
-				+ "CONTRAINT fk_Activite_idC FOREIGN KEY(idC) REFERENCES Creneaux(idC),"
-				+ "CONTRAINT fk_Activite_idP FOREIGN KEY(idP) REFERENCES Projet(idP));";
-			try{
-				 this.connection();
-				 Statement stmt = getCon().createStatement();
-				 stmt.executeUpdate(sql);
-				 System.out.println("creation fait");
-				 this.con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-
-	}
+	
 
 	@SuppressWarnings("deprecation")
 	public ArrayList<Activite> affiche() throws SQLException{

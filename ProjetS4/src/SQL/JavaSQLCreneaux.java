@@ -31,23 +31,7 @@ public class JavaSQLCreneaux extends JavaSQL{
 		super.connection();
 	}
 	
-	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Creneaux(idC INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), couleur INT, debut INT, fin INT, numSalarie INT, code INT, numero INT, idA INT,"
-				+ "CONTRAINT fk_Creneaux_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
-				+ "CONTRAINT fk_Creneaux_code FOREIGN KEY(code) REFERENCES Calculateur(code),"
-				+ "CONTRAINT fk_Creneaux_numero FOREIGN KEY(numero) REFERENCES Salle(numero)"
-				+ "CONTRAINT fk_Creneaux_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
-			try{
-				 this.connection();
-				 Statement stmt = getCon().createStatement();
-				 stmt.executeUpdate(sql);
-				 System.out.println("creation fait");
-				 this.con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-
-	}
+	
 	
 	public void affiche() throws SQLException{
 		String sql = "SELECT * FROM Creneaux;";

@@ -22,20 +22,7 @@ public class JavaSQLMateriel extends JavaSQL{
 		super.connection();
 	}
 	
-	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Materiel(numSerie INT PRIMARY KEY, type VARCHAR(30), numero INT,"
-				+ "CONSTRAINT fk_Materiel_numero FOREIGN KEY(numero) REFERENCES Salle(numero);";
-			try{
-				 this.connection();
-				 Statement stmt = getCon().createStatement();
-				 stmt.executeUpdate(sql);
-				 System.out.println("creation fait");
-				 this.con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-
-	}
+	
 	
 	public void affiche() throws SQLException{
 		String sql = "SELECT * FROM Materiel;";

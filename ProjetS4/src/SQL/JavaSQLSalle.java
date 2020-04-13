@@ -27,19 +27,7 @@ public class JavaSQLSalle extends JavaSQL{
 		super.connection();
 	}
 	
-	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Salle(numero INT PRIMARY KEY, nom VARCHAR(30), place INT NOT NULL);";
-			try{
-				 this.connection();
-				 Statement stmt = getCon().createStatement();
-				 stmt.executeUpdate(sql);
-				 System.out.println("creation fait");
-				 this.con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-
-	}
+	
 	
 	public ArrayList<Salle> affiche() throws SQLException{
 		ArrayList<Salle> salletab = new ArrayList<Salle>();

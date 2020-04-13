@@ -18,6 +18,8 @@ public class Main {
 		JavaSQLPersonne testSqlPersonne = new JavaSQLPersonne("Geyer","Jules","Chef","putheu", testP, testN);
 		JavaSQLDomaine testSqlDomaine = new JavaSQLDomaine("sqli");
 		JavaSQLCompetence testSqlCompetence = new JavaSQLCompetence(10,"xjbv",5);
+		JavaSQLDebug test = new JavaSQLDebug();
+		JavaSQL java = new JavaSQL();
 		
 //		try {
 ////			testSqlDomaine.creation();
@@ -26,11 +28,15 @@ public class Main {
 ////			testSqlDomaine.affiche();
 //			
 ////			testSqlCompetence.creation();
-//			testSqlPersonne.creation();
+////			testSqlPersonne.creation();
 ////			
 ////			testSqlPersonne.insertion();
 ////			testSqlPersonne.drop();
-//			testSqlPersonne.affiche();
+////			testSqlPersonne.affiche();
+//			
+////			test.affiche();
+////			test.drop();
+////			java.creation();
 //
 //		}catch(SQLException f){
 //			f.printStackTrace();

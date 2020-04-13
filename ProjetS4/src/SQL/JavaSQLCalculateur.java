@@ -29,19 +29,6 @@ public class JavaSQLCalculateur extends JavaSQL{
 		super.connection();
 	}
 	
-	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Calculateur(code INT PRIMARY KEY, nom VARCHAR(30), capacite INT NOT NULL);";
-			try{
-				 this.connection();
-				 Statement stmt = getCon().createStatement();
-				 stmt.executeUpdate(sql);
-				 System.out.println("creation fait");
-				 this.con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-
-	}
 	
 	public ArrayList<Calculateur> affiche() throws SQLException{
 		String sql = "SELECT * FROM Calculateur;";

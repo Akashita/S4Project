@@ -23,23 +23,7 @@ public class JavaSQLParticipe extends JavaSQL{
 		super.connection();
 	}
 	
-	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Participe(numSalarie INT, code INT, numero INT, idA INT,"
-				+ "CONSTRAINT fk_Participe_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
-				+ "CONSTRAINT fk_Participe_code FOREIGN KEY(code) REFERENCES Calculateur(code),"
-				+ "CONSTRAINT fk_Participe_numero FOREIGN KEY(numero) REFERENCES Salle(numero),"
-				+ "CONSTRAINT fk_Participe_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
-			try{
-				 this.connection();
-				 Statement stmt = getCon().createStatement();
-				 stmt.executeUpdate(sql);
-				 System.out.println("creation fait");
-				 this.con.close();
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-
-	}
+	
 	
 	public void affiche() throws SQLException{
 		String sql = "SELECT * FROM Participe;";
