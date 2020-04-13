@@ -17,10 +17,10 @@ public class JavaSQLProjet extends JavaSQL{
 	private String nom;
 	private int priorite;
 	private LocalDate deadline;
-	private String couleur;
+	private int couleur;
 	private int numSalarie;
 	
-	public JavaSQLProjet (String nom, int priorite, LocalDate deadline, String couleur, int numSalarie) {
+	public JavaSQLProjet (String nom, int priorite, LocalDate deadline, int couleur, int numSalarie) {
 		super();
 		this.nom = nom;
 		this.priorite = priorite;
