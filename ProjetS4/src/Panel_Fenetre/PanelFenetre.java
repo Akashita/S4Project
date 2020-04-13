@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -48,9 +49,9 @@ public class PanelFenetre extends JPanel{
     protected JComboBox<Ressource> comboBoxRessource;		
 
     String [] niveau = {"niveau", "Debutant", "Confirmé", "Expert"};
-    protected JComboBox<String> comboBoxNiveau1, comboBoxNiveau2, comboBoxNiveau3;		
-    protected JComboBox<String> comboBoxDomaine1, comboBoxDomaine2, comboBoxDomaine3;		
-
+    protected JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
+    protected ArrayList<Competence> listeCompetenceChoisie;
+    
 	protected Entreprise entreprise;
     protected FenetreModal fm;
     protected Color couleurFond = PanelPrincipal.BLEU3;
@@ -65,7 +66,7 @@ public class PanelFenetre extends JPanel{
     protected JComboBox<String> comboBoxAnnee, comboBoxMois, comboBoxJour;	
     
     protected Checkbox checkBoxestAdmin = new Checkbox("administrateur", false);
-
+    protected JButton boutonAjoutCompetence;
     
 	public PanelFenetre(Entreprise entreprise, FenetreModal fm) {
 		this.entreprise = entreprise;
@@ -74,22 +75,67 @@ public class PanelFenetre extends JPanel{
 	
 	protected void creerInterface() {}
 	
-	protected void initialiseNiveau() {
-		comboBoxNiveau1 = new JComboBox<String>(niveau);	
-		comboBoxNiveau2 = new JComboBox<String>(niveau);	
-		comboBoxNiveau3 = new JComboBox<String>(niveau);	
-	}
-	
-	protected void initialiseDomaine() {
+	//-------------------------------------------->>>>> Competence
+	protected void initialiseCompetence (PanelFenetre pf) {
+		listeCompetenceChoisie = new ArrayList<Competence>();
+
 		Domaine domaine = entreprise.getDomaine();
 		String [] liste = new String [domaine.getListeDomaine().size()+1];
-		liste[0] = "Choissiez une compétence";
+		liste[0] = "Compétence";
 		for (int i=0; i<liste.length-1; i++) {
 			liste[i+1] = domaine.getListeDomaine().get(i);
 		}
-		comboBoxDomaine1 = new JComboBox<String>(liste);
-		comboBoxDomaine2 = new JComboBox<String>(liste);
-		comboBoxDomaine3 = new JComboBox<String>(liste);
+		comboBoxDomaine = new JComboBox<String>(liste);
+
+		comboBoxNiveau = new JComboBox<String>(niveau);	
+
+		boutonAjoutCompetence = new JButton("Ajouter");
+		boutonAjoutCompetence.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	ajoutCompetenceChoisie(pf);
+	        }
+	    });			
+	}
+		
+	public void ajoutCompetenceChoisie(PanelFenetre pf) {
+		if (comboBoxDomaine.getSelectedIndex()>0) {
+			if (comboBoxNiveau.getSelectedIndex()>0) {
+				boolean estPresent = false;
+				Competence competence = new Competence((String) comboBoxDomaine.getSelectedItem(), comboBoxNiveau.getSelectedIndex());
+				for (int i=0; i<listeCompetenceChoisie.size(); i++) {
+					if (competence.getNom() == listeCompetenceChoisie.get(i).getNom()) {
+						estPresent = true;
+					}
+				}
+				if (!estPresent) {
+					listeCompetenceChoisie.add(competence);
+					pf.removeAll();
+					pf.creerInterface();
+					pf.revalidate();
+					pf.repaint();		
+				}	
+				else {
+			    	JOptionPane.showMessageDialog(null, "Vous l'avez déjà choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}
+			}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Choissisez un niveau", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Choissisez une compétence", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
+	}
+	
+	protected JPanel afficherListeCompetenceChoisie() {
+		JPanel panel = new JPanel();
+		panel.setBackground(couleurFond);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.add(creerTexte("Compétences choisies: "));
+		for (int i=0; i<listeCompetenceChoisie.size(); i++) {
+			panel.add(creerTexte(listeCompetenceChoisie.get(i).getNom()));
+		}
+		return panel;
 	}
 	
 	//----------------------------------------------------->>>> Gesion jour/mois/annee
@@ -289,38 +335,4 @@ public class PanelFenetre extends JPanel{
 		return debut;
 	}
 
-	protected ArrayList<Competence> convertToCompetence(){
-		ArrayList<Competence> liste = new ArrayList<Competence>();
-		for (int i=1; i<4; i++) {
-			Competence competence = creerCompetence(i);
-			if (competence != null) {
-				liste.add(competence);
-			}
-		}
-		return liste;
-	}
-	private Competence creerCompetence(int choix) {
-		Competence competence = null;
-		switch (choix) {
-		case 1:
-			if (comboBoxDomaine1.getSelectedIndex()>0 && comboBoxNiveau1.getSelectedIndex()>0) {
-				competence = new Competence((String) comboBoxDomaine1.getSelectedItem(), comboBoxNiveau1.getSelectedIndex());
-			}		
-			break;
-		case 2:
-			if (comboBoxDomaine2.getSelectedIndex()>0 && comboBoxNiveau2.getSelectedIndex()>0) {
-				competence = new Competence((String) comboBoxDomaine2.getSelectedItem(), comboBoxNiveau2.getSelectedIndex());
-			}		
-			break;
-		case 3:
-			if (comboBoxDomaine3.getSelectedIndex()>0 && comboBoxNiveau3.getSelectedIndex()>0) {
-				competence = new Competence((String) comboBoxDomaine3.getSelectedItem(), comboBoxNiveau3.getSelectedIndex());
-			}		
-			break;
-
-		default:
-			break;
-		}
-		return competence;
-	}
 }

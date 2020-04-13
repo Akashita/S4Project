@@ -22,6 +22,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 
 	public PanelNouvelleRessource(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
+		initialiseCompetence(this);
 		creerInterface();
 	}
 	
@@ -86,15 +87,27 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			
 			
 			
-			initialiseDomaine();
-			initialiseNiveau();
 			gc.gridwidth = 3;
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
 			gc.gridy = 5;
 			this.add(creerTitre("Indiquez ses compétences"), gc);
 
-			gc.gridwidth = 2;
+			gc.fill = GridBagConstraints.WEST;
+			gc.gridy = 6;		
+			this.add(afficherListeCompetenceChoisie(), gc);
+
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridwidth = 1;
+			gc.gridx = 0;
+			gc.gridy = 7;
+			this.add(comboBoxDomaine, gc);
+			gc.gridx = 1;
+			this.add(comboBoxNiveau, gc);
+			gc.gridx = 2;
+			this.add(boutonAjoutCompetence, gc);
+			
+			/*gc.gridwidth = 2;
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridx = 0;
 			gc.gridy = 6;
@@ -117,7 +130,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			this.add(comboBoxDomaine3, gc);
 			gc.gridwidth = 1;
 			gc.gridx = 2;
-			this.add(comboBoxNiveau3, gc);
+			this.add(comboBoxNiveau3, gc);*/
 			
 			gc.gridwidth = 1;
 			gc.gridx = 0;
@@ -194,7 +207,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 						role = Personne.COLLABORATEUR;
 					}
 					
-					entreprise.nouvPersonne(textFieldNom.getText(), textFieldPrenom.getText(), role, convertToCompetence());	 
+					entreprise.nouvPersonne(textFieldNom.getText(), textFieldPrenom.getText(), role, listeCompetenceChoisie);	 
 					fm.dispose();
 				}
 				else {
