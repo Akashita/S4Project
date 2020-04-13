@@ -16,6 +16,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import EcouteurEvenement.KeyActiviteListener;
 import EcouteurEvenement.SourisActiviteListener;
 import Model.Activite;
 import Model.Entreprise;
@@ -107,20 +108,10 @@ public class PanelInfoProjet extends JPanel{
 			for (int i=0; i<nbActivite; i++) {
 				gc.gridy ++;
 				if (i<projet.getListe().size()) {
-					
-					Activite activite = listeActivite.get(i);
-					
-					JPanel panelActivite;
-					ArrayList<Ressource> listeRes = activite.getListeRessourceType(Ressource.PERSONNE);
-					if (activite.getAfficheEDT() && listeRes.size() > 0) { //on affiche son edt
-						panelActivite = new PanelEDTActivite(entreprise, activite);
-					}
-					else { // sinon on affiche ses infos
-						panelActivite = new PanelInfoActivite(entreprise, activite);
-					}
-					panelActivite.addMouseListener(new SourisActiviteListener(entreprise, activite));
-					panel.add(panelActivite, gc);			
-
+					Activite activite = listeActivite.get(i);							
+					PanelInfoActivite pia = new PanelInfoActivite(entreprise, activite);
+					pia.addMouseListener(new SourisActiviteListener(entreprise, activite));	
+					panel.add(pia, gc);								
 				}
 				else {
 					JPanel caseVide = new JPanel();
@@ -130,7 +121,7 @@ public class PanelInfoProjet extends JPanel{
 			}
 		}
 		
-		
+
 		return panel;
 	}
 		

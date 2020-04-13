@@ -23,8 +23,9 @@ public class Activite implements Comparable<Activite>{
 	private Projet projet;
 	private int ordre;
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
-
-	private boolean afficheEDT = false; //inutile de le stocké dans la bdd
+	
+	private boolean afficheEDT = false; //pour le graphique
+	private boolean changeSens = false; //pour le graphique
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -88,6 +89,10 @@ public class Activite implements Comparable<Activite>{
 		return afficheEDT;
 	}
 
+	public boolean getChangeSens() {
+		return changeSens;
+	}
+
 	public int getOrdre() {
 		return ordre;
 	}
@@ -118,6 +123,10 @@ public class Activite implements Comparable<Activite>{
 		else {
 			afficheEDT = true;
 		}
+	}
+
+	public void setChangeSens(boolean b) {
+		changeSens = b;
 	}
 
 

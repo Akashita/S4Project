@@ -3,6 +3,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
+import EcouteurEvenement.KeyActiviteListener;
 import Model.Entreprise;
 
 public class PanelPrincipal extends JPanel implements Observer{
@@ -35,6 +36,14 @@ public class PanelPrincipal extends JPanel implements Observer{
         panel.add(new PanelProjet(entreprise), BorderLayout.NORTH);
         panel.add(new PanelInfoProjet(entreprise), BorderLayout.CENTER);
         this.add(panel, BorderLayout.CENTER);
+        
+        
+        if (entreprise.getActiviteSelectionner() != null) {
+    		this.setFocusable(true);
+    		this.requestFocus();
+    		this.addKeyListener(new KeyActiviteListener(entreprise));        	
+        }
+		
 		this.revalidate();	
 	}
 }

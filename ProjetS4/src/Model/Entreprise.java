@@ -468,10 +468,39 @@ public class Entreprise extends Observable{
 		update();
 	}
 
+	public void modifieListeActivite(boolean monte) {
+		Activite activite = activiteSelectionner;
+		Projet projet = activite.getProjet();
+		ArrayList<Activite> listeActivite = projet.getListe();
+		int index = 0;
+		for (int i=0; i<listeActivite.size(); i++) {
+			if (listeActivite.get(i).getId() == activite.getId()) {
+				index = i;
+				listeActivite.remove(i);
+				break;
+			}
+		}
+		if (monte) {
+			if (index>0) {
+				index--;
+			}
+		}
+		else {
+			if (index<listeActivite.size()) {
+				index++;
+			}
+		}
+		listeActivite.add(index, activite);
+		projet.setListeActivite(listeActivite);
+		update();
+	}
+
+	
 	public void update() {
 		this.setChanged();
 		this.notifyObservers();	
 	}
+
 
 
 	
