@@ -22,15 +22,18 @@ public class Main {
 		JavaSQLDebug test = new JavaSQLDebug();
 		JavaSQL java = new JavaSQL();
 		LocalDate  date = LocalDate.of(2000, 05, 28);
-		JavaSQLProjet testprojet = new JavaSQLProjet("projet test", 5, date, "rouge", 1);
+		JavaSQLProjet testprojet = new JavaSQLProjet("projet test", 5, date, 1, 1);
 		
 		
 		try {
-			testSqlDomaine.insertion();
+//			testSqlDomaine.insertion();
+//
+//			testSqlPersonne.insertion();
+//			
+//			testprojet.insertion();
+//			
 
-			testSqlPersonne.insertion();
-			
-			testprojet.insertion();
+			ArrayList<Projet> test1 = testprojet.affiche();
 			
 //			test.affiche();
 //			test.drop();
