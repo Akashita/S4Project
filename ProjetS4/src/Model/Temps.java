@@ -27,45 +27,44 @@ public final class Temps {
 	}
 	
 	
-	//TODO Risque de poser probl�me lors du changement d'ann�e
 	public static LocalDate[] getJourSemaine(int annee, int semaine) {
-		/**
-		 * Decale l'edt vers la droite
-		 * 
-		LocalDate[] tab = new LocalDate[5];
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
-		cal.setWeekDate(annee, semaine, Calendar.MONDAY);
-		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
+		int premierJour = cal.getMinimalDaysInFirstWeek();
+
 		
-		LocalDate init = LocalDate.ofYearDay(annee, numJour);
+		if(semaine == 1 && premierJour > Calendar.MONDAY) {
+			cal.set(Calendar.YEAR, annee-1);
+			cal.set(Calendar.WEEK_OF_YEAR, cal.getActualMaximum(Calendar.WEEK_OF_YEAR) + 1);
+			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		} else {
+			cal.setWeekDate(annee, semaine, Calendar.MONDAY);
+		}
+		
+		
+		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
+		int numAnne = cal.get(Calendar.YEAR);
+		
+		LocalDate init = LocalDate.ofYearDay(numAnne, numJour);
+		LocalDate[] tab = new LocalDate[5];
 		
 		for (int i = 0; i < 5; i++) {
-			init = init.plus(1, ChronoUnit.DAYS);
 			tab[i] = init;
+			init = init.plus(1, ChronoUnit.DAYS);
 		}
+
 		return tab;
 		
-		**/
-		
-		LocalDate[] tab = new LocalDate[5];
-		
-		//On r�cup�re le num�ro du premier jour (initialis� au lundi) de la semaine pass�e en param�tre
-		Calendar cal = Calendar.getInstance();
-		cal.setFirstDayOfWeek(Calendar.MONDAY);
-		cal.setWeekDate(annee, semaine, Calendar.MONDAY);
-		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
-		
-		//On remplit le tableau avec les 5 jours ouvrables de la semaine (lundi -> vendredi)
-		// en incr�mentant le num�ro du jour 
-		for (int i = 0; i < 5; i++) {
-			tab[i] = LocalDate.ofYearDay(annee, numJour+i);
-		}
-		
-		return tab;	
-
 	}
+	
+	
+	public static int getNbSemaine(int annee) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, annee);
+		return cal.getActualMaximum(Calendar.WEEK_OF_YEAR);
+	}
+	
 	
 	public static LocalDate[] getJourSemaine() {
 		LocalDate[] tab = new LocalDate[5];
