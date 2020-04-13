@@ -67,21 +67,8 @@ public final class Temps {
 	
 	
 	public static LocalDate[] getJourSemaine() {
-		LocalDate[] tab = new LocalDate[5];
-		LocalDate date = LocalDate.now();
-		//On recuere le numero du premier jour (initialise au lundi) de la semaine passee en parametre
 		Calendar cal = Calendar.getInstance();
-		cal.setFirstDayOfWeek(Calendar.MONDAY);
-		cal.setWeekDate(date.getYear(), date.getMonthValue(), Calendar.MONDAY);
-		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
-		
-		//On remplit le tableau avec les 5 jours ouvrables de la semaine (lundi -> vendredi)
-		// en incrementant le numero du jour 
-		for (int i = 0; i < 5; i++) {
-			tab[i] = LocalDate.ofYearDay(date.getYear(), numJour+i);
-		}
-		
-		return tab;	
+		return getJourSemaine(cal.get(Calendar.YEAR), cal.get(Calendar.WEEK_OF_YEAR));
 	}
 	
 	public static String getLocalDateString(LocalDate date) {
