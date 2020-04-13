@@ -52,7 +52,7 @@ public class JavaSQLCalculateur extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 calcultab.add(new Calculateur(res.getString("code"),res.getString("nom"),res.getString("capacite")));
+						 calcultab.add(new Calculateur(res.getInt("code"),res.getString("nom"),res.getInt("capacite")));
 						 System.out.println("code = " + res.getString("code") + ", nom= " + res.getString("nom") + ", capacite= " + res.getString("capacite"));
 					 }
 				 }
