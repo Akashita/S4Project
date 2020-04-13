@@ -95,6 +95,9 @@ public class Projet implements Comparable<Projet>{
 		this.deadline = deadline;
 	}
 
+	public void setListeActivite(ArrayList<Activite> lActivite) {
+		this.lActivite = lActivite;
+	}
 	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override

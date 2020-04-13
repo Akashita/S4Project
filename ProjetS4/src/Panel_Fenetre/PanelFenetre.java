@@ -52,7 +52,7 @@ public class PanelFenetre extends JPanel{
     String[] mois = {"Janvier", "Février", "Mars", "Avril",
     		"Mai", "Juin", "Juillet", "Aout",
     		"Septembre", "Octobre", "Novembre", "Décembre"};
-    String[] annees = new String [20];
+    String[] annees = new String [Temps.nbAnnnee];
     protected JComboBox<String> comboBoxAnnee, comboBoxMois, comboBoxJour;		
 
     

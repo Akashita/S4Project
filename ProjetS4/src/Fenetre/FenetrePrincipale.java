@@ -34,9 +34,9 @@ public class FenetrePrincipale extends JFrame{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int NouveauProjet = 0, NouvelleRessource = 1, NouvelleActivite = 2,
-			AjouterRessource = 3, EnleverRessource = 4,
-			ModifierProjet = 5, ModifierActivite = 6, ModifierRessource = 7;
+	public static final int NouveauProjet = 0, NouvelleRessource = 1, NouvelleActivite = 2, NouveauDomaine = 3,
+			AjouterRessource = 4, EnleverRessource = 5,
+			ModifierProjet = 6, ModifierActivite = 7, ModifierRessource = 8;
 
 	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
@@ -73,6 +73,11 @@ public class FenetrePrincipale extends JFrame{
 	    KeyStroke ctrlNouvelleRessource = KeyStroke.getKeyStroke("control R");
 	    itemNouvelleRessource.setAccelerator(ctrlNouvelleRessource);
 	    itemNouvelleRessource.addActionListener(new MenuBarListener(entreprise, NouvelleRessource));
+
+		JMenuItem itemNouvelleDomaine = new JMenuItem("Nouvelle ressource", KeyEvent.VK_D);
+	    KeyStroke ctrlNouvelleDomaine = KeyStroke.getKeyStroke("control D");
+	    itemNouvelleDomaine.setAccelerator(ctrlNouvelleDomaine);
+	    itemNouvelleDomaine.addActionListener(new MenuBarListener(entreprise, NouveauDomaine));
 
 		JMenuItem itemQuitter = new JMenuItem("Quitter", KeyEvent.VK_Q);
 	    KeyStroke ctrlQuitter = KeyStroke.getKeyStroke("control Q");
@@ -127,6 +132,7 @@ public class FenetrePrincipale extends JFrame{
 		
 		menuFichier.add(itemNouveauProjet);
 		menuFichier.add(itemNouvelleRessource);
+		menuFichier.add(itemNouvelleDomaine);
 		menuFichier.add(itemQuitter);
 		
 		menuEditer.add(itemAjout);

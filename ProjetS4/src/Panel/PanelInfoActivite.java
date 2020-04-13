@@ -12,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import EcouteurEvenement.KeyActiviteListener;
 import EcouteurEvenement.SourisRessourceListener;
 import Model.Activite;
 import Model.Entreprise;
@@ -27,30 +28,29 @@ public class PanelInfoActivite extends JPanel{
 	private Entreprise entreprise;
 	private Activite activite;
 	private Color couleurFond;
-	private boolean estSurSouris;
-
-	public PanelInfoActivite (Entreprise entreprise) {
-		this.entreprise = entreprise;
-		activite = entreprise.getActiviteSelectionner();
-		this.setBackground(PanelPrincipal.BLEU3);
-		if (activite != null) {
-			afficheInterface();
-		}
-	}
+	
 
 	public PanelInfoActivite (Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;
 		this.activite = activite;
+
 		if (activite != null) {
 			couleurFond = PanelPrincipal.BLEU3;
-			if (entreprise.getActiviteSelectionner() != null) {
-				if (activite.getId() == entreprise.getActiviteSelectionner().getId()) {
-					couleurFond = PanelPrincipal.BLEU2;
-				}					
-			}
 			this.setBackground(couleurFond);
 			this.setLayout(new BorderLayout());
-			this.add(afficheInterface(), BorderLayout.CENTER);
+
+			ArrayList<Ressource> listeRes = activite.getListeRessourceType(Ressource.PERSONNE);
+			if (activite.getAfficheEDT() && listeRes.size() > 0) { //on affiche son edt
+				this.add(new PanelEDTActivite(entreprise, activite));
+			}
+			else {
+				if (entreprise.getActiviteSelectionner() != null) {
+					if (activite.getId() == entreprise.getActiviteSelectionner().getId()) {
+						couleurFond = PanelPrincipal.BLEU2;
+					}					
+				}
+				this.add(afficheInterface(), BorderLayout.CENTER);
+			}
 		}
 	}
 
@@ -126,8 +126,6 @@ public class PanelInfoActivite extends JPanel{
 					panel.add(listeVide, gc);				
 				}
 			}			
-		
-		
 		return panel;
 	}
 
@@ -189,7 +187,11 @@ public class PanelInfoActivite extends JPanel{
 		return panel;
 	}
 
+	
 	public Activite getActivite() {
 		return activite;
 	}
+	
+	
+	
 }

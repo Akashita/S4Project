@@ -32,7 +32,7 @@ public class MenuBarListener implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (choix == FenetrePrincipale.NouveauProjet || choix == FenetrePrincipale.NouvelleRessource) {
+		if (choix == FenetrePrincipale.NouveauProjet || choix == FenetrePrincipale.NouvelleRessource || choix == FenetrePrincipale.NouveauDomaine) {
 			creerFenetre();
 		}
 		
