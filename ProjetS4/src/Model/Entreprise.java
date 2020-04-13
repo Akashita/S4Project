@@ -116,7 +116,7 @@ public class Entreprise extends Observable{
 		while (chargeAloue < charge) {	
 			for (int i = 0; i < res.size(); i++) {
 				if(res.get(i).creneauDispo(jourCourant, heureCourante)) {
-					res.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getProjet().getCouleur(), act.getCouleur()), jourCourant);
+					res.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
 					chargeAloue++;
 				}
 			}
@@ -136,7 +136,7 @@ public class Entreprise extends Observable{
 
 		while (chargeAloue < charge) {	
 				if(act.creneauDispo("Salle", jourCourant, heureCourante)) {
-					act.ajouterCreneau("Salle", new CreneauHoraire(act, heureCourante, act.getProjet().getCouleur(), act.getCouleur()), jourCourant);
+					act.ajouterCreneau("Salle", new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
 					chargeAloue++;
 			}
 	
@@ -513,10 +513,19 @@ public class Entreprise extends Observable{
 		activite.afficheEDT();
 		update();
 	}
+	
+	private Projet chercherProjetParActivite(Activite act) {
+		for (int i = 0; i < lProjet.size(); i++) {
+			if(lProjet.get(i).contientActivite(act)) {
+				return lProjet.get(i);
+			}
+		}
+		return null;
+	}
 
 	public void modifieListeActivite(boolean monte) {
 		Activite activite = activiteSelectionner;
-		Projet projet = activite.getProjet();
+		Projet projet = chercherProjetParActivite(activite);
 		ArrayList<Activite> listeActivite = projet.getListe();
 		int index = 0;
 		for (int i=0; i<listeActivite.size(); i++) {
