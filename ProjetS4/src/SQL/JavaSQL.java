@@ -78,7 +78,7 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Materiel faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Projet(idP INT PRIMARY KEY, nom VARCHAR(30), priorite INT, deadline DATE, couleur VARCHAR(30), numSalarie INT,"
+				 sql = "CREATE TABLE IF NOT EXISTS Projet(idP INT PRIMARY KEY AUTO_INCREMENT, nom VARCHAR(30), priorite INT, deadline DATE, couleur INT, numSalarie INT,"
 							+ "CONSTRAINT fk_Projet_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie) );";
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Projet faite");

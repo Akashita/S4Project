@@ -1,12 +1,12 @@
 package SQL;
 
 import java.awt.Color;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Hashtable;
 
 import Model.Activite;
@@ -17,10 +17,10 @@ public class JavaSQLProjet extends JavaSQL{
 	private String nom;
 	private int priorite;
 	private LocalDate deadline;
-	private String couleur;
+	private int couleur;
 	private int numSalarie;
 	
-	public JavaSQLProjet (String nom, int priorite, LocalDate deadline, String couleur, int numSalarie) {
+	public JavaSQLProjet (String nom, int priorite, LocalDate deadline, int couleur, int numSalarie) {
 		super();
 		this.nom = nom;
 		this.priorite = priorite;
@@ -40,7 +40,6 @@ public class JavaSQLProjet extends JavaSQL{
 	
 	
 	
-	@SuppressWarnings("deprecation")
 	public ArrayList<Projet> affiche() throws SQLException{
 		ArrayList<Projet> protab = new ArrayList<Projet>();
 		String sql = "SELECT * FROM Projet;";
@@ -61,7 +60,7 @@ public class JavaSQLProjet extends JavaSQL{
 									 tagtab.put(res3.getString("tag"), res3.getString("niveau"));
 								 }
 							 }
-							 res.next();
+							 res2.next();
 							 personne  = new Personne(res2.getString("nom"), res2.getString("prenom"), res2.getString("role"), res2.getInt("numSalarie"), res2.getString("motDePasse"), tagtab);
 						 }
 						 
@@ -72,16 +71,16 @@ public class JavaSQLProjet extends JavaSQL{
 									 Statement stmt5 = getCon().createStatement();
 									 try (ResultSet res5 = stmt5.executeQuery(sql5)){
 										 while(res5.next()) {
-											 Date debut = res5.getDate("debut");
-											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getDouble("charge"), LocalDate.of(debut.getYear(), debut.getMonth(), debut.getDay()), 
+											 LocalDate debut = res5.getDate("debut").toLocalDate();
+											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getDouble("charge"), debut, 
 													 new Color(res5.getInt("couleur")), res5.getInt("ordre")));
 										 }
 									 }
 								} catch(SQLException e){
 									e.printStackTrace();
 								}
-						 Date deadl = res.getDate("deadline");
-						 protab.add(new Projet(acttab,personne, res.getString("nom"), res.getFloat("priorite"), LocalDate.of(deadl.getYear(), deadl.getMonth(), deadl.getDay()), res.getInt("idP"), 
+						 LocalDate deadl = res.getDate("deadline").toLocalDate();
+						 protab.add(new Projet(acttab,personne, res.getString("nom"), res.getFloat("priorite"), deadl, res.getInt("idP"), 
 								 new Color(res.getInt("couleur"))));
 						 
 						 System.out.println("idP = " + res.getString("idP") +"nom = " + res.getString("nom") + ", priorite = " + res.getString("priorite") + ", deadline = " + res.getString("deadline") +
@@ -97,7 +96,8 @@ public class JavaSQLProjet extends JavaSQL{
 	}
 	
 	public void insertion() throws SQLException{
-		String sql = "INSERT INTO Projet(idP, nom, priorite, deadline, couleur, numSalarie) VALUE(NULL,'" + this.nom + "' ,  '"+this.priorite+"' ,'"+this.deadline+"' , '"+this.couleur+"' , '"+this.numSalarie+"');";
+		Date tadat = Date.valueOf(this.deadline);
+		String sql = "INSERT INTO Projet(idP, nom, priorite, deadline, couleur, numSalarie) VALUE(NULL,'" + this.nom + "' ,  '"+this.priorite+"' ,'"+tadat+"' , '"+this.couleur+"' , '"+this.numSalarie+"');";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();

@@ -54,6 +54,8 @@ public class JavaSQLPersonne extends JavaSQL{
 							 }
 						 }
 						 personnetab.add(new Personne(res.getString("nom"), res.getString("prenom"), res.getString("role"), res.getInt("numSalarie"), res.getString("motDePasse"), tagtab));
+						 
+						 
 						 System.out.println("numSalarie = " + res.getString("numSalarie") + ", nom = " +
 						  res.getString("nom") + ", prenom = " + res.getString("prenom") + ", role = " +
 							 res.getString("role") + ", motDePasse = " + res.getString("motDePasse"));

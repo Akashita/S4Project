@@ -38,8 +38,6 @@ public class JavaSQLActivite extends JavaSQL{
 	}
 
 	
-
-	@SuppressWarnings("deprecation")
 	public ArrayList<Activite> affiche() throws SQLException{
 		ArrayList<Activite> acttab = new ArrayList<Activite>();
 		String sql = "SELECT * FROM Activite;";
@@ -48,8 +46,8 @@ public class JavaSQLActivite extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 Date debut = res.getDate("debut");
-						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getDouble("charge"), LocalDate.of(debut.getYear(), debut.getMonth(), debut.getDay()), new Color(res.getInt("couleur")), res.getInt("ordre")));
+						 LocalDate debut = res.getDate("debut").toLocalDate();
+						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getDouble("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre")));
 						 System.out.println("idA = " + res.getString("idA") + ", titre = " + res.getString("titre") + ", debut = " + res.getString("debut") + ", charge = " + res.getString("charge")
 						 + ", ordre = " + res.getString("ordre")+ ", couleur = " + res.getString("couleur") + ", idC = " + res.getString("idC") + ", nom = " + res.getString("nom"));
 					 }
@@ -63,7 +61,8 @@ public class JavaSQLActivite extends JavaSQL{
 	}
 
 	public void insertion() throws SQLException{
-		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idC, nom) VALUE(NULL, '" + this.titre + "' ,  '"+this.debut+"' ,'"+this.charge+"' , '"+this.ordre+"' , '"+this.couleur+"' , '"+this.idC+"' , '"+this.idP+"');";
+		Date debut = Date.valueOf(this.debut);
+		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idC, nom) VALUE(NULL, '" + this.titre + "' ,  '"+debut+"' ,'"+this.charge+"' , '"+this.ordre+"' , '"+this.couleur+"' , '"+this.idC+"' , '"+this.idP+"');";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
