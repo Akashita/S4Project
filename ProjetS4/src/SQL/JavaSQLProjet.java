@@ -35,7 +35,7 @@ public class JavaSQLProjet extends JavaSQL{
 	}
 	
 	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Projet(nom VARCHAR(30) PRIMARY KEY, priorite INT, deadline DATE, couleur VARCHAR(30), numSalarie INT,"
+		String sql = "CREATE TABLE IF NOT EXISTS Projet(idP INT PRIMARY KEY, nom VARCHAR(30), priorite INT, deadline DATE, couleur VARCHAR(30), numSalarie INT,"
 				+ "CONSTRAINT fk_Projet_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie) );";
 			try{
 				 this.connection();
@@ -57,8 +57,8 @@ public class JavaSQLProjet extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 protab.add(new Projet(res.getString("nom"),res.getInt("priorite"),res.getDate("deadline"),res.getString("couleur"),res.getInt("numSalarie")));
-						 System.out.println("nom = " + res.getString("nom") + ", priorite = " + res.getString("priorite") + ", deadline = " + res.getString("deadline") + ", couleur = " + res.getString("couleur") + ", numSalarie = " + res.getString("numSalarie"));
+						 protab.add(new Projet(res.getString("idP"),res.getString("nom"),res.getInt("priorite"),res.getDate("deadline"),res.getString("couleur"),res.getInt("numSalarie")));
+						 System.out.println("idP = " + res.getString("idP") +"nom = " + res.getString("nom") + ", priorite = " + res.getString("priorite") + ", deadline = " + res.getString("deadline") + ", couleur = " + res.getString("couleur") + ", numSalarie = " + res.getString("numSalarie"));
 					 }
 				 }
 				 this.con.close();
@@ -70,7 +70,7 @@ public class JavaSQLProjet extends JavaSQL{
 	}
 	
 	public void insertion() throws SQLException{
-		String sql = "INSERT INTO Projet(nom, priorite, deadline, couleur, numSalarie) VALUE('" + this.nom + "' ,  '"+this.priorite+"' ,'"+this.deadline+"' , '"+this.couleur+"' , '"+this.numSalarie+"');";
+		String sql = "INSERT INTO Projet(idP, nom, priorite, deadline, couleur, numSalarie) VALUE(NULL,'" + this.nom + "' ,  '"+this.priorite+"' ,'"+this.deadline+"' , '"+this.couleur+"' , '"+this.numSalarie+"');";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
