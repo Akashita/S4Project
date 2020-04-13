@@ -86,7 +86,8 @@ public class PanelEDTRessource extends JPanel{
 			LocalDate jourActuel = jours[i];
 			String jour = jourActuel.getDayOfWeek().toString();	
 			String date = jourActuel.getDayOfMonth() + "/" + jourActuel.getMonthValue() + "/" + jourActuel.getYear();			
-			panelJourDeLasemaine.add(creerLabelInterface("<html>"+jour+"<br>"+date+"</html>", false));
+			panelJourDeLasemaine.add(creerLabelInterface("<html>"+jour+"<br>"+date+"</html>", false));			
+			
 		}
 		panelCompletJourDeLasemaine.add(panelJourDeLasemaine,BorderLayout.CENTER);
 		this.revalidate();

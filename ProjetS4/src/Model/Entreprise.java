@@ -266,6 +266,11 @@ public class Entreprise extends Observable{
 	//fonctions de cr�ations d'�l�ments de l'entreprise, les ressources ainsi que les projets
 	//les m�thodes sont doubl�s -> direct dans un projet ou dans l'entreprise
 	
+	public void nouvProjet (Projet proj) {
+		this.lProjet.add(proj);
+	}
+
+	
 	public void creerProjet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline) {//cr�e un projet si son nom n'est pas d�j� utilis�
 		idProjet ++;
 		Projet newProjet = new Projet(chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());
@@ -316,6 +321,11 @@ public class Entreprise extends Observable{
 		activite.setDebut(date);
 		majEDT();
 		update();
+	} 
+	
+	public void nouvPersonne (Personne pers) {
+		this.ajouterRessource(pers);
+		this.incrementId();
 	}
 
 	public void nouvPersonne (String nom, String prenom, String role, ArrayList<Competence> listeComp) {
@@ -326,6 +336,11 @@ public class Entreprise extends Observable{
 
 	}
 	
+	public void nouvSalle(Salle salle) {
+		this.ajouterRessource(salle);
+		this.incrementId();
+	}
+	
 	public void nouvSalle (String nom, int capacite) {
 		Salle nouvSalle = new Salle(this.idCour,nom, capacite);
 		this.incrementId();
@@ -334,15 +349,9 @@ public class Entreprise extends Observable{
 
 		}
 	
-	
-	public void nouvRessourceAutre (String nom, String type) {
-		RessourceAutre nouvRessourceAutre = new RessourceAutre(nom, type, this.idCour);
+	public void nouvCalculateur (Calculateur calc) {
+		this.ajouterRessource(calc);
 		this.incrementId();
-		this.ajouterRessource(nouvRessourceAutre);
-		this.nouvTypeRessource(type);//ajout du type a la liste de type personnalisable
-
-		update();
-
 	}
 	
 	public void nouvCalculateur (String nom) {
@@ -350,6 +359,10 @@ public class Entreprise extends Observable{
 		this.incrementId();
 		this.ajouterRessource(nouvCalculateur);
 		update();
+	}
+	
+	public void nouvDomaine (Domaine domaine) {
+		this.domaine = domaine;
 	}
 	
 	public void nouvDomaine (String domaine) {
