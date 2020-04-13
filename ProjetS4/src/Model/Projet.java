@@ -35,6 +35,10 @@ public class Projet implements Comparable<Projet>{
 		this.id = id;
 		this.couleur = couleur;
 	}
+	
+	public Projet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
+		this(new ArrayList<Activite>(), chefDeProjet, nom, priorite, deadline, id, couleur);
+	}
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES

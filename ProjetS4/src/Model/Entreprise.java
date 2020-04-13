@@ -273,7 +273,7 @@ public class Entreprise extends Observable{
 	
 	public void creerProjet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline) {//cr�e un projet si son nom n'est pas d�j� utilis�
 		idProjet ++;
-		Projet newProjet = new Projet(null,chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());// --------------------------------------------ATTENTION null pour le moment
+		Projet newProjet = new Projet(chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());// --------------------------------------------ATTENTION null pour le moment
 		chefDeProjet.ajouterProjet(newProjet);
 		lProjet.add(newProjet);
 		Collections.sort(lProjet);
