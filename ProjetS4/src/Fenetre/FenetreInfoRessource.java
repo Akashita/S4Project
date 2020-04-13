@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import Model.Entreprise;
 import Model.Projet;
 import Panel.PanelEDTRessource;
+import Ressource.Competence;
 import Ressource.Personne;
 import Ressource.Ressource;
 import Ressource.Salle;
@@ -56,8 +57,17 @@ public class FenetreInfoRessource extends JDialog{
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(Color.WHITE);	
 		if(ressource.getType() == Ressource.PERSONNE) {
-			panel.add(creerLabel("Nom: " + ((Personne) ressource).getPrenom() + " " + ressource.getNom()));
-			panel.add(creerLabel("Compétence: pas encore implementer"));
+			panel.add(creerLabel("Nom: " + ((Personne) ressource).getPrenom() + " " + ressource.getNom() +" ("+estAdmin()+")"));
+			
+			ArrayList<Competence> listeCompetence =  ((Personne) ressource).getListeDeCompetence();
+			if (listeCompetence.size()>0){
+				String liste = "";
+				for (int i=0; i<listeCompetence.size(); i++) {
+					liste += listeCompetence.get(i).getNom()+"("+convertNiveau(listeCompetence.get(i).getNiveau())+") / " ;
+				}
+				panel.add(creerLabel("Compétence: "+liste));
+			}
+		
 			ArrayList<Projet> listeProjet =  ((Personne) ressource).getListeDeProjet();
 			if (listeProjet.size()>0){
 				String liste = "";
@@ -77,6 +87,32 @@ public class FenetreInfoRessource extends JDialog{
 		return panel;
 	}
 
+	private String estAdmin() {
+		String txt = "";
+		if (((Personne) ressource).getRole() == Personne.ADMINISTRATEUR) {
+			txt="administrateur";
+		}
+		else {
+			txt="collaborateur";
+		}
+		return txt;
+	}
+	
+	private String convertNiveau(int niveau) {
+		String txt = "";
+		switch (niveau) {
+		case Competence.DEBUTANT: txt = "debutant";	
+		break;
+		case Competence.CONFIRME: txt = "confirmé";	
+		break;
+		case Competence.EXPERT: txt = "expert";	
+		break;
+
+		default:
+			break;
+		}
+		return txt;
+	}
 	
 	private JLabel creerLabel(String nom) {
 		JLabel label = new JLabel(nom);

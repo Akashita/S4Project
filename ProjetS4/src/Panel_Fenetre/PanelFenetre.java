@@ -1,5 +1,6 @@
 package Panel_Fenetre;
 
+import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -22,6 +23,8 @@ import Model.Entreprise;
 import Model.Projet;
 import Model.Temps;
 import Panel.PanelPrincipal;
+import Ressource.Competence;
+import Ressource.Domaine;
 import Ressource.Ressource;
 
 public class PanelFenetre extends JPanel{
@@ -38,9 +41,15 @@ public class PanelFenetre extends JPanel{
     	    textFieldPriorite = new JTextField(),
     	    textFieldCharge = new JTextField(),
     	    textFieldCapacite = new JTextField();
+    
+    	
 
     protected JComboBox<String> comboBoxType = new JComboBox<String>(listeType);		
     protected JComboBox<Ressource> comboBoxRessource;		
+
+    String [] niveau = {"niveau", "Debutant", "Confirmé", "Expert"};
+    protected JComboBox<String> comboBoxNiveau1, comboBoxNiveau2, comboBoxNiveau3;		
+    protected JComboBox<String> comboBoxDomaine1, comboBoxDomaine2, comboBoxDomaine3;		
 
 	protected Entreprise entreprise;
     protected FenetreModal fm;
@@ -53,7 +62,9 @@ public class PanelFenetre extends JPanel{
     		"Mai", "Juin", "Juillet", "Aout",
     		"Septembre", "Octobre", "Novembre", "Décembre"};
     String[] annees = new String [Temps.nbAnnnee];
-    protected JComboBox<String> comboBoxAnnee, comboBoxMois, comboBoxJour;		
+    protected JComboBox<String> comboBoxAnnee, comboBoxMois, comboBoxJour;	
+    
+    protected Checkbox checkBoxestAdmin = new Checkbox("administrateur", false);
 
     
 	public PanelFenetre(Entreprise entreprise, FenetreModal fm) {
@@ -63,6 +74,23 @@ public class PanelFenetre extends JPanel{
 	
 	protected void creerInterface() {}
 	
+	protected void initialiseNiveau() {
+		comboBoxNiveau1 = new JComboBox<String>(niveau);	
+		comboBoxNiveau2 = new JComboBox<String>(niveau);	
+		comboBoxNiveau3 = new JComboBox<String>(niveau);	
+	}
+	
+	protected void initialiseDomaine() {
+		Domaine domaine = entreprise.getDomaine();
+		String [] liste = new String [domaine.getListeDomaine().size()+1];
+		liste[0] = "Choissiez une compétence";
+		for (int i=0; i<liste.length-1; i++) {
+			liste[i+1] = domaine.getListeDomaine().get(i);
+		}
+		comboBoxDomaine1 = new JComboBox<String>(liste);
+		comboBoxDomaine2 = new JComboBox<String>(liste);
+		comboBoxDomaine3 = new JComboBox<String>(liste);
+	}
 	
 	//----------------------------------------------------->>>> Gesion jour/mois/annee
 	
@@ -261,4 +289,38 @@ public class PanelFenetre extends JPanel{
 		return debut;
 	}
 
+	protected ArrayList<Competence> convertToCompetence(){
+		ArrayList<Competence> liste = new ArrayList<Competence>();
+		for (int i=1; i<4; i++) {
+			Competence competence = creerCompetence(i);
+			if (competence != null) {
+				liste.add(competence);
+			}
+		}
+		return liste;
+	}
+	private Competence creerCompetence(int choix) {
+		Competence competence = null;
+		switch (choix) {
+		case 1:
+			if (comboBoxDomaine1.getSelectedIndex()>0 && comboBoxNiveau1.getSelectedIndex()>0) {
+				competence = new Competence((String) comboBoxDomaine1.getSelectedItem(), comboBoxNiveau1.getSelectedIndex());
+			}		
+			break;
+		case 2:
+			if (comboBoxDomaine2.getSelectedIndex()>0 && comboBoxNiveau2.getSelectedIndex()>0) {
+				competence = new Competence((String) comboBoxDomaine2.getSelectedItem(), comboBoxNiveau2.getSelectedIndex());
+			}		
+			break;
+		case 3:
+			if (comboBoxDomaine3.getSelectedIndex()>0 && comboBoxNiveau3.getSelectedIndex()>0) {
+				competence = new Competence((String) comboBoxDomaine3.getSelectedItem(), comboBoxNiveau3.getSelectedIndex());
+			}		
+			break;
+
+		default:
+			break;
+		}
+		return competence;
+	}
 }

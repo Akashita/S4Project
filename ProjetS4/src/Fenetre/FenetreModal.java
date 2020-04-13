@@ -28,6 +28,7 @@ public class FenetreModal extends JDialog{
 	private JPanel panelInterface;
 	private String titre;
     protected Color couleurFond = PanelPrincipal.BLEU3;
+    protected int largeur, hauteur;
 
 
 	public FenetreModal(Entreprise entreprise, int choix) {
@@ -37,7 +38,7 @@ public class FenetreModal extends JDialog{
 		getPanelFenetre(choix);
 		
 		this.setTitle(titre);
-		this.setSize(400, 300);
+		this.setSize(largeur, hauteur);
 		this.setLocationRelativeTo(null);
 		this.addWindowListener(new FermerFenetre(this));
 		this.setLayout(new BorderLayout());
@@ -50,6 +51,9 @@ public class FenetreModal extends JDialog{
 	}
 	
 	private void getPanelFenetre(int choix) {
+		largeur = 400;
+		hauteur = 350;
+		
 		switch (choix) {
 		case FenetrePrincipale.NouveauProjet:
 			titre = "Creation projet";
