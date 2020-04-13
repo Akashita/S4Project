@@ -3,6 +3,7 @@ package SQL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class JavaSQLDomaine extends JavaSQL{
 
@@ -13,6 +14,9 @@ public class JavaSQLDomaine extends JavaSQL{
 		this.tag = tag;
 	}
 
+	public JavaSQLDomaine () {
+		super();
+	}
 
 	public void connection() {
 		super.connection();
@@ -32,13 +36,15 @@ public class JavaSQLDomaine extends JavaSQL{
 
 	}
 
-	public void affiche() throws SQLException{
+	public ArrayList<String> affiche() throws SQLException{
 		String sql = "SELECT * FROM Domaine;";
+		ArrayList<String> tagtab = new ArrayList<String>();
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
+						 tagtab.add(res.getString("tag"));
 						 System.out.println("tag = " + res.getString("tag"));
 					 }
 				 }
@@ -46,6 +52,7 @@ public class JavaSQLDomaine extends JavaSQL{
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
+			return tagtab;
 
 	}
 

@@ -3,6 +3,8 @@ package SQL;
 import java.sql.*;
 import java.util.ArrayList;
 
+import Ressource.Personne;
+
 public class JavaSQLPersonne extends JavaSQL{
 //	private int numSalarie;
 	private String nom;
@@ -21,12 +23,16 @@ public class JavaSQLPersonne extends JavaSQL{
 		this.tag = tag;
 		this.niveau = niveau;
 	}
+	
+	public JavaSQLPersonne () {
+		super();
+	}
 
 
 	public void connection() {
 		super.connection();
 	}
-	
+
 	public void creation() throws SQLException{
 		String sql = "CREATE TABLE IF NOT EXISTS Personne(numSalarie INT PRIMARY KEY AUTO_INCREMENT,nom VARCHAR(30),prenom VARCHAR(30),role VARCHAR(30),motDePasse VARCHAR(30));";
 			try{
@@ -76,24 +82,39 @@ public class JavaSQLPersonne extends JavaSQL{
 		}
 	}
 
-	public void affiche() throws SQLException{
+	public ArrayList<Personne> affiche() throws SQLException{
 		String sql = "SELECT * FROM Personne;";
-//		String sql = "SELECT TABLE_NAME\r\n" + 
-//				"FROM   INFORMATION_SCHEMA.TABLES\r\n" + 
+		ArrayList<Personne> personnetab = new ArrayList<Personne>();
+		int i = 1;
+//		String sql = "SELECT TABLE_NAME\r\n" +
+//				"FROM   INFORMATION_SCHEMA.TABLES\r\n" +
 //				"WHERE Table_Type='BASE TABLE'";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
+						 ArrayList<String> tagtab = new ArrayList<String>();
+						 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt.executeQuery(sql)){
+							 while(res2.next()) {
+								 tagtab.add(res2.getString("tag"));
+								 tagtab.add(res2.getString("niveau"));
+							 }
+						 }
+						 personnetab.add(new Personne(res.getString("numSalarie"), res.getString("nom"), res.getString("prenom"), res.getString("role"), res.getString("motDePasse"), tagtab));
 //						 System.out.println(res.getString(1));
-						 System.out.println("numSalarie = " + res.getString("numSalarie") + ", nom = " + res.getString("nom") + ", prenom = " + res.getString("prenom") + ", role = " + res.getString("role") + ", motDePasse = " + res.getString("motDePasse"));
+						 System.out.println("numSalarie = " + res.getString("numSalarie") + ", nom = " +
+						  res.getString("nom") + ", prenom = " + res.getString("prenom") + ", role = " +
+							 res.getString("role") + ", motDePasse = " + res.getString("motDePasse"));
 					 }
 				 }
 				 this.con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
+			return personnetab;
 
 	}
 

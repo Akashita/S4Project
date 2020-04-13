@@ -3,6 +3,10 @@ package SQL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import Ressource.Calculateur;
+import Ressource.Personne;
 
 public class JavaSQLCalculateur extends JavaSQL{
 	
@@ -15,6 +19,10 @@ public class JavaSQLCalculateur extends JavaSQL{
 		this.code= code;
 		this.nom = nom;
 		this.capacite = capacite;
+	}
+	
+	public JavaSQLCalculateur () {
+		super();
 	}
 	
 	
@@ -36,13 +44,15 @@ public class JavaSQLCalculateur extends JavaSQL{
 
 	}
 	
-	public void affiche() throws SQLException{
+	public ArrayList<Calculateur> affiche() throws SQLException{
 		String sql = "SELECT * FROM Calculateur;";
+		ArrayList<Calculateur> calcultab = new ArrayList<Calculateur>();
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
+						 calcultab.add(new Calculateur(res.getString("code"),res.getString("nom"),res.getString("capacite")));
 						 System.out.println("code = " + res.getString("code") + ", nom= " + res.getString("nom") + ", capacite= " + res.getString("capacite"));
 					 }
 				 }
@@ -50,6 +60,7 @@ public class JavaSQLCalculateur extends JavaSQL{
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
+			return calcultab;
 
 	}
 	
