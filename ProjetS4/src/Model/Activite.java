@@ -1,6 +1,7 @@
 package Model;
 
 import java.awt.Color;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,11 +17,11 @@ public class Activite implements Comparable<Activite>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private int id;
 	private String titre;
-	private int chargeJHomme;
+	private double chargeJHomme;
 	private int chargeHeure;
 	private LocalDate debut;
 	private Color couleur;
-	private Projet projet;
+	private int idProjet;
 	private int ordre;
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	
@@ -29,14 +30,19 @@ public class Activite implements Comparable<Activite>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Activite(int id, String titre, int chargeJH, LocalDate debut, Color couleur, Projet projet, int ordre) {
+	public Activite(int id, String titre, double chargeJH, LocalDate debut, Color couleur, int idProjet, int ordre) {
 		this.id = id;
 		this.titre = titre;
 		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
-		this.chargeHeure = chargeJH * Entreprise.NB_HEURE_JOUR;
+		this.chargeHeure = (int)(chargeJH * Entreprise.NB_HEURE_JOUR);
 		this.debut = debut;
 		this.couleur = couleur;
-		this.projet = projet;
+		this.idProjet = idProjet;
+		lRessources = new ArrayList<Ressource>();
+	}
+	
+	public Activite(int id, String titre, double chargeJH, Date debut, int couleur, int ordre, int idProjet) {
+		this(id, titre, chargeJH, /*Transformer la date en localdate (passer par un getString ?)*/ null, new Color(couleur), idProjet, ordre);
 		lRessources = new ArrayList<Ressource>();
 	}
 
@@ -49,7 +55,7 @@ public class Activite implements Comparable<Activite>{
 		return titre;
 	}
 
-	public int getChargeJHomme() {
+	public double getChargeJHomme() {
 		return chargeJHomme;
 	}
 
@@ -81,8 +87,8 @@ public class Activite implements Comparable<Activite>{
 		return couleur;
 	}
 
-	public Projet getProjet() {
-		return projet;
+	public int getidProjet() {
+		return idProjet;
 	}
 
 	public boolean getAfficheEDT() {
@@ -232,7 +238,7 @@ public class Activite implements Comparable<Activite>{
 
 
 	/**
-	 * Cherche une ressource dans le projet
+	 * Cherche une ressource dans le idProjet
 	 * @param ressource   La ressource a chercher
 	 * @return un entier qui indique si elle a ete trouvee et sa position
 	 */

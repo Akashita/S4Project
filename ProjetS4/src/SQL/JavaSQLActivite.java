@@ -61,7 +61,7 @@ public class JavaSQLActivite extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 acttab.add(new Activite(res.getInt("idA"),res.getString("titre"),res.getDate("debut"),res.getDouble("charge"),res.getInt("ordre"),res.getString("couleur"),res.getInt("idC"),res.getString("nom")));
+						 acttab.add(new Activite(res.getInt("idA"),res.getString("titre"), res.getDouble("charge"), res.getDate("debut"), res.getInt("couleur") /*COULEUR A CHANGER PAR UN INT*/, res.getInt("ordre") ,res.getInt("nom") /*A CHANGER POUR L'ID DU PROJET*/));
 						 System.out.println("idA = " + res.getString("idA") + ", titre = " + res.getString("titre") + ", debut = " + res.getString("debut") + ", charge = " + res.getString("charge") 
 						 + ", ordre = " + res.getString("ordre")+ ", couleur = " + res.getString("couleur") + ", idC = " + res.getString("idC") + ", nom = " + res.getString("nom"));
 					 }
