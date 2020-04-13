@@ -5,18 +5,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Model.Activite;
-import Ressource.Salle;
 
 public class JavaSQLActivite extends JavaSQL{
 	private String titre;
 	private LocalDate debut;
 	private Double charge;
 	private int ordre;
-	private String couleur;
+	private int couleur;
 	private int idC;
-	private String nom;
+	private int idP;
 	
-	public JavaSQLActivite (String titre, LocalDate debut, Double charge, int ordre, String couleur, int idC, String nom) {
+	public JavaSQLActivite (String titre, LocalDate debut, Double charge, int ordre, int couleur, int idC, int idP) {
 		
 		super();
 		this.titre = titre;
@@ -25,7 +24,7 @@ public class JavaSQLActivite extends JavaSQL{
 		this.ordre = ordre;
 		this.couleur = couleur;
 		this.idC= idC;
-		this.nom= nom;
+		this.idP= idP;
 	}
 	public JavaSQLActivite () {
 		
@@ -38,9 +37,9 @@ public class JavaSQLActivite extends JavaSQL{
 	}
 	
 	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Activite(idA INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), debut DATE, charge DECIMAL(4,2), ordre INT, couleur VARCHAR(30), indC INT, nom VARCHAR(30), "
+		String sql = "CREATE TABLE IF NOT EXISTS Activite(idA INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), debut DATE, charge DECIMAL(4,2), ordre INT, couleur INT, indC INT, idP INT, "
 				+ "CONTRAINT fk_Activite_idC FOREIGN KEY(idC) REFERENCES Creneaux(idC),"
-				+ "CONTRAINT fk_Activite_nom FOREIGN KEY(nom) REFERENCES Projet(nom));";
+				+ "CONTRAINT fk_Activite_idP FOREIGN KEY(idP) REFERENCES Projet(idP));";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
@@ -61,7 +60,7 @@ public class JavaSQLActivite extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 acttab.add(new Activite(res.getInt("idA"),res.getString("titre"), res.getDouble("charge"), res.getDate("debut"), res.getInt("couleur") /*COULEUR A CHANGER PAR UN INT*/, res.getInt("ordre") ,res.getInt("nom") /*A CHANGER POUR L'ID DU PROJET*/));
+						 acttab.add(new Activite(res.getInt("idA"),res.getString("titre"), res.getDouble("charge"), res.getDate("debut"), res.getInt("couleur"), res.getInt("ordre") ,res.getInt("idP") ));
 						 System.out.println("idA = " + res.getString("idA") + ", titre = " + res.getString("titre") + ", debut = " + res.getString("debut") + ", charge = " + res.getString("charge") 
 						 + ", ordre = " + res.getString("ordre")+ ", couleur = " + res.getString("couleur") + ", idC = " + res.getString("idC") + ", nom = " + res.getString("nom"));
 					 }
@@ -75,7 +74,7 @@ public class JavaSQLActivite extends JavaSQL{
 	}
 	
 	public void insertion() throws SQLException{
-		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idC, nom) VALUE(NULL, '" + this.titre + "' ,  '"+this.debut+"' ,'"+this.charge+"' , '"+this.ordre+"' , '"+this.couleur+"' , '"+this.idC+"' , '"+this.nom+"');";
+		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idC, nom) VALUE(NULL, '" + this.titre + "' ,  '"+this.debut+"' ,'"+this.charge+"' , '"+this.ordre+"' , '"+this.couleur+"' , '"+this.idC+"' , '"+this.idP+"');";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
@@ -88,7 +87,7 @@ public class JavaSQLActivite extends JavaSQL{
 	}
 	
 	public String toString() {
-		return "nom : " + this.titre +this.debut+this.charge+this.ordre+this.couleur+this.idC+this.nom; 
+		return "nom : " + this.titre +this.debut+this.charge+this.ordre+this.couleur+this.idC+this.idP; 
 	}
 
 }

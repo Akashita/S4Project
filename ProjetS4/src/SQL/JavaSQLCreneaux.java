@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 public class JavaSQLCreneaux extends JavaSQL{
 	private String titre;
-	private String couleur;
+	private int couleur;
 	private int debut;
 	private int fin;
 	private int numSalarie;
@@ -14,7 +14,7 @@ public class JavaSQLCreneaux extends JavaSQL{
 	private int numero;
 	private int idA;
 	
-	public JavaSQLCreneaux (String titre, String couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) {
+	public JavaSQLCreneaux (String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) {
 		super();
 		this.titre = titre;
 		this.couleur= couleur;
@@ -32,7 +32,7 @@ public class JavaSQLCreneaux extends JavaSQL{
 	}
 	
 	public void creation() throws SQLException{
-		String sql = "CREATE TABLE IF NOT EXISTS Creneaux(idC INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), couleur VARCHAR(30), debut INT, fin INT, numSalarie INT, code INT, numero INT, idA INT,"
+		String sql = "CREATE TABLE IF NOT EXISTS Creneaux(idC INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), couleur INT, debut INT, fin INT, numSalarie INT, code INT, numero INT, idA INT,"
 				+ "CONTRAINT fk_Creneaux_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
 				+ "CONTRAINT fk_Creneaux_code FOREIGN KEY(code) REFERENCES Calculateur(code),"
 				+ "CONTRAINT fk_Creneaux_numero FOREIGN KEY(numero) REFERENCES Salle(numero)"
