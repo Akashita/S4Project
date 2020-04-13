@@ -18,6 +18,7 @@ import Fenetre.FenetrePrincipale;
 import Panel.PanelInfoActivite;
 import Panel.PanelInfoProjet;
 import Ressource.Calculateur;
+import Ressource.Domaine;
 import Ressource.Personne;
 import Ressource.Ressource;
 import Ressource.RessourceAutre;
@@ -53,6 +54,7 @@ public class Entreprise extends Observable{
 	private Activite activiteSelectionner;
 	private ArrayList<String> ressourceAfficher = new ArrayList<String>();
 
+	private Domaine domaine;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -62,6 +64,7 @@ public class Entreprise extends Observable{
 		this.lType =  new ArrayList<String>();
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
+		this.domaine = new Domaine();
 		fenetrePrincipale = new FenetrePrincipale(this);
 		this.update();
 	}
@@ -179,6 +182,9 @@ public class Entreprise extends Observable{
 		return this.idCour;
 	}
 	
+	public Domaine getDomaine() {
+		return this.domaine;
+	}
 
 	public ArrayList<Ressource> getListeRessourceType(String type){
 		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
@@ -283,7 +289,7 @@ public class Entreprise extends Observable{
 			lProjet.add(proj);
 		}
 	}
-	
+		
 	public void modifierProjet(Projet projet, String nom, float priorite, Personne chefDeProjet, LocalDate deadline) {	
 		projet.setNom(nom);
 		projet.setPriorite(priorite);
@@ -345,6 +351,14 @@ public class Entreprise extends Observable{
 		update();
 	}
 	
+	public void nouvDomaine (String domaine) {
+		this.domaine.ajoutDomaine(domaine);
+	}
+
+	public void enleverDomaine (String domaine) {
+		this.domaine.enleverDomaine(domaine);
+	}
+
 	public void ajouterRessourceActivite(Ressource res) {
 		Activite act = getActiviteSelectionner();
 		act.ajouterRessource(res);
@@ -518,10 +532,5 @@ public class Entreprise extends Observable{
 		this.setChanged();
 		this.notifyObservers();	
 	}
-
-
-
-	
-
 }
 

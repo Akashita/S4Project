@@ -121,7 +121,9 @@ public class Activite implements Comparable<Activite>{
 			afficheEDT = false;
 		}
 		else {
-			afficheEDT = true;
+			if (getListeRessourceType(Ressource.PERSONNE).size()>0) {
+				afficheEDT = true;
+			}
 		}
 	}
 

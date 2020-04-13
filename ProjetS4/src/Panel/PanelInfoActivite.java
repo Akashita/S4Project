@@ -126,8 +126,6 @@ public class PanelInfoActivite extends JPanel{
 					panel.add(listeVide, gc);				
 				}
 			}			
-		
-		
 		return panel;
 	}
 
