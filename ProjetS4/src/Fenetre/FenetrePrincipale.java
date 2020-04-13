@@ -74,7 +74,7 @@ public class FenetrePrincipale extends JFrame{
 	    itemNouvelleRessource.setAccelerator(ctrlNouvelleRessource);
 	    itemNouvelleRessource.addActionListener(new MenuBarListener(entreprise, NouvelleRessource));
 
-		JMenuItem itemNouvelleDomaine = new JMenuItem("Nouvelle ressource", KeyEvent.VK_D);
+		JMenuItem itemNouvelleDomaine = new JMenuItem("Nouveau domaine", KeyEvent.VK_D);
 	    KeyStroke ctrlNouvelleDomaine = KeyStroke.getKeyStroke("control D");
 	    itemNouvelleDomaine.setAccelerator(ctrlNouvelleDomaine);
 	    itemNouvelleDomaine.addActionListener(new MenuBarListener(entreprise, NouveauDomaine));

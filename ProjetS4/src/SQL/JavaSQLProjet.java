@@ -1,10 +1,12 @@
 package SQL;
 
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 import Model.Activite;
 import Model.Projet;
@@ -49,6 +51,7 @@ public class JavaSQLProjet extends JavaSQL{
 
 	}
 	
+	@SuppressWarnings("deprecation")
 	public ArrayList<Projet> affiche() throws SQLException{
 		ArrayList<Projet> protab = new ArrayList<Projet>();
 		String sql = "SELECT * FROM Projet;";
@@ -57,7 +60,8 @@ public class JavaSQLProjet extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 protab.add(new Projet(res.getString("idP"),res.getString("nom"),res.getInt("priorite"),res.getDate("deadline"),res.getString("couleur"),res.getInt("numSalarie")));
+						 Date deadl = res.getDate("deadline");
+						 protab.add(new Projet(/*ajouter une personnes (chef de projet)*/null, res.getString("nom"), res.getFloat("priorite"), LocalDate.of(deadl.getYear(), deadl.getMonth(), deadl.getDay()), res.getInt("idP"), new Color(res.getInt("couleur"))));
 						 System.out.println("idP = " + res.getString("idP") +"nom = " + res.getString("nom") + ", priorite = " + res.getString("priorite") + ", deadline = " + res.getString("deadline") + ", couleur = " + res.getString("couleur") + ", numSalarie = " + res.getString("numSalarie"));
 					 }
 				 }

@@ -1,5 +1,6 @@
 package SQL;
 
+import java.awt.Color;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,9 +15,9 @@ public class JavaSQLActivite extends JavaSQL{
 	private int couleur;
 	private int idC;
 	private int idP;
-	
+
 	public JavaSQLActivite (String titre, LocalDate debut, Double charge, int ordre, int couleur, int idC, int idP) {
-		
+
 		super();
 		this.titre = titre;
 		this.debut = debut;
@@ -27,15 +28,15 @@ public class JavaSQLActivite extends JavaSQL{
 		this.idP= idP;
 	}
 	public JavaSQLActivite () {
-		
+
 		super();
 	}
-	
-	
+
+
 	public void connection() {
 		super.connection();
 	}
-	
+
 	public void creation() throws SQLException{
 		String sql = "CREATE TABLE IF NOT EXISTS Activite(idA INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), debut DATE, charge DECIMAL(4,2), ordre INT, couleur INT, indC INT, idP INT, "
 				+ "CONTRAINT fk_Activite_idC FOREIGN KEY(idC) REFERENCES Creneaux(idC),"
@@ -51,7 +52,8 @@ public class JavaSQLActivite extends JavaSQL{
 			}
 
 	}
-	
+
+	@SuppressWarnings("deprecation")
 	public ArrayList<Activite> affiche() throws SQLException{
 		ArrayList<Activite> acttab = new ArrayList<Activite>();
 		String sql = "SELECT * FROM Activite;";
@@ -60,8 +62,9 @@ public class JavaSQLActivite extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 acttab.add(new Activite(res.getInt("idA"),res.getString("titre"), res.getDouble("charge"), res.getDate("debut"), res.getInt("couleur"), res.getInt("ordre") ,res.getInt("idP") ));
-						 System.out.println("idA = " + res.getString("idA") + ", titre = " + res.getString("titre") + ", debut = " + res.getString("debut") + ", charge = " + res.getString("charge") 
+						 Date debut = res.getDate("debut");
+						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getDouble("charge"), LocalDate.of(debut.getYear(), debut.getMonth(), debut.getDay()), new Color(res.getInt("couleur")), null/*new Projet(....) avec idP*/, res.getInt("ordre")));
+						 System.out.println("idA = " + res.getString("idA") + ", titre = " + res.getString("titre") + ", debut = " + res.getString("debut") + ", charge = " + res.getString("charge")
 						 + ", ordre = " + res.getString("ordre")+ ", couleur = " + res.getString("couleur") + ", idC = " + res.getString("idC") + ", nom = " + res.getString("nom"));
 					 }
 				 }
@@ -72,7 +75,7 @@ public class JavaSQLActivite extends JavaSQL{
 			return acttab;
 
 	}
-	
+
 	public void insertion() throws SQLException{
 		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idC, nom) VALUE(NULL, '" + this.titre + "' ,  '"+this.debut+"' ,'"+this.charge+"' , '"+this.ordre+"' , '"+this.couleur+"' , '"+this.idC+"' , '"+this.idP+"');";
 			try{
@@ -85,9 +88,9 @@ public class JavaSQLActivite extends JavaSQL{
 				e.printStackTrace();
 			}
 	}
-	
+
 	public String toString() {
-		return "nom : " + this.titre +this.debut+this.charge+this.ordre+this.couleur+this.idC+this.idP; 
+		return "nom : " + this.titre +this.debut+this.charge+this.ordre+this.couleur+this.idC+this.idP;
 	}
 
 }

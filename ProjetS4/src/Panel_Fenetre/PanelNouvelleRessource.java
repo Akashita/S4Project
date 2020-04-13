@@ -4,10 +4,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.AbstractButton;
 import javax.swing.JOptionPane;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
+import Ressource.Personne;
 import Ressource.Ressource;
 
 public class PanelNouvelleRessource extends PanelFenetre{
@@ -45,7 +47,8 @@ public class PanelNouvelleRessource extends PanelFenetre{
 		gc.weightx = 3;
 		
 		/* weightx définit le nombre de cases en ordonnée */
-		gc.weighty = 6;
+		int maxHauteur = 9;
+		gc.weighty = maxHauteur;
 
 		gc.gridx = 0;
 		gc.gridy = 0;
@@ -79,7 +82,47 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
-			this.add(textFieldNom, gc);			
+			this.add(textFieldNom, gc);	
+			
+			
+			
+			initialiseDomaine();
+			initialiseNiveau();
+			gc.gridwidth = 3;
+			gc.fill = GridBagConstraints.CENTER;
+			gc.gridx = 0;
+			gc.gridy = 5;
+			this.add(creerTitre("Indiquez ses compétences"), gc);
+
+			gc.gridwidth = 2;
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridx = 0;
+			gc.gridy = 6;
+			this.add(comboBoxDomaine1, gc);
+			gc.gridwidth = 1;
+			gc.gridx = 2;
+			this.add(comboBoxNiveau1, gc);
+			
+			gc.gridwidth = 2;
+			gc.gridx = 0;
+			gc.gridy = 7;
+			this.add(comboBoxDomaine2, gc);
+			gc.gridwidth = 1;
+			gc.gridx = 2;
+			this.add(comboBoxNiveau2, gc);
+
+			gc.gridwidth = 2;
+			gc.gridx = 0;
+			gc.gridy = 8;
+			this.add(comboBoxDomaine3, gc);
+			gc.gridwidth = 1;
+			gc.gridx = 2;
+			this.add(comboBoxNiveau3, gc);
+			
+			gc.gridwidth = 1;
+			gc.gridx = 0;
+			gc.gridy = maxHauteur;
+			this.add(checkBoxestAdmin, gc);
 		}
 
 		if (typeChoisi == Ressource.SALLE) {
@@ -129,7 +172,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridx = 1;
-		gc.gridy = 6;
+		gc.gridy = maxHauteur;
 		this.add(creerBoutonAnnuler(), gc);
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
@@ -143,7 +186,15 @@ public class PanelNouvelleRessource extends PanelFenetre{
 		if (!textFieldNom.getText().isEmpty()) {
 			if (typeChoisi == Ressource.PERSONNE) {
 				if (!textFieldPrenom.getText().isEmpty()) {
-					entreprise.nouvPersonne(textFieldNom.getText(), textFieldPrenom.getText());	 
+					String role = "";
+					if (checkBoxestAdmin != null) {
+						role = Personne.ADMINISTRATEUR;
+					}
+					else {
+						role = Personne.COLLABORATEUR;
+					}
+					
+					entreprise.nouvPersonne(textFieldNom.getText(), textFieldPrenom.getText(), role, convertToCompetence());	 
 					fm.dispose();
 				}
 				else {

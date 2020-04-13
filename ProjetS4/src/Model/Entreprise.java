@@ -18,6 +18,7 @@ import Fenetre.FenetrePrincipale;
 import Panel.PanelInfoActivite;
 import Panel.PanelInfoProjet;
 import Ressource.Calculateur;
+import Ressource.Competence;
 import Ressource.Domaine;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -317,8 +318,8 @@ public class Entreprise extends Observable{
 		update();
 	}
 
-	public void nouvPersonne (String nom, String prenom) {
-		Personne nouvPersonne = new Personne(nom,prenom, this.idCour);
+	public void nouvPersonne (String nom, String prenom, String role, ArrayList<Competence> listeComp) {
+		Personne nouvPersonne = new Personne(nom,prenom, role, this.idCour, listeComp);
 		this.incrementId();
 		this.ajouterRessource(nouvPersonne);
 		update();
@@ -358,6 +359,7 @@ public class Entreprise extends Observable{
 	public void enleverDomaine (String domaine) {
 		this.domaine.enleverDomaine(domaine);
 	}
+	
 
 	public void ajouterRessourceActivite(Ressource res) {
 		Activite act = getActiviteSelectionner();
