@@ -1,11 +1,9 @@
 package SQL;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import Model.CreneauHoraire;
 import Ressource.Personne;
 
 public class JavaSQLPersonne extends JavaSQL{
@@ -88,7 +86,6 @@ public class JavaSQLPersonne extends JavaSQL{
 	public ArrayList<Personne> affiche() throws SQLException{
 		String sql = "SELECT * FROM Personne;";
 		ArrayList<Personne> personnetab = new ArrayList<Personne>();
-		int i = 1;
 //		String sql = "SELECT TABLE_NAME\r\n" +
 //				"FROM   INFORMATION_SCHEMA.TABLES\r\n" +
 //				"WHERE Table_Type='BASE TABLE'";
@@ -100,7 +97,7 @@ public class JavaSQLPersonne extends JavaSQL{
 						 Hashtable<String, String> tagtab = new Hashtable<String, String>();
 						 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
 						 Statement stmt2 = getCon().createStatement();
-						 try (ResultSet res2 = stmt.executeQuery(sql)){
+						 try (ResultSet res2 = stmt2.executeQuery(sqltag)){
 							 while(res2.next()) {
 								 tagtab.put(res2.getString("tag"), res2.getString("niveau"));
 							 }

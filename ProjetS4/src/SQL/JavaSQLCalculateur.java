@@ -6,7 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Ressource.Calculateur;
-import Ressource.Personne;
 
 public class JavaSQLCalculateur extends JavaSQL{
 	
