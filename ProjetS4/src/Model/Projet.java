@@ -26,7 +26,7 @@ public class Projet implements Comparable<Projet>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Projet(ArrayList<Activite> Activite,Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
+	public Projet(ArrayList<Activite> Activite, Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
 		this.chefDeProjet = chefDeProjet;
 		this.lActivite =  Activite;   // liste des activité du projet (demander pas Dams)
 		this.nom = nom;
@@ -171,6 +171,17 @@ public class Projet implements Comparable<Projet>{
 	 */
 	public boolean enlever(Activite activite) {
 		return lActivite.remove(activite);
+	}
+	
+	
+	public boolean contientActivite(Activite act) {
+		boolean contient = false;
+		for (int i = 0; i < lActivite.size(); i++) {
+			if(lActivite.get(i).equals(act)) {
+				contient = true;
+			}
+		}
+		return contient;
 	}
 
 

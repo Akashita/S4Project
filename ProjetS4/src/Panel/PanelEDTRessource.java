@@ -199,9 +199,14 @@ public class PanelEDTRessource extends JPanel{
 		JLabel label = new JLabel();
 		if (creneau != null) {
 			
+			//TODO LE NOM DU PROJET EST INDEFINI POUR LE MOMENT
+			/*
             String[] regex = creneau.getTitre().split("%", 2); 
-            
 			label.setText("<html>"+regex[0]+"<br>"+regex[1]+"</html>");
+			*/
+			
+			label.setText("Activité n°"+creneau.getTitre());
+			
 			label.setOpaque(true);
 			label.setBackground(creneau.getCouleurActivite());			
 		}

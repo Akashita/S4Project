@@ -21,7 +21,6 @@ public class Activite implements Comparable<Activite>{
 	private int chargeHeure;
 	private LocalDate debut;
 	private Color couleur;
-	private Projet projet; // plus utilisé 
 	private int ordre;
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	
@@ -30,14 +29,13 @@ public class Activite implements Comparable<Activite>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Activite(int id, String titre, double chargeJH, LocalDate debut, Color couleur, /*Projet projet,*/ int ordre) {
+	public Activite(int id, String titre, double chargeJH, LocalDate debut, Color couleur, int ordre) {
 		this.id = id;
 		this.titre = titre;
 		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
 		this.chargeHeure = (int)(chargeJH * Entreprise.NB_HEURE_JOUR);
 		this.debut = debut;
 		this.couleur = couleur;
-//		this.projet = projet;    //plus utilisé
 		lRessources = new ArrayList<Ressource>();
 	}
 
@@ -82,10 +80,6 @@ public class Activite implements Comparable<Activite>{
 		return couleur;
 	}
 
-	public Projet getProjet() { //-----------------------------projet nn utilisé
-		return projet;
-	}
-
 	public boolean getAfficheEDT() {
 		return afficheEDT;
 	}
@@ -111,6 +105,7 @@ public class Activite implements Comparable<Activite>{
 
 	public void setCharge(int charge) {
 		this.chargeJHomme = charge;
+		this.chargeHeure = (int)(charge * Entreprise.NB_HEURE_JOUR);
 	}
 
 	public void setDebut(LocalDate debut) {

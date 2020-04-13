@@ -11,19 +11,17 @@ public class CreneauHoraire {
 	private int debut;
 	private int fin;
 	private int position;
-	private Color couleurProjet;
 	private Color couleurActivite;
 	private Activite activite;
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	public CreneauHoraire(Activite activite, int debut, Color couleurProjet, Color couleurActivite) {
+	public CreneauHoraire(Activite activite, int debut, Color couleurActivite) {
 		this.activite = activite;
-		titre = activite.getProjet().getNom()+"%"+activite.getTitre();
+		titre = "" + activite.getId(); //TODO A CHANGER (avec le nom du projet et le nom de l'activité)
 		this.debut = debut;
 		fin = debut + 1; //On calcul la fin du creneau
-		this.couleurProjet = couleurProjet;
 		this.couleurActivite = couleurActivite;
 		
 		
@@ -72,9 +70,6 @@ public class CreneauHoraire {
 		return fin;
 	}
 	
-	public Color getCouleurProjet() {
-		return couleurProjet;
-	}
 
 	public Color getCouleurActivite() {
 		return couleurActivite;
