@@ -7,9 +7,11 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 
 import Model.Activite;
 import Model.Projet;
+import Ressource.Personne;
 
 public class JavaSQLProjet extends JavaSQL{
 	private String nom;
@@ -55,14 +57,48 @@ public class JavaSQLProjet extends JavaSQL{
 	public ArrayList<Projet> affiche() throws SQLException{
 		ArrayList<Projet> protab = new ArrayList<Projet>();
 		String sql = "SELECT * FROM Projet;";
+		Personne personne;
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
+						 String sql2 = "SELECT * FROM Personne WHERE numSalarie = " + res.getString("numSalarie") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+							 Hashtable<String, String> tagtab = new Hashtable<String, String>();
+							 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
+							 Statement stmt3 = getCon().createStatement();
+							 try (ResultSet res3 = stmt3.executeQuery(sqltag)){
+								 while(res3.next()) {
+									 tagtab.put(res3.getString("tag"), res3.getString("niveau"));
+								 }
+							 }
+							 res.next();
+							 personne  = new Personne(res2.getString("nom"), res2.getString("prenom"), res2.getString("role"), res2.getInt("numSalarie"), res2.getString("motDePasse"), tagtab);
+						 }
+						 
+						 
+						 ArrayList<Activite> acttab = new ArrayList<Activite>();
+						 String sql5 = "SELECT * FROM Activite WHERE idP = "  + res.getInt("idP") +";";
+								try{
+									 Statement stmt5 = getCon().createStatement();
+									 try (ResultSet res5 = stmt5.executeQuery(sql5)){
+										 while(res5.next()) {
+											 Date debut = res5.getDate("debut");
+											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getDouble("charge"), LocalDate.of(debut.getYear(), debut.getMonth(), debut.getDay()), 
+													 new Color(res5.getInt("couleur")), res5.getInt("ordre")));
+										 }
+									 }
+								} catch(SQLException e){
+									e.printStackTrace();
+								}
 						 Date deadl = res.getDate("deadline");
-						 protab.add(new Projet(/*ajouter une personnes (chef de projet)*/null, res.getString("nom"), res.getFloat("priorite"), LocalDate.of(deadl.getYear(), deadl.getMonth(), deadl.getDay()), res.getInt("idP"), new Color(res.getInt("couleur"))));
-						 System.out.println("idP = " + res.getString("idP") +"nom = " + res.getString("nom") + ", priorite = " + res.getString("priorite") + ", deadline = " + res.getString("deadline") + ", couleur = " + res.getString("couleur") + ", numSalarie = " + res.getString("numSalarie"));
+						 protab.add(new Projet(acttab,personne, res.getString("nom"), res.getFloat("priorite"), LocalDate.of(deadl.getYear(), deadl.getMonth(), deadl.getDay()), res.getInt("idP"), 
+								 new Color(res.getInt("couleur"))));
+						 
+						 System.out.println("idP = " + res.getString("idP") +"nom = " + res.getString("nom") + ", priorite = " + res.getString("priorite") + ", deadline = " + res.getString("deadline") +
+								 ", couleur = " + res.getString("couleur") + ", numSalarie = " + res.getString("numSalarie"));
 					 }
 				 }
 				 this.con.close();

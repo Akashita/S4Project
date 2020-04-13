@@ -273,7 +273,7 @@ public class Entreprise extends Observable{
 	
 	public void creerProjet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline) {//cr�e un projet si son nom n'est pas d�j� utilis�
 		idProjet ++;
-		Projet newProjet = new Projet(chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());
+		Projet newProjet = new Projet(null,chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());// --------------------------------------------ATTENTION null pour le moment
 		chefDeProjet.ajouterProjet(newProjet);
 		lProjet.add(newProjet);
 		Collections.sort(lProjet);
@@ -309,7 +309,7 @@ public class Entreprise extends Observable{
 	public void creerActivite(Projet projet, String titre, int charge, LocalDate debut) {
 		this.idAct++;
 		int ordre = projet.getListe().size();
-		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), projetSelectionner, ordre);
+		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), /*projetSelectionner,*/ ordre); // ------------------------------ATTENTION projet plus stocké dans activité, ref Dams
 		projet.ajouter(act);		
 		selectionnerActivite(act);
 		update();

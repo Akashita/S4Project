@@ -3,7 +3,6 @@ package SQL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
 import Ressource.Calculateur;
@@ -45,12 +44,8 @@ public final class RecupInfoBDD {
 		
 	}
 	
-	public static void recupBDDActivite(Entreprise e) throws SQLException {
-		ArrayList<Activite> act = new ArrayList<Activite>();
-		act = activite.affiche();
-		for (int i = 0; i < act.size(); i++) {
-			e.nouvActivite(act.get(i));
-		}
+	public static void recupBDDActivite(Projet p) throws SQLException {		
+		p.setListeActivite(activite.affiche());
 	}
 	
 	public static void recupBDDProjet(Entreprise e) throws SQLException {

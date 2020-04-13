@@ -26,9 +26,9 @@ public class Projet implements Comparable<Projet>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Projet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
+	public Projet(ArrayList<Activite> Activite,Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
 		this.chefDeProjet = chefDeProjet;
-		this.lActivite =  new ArrayList<Activite>();
+		this.lActivite =  Activite;   // liste des activité du projet (demander pas Dams)
 		this.nom = nom;
 		this.priorite = priorite;
 		this.deadline = deadline;
