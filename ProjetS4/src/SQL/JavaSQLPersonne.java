@@ -1,8 +1,11 @@
 package SQL;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
+import Model.CreneauHoraire;
 import Ressource.Personne;
 
 public class JavaSQLPersonne extends JavaSQL{
@@ -94,16 +97,15 @@ public class JavaSQLPersonne extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 ArrayList<String> tagtab = new ArrayList<String>();
+						 Hashtable<String, String> tagtab = new Hashtable<String, String>();
 						 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
 						 Statement stmt2 = getCon().createStatement();
 						 try (ResultSet res2 = stmt.executeQuery(sql)){
 							 while(res2.next()) {
-								 tagtab.add(res2.getString("tag"));
-								 tagtab.add(res2.getString("niveau"));
+								 tagtab.put(res2.getString("tag"), res2.getString("niveau"));
 							 }
 						 }
-						 personnetab.add(new Personne(res.getString("numSalarie"), res.getString("nom"), res.getString("prenom"), res.getString("role"), res.getString("motDePasse"), tagtab));
+						 personnetab.add(new Personne(res.getString("nom"), res.getString("prenom"), res.getString("role"), res.getInt("numSalarie"), res.getString("motDePasse"), tagtab));
 //						 System.out.println(res.getString(1));
 						 System.out.println("numSalarie = " + res.getString("numSalarie") + ", nom = " +
 						  res.getString("nom") + ", prenom = " + res.getString("prenom") + ", role = " +

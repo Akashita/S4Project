@@ -1,7 +1,10 @@
 package Ressource;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
+import Model.CreneauHoraire;
 import Model.Projet;
 
 public class Personne extends Ressource{
@@ -10,6 +13,8 @@ public class Personne extends Ressource{
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 	private String prenom;
+	private String mdp;
+	private Hashtable<String, String> competences;
 	public static final String COLLABORATEUR = "Collaborateur";
 	public static final String CHEFDEPROJET = "Chef de projet";
 	public static final String ADMINISTRATEUR = "Administrateur";
@@ -26,6 +31,13 @@ public class Personne extends Ressource{
 		this.prenom = prenom;
 		
 	}
+	
+	public Personne(String nom, String prenom, String role, int numSalarie, String mdp, Hashtable<String, String> competences){
+		this(nom, prenom, role, numSalarie);
+		this.mdp = mdp;
+		this.competences = competences;		
+	}
+	
 	public Personne(String nom, String prenom, int numSalarie){
 		//attributs de la classe m�re.
 		super(numSalarie, nom, "Personne");
