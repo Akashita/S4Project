@@ -131,7 +131,6 @@ public class Entreprise extends Observable{
 	private void creerLCreneauxSalles(Activite act) {
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
-		
 		LocalDate jourCourant = verifierJour(act.getDebut());
 		int heureCourante = HEURE_DEBUT_MATIN;
 
@@ -539,6 +538,7 @@ public class Entreprise extends Observable{
 		}
 		listeActivite.add(index, activite);
 		projet.setListeActivite(listeActivite);
+		majEDT();
 		update();
 	}
 
