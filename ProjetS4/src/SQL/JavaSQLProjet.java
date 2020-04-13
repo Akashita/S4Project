@@ -4,6 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
+
+import Model.Activite;
+import Model.Projet;
 
 public class JavaSQLProjet extends JavaSQL{
 	private String nom;
@@ -19,6 +23,10 @@ public class JavaSQLProjet extends JavaSQL{
 		this.deadline = deadline;
 		this.couleur = couleur;
 		this.numSalarie = numSalarie;
+	}
+	
+	public JavaSQLProjet () {
+		super();
 	}
 	
 	
@@ -41,13 +49,15 @@ public class JavaSQLProjet extends JavaSQL{
 
 	}
 	
-	public void affiche() throws SQLException{
+	public ArrayList<Projet> affiche() throws SQLException{
+		ArrayList<Projet> protab = new ArrayList<Projet>();
 		String sql = "SELECT * FROM Projet;";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
+						 protab.add(new Projet(res.getString("nom"),res.getInt("priorite"),res.getDate("deadline"),res.getString("couleur"),res.getInt("numSalarie")));
 						 System.out.println("nom = " + res.getString("nom") + ", priorite = " + res.getString("priorite") + ", deadline = " + res.getString("deadline") + ", couleur = " + res.getString("couleur") + ", numSalarie = " + res.getString("numSalarie"));
 					 }
 				 }
@@ -55,6 +65,7 @@ public class JavaSQLProjet extends JavaSQL{
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
+			return protab;
 
 	}
 	

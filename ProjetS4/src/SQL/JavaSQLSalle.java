@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import Ressource.Calculateur;
 import Ressource.Salle;
 
 public class JavaSQLSalle extends JavaSQL{
@@ -50,7 +49,7 @@ public class JavaSQLSalle extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 salletab.add(new Salle(res.getString("numero"),res.getString("nom"),res.getString("place")));
+						 salletab.add(new Salle(res.getInt("numero"),res.getString("nom"),res.getInt("place")));
 						 System.out.println("numero = " + res.getString("numero") + ", nom = " + res.getString("nom") + ", place = " + res.getString("place"));
 					 }
 				 }
