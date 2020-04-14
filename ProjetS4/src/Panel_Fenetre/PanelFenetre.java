@@ -1,22 +1,31 @@
 package Panel_Fenetre;
 
+import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
 import Fenetre.FenetreModal;
 import Model.Activite;
@@ -66,7 +75,11 @@ public class PanelFenetre extends JPanel{
     protected JComboBox<String> comboBoxAnnee, comboBoxMois, comboBoxJour;	
     
     protected Checkbox checkBoxestAdmin = new Checkbox("administrateur", false);
-    protected JButton boutonAjoutCompetence;
+    protected JButton boutonAjoutCompetence, boutonAjoutDomaine;
+    
+    protected ArrayList<String> listeDomaine;
+    protected JList<String> jListDomaine;
+    protected JScrollPane scrollPaneJListDomaine;
     
 	public PanelFenetre(Entreprise entreprise, FenetreModal fm) {
 		this.entreprise = entreprise;
@@ -75,7 +88,62 @@ public class PanelFenetre extends JPanel{
 	
 	protected void creerInterface() {}
 	
-	//-------------------------------------------->>>>> Competence
+	
+	//-------------------------------------------->>>>> Competence pour Domaine
+	protected void initialiseDomaine (PanelFenetre pf) {
+		listeDomaine = entreprise.getDomaine().getListeDomaine();
+		//afficheListeDomaine();
+		boutonAjoutDomaine = new JButton("Ajouter");
+		boutonAjoutDomaine.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	ajoutDomaine(pf);
+	        }
+	    });			
+	}
+
+	protected Component afficheListeDomaine() {
+		String [] domaine = new String [listeDomaine.size()];
+		Collections.sort(listeDomaine); //trie dans l'odre alphabetique
+		for (int i=0; i<listeDomaine.size(); i++) {
+			domaine[i] = listeDomaine.get(i);
+		}
+		jListDomaine = new JList<String>(domaine);
+		jListDomaine.setBackground(couleurFond);
+		scrollPaneJListDomaine = new JScrollPane(jListDomaine);
+		scrollPaneJListDomaine.setViewportView(jListDomaine);
+		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.add(scrollPaneJListDomaine, BorderLayout.CENTER);
+		return panel;
+	}
+
+	protected void ajoutDomaine (PanelFenetre pf) {
+		if (!textFieldNom.getText().isEmpty()) {
+			String domaine = textFieldNom.getText().toUpperCase();
+			boolean estPresent = false;
+			for (int i=0; i<listeDomaine.size(); i++) {
+				if (domaine.equals(listeDomaine.get(i))) {
+					estPresent = true;
+				}
+			}
+			if (!estPresent) {
+				listeDomaine.add(domaine);
+				//afficheListeDomaine();
+				textFieldNom = new JTextField();
+				pf.removeAll();
+				pf.creerInterface();
+				pf.revalidate();
+				pf.repaint();		
+			}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Ce domaine existe déjà", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+		}
+
+	}
+	
+	//-------------------------------------------->>>>> Competence pour Ressource
 	protected void initialiseCompetence (PanelFenetre pf) {
 		listeCompetenceChoisie = new ArrayList<Competence>();
 
@@ -103,7 +171,7 @@ public class PanelFenetre extends JPanel{
 				boolean estPresent = false;
 				Competence competence = new Competence((String) comboBoxDomaine.getSelectedItem(), comboBoxNiveau.getSelectedIndex());
 				for (int i=0; i<listeCompetenceChoisie.size(); i++) {
-					if (competence.getNom() == listeCompetenceChoisie.get(i).getNom()) {
+					if (competence.getNom().equals(listeCompetenceChoisie.get(i).getNom())) {
 						estPresent = true;
 					}
 				}

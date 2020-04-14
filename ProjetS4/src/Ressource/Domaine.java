@@ -36,6 +36,10 @@ public class Domaine {
 		listeDomaine.remove(index);
 	}
 
+	public void setDomaine(ArrayList<String> listeDomaine) {
+		this.listeDomaine = listeDomaine;
+	}
+	
 	public ArrayList<String> getListeDomaine(){
 		return listeDomaine;
 	}

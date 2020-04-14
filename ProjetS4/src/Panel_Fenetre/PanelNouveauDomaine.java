@@ -1,8 +1,10 @@
 package Panel_Fenetre;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -21,6 +23,7 @@ public class PanelNouveauDomaine extends PanelFenetre{
 
 	public PanelNouveauDomaine(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
+		initialiseDomaine(this);
 		creerInterface();
 	}
 	
@@ -43,49 +46,51 @@ public class PanelNouveauDomaine extends PanelFenetre{
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
 		/* weightx définit le nombre de cases en abscisse */
-		gc.weightx = 3;
+		gc.weightx = 5;
 		
 		/* weightx définit le nombre de cases en ordonnée */
-		gc.weighty = 2;
+		gc.weighty = 11;
 
 		gc.gridx = 0;
 		gc.gridy = 0;
-		gc.gridwidth = 1;
-		gc.fill = GridBagConstraints.CENTER;
-		this.add(creerTexte("Indiquez son nom"), gc);
-		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridwidth = 2;
-		gc.gridx = 1;
-		this.add(textFieldNom, gc);
+		this.add(creerTitre("Domaines existants"), gc);
+
+		gc.fill = GridBagConstraints.BOTH;
+		gc.gridheight = 6;
+		gc.gridy = 1;
+		this.add(afficheListeDomaine(), gc);
 		
-		gc.gridwidth = 1;
-		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
-		gc.gridx = 1;
-		gc.gridy = 2;
-		this.add(creerBoutonAnnuler(), gc);
-		
-		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+		gc.fill = GridBagConstraints.CENTER;
+		gc.gridwidth = 3;
+		gc.gridheight = 1;
+		gc.gridy = 3;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Créer"), gc);
+		this.add(creerTitre("Creer un nouveau domaine"), gc);
+		
+		
+		gc.gridwidth = 2;
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.gridx = 2;
+		gc.gridy = 4;
+		this.add(textFieldNom, gc);
+		gc.gridwidth = 1;
+		gc.gridx = 4;
+		this.add(boutonAjoutDomaine, gc);
+
+		
+		gc.gridwidth = 1;		
+		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+		gc.gridx = 4;
+		gc.gridy = 5;
+		this.add(creerBoutonFin(this, "Terminer"), gc);
 
 	}
 	
 
-	protected void actionFin() {
-		if (!textFieldNom.getText().isEmpty()) {
-				String nom = textFieldNom.getText().toUpperCase();
-				Domaine domaine = entreprise.getDomaine();
-				if (!domaine.estPresent(nom)) {
-					entreprise.nouvDomaine(nom);
-					fm.dispose();
-				}
-				else {
-			    	JOptionPane.showMessageDialog(null, "Ce domaine existe déjà", "Erreur", JOptionPane.ERROR_MESSAGE);			
-				}
-			}
 
-		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire le domaine", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}
+	protected void actionFin() {
+		entreprise.setDomaine(listeDomaine);
+		fm.dispose();
 	}
 }

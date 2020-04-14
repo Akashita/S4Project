@@ -70,6 +70,8 @@ public class FenetreModal extends JDialog{
 		case FenetrePrincipale.NouveauDomaine:
 			titre = "Creation domaine";
 			panelInterface = new PanelNouveauDomaine(entreprise, this);
+			largeur = 500;
+			hauteur = 300;
 			break;
 			
 		case FenetrePrincipale.ModifierProjet:

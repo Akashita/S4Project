@@ -368,6 +368,10 @@ public class Entreprise extends Observable{
 		this.domaine.ajoutDomaine(domaine);
 	}
 
+	public void setDomaine(ArrayList<String> listeDomaine) {
+		this.domaine.setDomaine(listeDomaine);
+	}
+	
 	public void enleverDomaine (String domaine) {
 		this.domaine.enleverDomaine(domaine);
 	}

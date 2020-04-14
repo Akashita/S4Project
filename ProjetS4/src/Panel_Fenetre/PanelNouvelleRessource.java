@@ -106,32 +106,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			this.add(comboBoxNiveau, gc);
 			gc.gridx = 2;
 			this.add(boutonAjoutCompetence, gc);
-			
-			/*gc.gridwidth = 2;
-			gc.fill = GridBagConstraints.HORIZONTAL;
-			gc.gridx = 0;
-			gc.gridy = 6;
-			this.add(comboBoxDomaine1, gc);
-			gc.gridwidth = 1;
-			gc.gridx = 2;
-			this.add(comboBoxNiveau1, gc);
-			
-			gc.gridwidth = 2;
-			gc.gridx = 0;
-			gc.gridy = 7;
-			this.add(comboBoxDomaine2, gc);
-			gc.gridwidth = 1;
-			gc.gridx = 2;
-			this.add(comboBoxNiveau2, gc);
-
-			gc.gridwidth = 2;
-			gc.gridx = 0;
-			gc.gridy = 8;
-			this.add(comboBoxDomaine3, gc);
-			gc.gridwidth = 1;
-			gc.gridx = 2;
-			this.add(comboBoxNiveau3, gc);*/
-			
+						
 			gc.gridwidth = 1;
 			gc.gridx = 0;
 			gc.gridy = maxHauteur;
@@ -200,7 +175,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			if (typeChoisi == Ressource.PERSONNE) {
 				if (!textFieldPrenom.getText().isEmpty()) {
 					String role = "";
-					if (checkBoxestAdmin != null) {
+					if (checkBoxestAdmin.getState()) {
 						role = Personne.ADMINISTRATEUR;
 					}
 					else {
