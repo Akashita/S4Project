@@ -16,7 +16,8 @@ public class PanelPrincipal extends JPanel implements Observer{
 			GRIS1 = new Color(231,234,235),
 			GRIS2 = Color.GRAY,
 		    BLANC = new Color(255,255,255),
-			NOIR = new Color(0,0,0);
+			NOIR = new Color(0,0,0),
+			INDISPO = new Color(179,62,197);
 	
 	private Entreprise entreprise;
 	
