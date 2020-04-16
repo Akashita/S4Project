@@ -89,10 +89,23 @@ public class PanelInfoActivite extends JPanel{
 		
 		
 			panel.add(creerLabel(activite.getTitre(), true), gc);
+			
 			gc.gridx = 0;
 			gc.gridy = 1;
-			panel.add(labelInfo("Travail achevée: pas encore implementé"), gc);
+			String liste = "";
+			for (int i=0; i<activite.getListeDomaine().size(); i++) {
+				liste += activite.getListeDomaine().get(i);
+				if (i<activite.getListeDomaine().size()-1) {
+					liste += " / ";
+				}
+			}
+			panel.add(labelInfo("Domaines demandés: "+liste), gc);
 			
+
+			gc.gridx = 0;
+			gc.gridy = 2;
+			panel.add(labelInfo("Travail achevée: pas encore implementé"), gc);
+
 			gc.gridx = 1;
 			gc.gridy = 0;
 			panel.add(labelInfo("Commence le: " + activite.getJourDebut()), gc);

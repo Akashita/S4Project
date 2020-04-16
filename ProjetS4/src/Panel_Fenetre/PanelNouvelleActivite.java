@@ -20,6 +20,7 @@ public class PanelNouvelleActivite extends PanelFenetre{
 
 	public PanelNouvelleActivite(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
+		initialiseDomaineActivite(this);
 		initialiseComboBoxAnnee(this);
 		initialiseComboBoxMois(this);
 		initialiseComboBoxJour();
@@ -84,23 +85,42 @@ public class PanelNouvelleActivite extends PanelFenetre{
 				
 		
 		
+		gc.gridwidth = 3;
+		gc.fill = GridBagConstraints.CENTER;
+		gc.gridx = 0;
+		gc.gridy = 4;
+		this.add(creerTitre("Indiquez des domaines"), gc);
+
+		gc.fill = GridBagConstraints.WEST;
+		gc.gridy = 5;		
+		this.add(afficherListeDomaineChoisi(), gc);
+
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.gridwidth = 2;
+		gc.gridx = 0;
+		gc.gridy = 6;
+		this.add(comboBoxDomaine, gc);
+		gc.gridx = 2;
+		this.add(boutonAjoutCompetence, gc);
+
+		
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridx = 0;
-		gc.gridy = 5;
+		gc.gridy = 7;
 		gc.gridwidth = 3;
 		this.add(creerTitre("Commence à partir du"), gc);
 		
 		gc.gridx = 0;
-		gc.gridy = 6;
+		gc.gridy = 8;
 		this.add(calendrier(), gc);
 	
 		
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridx = 1;
-		gc.gridy = 7;
+		gc.gridy = 9;
 		this.add(creerBoutonAnnuler(), gc);
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
@@ -116,7 +136,7 @@ public class PanelNouvelleActivite extends PanelFenetre{
 					Projet projet = entreprise.getProjetSelectionner();
 					int charge = Integer.parseInt(textFieldCharge.getText());
 					LocalDate debut = creerLaDate();
-					entreprise.creerActivite(projet, textFieldNom.getText(), charge, debut);
+					entreprise.creerActivite(projet, textFieldNom.getText(), charge, debut, listeDomaineChoisi);
 					fm.dispose();
 				}
 				else {

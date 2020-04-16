@@ -305,10 +305,10 @@ public class Entreprise extends Observable{
 	}
 
 	
-	public void creerActivite(Projet projet, String titre, int charge, LocalDate debut) {
+	public void creerActivite(Projet projet, String titre, int charge, LocalDate debut, ArrayList<String> listeDomaine) {
 		this.idAct++;
 		int ordre = projet.getListe().size();
-		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), /*projetSelectionner,*/ ordre); // ------------------------------ATTENTION projet plus stocké dans activité, ref Dams
+		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), /*projetSelectionner,*/ ordre, listeDomaine); // ------------------------------ATTENTION projet plus stocké dans activité, ref Dams
 		projet.ajouter(act);		
 		selectionnerActivite(act);
 		update();
