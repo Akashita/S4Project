@@ -42,6 +42,7 @@ public class JavaSQLProjet extends JavaSQL{
 	
 	public ArrayList<Projet> affiche() throws SQLException{
 		ArrayList<Projet> protab = new ArrayList<Projet>();
+		ArrayList<String> listeDom = new ArrayList<String>();
 		String sql = "SELECT * FROM Projet;";
 		Personne personne;
 			try{
@@ -71,9 +72,16 @@ public class JavaSQLProjet extends JavaSQL{
 									 Statement stmt5 = getCon().createStatement();
 									 try (ResultSet res5 = stmt5.executeQuery(sql5)){
 										 while(res5.next()) {
+											 String sql6 = "SELECT tag FROM ListeDomaine WHERE idA = " + res5.getInt("idA") + ";";
+											 Statement stmt6 = getCon().createStatement();
+											 try (ResultSet res6 = stmt6.executeQuery(sql6)){
+												 while(res6.next()) {
+													 listeDom.add(res6.getString("tag"));
+												 }
+											 }
 											 LocalDate debut = res5.getDate("debut").toLocalDate();
 											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getDouble("charge"), debut, 
-													 new Color(res5.getInt("couleur")), res5.getInt("ordre")));
+													 new Color(res5.getInt("couleur")), res5.getInt("ordre"),listeDom));
 										 }
 									 }
 								} catch(SQLException e){

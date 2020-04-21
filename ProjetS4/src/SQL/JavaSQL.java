@@ -104,6 +104,12 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Participe faite");
 				 
+				 sql = "CREATE TABLE IF NOT EXISTS ListeDomaine(idA INT, tag VARCHAR(30),"
+							+ "CONSTRAINT fk_ListeDomaine_idA FOREIGN KEY(idA) REFERENCES Activite(idA),"
+							+ "CONSTRAINT fk_ListeDomaine_tag FOREIGN KEY(tag) REFERENCES Domaine(tag));";
+				 stmt.executeUpdate(sql);
+				 System.out.println("Table ListeDomaine faite");
+				 
 				 this.con.close();
 			} catch(SQLException e){
 				e.printStackTrace();

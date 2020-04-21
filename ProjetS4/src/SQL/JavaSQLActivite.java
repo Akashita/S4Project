@@ -14,8 +14,9 @@ public class JavaSQLActivite extends JavaSQL{
 	private int ordre;
 	private int couleur;
 	private int idP;
+	private ArrayList<String> listeDom;
 
-	public JavaSQLActivite (String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP) {
+	public JavaSQLActivite (String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) {
 
 		super();
 		this.titre = titre;
@@ -24,6 +25,7 @@ public class JavaSQLActivite extends JavaSQL{
 		this.ordre = ordre;
 		this.couleur = couleur;
 		this.idP= idP;
+		this.listeDom = listeDom;
 	}
 	public JavaSQLActivite () {
 
@@ -38,6 +40,7 @@ public class JavaSQLActivite extends JavaSQL{
 	
 	public ArrayList<Activite> affiche() throws SQLException{
 		ArrayList<Activite> acttab = new ArrayList<Activite>();
+		ArrayList<String> listeDom = new ArrayList<String>();
 		String sql = "SELECT * FROM Activite;";
 			try{
 				 this.connection();
@@ -45,7 +48,14 @@ public class JavaSQLActivite extends JavaSQL{
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 LocalDate debut = res.getDate("debut").toLocalDate();
-						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getDouble("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre")));
+						 String sql2 = "SELECT tag FROM ListeDomaine WHERE idA = " + res.getInt("idA") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+							 while(res2.next()) {
+								 listeDom.add(res2.getString("tag"));
+							 }
+						 }
+						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getDouble("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom));
 						 System.out.println("idA = " + res.getString("idA") + ", titre = " + res.getString("titre") + ", debut = " + res.getString("debut") + ", charge = " + res.getString("charge")
 						 + ", ordre = " + res.getString("ordre")+ ", couleur = " + res.getString("couleur") +  ", nom = " + res.getString("nom"));
 					 }
@@ -66,6 +76,15 @@ public class JavaSQLActivite extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
+				 String sql2 = "SELECT MAX(idA) FROM Activite;";
+				 Statement stmt2 = getCon().createStatement();
+				 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+					 for(int i = 0; i<listeDom.size(); i++) {
+						 JavaSQLListeDomaine ins = new JavaSQLListeDomaine(listeDom.get(i),res2.getInt("idA"));
+						 ins.insertion();
+					 }
+				 }
+				 
 				 this.con.close();
 			} catch(SQLException e){
 				e.printStackTrace();

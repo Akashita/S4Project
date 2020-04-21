@@ -27,7 +27,7 @@ public class Main {
 		LocalDate  date = LocalDate.of(2000, 05, 28);
 		LocalDate  dateact = LocalDate.of(2020, 04, 14);
 		JavaSQLProjet testprojet = new JavaSQLProjet("projet test", 5, date, 1, 1);
-		JavaSQLActivite testact = new JavaSQLActivite ("Activité 1", dateact, 2.5, 1, 2, 1);
+		JavaSQLActivite testact = new JavaSQLActivite ("Activité 1", dateact, 2.5, 1, 2, 1, testP);
 		
 		try {
 //			testSqlDomaine.insertion();
