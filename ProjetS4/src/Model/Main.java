@@ -15,7 +15,7 @@ public class Main {
 		//e.creerProjet("projet 1", 1);
 		//e.creerActivite(e.getProjetSelectionner(), "activité 1", 11, 0, Temps.getAujourdhui());
 		//e.creerActivite(e.getProjetSelectionner(), "activité 2", 50, 1, Temps.getAujourdhui());
-		/*ArrayList<String> testP = new ArrayList<String>();
+		ArrayList<String> testP = new ArrayList<String>();
 		testP.add("php");
 		ArrayList<Integer> testN = new ArrayList<Integer>();
 		testN.add(1);
@@ -25,8 +25,9 @@ public class Main {
 		JavaSQLDebug test = new JavaSQLDebug();
 		JavaSQL java = new JavaSQL();
 		LocalDate  date = LocalDate.of(2000, 05, 28);
+		LocalDate  dateact = LocalDate.of(2020, 04, 14);
 		JavaSQLProjet testprojet = new JavaSQLProjet("projet test", 5, date, 1, 1);
-		
+		JavaSQLActivite testact = new JavaSQLActivite ("Activité 1", dateact, 2.5, 1, 2, 1);
 		
 		try {
 //			testSqlDomaine.insertion();
@@ -34,7 +35,7 @@ public class Main {
 //			testSqlPersonne.insertion();
 //			
 //			testprojet.insertion();
-//			
+//			testact.insertion();
 			RecupInfoBDD.recupBDDProjet(e);
 			RecupInfoBDD.recupBDDRessource(e);
 //			test.affiche();
@@ -45,6 +46,6 @@ public class Main {
 
 		}catch(SQLException f){
 			f.printStackTrace();
-		}*/
+		}
 	}
 }
