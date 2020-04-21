@@ -13,10 +13,9 @@ public class JavaSQLActivite extends JavaSQL{
 	private Double charge;
 	private int ordre;
 	private int couleur;
-	private int idC;
 	private int idP;
 
-	public JavaSQLActivite (String titre, LocalDate debut, Double charge, int ordre, int couleur, int idC, int idP) {
+	public JavaSQLActivite (String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP) {
 
 		super();
 		this.titre = titre;
@@ -24,7 +23,6 @@ public class JavaSQLActivite extends JavaSQL{
 		this.charge = charge;
 		this.ordre = ordre;
 		this.couleur = couleur;
-		this.idC= idC;
 		this.idP= idP;
 	}
 	public JavaSQLActivite () {
@@ -49,7 +47,7 @@ public class JavaSQLActivite extends JavaSQL{
 						 LocalDate debut = res.getDate("debut").toLocalDate();
 						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getDouble("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre")));
 						 System.out.println("idA = " + res.getString("idA") + ", titre = " + res.getString("titre") + ", debut = " + res.getString("debut") + ", charge = " + res.getString("charge")
-						 + ", ordre = " + res.getString("ordre")+ ", couleur = " + res.getString("couleur") + ", idC = " + res.getString("idC") + ", nom = " + res.getString("nom"));
+						 + ", ordre = " + res.getString("ordre")+ ", couleur = " + res.getString("couleur") +  ", nom = " + res.getString("nom"));
 					 }
 				 }
 				 this.con.close();
@@ -62,7 +60,7 @@ public class JavaSQLActivite extends JavaSQL{
 
 	public void insertion() throws SQLException{
 		Date debut = Date.valueOf(this.debut);
-		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idC, nom) VALUE(NULL, '" + this.titre + "' ,  '"+debut+"' ,'"+this.charge+"' , '"+this.ordre+"' , '"+this.couleur+"' , '"+this.idC+"' , '"+this.idP+"');";
+		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idP) VALUE(NULL, '" + this.titre + "' ,  '"+debut+"' ,'"+this.charge+"' , '"+this.ordre+"' , '"+this.couleur+"' , '"+this.idP+"');";
 			try{
 				 this.connection();
 				 Statement stmt = getCon().createStatement();
@@ -75,7 +73,7 @@ public class JavaSQLActivite extends JavaSQL{
 	}
 
 	public String toString() {
-		return "nom : " + this.titre +this.debut+this.charge+this.ordre+this.couleur+this.idC+this.idP;
+		return "nom : " + this.titre +this.debut+this.charge+this.ordre+this.couleur+this.idP;
 	}
 
 }
