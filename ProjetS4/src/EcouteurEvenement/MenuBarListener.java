@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import Ressource.Ressource;
 import Fenetre.FenetreModal;
 import Fenetre.FenetrePrincipale;
 import Model.Entreprise;
@@ -32,8 +33,17 @@ public class MenuBarListener implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (choix == FenetrePrincipale.NouveauProjet || choix == FenetrePrincipale.NouvelleRessource || choix == FenetrePrincipale.NouveauDomaine) {
+		if (choix == FenetrePrincipale.NouvelleRessource || choix == FenetrePrincipale.NouveauDomaine) {
 			creerFenetre();
+		}
+		
+		if (choix == FenetrePrincipale.NouveauProjet) {
+			if (entreprise.getListeRessourceType(Ressource.PERSONNE).size()>0) {
+				creerFenetre();
+			}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Veuillez creer une personne", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
 		}
 		
 		if (choix == FenetrePrincipale.NouvelleActivite || choix == FenetrePrincipale.ModifierProjet) {

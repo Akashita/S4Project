@@ -23,19 +23,21 @@ public class Activite implements Comparable<Activite>{
 	private Color couleur;
 	private int ordre;
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
+	private ArrayList<String> listeDomaine;
 	
 	private boolean afficheEDT = false; //pour le graphique
 	private boolean changeSens = false; //pour le graphique
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Activite(int id, String titre, double chargeJH, LocalDate debut, Color couleur, int ordre) {
+	public Activite(int id, String titre, double chargeJH, LocalDate debut, Color couleur, int ordre, ArrayList<String> listeDomaine) {
 		this.id = id;
 		this.titre = titre;
 		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
 		this.chargeHeure = (int)(chargeJH * Entreprise.NB_HEURE_JOUR);
 		this.debut = debut;
 		this.couleur = couleur;
+		this.listeDomaine = listeDomaine;
 		lRessources = new ArrayList<Ressource>();
 	}
 
@@ -95,6 +97,10 @@ public class Activite implements Comparable<Activite>{
 	public boolean hasRessource() {
 		return lRessources.size() != 0;
  	}
+	
+	public ArrayList<String> getListeDomaine(){
+		return listeDomaine;
+	}
 
 	//--------------------------------------------------------------------------------->>>>> change la valeur
 

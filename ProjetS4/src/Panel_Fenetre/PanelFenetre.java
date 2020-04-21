@@ -60,6 +60,7 @@ public class PanelFenetre extends JPanel{
     String [] niveau = {"niveau", "Debutant", "Confirmé", "Expert"};
     protected JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
     protected ArrayList<Competence> listeCompetenceChoisie;
+    protected ArrayList<String> listeDomaineChoisi;
     
 	protected Entreprise entreprise;
     protected FenetreModal fm;
@@ -206,6 +207,66 @@ public class PanelFenetre extends JPanel{
 		return panel;
 	}
 	
+	
+	//------------------------------------------------------->>>>>> Domaine pour activite
+	
+
+	protected void initialiseDomaineActivite (PanelFenetre pf) {
+		listeDomaineChoisi = new ArrayList<String>();
+
+		Domaine domaine = entreprise.getDomaine();
+		String [] liste = new String [domaine.getListeDomaine().size()+1];
+		liste[0] = "Compétence";
+		for (int i=0; i<liste.length-1; i++) {
+			liste[i+1] = domaine.getListeDomaine().get(i);
+		}
+		comboBoxDomaine = new JComboBox<String>(liste);
+
+
+		boutonAjoutCompetence = new JButton("Ajouter");
+		boutonAjoutCompetence.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	ajoutDomaineChoisi(pf);
+	        }
+	    });			
+	}
+		
+	public void ajoutDomaineChoisi(PanelFenetre pf) {
+		if (comboBoxDomaine.getSelectedIndex()>0) {
+			boolean estPresent = false;
+			String domaine = (String) comboBoxDomaine.getSelectedItem();
+			for (int i=0; i<listeDomaineChoisi.size(); i++) {
+				if (domaine.equals(listeDomaineChoisi.get(i))) {
+					estPresent = true;
+				}
+			}
+			if (!estPresent) {
+				listeDomaineChoisi.add(domaine);
+				pf.removeAll();
+				pf.creerInterface();
+				pf.revalidate();
+				pf.repaint();		
+			}	
+			else {
+			    JOptionPane.showMessageDialog(null, "Vous l'avez déjà choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Choissisez une compétence", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
+	}
+	
+	protected JPanel afficherListeDomaineChoisi() {
+		JPanel panel = new JPanel();
+		panel.setBackground(couleurFond);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.add(creerTexte("Compétences choisies: "));
+		for (int i=0; i<listeDomaineChoisi.size(); i++) {
+			panel.add(creerTexte(listeDomaineChoisi.get(i)));
+		}
+		return panel;
+	}
+
 	//----------------------------------------------------->>>> Gesion jour/mois/annee
 	
 	protected void initialseJMA(LocalDate date, PanelFenetre pf) {
