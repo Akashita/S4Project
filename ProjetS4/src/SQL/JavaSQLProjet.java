@@ -14,14 +14,16 @@ import Model.Projet;
 import Ressource.Personne;
 
 public class JavaSQLProjet extends JavaSQL{
+	private int idP;
 	private String nom;
 	private int priorite;
 	private LocalDate deadline;
 	private int couleur;
 	private int numSalarie;
 	
-	public JavaSQLProjet (String nom, int priorite, LocalDate deadline, int couleur, int numSalarie) {
+	public JavaSQLProjet (int idP,String nom, int priorite, LocalDate deadline, int couleur, int numSalarie) {
 		super();
+		this.idP = idP;
 		this.nom = nom;
 		this.priorite = priorite;
 		this.deadline = deadline;
@@ -115,6 +117,31 @@ public class JavaSQLProjet extends JavaSQL{
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
+	}
+	
+	public void supprime() throws SQLException{
+		String sql = "SELECT idA FROM Activite WHERE idP =" + this.idP;
+		try{
+			 this.connection();
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 sql = "DELETE FROM ListeDomaine WHERE idA =" + res.getInt("idA");
+					 stmt.executeUpdate(sql);
+					 sql = "DELETE FROM Participe WHERE idA =" + res.getInt("idA");
+					 stmt.executeUpdate(sql);
+					 sql = "DELETE FROM Creneaux WHERE idA =" + res.getInt("idA");
+					 stmt.executeUpdate(sql);
+					 sql = "DELETE FROM Activite WHERE idA =" + res.getInt("idA");
+					 stmt.executeUpdate(sql);					 
+				 }
+				 sql = "DELETE FROM Projet WHERE idP = " + this.idP;
+				 stmt.executeUpdate(sql);
+			 }
+			 this.con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 	
 	public String toString() {

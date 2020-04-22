@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import Model.Activite;
 
 public class JavaSQLActivite extends JavaSQL{
+	int idA;
 	private String titre;
 	private LocalDate debut;
 	private Double charge;
@@ -16,9 +17,10 @@ public class JavaSQLActivite extends JavaSQL{
 	private int idP;
 	private ArrayList<String> listeDom;
 
-	public JavaSQLActivite (String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) {
+	public JavaSQLActivite (int idA, String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) {
 
 		super();
+		this.idA = idA;
 		this.titre = titre;
 		this.debut = debut;
 		this.charge = charge;
@@ -90,6 +92,24 @@ public class JavaSQLActivite extends JavaSQL{
 				e.printStackTrace();
 			}
 	}
+	
+	 public void supprime() throws SQLException{
+			try{
+				 this.connection();
+				 String sql = "DELETE FROM ListeDomaine WHERE idA =" + this.idA;
+				 Statement stmt = getCon().createStatement();
+				 stmt.executeUpdate(sql);
+				 sql = "DELETE FROM Participe WHERE idA =" + this.idA;
+				 stmt.executeUpdate(sql);
+				 sql = "DELETE FROM Creneaux WHERE idA =" + this.idA;
+				 stmt.executeUpdate(sql);
+				 sql = "DELETE FROM Activite WHERE idA =" + this.idA;
+				 stmt.executeUpdate(sql);
+				 this.con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+	 }
 
 	public String toString() {
 		return "nom : " + this.titre +this.debut+this.charge+this.ordre+this.couleur+this.idP;

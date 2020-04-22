@@ -56,6 +56,22 @@ public class JavaSQLDomaine extends JavaSQL{
 				e.printStackTrace();
 			}
 	}
+	
+	public void supprime() throws SQLException{
+		try{
+			 this.connection();
+			 Statement stmt = getCon().createStatement();
+			 String sql = "DELETE FROM Competence WHERE tag ="+ this.tag;
+			 stmt.executeUpdate(sql);					 
+			 sql = "DELETE FROM ListeDomaine WHERE tag =" + this.tag ;
+			 stmt.executeUpdate(sql);			 
+			 sql = "DELETE FROM Domaine WHERE tag =" + this.tag ;
+			 stmt.executeUpdate(sql);
+			 this.con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 
 	public String toString() {
 		return "nom : " + this.tag; 

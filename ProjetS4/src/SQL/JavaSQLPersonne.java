@@ -7,7 +7,7 @@ import java.util.Hashtable;
 import Ressource.Personne;
 
 public class JavaSQLPersonne extends JavaSQL{
-//	private int numSalarie;
+	private int numSalarie;
 	private String nom;
 	private String prenom;
 	private String role;
@@ -15,8 +15,9 @@ public class JavaSQLPersonne extends JavaSQL{
 	private ArrayList<String> tag;
 	private ArrayList<Integer> niveau;
 
-	public JavaSQLPersonne (String nom, String prenom, String role, String motDePasse, ArrayList<String> tag, ArrayList<Integer> niveau) {
+	public JavaSQLPersonne (int numSalarie, String nom, String prenom, String role, String motDePasse, ArrayList<String> tag, ArrayList<Integer> niveau) {
 		super();
+		this.numSalarie = numSalarie;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.role = role;
@@ -96,6 +97,24 @@ public class JavaSQLPersonne extends JavaSQL{
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
+	}
+	
+	public void supprime() throws SQLException{
+		try{
+			 this.connection();
+			 Statement stmt = getCon().createStatement();
+			 String sql = "DELETE FROM Creneaux WHERE numSalarie ="+ this.numSalarie;
+			 stmt.executeUpdate(sql);					 
+			 sql = "DELETE FROM Participe WHERE numSalarie =" + this.numSalarie ;
+			 stmt.executeUpdate(sql);
+			 sql = "DELETE FROM Competence WHERE numSalarie =" + this.numSalarie ;
+			 stmt.executeUpdate(sql);
+			 sql = "DELETE FROM Personne WHERE numSalarie =" + this.numSalarie ;
+			 stmt.executeUpdate(sql);
+			 this.con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 
 	public String toString() {
