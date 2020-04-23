@@ -3,8 +3,9 @@ import java.sql.*;
 
 
 public class JavaSQL {
-	protected Connection con;
-	protected ResultSet res;
+	
+	protected static Connection con;
+	protected static ResultSet res;
 
 
 
@@ -19,7 +20,7 @@ public class JavaSQL {
 	   }
 
 
-	public void connection(){
+	public static void connection(){
 		System.out.println("connection au pilote");
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -29,7 +30,7 @@ public class JavaSQL {
 		System.out.println("connection � la base de donn�e");
 		try {
 			String URLdb = "jdbc:mysql://localhost:3306/l2_gr_6";
-	       this.con = DriverManager.getConnection(URLdb,"l2_gr_6","DMDRjUP2");
+	       con = DriverManager.getConnection(URLdb,"l2_gr_6","DMDRjUP2");
 			//-------------------------------------------base tmp----------------------------------------
 	//		String URLdb = "jdbc:mysql://localhost";
 	//	       this.con = DriverManager.getConnection(URLdb,"phpmyadmin","elrouliobdd");
@@ -39,12 +40,12 @@ public class JavaSQL {
 
 	}
 
-	public Connection getCon(){
-		return this.con;
+	public static Connection getCon(){
+		return con;
 	}
 
 	public ResultSet getRes(){
-		return this.res;
+		return res;
 	}
 	
 	public void creation() throws SQLException{
@@ -110,7 +111,7 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table ListeDomaine faite");
 				 
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}

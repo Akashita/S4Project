@@ -6,33 +6,33 @@ import java.util.Hashtable;
 
 import Ressource.Personne;
 
-public class JavaSQLPersonne extends JavaSQL{
-	private int numSalarie;
-	private String nom;
-	private String prenom;
-	private String role;
-	private String motDePasse;
-	private ArrayList<String> tag;
-	private ArrayList<Integer> niveau;
+public final class JavaSQLPersonne extends JavaSQL{
+//	private int numSalarie;
+//	private String nom;
+//	private String prenom;
+//	private String role;
+//	private String motDePasse;
+//	private ArrayList<String> tag;
+//	private ArrayList<Integer> niveau;
+//
+//	public JavaSQLPersonne (int numSalarie, String nom, String prenom, String role, String motDePasse, ArrayList<String> tag, ArrayList<Integer> niveau) {
+//		super();
+//		this.numSalarie = numSalarie;
+//		this.nom = nom;
+//		this.prenom = prenom;
+//		this.role = role;
+//		this.motDePasse = motDePasse;
+//		this.tag = tag;
+//		this.niveau = niveau;
+//	}
+//	
+//	public JavaSQLPersonne () {
+//		super();
+//	}
 
-	public JavaSQLPersonne (int numSalarie, String nom, String prenom, String role, String motDePasse, ArrayList<String> tag, ArrayList<Integer> niveau) {
-		super();
-		this.numSalarie = numSalarie;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.role = role;
-		this.motDePasse = motDePasse;
-		this.tag = tag;
-		this.niveau = niveau;
-	}
-	
-	public JavaSQLPersonne () {
-		super();
-	}
 
-
-	public void connection() {
-		super.connection();
+	public static void connection() {
+		JavaSQL.connection();
 	}
 
 	
@@ -42,7 +42,7 @@ public class JavaSQLPersonne extends JavaSQL{
 		ArrayList<Personne> personnetab = new ArrayList<Personne>();
 
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -62,7 +62,7 @@ public class JavaSQLPersonne extends JavaSQL{
 							 res.getString("role") + ", motDePasse = " + res.getString("motDePasse"));
 					 }
 				 }
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -70,55 +70,54 @@ public class JavaSQLPersonne extends JavaSQL{
 
 	}
 
-	public void insertion() throws SQLException{
-			String sql = "INSERT INTO Personne(numSalarie, nom, prenom, role, motDePasse) VALUE(NULL, '" + this.nom + "' ,  '"+this.prenom+"' , '"+this.role+"' , '"+this.motDePasse+"');";
+	public static void insertion(String nom, String prenom, String role, String motDePasse, ArrayList<String> tag, ArrayList<Integer> niveau) throws SQLException{
+			String sql = "INSERT INTO Personne(numSalarie, nom, prenom, role, motDePasse) VALUE(NULL, '" + nom + "' ,  '"+prenom+"' , '"+role+"' , '"+motDePasse+"');";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 			String sql2 = "SELECT * FROM Personne ORDER BY numSalarie DESC;";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt2 = getCon().createStatement();
 				 try (ResultSet res2 = stmt2.executeQuery(sql2)){
 					 res2.next();
 					 for (int i=0; i<tag.size(); i++){
-						 System.out.println(res2.getInt("numSalarie") + " " + this.tag.get(i) + " " + this.niveau.get(i));
-						 JavaSQLCompetence jsc = new JavaSQLCompetence(res2.getInt("numSalarie"),this.tag.get(i), this.niveau.get(i));
-						 jsc.insertion();
+						 System.out.println(res2.getInt("numSalarie") + " " + tag.get(i) + " " + niveau.get(i));
+						 JavaSQLCompetence.insertion(res2.getInt("numSalarie"),tag.get(i), niveau.get(i));
 					 }
 				 }
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 	}
 	
-	public void supprime() throws SQLException{
+	public static void supprime(int numSalarie) throws SQLException{
 		try{
-			 this.connection();
+			 connection();
 			 Statement stmt = getCon().createStatement();
-			 String sql = "DELETE FROM Creneaux WHERE numSalarie ="+ this.numSalarie;
+			 String sql = "DELETE FROM Creneaux WHERE numSalarie ="+ numSalarie;
 			 stmt.executeUpdate(sql);					 
-			 sql = "DELETE FROM Participe WHERE numSalarie =" + this.numSalarie ;
+			 sql = "DELETE FROM Participe WHERE numSalarie =" + numSalarie ;
 			 stmt.executeUpdate(sql);
-			 sql = "DELETE FROM Competence WHERE numSalarie =" + this.numSalarie ;
+			 sql = "DELETE FROM Competence WHERE numSalarie =" + numSalarie ;
 			 stmt.executeUpdate(sql);
-			 sql = "DELETE FROM Personne WHERE numSalarie =" + this.numSalarie ;
+			 sql = "DELETE FROM Personne WHERE numSalarie =" + numSalarie ;
 			 stmt.executeUpdate(sql);
-			 this.con.close();
+			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
 
-	public String toString() {
-		return "nom : " + this.nom +this.prenom+this.role+this.motDePasse+this.tag+this.niveau;
+	public static String toString(String nom, String prenom, String role, String motDePasse, ArrayList<String> tag, ArrayList<Integer> niveau) {
+		return "nom : " + nom +prenom+role+motDePasse+tag+niveau;
 	}
 
 }

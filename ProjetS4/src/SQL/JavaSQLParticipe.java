@@ -4,59 +4,59 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class JavaSQLParticipe extends JavaSQL{
-	private int numSalarie;
-	private int code;
-	private int numero;
-	private int idA;
+public final class JavaSQLParticipe extends JavaSQL{
+//	private int numSalarie;
+//	private int code;
+//	private int numero;
+//	private int idA;
+//	
+//	public JavaSQLParticipe (int numSalarie, int code, int numero, int idA) {
+//		super();
+//		this.numero= numero;
+//		this.numSalarie = numSalarie;
+//		this.code = code;
+//		this.idA = idA;
+//	}
+//	
 	
-	public JavaSQLParticipe (int numSalarie, int code, int numero, int idA) {
-		super();
-		this.numero= numero;
-		this.numSalarie = numSalarie;
-		this.code = code;
-		this.idA = idA;
+	public static void connection() {
+		JavaSQL.connection();
 	}
 	
 	
-	public void connection() {
-		super.connection();
-	}
 	
-	
-	
-	public void affiche() throws SQLException{
+	public static void affiche() throws SQLException{
 		String sql = "SELECT * FROM Participe;";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 System.out.println("numSalarie = " + res.getString("numSalarie") + ", code = " + res.getString("code") + ", numero = " + res.getString("numero") + ", idA = " + res.getString("idA"));
 					 }
 				 }
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 
 	}
 	
-	public void insertion() throws SQLException{
-		String sql = "INSERT INTO Participes(numSalarie, code, numero, idA) VALUE('" + this.numSalarie+ "' ,  '"+this.code+"' ,  '"+this.numero+"' ,  '"+this.idA+"');";
+	public static void insertion(int numSalarie, int code, int numero, int idA) throws SQLException{
+		String sql = "INSERT INTO Participes(numSalarie, code, numero, idA) VALUE('" + numSalarie+ "' ,  '"+code+"' ,  '"+numero+"' ,  '"+idA+"');";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 	}
 	
-	public String toString() {
-		return "nom : " + this.numSalarie+this.code+this.numero+this.idA; 
+	public static String toString(int numSalarie, int code, int numero, int idA) {
+		return "nom : " + numSalarie+code+numero+idA; 
 	}
 
 }

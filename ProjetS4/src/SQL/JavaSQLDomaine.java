@@ -5,30 +5,30 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class JavaSQLDomaine extends JavaSQL{
+public final class JavaSQLDomaine extends JavaSQL{
 
-	private String tag;
+//	private String tag;
+//
+//	public JavaSQLDomaine (String tag) {
+//		super();
+//		this.tag = tag;
+//	}
+//
+//	public JavaSQLDomaine () {
+//		super();
+//	}
 
-	public JavaSQLDomaine (String tag) {
-		super();
-		this.tag = tag;
+	public static void connection() {
+		JavaSQL.connection();
 	}
 
-	public JavaSQLDomaine () {
-		super();
-	}
-
-	public void connection() {
-		super.connection();
-	}
 
 
-
-	public ArrayList<String> affiche() throws SQLException{
+	public static ArrayList<String> affiche() throws SQLException{
 		String sql = "SELECT * FROM Domaine;";
 		ArrayList<String> tagtab = new ArrayList<String>();
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -36,7 +36,7 @@ public class JavaSQLDomaine extends JavaSQL{
 						 System.out.println("tag = " + res.getString("tag"));
 					 }
 				 }
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -44,37 +44,37 @@ public class JavaSQLDomaine extends JavaSQL{
 
 	}
 
-	public void insertion() throws SQLException{
-		String sql = "INSERT INTO Domaine(tag) VALUE('" + this.tag + "');";
+	public static void insertion(String tag) throws SQLException{
+		String sql = "INSERT INTO Domaine(tag) VALUE('" + tag + "');";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 	}
 	
-	public void supprime() throws SQLException{
+	public static void supprime(String tag) throws SQLException{
 		try{
-			 this.connection();
+			 connection();
 			 Statement stmt = getCon().createStatement();
-			 String sql = "DELETE FROM Competence WHERE tag ="+ this.tag;
+			 String sql = "DELETE FROM Competence WHERE tag ="+ tag;
 			 stmt.executeUpdate(sql);					 
-			 sql = "DELETE FROM ListeDomaine WHERE tag =" + this.tag ;
+			 sql = "DELETE FROM ListeDomaine WHERE tag =" + tag ;
 			 stmt.executeUpdate(sql);			 
-			 sql = "DELETE FROM Domaine WHERE tag =" + this.tag ;
+			 sql = "DELETE FROM Domaine WHERE tag =" + tag ;
 			 stmt.executeUpdate(sql);
-			 this.con.close();
+			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
 
-	public String toString() {
-		return "nom : " + this.tag; 
+	public static String toString(String tag) {
+		return "nom : " + tag; 
 	}
 
 }
