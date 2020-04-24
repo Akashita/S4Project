@@ -86,7 +86,7 @@ public class Entreprise extends Observable{
 
 	public void majEDT() {
 		ArrayList<Activite> lActivite;
-		viderProjets();
+		viderRessources();
 		 for (int i = 0; i < lProjet.size(); i++) {
 			 lActivite = lProjet.get(i).getListe();
 			 for (int j = 0; j < lActivite.size(); j++) {
@@ -98,9 +98,9 @@ public class Entreprise extends Observable{
 		}
 	}
 	
-	private void viderProjets() {
-		for (int i = 0; i < lProjet.size(); i++) {
-			lProjet.get(i).vider();
+	private void viderRessources() {
+		for (int i = 0; i < lRessource.size(); i++) {
+			lRessource.get(i).vider();
 		}
 	}
 
