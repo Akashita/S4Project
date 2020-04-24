@@ -19,4 +19,18 @@ public class Competence {
 	public int getNiveau() {
 		return niveau;
 	}
+	
+	public String getStringNiveau() {
+		String niveau = "";
+		if (this.niveau == DEBUTANT) {
+			niveau = "DEBUTANT";
+		}
+		if (this.niveau == CONFIRME) {
+			niveau = "CONFIRME";
+		}
+		if (this.niveau == EXPERT) {
+			niveau = "EXPERT";
+		}
+		return niveau;
+	}
 }

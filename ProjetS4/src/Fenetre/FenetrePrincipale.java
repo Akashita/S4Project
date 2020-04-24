@@ -37,7 +37,7 @@ public class FenetrePrincipale extends JFrame{
 	public static final int NouveauProjet = 0, NouvelleRessource = 1, NouvelleActivite = 2, NouveauDomaine = 3,
 			AjouterRessource = 4, EnleverRessource = 5,
 			ModifierProjet = 6, ModifierActivite = 7, ModifierRessource = 8;
-
+	
 	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
 		this.setTitle("ProjetS4");
@@ -115,12 +115,6 @@ public class FenetrePrincipale extends JFrame{
 	    KeyStroke ctrlModifierActivite = KeyStroke.getKeyStroke("control X");
 	    itemModifierActivite.setAccelerator(ctrlModifierActivite);
 	    itemModifierActivite.addActionListener(new MenuBarListener(entreprise, ModifierActivite));
-
-	    /*JMenuItem itemModifierRessource = new JMenuItem("Modifier Ressource", KeyEvent.VK_T);
-	    KeyStroke ctrlModifierRessource = KeyStroke.getKeyStroke("control T");
-	    itemModifierRessource.setAccelerator(ctrlModifierRessource);
-	    itemModifierRessource.addActionListener(new ModifierListener(entreprise, ModifierRessource));*/
-
 	    
 	    
 	    

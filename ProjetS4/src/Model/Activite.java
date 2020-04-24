@@ -102,7 +102,7 @@ public class Activite implements Comparable<Activite>{
 		return listeDomaine;
 	}
 
-	//--------------------------------------------------------------------------------->>>>> change la valeur
+	//--------------------------------------------------------------------------------->>>>> Setteur
 
 
 	public void setTitre(String titre) {
@@ -131,6 +131,10 @@ public class Activite implements Comparable<Activite>{
 
 	public void setChangeSens(boolean b) {
 		changeSens = b;
+	}
+	
+	public void supprimerToutesRessources() {
+		lRessources.clear();
 	}
 
 

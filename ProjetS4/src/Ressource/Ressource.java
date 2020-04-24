@@ -54,6 +54,10 @@ public class Ressource implements Comparable<Ressource>{
 		return this.id;
 	}
 	
+	//--------------------------------------------------------------------------------->>>>>>> Setteur 
+	
+	//public void supprimer
+	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) { //test si deux ressources sont �gales

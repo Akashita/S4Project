@@ -264,7 +264,10 @@ public class Entreprise extends Observable{
 							
 	//fonctions de cr�ations d'�l�ments de l'entreprise, les ressources ainsi que les projets
 	//les m�thodes sont doubl�s -> direct dans un projet ou dans l'entreprise
+
 	
+	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion projet
+
 	public void nouvProjet (Projet proj) {
 		this.lProjet.add(proj);
 	}
@@ -305,6 +308,29 @@ public class Entreprise extends Observable{
 	}
 
 	
+	public void supprimerProjet(Projet projet) {
+		
+		for (int i=0; i<projet.getListe().size(); i++) { // on supprime toutes ses activités
+			supprimerActiviter(projet.getListe().get(i));
+		}
+				
+		projet.getChefDeProjet().enleverProjet(projet);  // on enleve au chef de projet le projet supprimer
+
+		
+		for (int i=0; i<getListeProjet().size(); i++) { // on enleve le projet de l'entreprise
+			if (projet.getId() == getListeProjet().get(i).getId()) {
+				getListeProjet().remove(i);
+				break;
+			}
+		}
+		projetSelectionner = null;// enleve la selection projet
+		majEDT(); // remet à jour les emplois du temps
+		update(); // remet à jour l'interface
+	}
+	
+	
+	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion activite
+	
 	public void creerActivite(Projet projet, String titre, int charge, LocalDate debut, ArrayList<String> listeDomaine) {
 		this.idAct++;
 		int ordre = projet.getListe().size();
@@ -321,14 +347,33 @@ public class Entreprise extends Observable{
 		majEDT();
 		update();
 	} 
+
 	
+	public void supprimerActiviter(Activite activite) {
+		Projet projet = getProjetSelectionner();
+		
+		for (int i=0; i<projet.getListe().size(); i++) { // on enleve l'act du projet
+			if (activite.getId() == projet.getListe().get(i).getId()) {
+				projet.getListe().remove(i);
+				break;
+			}
+		}
+		
+		activite.supprimerToutesRessources(); //on enleve toute ses ressources
+		
+		activiteSelectionner = null; // on le deselectionne
+		majEDT(); // met à jour l'emploi du temps
+		update(); // met à jour l'interface
+	}
+	
+	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
 	public void nouvPersonne (Personne pers) {
 		this.ajouterRessource(pers);
 		this.incrementId();
 	}
 
-	public void nouvPersonne (String nom, String prenom, String role, ArrayList<Competence> listeComp) {
-		Personne nouvPersonne = new Personne(nom,prenom, role, this.idCour, listeComp);
+	public void nouvPersonne (String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {
+		Personne nouvPersonne = new Personne(nom,prenom, role, this.idCour, mdp, listeComp);
 		this.incrementId();
 		this.ajouterRessource(nouvPersonne);
 		update();

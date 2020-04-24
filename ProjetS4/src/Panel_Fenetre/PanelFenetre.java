@@ -48,6 +48,7 @@ public class PanelFenetre extends JPanel{
 
     protected JTextField textFieldNom = new JTextField(),
     		textFieldPrenom = new JTextField(),
+    	    textFieldMdp = new JTextField(),
     	    textFieldPriorite = new JTextField(),
     	    textFieldCharge = new JTextField(),
     	    textFieldCapacite = new JTextField();
@@ -414,7 +415,9 @@ public class PanelFenetre extends JPanel{
 		return label;
 	}
 	
-	public JButton creerBoutonAnnuler() {
+//----------------------------------------------------------------------------->>>>> Bouton	
+	
+	protected JButton creerBoutonAnnuler() {
 		JButton bouton = new JButton("Annuler");
 	    bouton.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -424,7 +427,7 @@ public class PanelFenetre extends JPanel{
 	    return bouton;
 	}
 
-	public JButton creerBoutonFin(PanelFenetre pf, String titre) {
+	protected JButton creerBoutonFin(PanelFenetre pf, String titre) {
 		JButton bouton = new JButton(titre);
 	    bouton.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -436,10 +439,24 @@ public class PanelFenetre extends JPanel{
 
 	protected void actionFin() {}
 
-	public void creerRessource() {
-	}
+	public void creerRessource() {}
 
 	
+	protected JButton creerBoutonSupprimer(PanelFenetre pf) {
+		JButton bouton = new JButton("Supprimer");
+	    bouton.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	pf.supprimer();
+	        }
+	    });			
+	    return bouton;
+	}
+	
+	protected void supprimer() {}
+
+//-----------------------------------------------------------------------
+	
+
 	protected boolean estUnEntier(String chaine) {
 		try {
 			Integer.parseInt(chaine);

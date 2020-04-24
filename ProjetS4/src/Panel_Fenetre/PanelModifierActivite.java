@@ -104,10 +104,14 @@ public class PanelModifierActivite extends PanelFenetre{
 		
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
-		gc.gridx = 1;
+		gc.gridx = 0;
 		gc.gridy = 5;
+		this.add(creerBoutonSupprimer(this), gc);
+
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.gridx = 1;
 		this.add(creerBoutonAnnuler(), gc);
-		
+
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
 		this.add(creerBoutonFin(this, "Modifier"), gc);
@@ -136,4 +140,14 @@ public class PanelModifierActivite extends PanelFenetre{
 	    	JOptionPane.showMessageDialog(null, "Veillez ecrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
+	
+	protected void supprimer() {
+		String texte = "<html> Êtes-vous sur de vouloir supprimer cette activité ? <br> La suppression de cette activité supprimera tout son contenu. </html>";
+		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
+		if (res == 0) { //0 = yes
+			entreprise.supprimerProjet(entreprise.getProjetSelectionner());
+			fm.dispose();
+		}		
+	}
+
 }

@@ -109,11 +109,21 @@ public class PanelEDTActivite extends JPanel{
 		return panel;
 	}
 	
+	/**
+	 * Retourne le nombre de semaine de travaille qu'il  faut afficher pour voir toute les ressourcede l'act
+	 * @return
+	 */
+	private int nbSemaineAffiche() { 
+		int nbSemaine = 0;
+		
+		return nbSemaine;
+	}
+	
 	private JPanel afficheMoisRes(Ressource res) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		
-		for (int i=2; i<52;i++) {
+		for (int i=1; i<52;i++) {
 			JPanel semaine = new JPanel();
 					semaine.setBackground(PanelPrincipal.BLANC);
 					if(travailleSemaine(res.getSemaineEDT(Temps.getAnnee(), i))) {

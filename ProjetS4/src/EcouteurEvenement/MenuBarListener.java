@@ -63,6 +63,7 @@ public class MenuBarListener implements ActionListener{
 		    	JOptionPane.showMessageDialog(null, "Aucun activité selectionnée", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
+			
 	}
 	
 	private void creerFenetre() {

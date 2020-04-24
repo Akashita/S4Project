@@ -69,20 +69,21 @@ public class PanelNouveauDomaine extends PanelFenetre{
 		this.add(creerTitre("Creer un nouveau domaine"), gc);
 		
 		
-		gc.gridwidth = 2;
+		gc.gridwidth = 3;
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx = 2;
 		gc.gridy = 4;
 		this.add(textFieldNom, gc);
 		gc.gridwidth = 1;
 		gc.gridx = 4;
+		gc.gridy ++;
 		this.add(boutonAjoutDomaine, gc);
 
 		
 		gc.gridwidth = 1;		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 4;
-		gc.gridy = 5;
+		gc.gridy ++;
 		this.add(creerBoutonFin(this, "Terminer"), gc);
 
 	}

@@ -4,7 +4,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import Ressource.Competence;
 import SQL.*;
 
 public class Main {
@@ -15,7 +14,7 @@ public class Main {
 		//e.creerProjet("projet 1", 1);
 		//e.creerActivite(e.getProjetSelectionner(), "activité 1", 11, 0, Temps.getAujourdhui());
 		//e.creerActivite(e.getProjetSelectionner(), "activité 2", 50, 1, Temps.getAujourdhui());
-		ArrayList<String> testP = new ArrayList<String>();
+		/*ArrayList<String> testP = new ArrayList<String>();
 		testP.add("php");
 		ArrayList<Integer> testN = new ArrayList<Integer>();
 		testN.add(1);
@@ -46,6 +45,6 @@ public class Main {
 
 		}catch(SQLException f){
 			f.printStackTrace();
-		}
+		}*/
 	}
 }

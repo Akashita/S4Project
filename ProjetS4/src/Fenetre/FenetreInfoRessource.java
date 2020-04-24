@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import Model.Entreprise;
 import Model.Projet;
 import Panel.PanelEDTRessource;
+import Panel.PanelInfoRessource;
 import Ressource.Competence;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -44,82 +45,13 @@ public class FenetreInfoRessource extends JDialog{
 
 	private void creationInterface() {
 		this.setLayout(new BorderLayout());
-		this.add(afficheInfoRessource(), BorderLayout.NORTH);
+		this.add(new PanelInfoRessource(ressource), BorderLayout.NORTH);
 		this.add(new PanelEDTRessource(ressource), BorderLayout.CENTER);
 		//this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);
 		this.revalidate();
 
 	}
 	
-	private JPanel afficheInfoRessource() {
-		JPanel panel = new JPanel();
-		panel.setBorder(BorderFactory.createTitledBorder("Information de la ressource: "));
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.WHITE);	
-		if(ressource.getType() == Ressource.PERSONNE) {
-			panel.add(creerLabel("Nom: " + ((Personne) ressource).getPrenom() + " " + ressource.getNom() +" ("+estAdmin()+")"));
-			
-			ArrayList<Competence> listeCompetence =  ((Personne) ressource).getListeDeCompetence();
-			if (listeCompetence.size()>0){
-				String liste = "";
-				for (int i=0; i<listeCompetence.size(); i++) {
-					liste += listeCompetence.get(i).getNom()+"("+convertNiveau(listeCompetence.get(i).getNiveau())+") / " ;
-				}
-				panel.add(creerLabel("Compétence: "+liste));
-			}
-		
-			ArrayList<Projet> listeProjet =  ((Personne) ressource).getListeDeProjet();
-			if (listeProjet.size()>0){
-				String liste = "";
-				for (int i=0; i<listeProjet.size(); i++) {
-					liste += listeProjet.get(i).getNom()+" / ";
-				}
-				panel.add(creerLabel("Liste de projet dirigé: "+liste));
-			}
-		}
-		if(ressource.getType() == Ressource.SALLE) {
-			panel.add(creerLabel("Nom: " + ressource.getNom()));
-			panel.add(creerLabel("Capacité: " + ((Salle)ressource).getCapacite()));			
-		}
-		if(ressource.getType() == Ressource.CALCULATEUR) {
-			panel.add(creerLabel("Nom: " + ressource.getNom()));	
-		}
-		return panel;
-	}
-
-	private String estAdmin() {
-		String txt = "";
-		if (((Personne) ressource).getRole() == Personne.ADMINISTRATEUR) {
-			txt="administrateur";
-		}
-		else {
-			txt="collaborateur";
-		}
-		return txt;
-	}
-	
-	private String convertNiveau(int niveau) {
-		String txt = "";
-		switch (niveau) {
-		case Competence.DEBUTANT: txt = "debutant";	
-		break;
-		case Competence.CONFIRME: txt = "confirmé";	
-		break;
-		case Competence.EXPERT: txt = "expert";	
-		break;
-
-		default:
-			break;
-		}
-		return txt;
-	}
-	
-	private JLabel creerLabel(String nom) {
-		JLabel label = new JLabel(nom);
-		label.setFont(new Font("Arial", Font.BOLD, 15));
-		//label.addMouseListener(new SourisRessourceListener(this, label));
-		return label;
-	}
 	
 	public int getIdRessource() {
 		return ressource.getId();

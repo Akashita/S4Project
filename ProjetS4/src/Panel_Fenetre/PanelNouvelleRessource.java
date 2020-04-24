@@ -48,7 +48,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 		gc.weightx = 3;
 		
 		/* weightx définit le nombre de cases en ordonnée */
-		int maxHauteur = 9;
+		int maxHauteur = 10;
 		gc.weighty = maxHauteur;
 
 		gc.gridx = 0;
@@ -68,7 +68,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 		if (typeChoisi == Ressource.PERSONNE) {
 			gc.gridwidth = 1;
 			gc.gridx = 0;
-			gc.gridy = 3;
+			gc.gridy ++;
 			this.add(creerTexte("Indiquez son prénom"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
@@ -78,29 +78,38 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.gridwidth = 1;
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
-			gc.gridy = 4;
+			gc.gridy ++;
 			this.add(creerTexte("Indiquez son nom"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
 			this.add(textFieldNom, gc);	
 			
+			gc.gridwidth = 1;
+			gc.fill = GridBagConstraints.CENTER;
+			gc.gridx = 0;
+			gc.gridy ++;
+			this.add(creerTexte("Mot de passe"), gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridwidth = 2;
+			gc.gridx = 1;
+			this.add(textFieldMdp, gc);	
 			
 			
 			gc.gridwidth = 3;
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
-			gc.gridy = 5;
+			gc.gridy ++;
 			this.add(creerTitre("Indiquez ses compétences"), gc);
 
 			gc.fill = GridBagConstraints.WEST;
-			gc.gridy = 6;		
+			gc.gridy ++;		
 			this.add(afficherListeCompetenceChoisie(), gc);
 
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 1;
 			gc.gridx = 0;
-			gc.gridy = 7;
+			gc.gridy ++;
 			this.add(comboBoxDomaine, gc);
 			gc.gridx = 1;
 			this.add(comboBoxNiveau, gc);
@@ -182,7 +191,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 						role = Personne.COLLABORATEUR;
 					}
 					
-					entreprise.nouvPersonne(textFieldNom.getText(), textFieldPrenom.getText(), role, listeCompetenceChoisie);	 
+					entreprise.nouvPersonne(textFieldNom.getText(), textFieldPrenom.getText(), role, textFieldMdp.getText(), listeCompetenceChoisie);	 
 					fm.dispose();
 				}
 				else {
