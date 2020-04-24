@@ -13,40 +13,42 @@ import Model.Activite;
 import Model.Projet;
 import Ressource.Personne;
 
-public class JavaSQLProjet extends JavaSQL{
-	private String nom;
-	private int priorite;
-	private LocalDate deadline;
-	private int couleur;
-	private int numSalarie;
+public final class JavaSQLProjet extends JavaSQL{
+//	private int idP;
+//	private String nom;
+//	private int priorite;
+//	private LocalDate deadline;
+//	private int couleur;
+//	private int numSalarie;
+//	
+//	public JavaSQLProjet (int idP,String nom, int priorite, LocalDate deadline, int couleur, int numSalarie) {
+//		super();
+//		this.idP = idP;
+//		this.nom = nom;
+//		this.priorite = priorite;
+//		this.deadline = deadline;
+//		this.couleur = couleur;
+//		this.numSalarie = numSalarie;
+//	}
+//	
+//	public JavaSQLProjet () {
+//		super();
+//	}
 	
-	public JavaSQLProjet (String nom, int priorite, LocalDate deadline, int couleur, int numSalarie) {
-		super();
-		this.nom = nom;
-		this.priorite = priorite;
-		this.deadline = deadline;
-		this.couleur = couleur;
-		this.numSalarie = numSalarie;
+	
+	public static void connection() {
+		JavaSQL.connection();
 	}
 	
-	public JavaSQLProjet () {
-		super();
-	}
 	
 	
-	public void connection() {
-		super.connection();
-	}
-	
-	
-	
-	public ArrayList<Projet> affiche() throws SQLException{
+	public static ArrayList<Projet> affiche() throws SQLException{
 		ArrayList<Projet> protab = new ArrayList<Projet>();
 		ArrayList<String> listeDom = new ArrayList<String>();
 		String sql = "SELECT * FROM Projet;";
 		Personne personne;
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -95,7 +97,7 @@ public class JavaSQLProjet extends JavaSQL{
 								 ", couleur = " + res.getString("couleur") + ", numSalarie = " + res.getString("numSalarie"));
 					 }
 				 }
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -103,22 +105,47 @@ public class JavaSQLProjet extends JavaSQL{
 
 	}
 	
-	public void insertion() throws SQLException{
-		Date tadat = Date.valueOf(this.deadline);
-		String sql = "INSERT INTO Projet(idP, nom, priorite, deadline, couleur, numSalarie) VALUE(NULL,'" + this.nom + "' ,  '"+this.priorite+"' ,'"+tadat+"' , '"+this.couleur+"' , '"+this.numSalarie+"');";
+	public static void insertion(String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
+		Date tadat = Date.valueOf(deadline);
+		String sql = "INSERT INTO Projet(idP, nom, priorite, deadline, couleur, numSalarie) VALUE(NULL,'" + nom + "' ,  '"+priorite+"' ,'"+tadat+"' , '"+couleur+"' , '"+numSalarie+"');";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 	}
 	
-	public String toString() {
-		return "nom : " + this.nom +this.priorite+this.deadline+this.couleur+this.numSalarie; 
+	public static void supprime(int idP) throws SQLException{
+		String sql = "SELECT idA FROM Activite WHERE idP =" + idP;
+		try{
+			 connection();
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 sql = "DELETE FROM ListeDomaine WHERE idA =" + res.getInt("idA");
+					 stmt.executeUpdate(sql);
+					 sql = "DELETE FROM Participe WHERE idA =" + res.getInt("idA");
+					 stmt.executeUpdate(sql);
+					 sql = "DELETE FROM Creneaux WHERE idA =" + res.getInt("idA");
+					 stmt.executeUpdate(sql);
+					 sql = "DELETE FROM Activite WHERE idA =" + res.getInt("idA");
+					 stmt.executeUpdate(sql);					 
+				 }
+				 sql = "DELETE FROM Projet WHERE idP = " + idP;
+				 stmt.executeUpdate(sql);
+			 }
+			 con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static String toString(String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) {
+		return "nom : " + nom +priorite+deadline+couleur+numSalarie; 
 	}
 
 }

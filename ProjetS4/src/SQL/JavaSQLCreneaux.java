@@ -4,39 +4,39 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class JavaSQLCreneaux extends JavaSQL{
-	private String titre;
-	private int couleur;
-	private int debut;
-	private int fin;
-	private int numSalarie;
-	private int code;
-	private int numero;
-	private int idA;
+public final class JavaSQLCreneaux extends JavaSQL{
+//	private String titre;
+//	private int couleur;
+//	private int debut;
+//	private int fin;
+//	private int numSalarie;
+//	private int code;
+//	private int numero;
+//	private int idA;
+//	
+//	public JavaSQLCreneaux (String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) {
+//		super();
+//		this.titre = titre;
+//		this.couleur= couleur;
+//		this.debut = debut;
+//		this.fin= fin;
+//		this.numSalarie= numSalarie;
+//		this.code= code;
+//		this.numero= numero;
+//		this.idA = idA;
+//	}
 	
-	public JavaSQLCreneaux (String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) {
-		super();
-		this.titre = titre;
-		this.couleur= couleur;
-		this.debut = debut;
-		this.fin= fin;
-		this.numSalarie= numSalarie;
-		this.code= code;
-		this.numero= numero;
-		this.idA = idA;
+	
+	public static void connection() {
+		JavaSQL.connection();
 	}
 	
 	
-	public void connection() {
-		super.connection();
-	}
 	
-	
-	
-	public void affiche() throws SQLException{
+	public static void affiche() throws SQLException{
 		String sql = "SELECT * FROM Creneaux;";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -44,29 +44,29 @@ public class JavaSQLCreneaux extends JavaSQL{
 						 + ", fin = " + res.getString("fin")+ ", numSalarie = " + res.getString("numSalarie") + ", code = " + res.getString("code") + ", numero = " + res.getString("numero") + res.getString("idA"));
 					 }
 				 }
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 
 	}
 	
-	public void insertion() throws SQLException{
-		String sql = "INSERT INTO Creneaux(idC, titre, couleur, debut, fin, numsalarie, code, numero, idA) VALUE(NULL, '" + this.titre + "' ,  '"+this.couleur+"' ,'"+this.debut+"' , '"+this.fin+
-				"' , '"+this.numSalarie+"' , '"+this.code+"' , '"+this.numero+"' , '"+this.idA+"');";
+	public static void insertion(String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) throws SQLException{
+		String sql = "INSERT INTO Creneaux(idC, titre, couleur, debut, fin, numsalarie, code, numero, idA) VALUE(NULL, '" + titre + "' ,  '"+couleur+"' ,'"+debut+"' , '"+fin+
+				"' , '"+numSalarie+"' , '"+code+"' , '"+numero+"' , '"+idA+"');";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 	}
 	
-	public String toString() {
-		return "nom : " + this.titre +this.couleur+this.debut+this.fin+this.numSalarie+this.code+this.numero+this.idA; 
+	public static String toString(String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) {
+		return "nom : " + titre +couleur+debut+fin+numSalarie+code+numero+idA; 
 	}
 
 }

@@ -4,21 +4,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class JavaSQLDebug extends JavaSQL{
+public final class JavaSQLDebug extends JavaSQL{
 	
 	public JavaSQLDebug () {
 		super();
 	}
 	
 
-	public void connection() {
-		super.connection();
+	public static void connection() {
+		JavaSQL.connection();
 	}
 	
 	public void drop() throws SQLException{
 		String sql = "DROP TABLE IF EXISTS Competence";
 		try{
-			 this.connection();
+			 connection();
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
 			 System.out.println("drop Competence fait");
@@ -59,7 +59,7 @@ public class JavaSQLDebug extends JavaSQL{
 			 stmt.executeUpdate(sql);
 			 System.out.println("drop Domaine fait");
 			 
-			 this.con.close();
+			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -70,14 +70,14 @@ public class JavaSQLDebug extends JavaSQL{
 				"FROM   INFORMATION_SCHEMA.TABLES\r\n" +
 				"WHERE Table_Type='BASE TABLE'";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 System.out.println(res.getString(1));
 					 }
 				 }
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}

@@ -4,55 +4,55 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class JavaSQLListeDomaine extends JavaSQL{
-	private String tag;
-	private int idA;
+public final class JavaSQLListeDomaine extends JavaSQL{
+//	private String tag;
+//	private int idA;
+//
+//	public JavaSQLListeDomaine (String tag, int idA) {
+//
+//		super();
+//		this.tag= tag;
+//		this.idA = idA;
+//	}
 
-	public JavaSQLListeDomaine (String tag, int idA) {
 
-		super();
-		this.tag= tag;
-		this.idA = idA;
-	}
-
-
-	public void connection() {
-		super.connection();
+	public static void connection() {
+		JavaSQL.connection();
 	}
 
 	
-	public void affiche() throws SQLException{
+	public static void affiche() throws SQLException{
 		String sql = "SELECT * FROM ListeDomaine;";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 System.out.println("idA = " + res.getString("idA") + ", tag = " + res.getString("tag"));
 					 }
 				 }
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 
 	}
 
-	public void insertion() throws SQLException{
-		String sql = "INSERT INTO Activite(idA, tag) VALUE('" + this.idA+ "' ,  '"+this.tag+"');";
+	public static void insertion(String tag, int idA) throws SQLException{
+		String sql = "INSERT INTO Activite(idA, tag) VALUE('" + idA+ "' ,  '"+tag+"');";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 	}
 
-	public String toString() {
-		return "nom : " + this.idA+this.tag;
+	public static String toString(int idA, String tag) {
+		return "nom : " + idA+tag;
 	}
 
 

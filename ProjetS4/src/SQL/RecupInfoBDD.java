@@ -45,12 +45,12 @@ public final class RecupInfoBDD {
 	}
 	
 	public static void recupBDDActivite(Projet p) throws SQLException {		
-		p.setListeActivite(activite.affiche());
+		p.setListeActivite(JavaSQLActivite.affiche());
 	}
 	
 	public static void recupBDDProjet(Entreprise e) throws SQLException {
 		ArrayList<Projet> prog = new ArrayList<Projet>();
-		prog = projet.affiche();
+		prog = JavaSQLProjet.affiche();
 		for (int i = 0; i < prog.size(); i++) {
 			e.nouvProjet(prog.get(i));
 		}

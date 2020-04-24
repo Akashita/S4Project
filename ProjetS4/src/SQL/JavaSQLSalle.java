@@ -7,33 +7,33 @@ import java.util.ArrayList;
 
 import Ressource.Salle;
 
-public class JavaSQLSalle extends JavaSQL{
-	private int numero;
-	private String nom;
-	private int place;
+public final class JavaSQLSalle extends JavaSQL{
+//	private int numero;
+//	private String nom;
+//	private int place;
+//	
+//	public JavaSQLSalle (int numero, String nom, int place) {
+//		super();
+//		this.numero= numero;
+//		this.nom = nom;
+//		this.place= place;
+//	}
+//	public JavaSQLSalle () {
+//		super();
+//	}
 	
-	public JavaSQLSalle (int numero, String nom, int place) {
-		super();
-		this.numero= numero;
-		this.nom = nom;
-		this.place= place;
+	
+	public static void connection() {
+		JavaSQL.connection();
 	}
-	public JavaSQLSalle () {
-		super();
-	}
-	
-	
-	public void connection() {
-		super.connection();
-	}
 	
 	
 	
-	public ArrayList<Salle> affiche() throws SQLException{
+	public static ArrayList<Salle> affiche() throws SQLException{
 		ArrayList<Salle> salletab = new ArrayList<Salle>();
 		String sql = "SELECT * FROM Salle;";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -41,7 +41,7 @@ public class JavaSQLSalle extends JavaSQL{
 						 System.out.println("numero = " + res.getString("numero") + ", nom = " + res.getString("nom") + ", place = " + res.getString("place"));
 					 }
 				 }
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -49,21 +49,21 @@ public class JavaSQLSalle extends JavaSQL{
 
 	}
 	
-	public void insertion() throws SQLException{
-		String sql = "INSERT INTO Salle(numero, nom, place) VALUE('" + this.numero+ "' ,  '"+this.nom+"' ,  '"+this.place+"');";
+	public static void insertion(int numero, String nom, int place) throws SQLException{
+		String sql = "INSERT INTO Salle(numero, nom, place) VALUE('" + numero+ "' ,  '"+nom+"' ,  '"+place+"');";
 			try{
-				 this.connection();
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 this.con.close();
+				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 	}
 	
-	public String toString() {
-		return "nom : " + this.numero+this.nom+this.place; 
+	public static String toString(int numero, String nom, int place) {
+		return "nom : " + numero+nom+place; 
 	}
 
 }
