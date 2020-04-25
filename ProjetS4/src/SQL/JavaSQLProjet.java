@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 import Model.Activite;
 import Model.Projet;
+import Ressource.Competence;
 import Ressource.Personne;
 
 public final class JavaSQLProjet extends JavaSQL{
@@ -55,14 +55,14 @@ public final class JavaSQLProjet extends JavaSQL{
 						 String sql2 = "SELECT * FROM Personne WHERE numSalarie = " + res.getString("numSalarie") + ";";
 						 Statement stmt2 = getCon().createStatement();
 						 try (ResultSet res2 = stmt2.executeQuery(sql2)){
-							 Hashtable<String, String> tagtab = new Hashtable<String, String>();
+							 ArrayList<Competence> tagtab = new ArrayList<Competence>();
 							 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
 							 Statement stmt3 = getCon().createStatement();
 							 try (ResultSet res3 = stmt3.executeQuery(sqltag)){
 								 while(res3.next()) {
-									 tagtab.put(res3.getString("tag"), res3.getString("niveau"));
+									 tagtab.add(new Competence(res3.getString("tag"), res3.getInt("niveau")));
 								 }
-							 }
+							 } 
 							 res2.next();
 							 personne  = new Personne(res2.getString("nom"), res2.getString("prenom"), res2.getString("role"), res2.getInt("numSalarie"), res2.getString("motDePasse"), tagtab);
 						 }

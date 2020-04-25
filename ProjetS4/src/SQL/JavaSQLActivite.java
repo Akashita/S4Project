@@ -109,6 +109,23 @@ public final class JavaSQLActivite extends JavaSQL{
 				e.printStackTrace();
 			}
 	 }
+	 
+	 public static void modifie(int idA, String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) throws SQLException{
+			try{
+				 connection();
+				 Statement stmt = getCon().createStatement();
+				 Date debut1 = Date.valueOf(debut);
+				 String sql = "UPDATE Activite SET titre= " + titre + " debut  = " + debut1 + " charge = " + charge + " ordre = " + ordre + " couleur = " + couleur + " idP = " + idP + " WHERE idA= "+ idA;
+				 stmt.executeUpdate(sql);
+				 for (int i=0; i<listeDom.size(); i++){
+					 sql  = "UPDATE ListeDomaine SET tag = " + listeDom.get(i) + " WHERE idA = "+ idA;
+					 stmt.executeUpdate(sql);
+				 }
+				 con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
 
 	public static String toString(String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP) {
 		return "nom : " + titre +debut+charge+ordre+couleur+idP;

@@ -54,6 +54,18 @@ public final class JavaSQLMateriel extends JavaSQL{
 			}
 	}
 	
+	public static void modifie(int numSerie, int nouvNumSerie, int type, int numero) throws SQLException{
+		try{
+			 connection();
+			 Statement stmt = getCon().createStatement();
+			 String sql = "UPDATE Materiel SET numSerie= " + nouvNumSerie + " type  = " + type + " numero = " + numero + " WHERE numSerie= "+ numSerie;
+			 stmt.executeUpdate(sql);
+			 con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 	public static String toString(int numSerie, int type, int numero) {
 		return "nom : " + numSerie+type+numero; 
 	}

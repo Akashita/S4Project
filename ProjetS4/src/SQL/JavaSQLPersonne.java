@@ -2,8 +2,8 @@ package SQL;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
+import Ressource.Competence;
 import Ressource.Personne;
 
 public final class JavaSQLPersonne extends JavaSQL{
@@ -46,12 +46,12 @@ public final class JavaSQLPersonne extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 Hashtable<String, String> tagtab = new Hashtable<String, String>();
+						 ArrayList<Competence> tagtab = new ArrayList<Competence>();
 						 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
 						 Statement stmt2 = getCon().createStatement();
 						 try (ResultSet res2 = stmt2.executeQuery(sqltag)){
 							 while(res2.next()) {
-								 tagtab.put(res2.getString("tag"), res2.getString("niveau"));
+								 tagtab.add(new Competence(res2.getString("tag"), res2.getInt("niveau")));
 							 }
 						 }
 						 personnetab.add(new Personne(res.getString("nom"), res.getString("prenom"), res.getString("role"), res.getInt("numSalarie"), res.getString("motDePasse"), tagtab));
@@ -115,6 +115,24 @@ public final class JavaSQLPersonne extends JavaSQL{
 			e.printStackTrace();
 		}
 	}
+	
+	public static void modifie(int numSalarie, String nom, String prenom, String role, String motDePasse, ArrayList<String> tag, ArrayList<Integer> niveau) throws SQLException{
+		try{
+			 connection();
+			 Statement stmt = getCon().createStatement();
+			 String sql = "UPDATE Personne SET nom = " + nom + " prenom  = " + prenom + " role = " + role + " motDePasse = " + motDePasse + " WHERE numSalarie = "+ numSalarie;
+			 stmt.executeUpdate(sql);
+			 for (int i=0; i<tag.size(); i++){
+				 sql  = "UPDATE Competance SET tag = " + tag.get(i) + " niveau  = " + niveau.get(i)+ "  WHERE numSalarie = "+ numSalarie;
+				 stmt.executeUpdate(sql);
+			 }
+			 
+			 con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 
 	public static String toString(String nom, String prenom, String role, String motDePasse, ArrayList<String> tag, ArrayList<Integer> niveau) {
 		return "nom : " + nom +prenom+role+motDePasse+tag+niveau;

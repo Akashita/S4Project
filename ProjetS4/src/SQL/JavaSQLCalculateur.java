@@ -63,6 +63,18 @@ public final class JavaSQLCalculateur extends JavaSQL{
 			}
 	}
 	
+	public static void modifie(int code, String nom, int capacite) throws SQLException{
+		try{
+			 connection();
+			 Statement stmt = getCon().createStatement();
+			 String sql = "UPDATE Calculateur SET nom= " + nom + " capacite  = " + capacite + " WHERE code= "+ code;
+			 stmt.executeUpdate(sql);
+			 con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 	public static String toString(int code, String nom, int capacite) {
 		return "nom : " + code+nom+capacite; 
 	}

@@ -65,6 +65,18 @@ public final class JavaSQLCreneaux extends JavaSQL{
 			}
 	}
 	
+	public static void modifie(int idC, String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) throws SQLException{
+		try{
+			 connection();
+			 Statement stmt = getCon().createStatement();
+			 String sql = "UPDATE Creneaux SET titre= " + titre+ " couleur  = " + couleur + " debut  = " + debut + " fin  = " + fin + " numSalarie  = " + numSalarie + " code  = " + code + " numero  = " + numero + " idA  = " + idA + " WHERE idC= "+ idC;
+			 stmt.executeUpdate(sql);
+			 con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 	public static String toString(String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) {
 		return "nom : " + titre +couleur+debut+fin+numSalarie+code+numero+idA; 
 	}
