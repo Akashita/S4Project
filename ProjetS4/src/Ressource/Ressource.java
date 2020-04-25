@@ -1,9 +1,14 @@
 package Ressource;
+import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
+
+import Model.Activite;
 import Model.CreneauHoraire;
 import Model.Entreprise;
 import Model.Temps;
@@ -226,8 +231,49 @@ public class Ressource implements Comparable<Ressource>{
 		return creneauxLibres;
 		
 	}
+	
+	public CreneauHoraire getPremierCreneauActivite(Activite act) {
+		List<LocalDate> listKeys = new ArrayList<LocalDate>(jours.keySet());
+		CreneauHoraire premCreneau = null;
+		Collections.sort(listKeys);
+		boolean quitter = false;
+		for (int i = 0; i < listKeys.size(); i++) {
+			ArrayList<CreneauHoraire> jour = jours.get(listKeys.get(i));
+			for (int j = 0; j < jour.size(); j++) {
+				if (jour.get(j).getActivite() == act) {
+					premCreneau = jour.get(j);
+					quitter = true;
+					break;
+				}
+			}
+			if (quitter) {
+				break;
+			}
+		}
 
+		return premCreneau;	
+	}
+	
+	public CreneauHoraire getDernierCreneauActivite(Activite act) {
+		List<LocalDate> listKeys = new ArrayList<LocalDate>(jours.keySet());
+		CreneauHoraire premCreneau = null;
+		Collections.sort(listKeys);
+		boolean quitter = false;
+		for (int i = listKeys.size()-1; i >= 0; i--) {
+			ArrayList<CreneauHoraire> jour = jours.get(listKeys.get(i));
+			for (int j = jour.size()-1; j >= 0 ; j--) {
+				if (jour.get(j).getActivite() == act) {
+					premCreneau = jour.get(j);
+					quitter = true;
+					break;
+				}
+			}
+			if (quitter) {
+				break;
+			}
+		}
 
-
+		return premCreneau;	
+	}
 
 }
