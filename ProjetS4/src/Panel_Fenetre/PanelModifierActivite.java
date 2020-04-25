@@ -145,7 +145,7 @@ public class PanelModifierActivite extends PanelFenetre{
 		String texte = "<html> Êtes-vous sur de vouloir supprimer cette activité ? <br> La suppression de cette activité supprimera tout son contenu. </html>";
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
-			entreprise.supprimerProjet(entreprise.getProjetSelectionner());
+			entreprise.supprimerActiviter(activite);
 			fm.dispose();
 		}		
 	}
