@@ -50,6 +50,18 @@ public final class JavaSQLListeDomaine extends JavaSQL{
 				e.printStackTrace();
 			}
 	}
+	
+	public static void supprime(int idA, String tag) throws SQLException{
+		try{
+			 connection();
+			 String sql = "DELETE FROM ListeDomaine WHERE idA =" + idA + " AND tag = " + tag;
+			 Statement stmt = getCon().createStatement();
+			 stmt.executeUpdate(sql);
+			 con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 
 	public static String toString(int idA, String tag) {
 		return "nom : " + idA+tag;

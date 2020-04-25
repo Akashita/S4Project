@@ -52,6 +52,18 @@ public final class JavaSQLCompetence extends JavaSQL{
 				e.printStackTrace();
 			}
 	}
+	
+	public static void supprime(int numSalarie, String tag) throws SQLException{
+		try{
+			 connection();
+			 String sql = "DELETE FROM Competences WHERE numSalarie =" + numSalarie + " AND tag = " + tag;
+			 Statement stmt = getCon().createStatement();
+			 stmt.executeUpdate(sql);
+			 con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 
 	public static String toString(int numSalarie, String tag, int niveau) {
 		return "nom : " + numSalarie+tag+niveau; 

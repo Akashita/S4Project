@@ -54,11 +54,23 @@ public final class JavaSQLMateriel extends JavaSQL{
 			}
 	}
 	
+	 public static void supprime(int numSerie) throws SQLException{
+			try{
+				 connection();
+				 String sql = "DELETE FROM Materiel WHERE numSerie =" + numSerie;
+				 Statement stmt = getCon().createStatement();
+				 stmt.executeUpdate(sql);
+				 con.close();
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+	 }
+	 
 	public static void modifie(int numSerie, int nouvNumSerie, int type, int numero) throws SQLException{
 		try{
 			 connection();
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Materiel SET numSerie= " + nouvNumSerie + " type  = " + type + " numero = " + numero + " WHERE numSerie= "+ numSerie;
+			 String sql = "UPDATE Materiel SET numSerie= " + nouvNumSerie + " ,type  = " + type + " ,numero = " + numero + " WHERE numSerie= "+ numSerie;
 			 stmt.executeUpdate(sql);
 			 con.close();
 		} catch(SQLException e){

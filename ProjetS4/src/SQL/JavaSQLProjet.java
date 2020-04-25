@@ -144,6 +144,20 @@ public final class JavaSQLProjet extends JavaSQL{
 		}
 	}
 	
+	public static void modifie(int idP, String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
+		try{
+			 connection();
+			 Statement stmt = getCon().createStatement();
+			 Date date1 = Date.valueOf(deadline);
+			 String sql = "UPDATE Projet SET nom = " + nom + " ,priorite  = " + priorite + " ,date = " + date1 + " ,couleur = " + couleur + " ,numSalarie = " + numSalarie + " WHERE idP = "+ idP;
+			 stmt.executeUpdate(sql);
+			 
+			 con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 	public static String toString(String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) {
 		return "nom : " + nom +priorite+deadline+couleur+numSalarie; 
 	}
