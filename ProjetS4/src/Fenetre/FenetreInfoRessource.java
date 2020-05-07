@@ -25,10 +25,12 @@ public class FenetreInfoRessource extends JDialog{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Entreprise entreprise;
 	private Ressource ressource;
 
 	public FenetreInfoRessource(Entreprise entreprise, Ressource ressource) {
 		super(entreprise.getFenetrePrincipale(), "Information de la ressource");
+		this.entreprise = entreprise;
 		this.ressource = ressource;
 		this.setSize(800,770);
 		this.setLocationRelativeTo(null);
@@ -45,7 +47,7 @@ public class FenetreInfoRessource extends JDialog{
 
 	private void creationInterface() {
 		this.setLayout(new BorderLayout());
-		this.add(new PanelInfoRessource(ressource), BorderLayout.NORTH);
+		this.add(new PanelInfoRessource(entreprise, ressource), BorderLayout.NORTH);
 		this.add(new PanelEDTRessource(ressource), BorderLayout.CENTER);
 		//this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);
 		this.revalidate();

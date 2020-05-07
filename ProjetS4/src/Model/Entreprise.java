@@ -186,6 +186,32 @@ public class Entreprise extends Observable{
 		return this.domaine;
 	}
 
+	public ArrayList<Activite> getActRes(Ressource r){ //retourne tout les activités d'une ressource
+		ArrayList<Activite> lA = new ArrayList<Activite>();
+		for (int i=0; i<lProjet.size(); i++) {
+			ArrayList<Activite> lAP = lProjet.get(i).getListe();
+			for (int j=0; j<lAP.size(); j++) {
+				if (lAP.get(j).ressourcePresente(r)) {
+					lA.add(lAP.get(j));
+				}
+			}
+		}
+		return lA;
+	}
+
+	public ArrayList<Projet> getProjetPRes(Ressource r){ //retourne tout les projets d'une ressource
+		ArrayList<Projet> lP = new ArrayList<Projet>();
+		for (int i=0; i<lProjet.size(); i++) {
+			ArrayList<Activite> lAP = lProjet.get(i).getListe();
+			for (int j=0; j<lAP.size(); j++) {
+				if (lAP.get(j).ressourcePresente(r)) {
+					lP.add(lProjet.get(i));
+				}
+			}
+		}		
+		return lP;
+	}
+	
 	public ArrayList<Ressource> getListeRessourceType(String type){
 		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
 		for (int i=0; i<lRessource.size(); i++) {

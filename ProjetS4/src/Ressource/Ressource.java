@@ -11,6 +11,7 @@ import java.util.Set;
 import Model.Activite;
 import Model.CreneauHoraire;
 import Model.Entreprise;
+import Model.Projet;
 import Model.Temps;
 
 public class Ressource implements Comparable<Ressource>{
@@ -58,6 +59,7 @@ public class Ressource implements Comparable<Ressource>{
 	public int getId() {
 		return this.id;
 	}
+	
 	
 	//--------------------------------------------------------------------------------->>>>>>> Setteur 
 	

@@ -11,6 +11,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Model.Activite;
+import Model.Entreprise;
 import Model.Projet;
 import Ressource.Competence;
 import Ressource.Personne;
@@ -19,11 +21,13 @@ import Ressource.Salle;
 
 public class PanelInfoRessource extends JPanel{
 
+	private Entreprise entreprise;
 	private Ressource ressource;
 	private Color couleurFond;
 
 	
-	public PanelInfoRessource (Ressource ressource) {
+	public PanelInfoRessource (Entreprise entreprise, Ressource ressource) {
+		this.entreprise = entreprise;
 		this.ressource = ressource;
 		couleurFond = PanelPrincipal.BLEU3;
 		this.setBackground(couleurFond);
@@ -41,17 +45,16 @@ public class PanelInfoRessource extends JPanel{
 		
 		GridBagConstraints gc = new GridBagConstraints();
 
-		gcInfo(gc);
+		info(gc);
 		
 		if (ressource.getType() == Ressource.PERSONNE) {
-			gcCompetence(gc);
-			gcChefDeProjet(gc);
+			colChefDeProjet(gc);
+			colCompetence(gc);
 		}
-		
-		
+		colActivite(gc);
 	}
 	
-	private void gcInfo(GridBagConstraints gc) {
+	private void info(GridBagConstraints gc) {
 		gc.insets = new Insets(5, 5, 5, 0);
 		
 		gc.fill = GridBagConstraints.CENTER;
@@ -95,7 +98,24 @@ public class PanelInfoRessource extends JPanel{
 
 	}
 	
-	private void gcCompetence(GridBagConstraints gc) {
+	private void colChefDeProjet(GridBagConstraints gc) {
+		gc.gridx ++;
+		gc.gridy = 0;
+		this.add(labelTitreColonne("Chef des projets"), gc);
+
+		ArrayList<Projet> projets = ((Personne) ressource).getListeDeProjet();
+		ArrayList<String> listeProjet = new ArrayList<String>();
+		for (int i=0; i<projets.size(); i++) {
+			listeProjet.add(projets.get(i).getNom());
+		}	
+		gc.gridy ++;
+		gc.gridheight = GridBagConstraints.REMAINDER;
+		if (projets.size()>0) {
+			this.add(panelContenuColonne(listeProjet), gc);		
+		}
+	}
+	
+	private void colCompetence(GridBagConstraints gc) {
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.gridx ++;
 		gc.gridy = 0;
@@ -112,24 +132,33 @@ public class PanelInfoRessource extends JPanel{
 		}	
 		gc.gridy =1;
 		gc.gridheight = GridBagConstraints.REMAINDER;
-		this.add(panelContenuColonne(listeDomaine, listeNiveau), gc);
+		if (competences.size()>0) {
+			this.add(panelContenuColonne("Domaine", "Niveau", listeDomaine, listeNiveau), gc);
+		}
 	}
-	
-	private void gcChefDeProjet(GridBagConstraints gc) {
+			
+	private void colActivite(GridBagConstraints gc) {
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.gridx ++;
 		gc.gridy = 0;
-		this.add(labelTitreColonne("Chef des projets"), gc);
-
-		ArrayList<Projet> projets = ((Personne) ressource).getListeDeProjet();
-		ArrayList<String> listeProjet = new ArrayList<String>();
-		for (int i=0; i<projets.size(); i++) {
-			listeProjet.add(projets.get(i).getNom());
-		}	
-		gc.gridy ++;
-		gc.gridheight = GridBagConstraints.REMAINDER;
-		this.add(panelContenuColonne(listeProjet), gc);		
-	}
 		
+		this.add(labelTitreColonne("ACTIVITÉS"),gc);
+
+		ArrayList<Activite> listeAct = entreprise.getActRes(ressource);
+		ArrayList<Projet> listeProj = entreprise.getProjetPRes(ressource);
+		ArrayList<String> act = new ArrayList<String>();
+		ArrayList<String> projet = new ArrayList<String>();
+		for (int i=0; i<listeAct.size(); i++) {
+			act.add(listeAct.get(i).getTitre());
+			projet.add(listeProj.get(i).getNom());
+		}	
+		gc.gridy =1;
+		gc.gridheight = GridBagConstraints.REMAINDER;
+		if (listeAct.size()>0) {
+			this.add(panelContenuColonne("Activité", "Projet", act, projet), gc);
+		}
+		
+	}
 	
 	private JPanel labelInfo(String nom) {
 		JPanel panel = new JPanel();
@@ -164,7 +193,7 @@ public class PanelInfoRessource extends JPanel{
 		return label;
 	}
 
-	private JPanel panelContenuColonne(ArrayList<String> liste1, ArrayList<String> liste2) {
+	private JPanel panelContenuColonne(String nomCol1, String nomCol2, ArrayList<String> liste1, ArrayList<String> liste2) {
 		JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
 		panel.setLayout(new GridBagLayout());
@@ -177,9 +206,9 @@ public class PanelInfoRessource extends JPanel{
 		gc.weighty = 1;
 		gc.gridx = 0;
 		gc.gridy = 0;
-		panel.add(labelInfoColonne("Domaine"), gc);
+		panel.add(labelInfoColonne(nomCol1), gc);
 		gc.gridx = 1;
-		panel.add(labelInfoColonne("Niveau"), gc);
+		panel.add(labelInfoColonne(nomCol2), gc);
 
 		gc.insets = new Insets(0, 8, 0, 5);
 		gc.gridx = 0;

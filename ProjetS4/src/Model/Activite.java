@@ -102,6 +102,17 @@ public class Activite implements Comparable<Activite>{
 		return listeDomaine;
 	}
 
+	public boolean ressourcePresente(Ressource r) {
+		boolean estPresent = false;
+		for (int i=0; i<lRessources.size(); i++) {
+			if (r.getId() == lRessources.get(i).getId()) {
+				estPresent = true;
+				break;
+			}
+		}
+		return estPresent;
+	}
+	
 	//--------------------------------------------------------------------------------->>>>> Setteur
 
 

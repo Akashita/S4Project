@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -30,6 +31,7 @@ public class PanelEDTActivite extends JPanel{
 	private int nbPersonne;
 	private Entreprise entreprise;
 	private Color couleurFond;
+	private LocalDate debut, fin;
 
 	public PanelEDTActivite(Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;
@@ -101,26 +103,48 @@ public class PanelEDTActivite extends JPanel{
 			String nom = (((Personne) res).getPrenom()) + " " + res.getNom();
 			panel.add(creerLabel(nom, res), gc);
 			
-			gc.gridwidth = nbMois;
+			gc.gridwidth = GridBagConstraints.REMAINDER;
 			gc.gridx ++;
 			panel.add(afficheMoisRes(res), gc);
+			//panel.add(afficheMoisRes(res), gc);
 			
 		}
 		return panel;
 	}
 	
 	/**
-	 * Retourne le nombre de semaine de travaille qu'il  faut afficher pour voir toute les ressourcede l'act
-	 * @return
+	 * met à jour debut et fin qu'il  faut afficher pour voir toute les ressource de l'act
 	 */
-	private int nbSemaineAffiche() { 
-		int nbSemaine = 0;
+	/*private void duree() {
+		LocalDate [] duree = new LocalDate[2]; // la premiere case correspon
 		
-		return nbSemaine;
-	}
+		LocalDate debut, lastDebut; 
+		
+		CreneauHoraire fin;
+		//fin = res.getDernierCreneauActivite(activite);
+
+		ArrayList<Ressource> listeRes = activite.getListeRessourceType(Ressource.PERSONNE);
+		for (int i=0; i<listeRes.size(); i++) {
+			Ressource res = listeRes.get(i);
+			debut = res.getPremierCreneauActivite(activite);
+			if (debut.getDebut().get)
+		}
+
+		this.debut = debut;
+		this.fin = fin;
+}*/
+	
+	/*private JPanel afficheEDTRessource(Ressource res) {
+		JPanel panel = new JPanel();
+		int nbMois = 
+		panel.setBackground(couleurFond);
+		return panel;
+		
+	}*/
 	
 	private JPanel afficheMoisRes(Ressource res) {
 		JPanel panel = new JPanel();
+		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		
 		for (int i=1; i<52;i++) {

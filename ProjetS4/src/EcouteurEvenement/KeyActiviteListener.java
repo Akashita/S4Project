@@ -21,16 +21,17 @@ public class KeyActiviteListener implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		Activite activite = entreprise.getActiviteSelectionner();
-		if (!activite.getChangeSens()) {
-			activite.setChangeSens(true);
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				entreprise.modifieListeActivite(true);
-			}
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				entreprise.modifieListeActivite(false);
+		if (activite != null) {
+			if (!activite.getChangeSens()) {
+				activite.setChangeSens(true);
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
+					entreprise.modifieListeActivite(true);
+				}
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					entreprise.modifieListeActivite(false);
+				}			
 			}			
 		}
-		
 	}
 
 	@Override
