@@ -202,6 +202,7 @@ public class PanelFenetre extends JPanel{
 				}
 				if (!estPresent) {
 					listeCompetenceChoisie.add(competence);
+					maj(pf);
 				}	
 				else {
 			    	JOptionPane.showMessageDialog(null, "Vous l'avez deja  choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
