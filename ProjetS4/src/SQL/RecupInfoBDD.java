@@ -21,7 +21,7 @@ public final class RecupInfoBDD {
 		ArrayList<String> dom = new ArrayList<String>();
 		dom = domaine.affiche();
 		for (int i = 0; i < dom.size(); i++) {
-			e.nouvDomaine(dom.get(i));
+			e.ajoutDomaine(dom.get(i));
 		}
 	}
 

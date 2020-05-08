@@ -31,18 +31,17 @@ public class PanelDomaine extends PanelFenetre{
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
+
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert à définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
-		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
-		 */
+		gc.weightx = 3;
+		gc.weighty = 5;
+
+		
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
 
@@ -62,10 +61,12 @@ public class PanelDomaine extends PanelFenetre{
 		gc.gridy ++;
 		this.add(boutonSupprimerDomaine, gc);
 
+		gc.fill = GridBagConstraints.BOTH;
 		gc.gridwidth = GridBagConstraints.RELATIVE;
 		gc.gridx ++;
 		this.add(textFieldNom, gc);
 
+		gc.fill = GridBagConstraints.CENTER;
 		gc.gridwidth = 1;
 		gc.gridx ++;
 		this.add(boutonAjoutDomaine, gc);
@@ -73,8 +74,4 @@ public class PanelDomaine extends PanelFenetre{
 	
 
 
-	protected void actionFin() {
-		entreprise.setDomaine(listeDomaine);
-		fm.dispose();
-	}
 }

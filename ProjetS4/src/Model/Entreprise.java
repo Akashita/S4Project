@@ -431,21 +431,7 @@ public class Entreprise extends Observable{
 		update();
 	}
 	
-	public void nouvDomaine (Domaine domaine) {
-		this.domaine = domaine;
-	}
 	
-	public void nouvDomaine (String domaine) {
-		this.domaine.ajoutDomaine(domaine);
-	}
-
-	public void setDomaine(ArrayList<String> listeDomaine) {
-		this.domaine.setDomaine(listeDomaine);
-	}
-	
-	public void enleverDomaine (String domaine) {
-		this.domaine.enleverDomaine(domaine);
-	}
 	
 
 	public void ajouterRessourceActivite(Ressource res) {
@@ -462,7 +448,44 @@ public class Entreprise extends Observable{
 		update();
 	}
 	
+
+	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion domaine
+
+	/*public void nouvDomaine (Domaine domaine) {
+		this.domaine = domaine;
+	}*/
 	
+	public void ajoutDomaine (String d) {
+		this.domaine.ajoutDomaine(d);
+		System.out.println(domaine.getListeDomaine());
+	}
+
+	/*public void setDomaine(ArrayList<String> listeDomaine) {
+		this.domaine.setDomaine(listeDomaine);
+	}*/
+	
+	public boolean aucuneRessourceACeDomaine(String domaine) {
+		boolean b = true;
+		ArrayList<Ressource> lP = getListeRessourceType(Ressource.PERSONNE);
+		for (int i=0; i<lP.size(); i++) {
+			Personne p  = (Personne) lP.get(i);
+			if (p.aDomaine(domaine)) {
+				b = false;
+			}
+		}
+		return b;
+	}
+	
+	public ArrayList<String> personneAvecCeDomaine(String domaine){ // recherche sql de toute les personnes de avec ce domaine
+		ArrayList<String> l = new ArrayList<String>();
+		return l;
+	}
+	
+	public void supprimerDomaine (String d) {
+		this.domaine.enleverDomaine(d);
+		System.out.println(domaine.getListeDomaine());
+	}
+
 	
 	//================ Partie Graphique ==========//
 	

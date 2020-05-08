@@ -81,6 +81,16 @@ public class Personne extends Ressource{
 		return this.listeCompetence;
 	}
 	
+	public boolean aDomaine(String domaine) {
+		boolean b = false;
+		for (int i=0; i<listeCompetence.size(); i++) {
+			if (listeCompetence.get(i).getNom() == domaine) {
+				b = true;
+			}
+		}
+		return b;
+	}
+	
 	//--------------------------------------------------------------------------------->>>>>>> Setteur
 	
 	public void enleverProjet(Projet projet) {

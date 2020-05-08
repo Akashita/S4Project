@@ -58,7 +58,7 @@ public class PanelFenetre extends JPanel{
     protected JComboBox<String> comboBoxType = new JComboBox<String>(listeType);		
     protected JComboBox<Ressource> comboBoxRessource;		
 
-    String [] niveau = {"niveau", "Debutant", "Confirmé", "Expert"};
+    String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
     protected JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
     protected ArrayList<Competence> listeCompetenceChoisie;
     protected ArrayList<String> listeDomaineChoisi;
@@ -70,9 +70,9 @@ public class PanelFenetre extends JPanel{
     protected Activite activite;
 
     String [] jours;
-    String[] mois = {"Janvier", "Février", "Mars", "Avril",
+    String[] mois = {"Janvier", "Fevrier", "Mars", "Avril",
     		"Mai", "Juin", "Juillet", "Aout",
-    		"Septembre", "Octobre", "Novembre", "Décembre"};
+    		"Septembre", "Octobre", "Novembre", "Decembre"};
     String[] annees = new String [Temps.nbAnnnee];
     protected JComboBox<String> comboBoxAnnee, comboBoxMois, comboBoxJour;	
     
@@ -95,7 +95,6 @@ public class PanelFenetre extends JPanel{
 	//-------------------------------------------->>>>> gere la liste de domaine 
 	protected void initialiseDomaine (PanelFenetre pf) {
 		listeDomaine = entreprise.getDomaine().getListeDomaine();
-		//afficheListeDomaine();
 		boutonAjoutDomaine = new JButton("Ajouter");
 		boutonAjoutDomaine.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -111,6 +110,7 @@ public class PanelFenetre extends JPanel{
 	}
 
 	protected Component afficheListeDomaine() {
+		listeDomaine = entreprise.getDomaine().getListeDomaine();
 		String [] domaine = new String [listeDomaine.size()];
 		Collections.sort(listeDomaine); //trie dans l'odre alphabetique
 		for (int i=0; i<listeDomaine.size(); i++) {
@@ -137,22 +137,34 @@ public class PanelFenetre extends JPanel{
 				}
 			}
 			if (!estPresent) {
-				listeDomaine.add(domaine);
-				//afficheListeDomaine();
+				entreprise.ajoutDomaine(domaine);
 				textFieldNom = new JTextField();
 				maj(pf);
 				}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Ce domaine existe déjà", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Ce domaine existe deja�", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 
 	}
 	
 	protected void supprimerDomaine(PanelFenetre pf) {
-		int i = jListDomaine.getSelectedIndex();
-		jListDomaine.remove(i);
-		maj(pf);
+		if (jListDomaine.getModel().getSize() > 0) {
+			int index = jListDomaine.getSelectedIndex();
+			if (index != -1) {
+				String domaine = listeDomaine.get(index);
+				if (entreprise.aucuneRessourceACeDomaine(domaine)) {
+					entreprise.supprimerDomaine(domaine);
+					maj(pf);			
+				}
+				else {
+			    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}			
+			}
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null,"Il y a aucun domaine dans l'entreprise", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
 	}
 	
 	
@@ -162,7 +174,7 @@ public class PanelFenetre extends JPanel{
 
 		Domaine domaine = entreprise.getDomaine();
 		String [] liste = new String [domaine.getListeDomaine().size()+1];
-		liste[0] = "Compétence";
+		liste[0] = "Competence";
 		for (int i=0; i<liste.length-1; i++) {
 			liste[i+1] = domaine.getListeDomaine().get(i);
 		}
@@ -192,7 +204,7 @@ public class PanelFenetre extends JPanel{
 					listeCompetenceChoisie.add(competence);
 				}	
 				else {
-			    	JOptionPane.showMessageDialog(null, "Vous l'avez déjà choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Vous l'avez deja� choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
@@ -200,7 +212,7 @@ public class PanelFenetre extends JPanel{
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Choissisez une compétence", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Choissisez une competence", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 	
@@ -208,7 +220,7 @@ public class PanelFenetre extends JPanel{
 		JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.add(creerTexte("Compétences choisies: "));
+		panel.add(creerTexte("Competences choisies: "));
 		for (int i=0; i<listeCompetenceChoisie.size(); i++) {
 			panel.add(creerTexte(listeCompetenceChoisie.get(i).getNom()));
 		}
@@ -224,7 +236,7 @@ public class PanelFenetre extends JPanel{
 
 		Domaine domaine = entreprise.getDomaine();
 		String [] liste = new String [domaine.getListeDomaine().size()+1];
-		liste[0] = "Compétence";
+		liste[0] = "Competence";
 		for (int i=0; i<liste.length-1; i++) {
 			liste[i+1] = domaine.getListeDomaine().get(i);
 		}
@@ -253,11 +265,11 @@ public class PanelFenetre extends JPanel{
 				maj(pf);
 			}	
 			else {
-			    JOptionPane.showMessageDialog(null, "Vous l'avez déjà choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    JOptionPane.showMessageDialog(null, "Vous l'avez deja� choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Choissisez une compétence", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Choissisez une competence", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 	
@@ -265,7 +277,7 @@ public class PanelFenetre extends JPanel{
 		JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.add(creerTexte("Compétences choisies: "));
+		panel.add(creerTexte("Competences choisies: "));
 		for (int i=0; i<listeDomaineChoisi.size(); i++) {
 			panel.add(creerTexte(listeDomaineChoisi.get(i)));
 		}
