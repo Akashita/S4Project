@@ -30,24 +30,24 @@ public class PanelNouvelleRessource extends PanelFenetre{
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va d√©finir la position et la taille des √©l√©ments */
+		/* Le gridBagConstraints va dÈfinir la position et la taille des ÈlÈments */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert √† d√©finir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
+		/* le parametre fill sert √† dÈfinir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
 		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
 		 */
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets d√©finir la marge entre les composant new Insets(margeSup√©rieure, margeGauche, margeInf√©rieur, margeDroite) */
+		/* insets dÈfinir la marge entre les composant new Insets(margeSupÈrieure, margeGauche, margeInfÈrieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir o√π on place le composant s'il n'occupe pas la totalit√© de l'espace disponnible */
+		/* ipady permet de savoir o√π on place le composant s'il n'occupe pas la totalitÈ de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx d√©finit le nombre de cases en abscisse */
+		/* weightx dÈfinit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx d√©finit le nombre de cases en ordonn√©e */
+		/* weightx dÈfinit le nombre de cases en ordonnÈe */
 		int maxHauteur = 10;
 		gc.weighty = maxHauteur;
 
@@ -69,7 +69,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.gridwidth = 1;
 			gc.gridx = 0;
 			gc.gridy ++;
-			this.add(creerTexte("Indiquez son pr√©nom"), gc);
+			this.add(creerTexte("Indiquez son prÈnom"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
@@ -100,7 +100,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
 			gc.gridy ++;
-			this.add(creerTitre("Indiquez ses comp√©tences"), gc);
+			this.add(creerTitre("Indiquez ses compÈtences"), gc);
 
 			gc.fill = GridBagConstraints.WEST;
 			gc.gridy ++;		
@@ -136,7 +136,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
 			gc.gridy = 4;
-			this.add(creerTexte("Indiquez sa capacit√©"), gc);
+			this.add(creerTexte("Indiquez sa capacitÈ"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
@@ -159,7 +159,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
 			gc.gridy = 4;
-			this.add(creerTexte("Indiquez sa capacit√©"), gc);
+			this.add(creerTexte("Indiquez sa capacitÈ"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
@@ -174,7 +174,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Cr√©er"), gc);
+		this.add(creerBoutonFin(this, "CrÈer"), gc);
 
 	}
 	

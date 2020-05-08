@@ -457,7 +457,6 @@ public class Entreprise extends Observable{
 	
 	public void ajoutDomaine (String d) {
 		this.domaine.ajoutDomaine(d);
-		System.out.println(domaine.getListeDomaine());
 	}
 
 	/*public void setDomaine(ArrayList<String> listeDomaine) {
@@ -483,7 +482,6 @@ public class Entreprise extends Observable{
 	
 	public void supprimerDomaine (String d) {
 		this.domaine.enleverDomaine(d);
-		System.out.println(domaine.getListeDomaine());
 	}
 
 	

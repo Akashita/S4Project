@@ -142,7 +142,7 @@ public class PanelFenetre extends JPanel{
 				maj(pf);
 				}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Ce domaine existe deja ", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Ce domaine existe déjà ", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 
