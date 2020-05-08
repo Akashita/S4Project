@@ -82,6 +82,7 @@ public class PanelFenetre extends JPanel{
     protected ArrayList<String> listeDomaine;
     protected JList<String> jListDomaine;
     protected JScrollPane scrollPaneJListDomaine;
+    protected JButton boutonSupprimerDomaine;
     
 	public PanelFenetre(Entreprise entreprise, FenetreModal fm) {
 		this.entreprise = entreprise;
@@ -91,7 +92,7 @@ public class PanelFenetre extends JPanel{
 	protected void creerInterface() {}
 	
 	
-	//-------------------------------------------->>>>> Competence pour Domaine
+	//-------------------------------------------->>>>> gere la liste de domaine 
 	protected void initialiseDomaine (PanelFenetre pf) {
 		listeDomaine = entreprise.getDomaine().getListeDomaine();
 		//afficheListeDomaine();
@@ -99,6 +100,12 @@ public class PanelFenetre extends JPanel{
 		boutonAjoutDomaine.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
 	        	ajoutDomaine(pf);
+	        }
+	    });			
+		boutonSupprimerDomaine = new JButton("Supprimer");
+		boutonSupprimerDomaine.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	supprimerDomaine(pf);
 	        }
 	    });			
 	}
@@ -133,17 +140,21 @@ public class PanelFenetre extends JPanel{
 				listeDomaine.add(domaine);
 				//afficheListeDomaine();
 				textFieldNom = new JTextField();
-				pf.removeAll();
-				pf.creerInterface();
-				pf.revalidate();
-				pf.repaint();		
-			}
+				maj(pf);
+				}
 			else {
 		    	JOptionPane.showMessageDialog(null, "Ce domaine existe déjà", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 
 	}
+	
+	protected void supprimerDomaine(PanelFenetre pf) {
+		int i = jListDomaine.getSelectedIndex();
+		jListDomaine.remove(i);
+		maj(pf);
+	}
+	
 	
 	//-------------------------------------------->>>>> Competence pour Ressource
 	protected void initialiseCompetence (PanelFenetre pf) {
@@ -179,10 +190,6 @@ public class PanelFenetre extends JPanel{
 				}
 				if (!estPresent) {
 					listeCompetenceChoisie.add(competence);
-					pf.removeAll();
-					pf.creerInterface();
-					pf.revalidate();
-					pf.repaint();		
 				}	
 				else {
 			    	JOptionPane.showMessageDialog(null, "Vous l'avez déjà choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -243,10 +250,7 @@ public class PanelFenetre extends JPanel{
 			}
 			if (!estPresent) {
 				listeDomaineChoisi.add(domaine);
-				pf.removeAll();
-				pf.creerInterface();
-				pf.revalidate();
-				pf.repaint();		
+				maj(pf);
 			}	
 			else {
 			    JOptionPane.showMessageDialog(null, "Vous l'avez déjà choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -340,10 +344,7 @@ public class PanelFenetre extends JPanel{
 
 	public void metAJourCalendrier(PanelFenetre pf) {
 		adapteComboBoxJour();
-		pf.removeAll();
-		pf.creerInterface();
-		pf.revalidate();
-		pf.repaint();		
+		maj(pf);
 	}
 
 	protected JPanel calendrier() {
@@ -380,10 +381,7 @@ public class PanelFenetre extends JPanel{
 	
 	protected void nouveauChoix(PanelFenetre pf) {
 		typeChoisi = (String) comboBoxType.getSelectedItem();
-		pf.removeAll();
-		creerInterface();
-		pf.revalidate();
-		pf.repaint();
+		maj(pf);
 	}
 
 	
@@ -456,6 +454,12 @@ public class PanelFenetre extends JPanel{
 
 //-----------------------------------------------------------------------
 	
+	private void maj (PanelFenetre pf) {
+		pf.removeAll();
+		pf.creerInterface();
+		pf.revalidate();
+		pf.repaint();		
+	}
 
 	protected boolean estUnEntier(String chaine) {
 		try {

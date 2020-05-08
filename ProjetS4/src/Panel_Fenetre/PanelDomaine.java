@@ -13,7 +13,7 @@ import Model.Entreprise;
 import Ressource.Domaine;
 import Ressource.Ressource;
 
-public class PanelNouveauDomaine extends PanelFenetre{
+public class PanelDomaine extends PanelFenetre{
 	
 	/**
 	 * 
@@ -21,7 +21,7 @@ public class PanelNouveauDomaine extends PanelFenetre{
 	private static final long serialVersionUID = 1L;
 
 
-	public PanelNouveauDomaine(Entreprise entreprise, FenetreModal fm) {
+	public PanelDomaine(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
 		initialiseDomaine(this);
 		creerInterface();
@@ -45,47 +45,30 @@ public class PanelNouveauDomaine extends PanelFenetre{
 		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
-		gc.weightx = 5;
-		
-		/* weightx définit le nombre de cases en ordonnée */
-		gc.weighty = 11;
 
 		gc.gridx = 0;
 		gc.gridy = 0;
-		gc.gridwidth = 2;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
 		this.add(creerTitre("Domaines existants"), gc);
-
+		
 		gc.fill = GridBagConstraints.BOTH;
-		gc.gridheight = 6;
-		gc.gridy = 1;
+		gc.gridheight = GridBagConstraints.RELATIVE;
+		gc.gridy ++;
 		this.add(afficheListeDomaine(), gc);
 		
 		gc.fill = GridBagConstraints.CENTER;
-		gc.gridwidth = 3;
-		gc.gridheight = 1;
-		gc.gridy = 3;
-		gc.gridx = 2;
-		this.add(creerTitre("Creer un nouveau domaine"), gc);
-		
-		
-		gc.gridwidth = 3;
-		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.gridx = 2;
-		gc.gridy = 4;
-		this.add(textFieldNom, gc);
 		gc.gridwidth = 1;
-		gc.gridx = 4;
+		gc.gridheight = 1;
 		gc.gridy ++;
+		this.add(boutonSupprimerDomaine, gc);
+
+		gc.gridwidth = GridBagConstraints.RELATIVE;
+		gc.gridx ++;
+		this.add(textFieldNom, gc);
+
+		gc.gridwidth = 1;
+		gc.gridx ++;
 		this.add(boutonAjoutDomaine, gc);
-
-		
-		gc.gridwidth = 1;		
-		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
-		gc.gridx = 4;
-		gc.gridy ++;
-		this.add(creerBoutonFin(this, "Terminer"), gc);
-
 	}
 	
 
