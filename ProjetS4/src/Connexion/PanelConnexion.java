@@ -5,9 +5,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,6 +20,8 @@ import javax.swing.JTextField;
 
 import Model.Entreprise;
 import Panel.PanelPrincipal;
+import Ressource.Personne;
+import SQL.JavaSQLPersonne;
 
 public class PanelConnexion extends JPanel{
 
@@ -46,7 +51,7 @@ public class PanelConnexion extends JPanel{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Veillez entrer vos coordonnées"), gc);
+		this.add(creerTitre("Veillez entrer vos coordonnï¿½es"), gc);
 		
 		//--------------- zone saisie
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
@@ -111,25 +116,52 @@ public class PanelConnexion extends JPanel{
 	    });			
     }   
 
-    //création du model
+    //crï¿½ation du model
     private void actionConnexion(FenetreConnexion fc) {
+    	//ABSOLUMENT DEGUEU A MODIFIER APRES LE 12 
+    	Boolean compteExiste = false;
+    	Boolean compteAdmin = false;
+    	
+    	
+    	ArrayList<Personne> personneTab = new ArrayList<Personne>();
+		JavaSQLPersonne sqlPersonne = new JavaSQLPersonne();
+		try {
+			personneTab = sqlPersonne.affiche();
+			setLayout(new GridLayout(personneTab.size(),1));
+
+			for (int i = 0; i < personneTab.size(); i++) {
+				if (personneTab.get(i).getLogin() == textFieldLogin.getText()) {
+					if (personneTab.get(i).getMdp() == textFieldMdp.getText()) {
+						compteExiste = true;
+						if (personneTab.get(i).estAdmin()) {
+							compteAdmin = true;
+						}
+					}
+				}
+
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
 		if (!textFieldLogin.getText().isEmpty()) {
 			if (!textFieldMdp.getText().isEmpty()) {
-				if (/*le compte existe*/) {
-					if (/*c'est le compte Admin*/) {
+				if (compteExiste) {
+					if (compteAdmin) {
 						new Entreprise("debugBDD");
 					}
 					else {
-						new Entreprise(/*Personne connecté*/);
+						new Entreprise(/*Personne connectï¿½*/);
 					}
 				}
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Veillez ecrire le mot de passe", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veuillez ecrire le mot de passe", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire le login", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veuillez ecrire le login", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}	
     }
     
