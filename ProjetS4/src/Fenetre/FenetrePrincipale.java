@@ -44,7 +44,7 @@ public class FenetrePrincipale extends JFrame{
 		this.setSize(LARGEUR,HAUTEUR);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setBackground(PanelPrincipal.BLANC);
-		setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout());
 		PanelPrincipal pp = new PanelPrincipal(entreprise);	
 		
 		

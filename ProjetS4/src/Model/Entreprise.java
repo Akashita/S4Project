@@ -1,5 +1,6 @@
 package Model;
 import java.awt.Color;
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -25,6 +26,7 @@ import Ressource.Personne;
 import Ressource.Ressource;
 import Ressource.RessourceAutre;
 import Ressource.Salle;
+import SQL.RecupInfoBDD;
 
 
 //model il sert a cr�er des projets puis leur donne des ressources.
@@ -58,6 +60,9 @@ public class Entreprise extends Observable{
 	private ArrayList<String> ressourceAfficher = new ArrayList<String>();
 
 	private Domaine domaine;
+	
+	
+	private Personne user; //Personne qui utilise le programme
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -68,6 +73,8 @@ public class Entreprise extends Observable{
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
 		this.domaine = new Domaine();
+		recupInfoBdd();
+		
 		fenetrePrincipale = new FenetrePrincipale(this);
 		this.update();
 	}
@@ -77,10 +84,38 @@ public class Entreprise extends Observable{
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
 		this.domaine = new Domaine();
+		recupInfoBdd();
+		
 		if (typeDebug == "debugBDD") {
 			fenetreBDD = new FenetreDebugBDD(this);
 		}
 		this.update();
+	}
+	
+	public Entreprise(Personne p) {
+		super();
+		user = p;
+	}
+	
+	private void recupInfoBdd() {
+		try {
+//			testSqlDomaine.insertion();
+//			JavaSQLDomaine.insertion("php");
+//			JavaSQLPersonne.insertion("Geyer","Jules","Chef","putheu", testP, testN);
+//			JavaSQLProjet.insertion("test1",1,date,1, 1);
+//			testprojet.insertion();
+//			testact.insertion();
+			RecupInfoBDD.recupBDDProjet(this);
+			RecupInfoBDD.recupBDDRessource(this);
+//			test.affiche();
+//			test.drop();
+//			java.creation();
+//			test.affiche();
+			
+
+		}catch(SQLException f){
+			f.printStackTrace();
+		}
 	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -97,6 +132,18 @@ public class Entreprise extends Observable{
 		return chaineActProjet;
 	}
 
+	//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> gestion user
+	
+	public Personne getUser() {
+		return this.user;
+	}
+	
+	public void setUser(Personne user) {
+		this.user = user;
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	
 	public void majEDT() {
 		ArrayList<Activite> lActivite;
 		viderRessources();
