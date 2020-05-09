@@ -59,6 +59,13 @@ public class FenetreDebugSalle extends JFrame{
 			this.add(panelAjout,c);
 		}
 		
+		else if (type == this.SUPPRIME) {
+	        c.weighty = 0.0;               
+
+			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugAffichage.SALLE);
+			this.add(panelSupprime,c);
+		}
+		
 		this.setVisible(true);	
 }
 }

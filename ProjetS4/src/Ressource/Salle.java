@@ -39,7 +39,7 @@ public class Salle extends Ressource{
 
 	//--------------------------------------------------------------------------------->>>>> toString
 	public String toString() {
-		return nom;
+		return "nom : " + nom + " numero : " + this.id + " capacite : " + capacite ;
 	}
 
 }

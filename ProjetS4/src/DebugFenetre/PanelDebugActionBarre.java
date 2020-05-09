@@ -50,7 +50,7 @@ public class PanelDebugActionBarre extends JPanel{
 
 			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.SALLE));
 			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.SALLEAJOUT));
-			//supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PERSONNE));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.SALLESUPPRIME));
 
 
 			
