@@ -1,19 +1,27 @@
 package Panel;
 
+import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
+import Fenetre.FenetreInfoRessource;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
+import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -21,23 +29,62 @@ import Ressource.Salle;
 
 public class PanelInfoRessource extends JPanel{
 
+	private FenetreInfoRessource fir;
 	private Entreprise entreprise;
 	private Ressource ressource;
 	private Color couleurFond;
+	private boolean modeModification;
+	private JButton boutonModifier, boutonTerminer, boutonSupprimer, boutonAnnuler;
+	private Checkbox checkBoxestAdmin;
 
 	
-	public PanelInfoRessource (Entreprise entreprise, Ressource ressource) {
+	private JTextField textFieldNom = new JTextField(),
+    		textFieldPrenom = new JTextField(),
+    	    textFieldMdp = new JTextField(),
+    	    textFieldCapacite = new JTextField();
+
+	
+	public PanelInfoRessource (FenetreInfoRessource fir, Entreprise entreprise, Ressource ressource) {
+		this.fir = fir;
 		this.entreprise = entreprise;
 		this.ressource = ressource;
 		couleurFond = PanelPrincipal.BLEU3;
 		this.setBackground(couleurFond);
+		modeModification = false;
+		initialiseBouton();
 		creerInterface();
 	}
 	
-	public int getIdRessource() {
-		return ressource.getId();
+	private void initialiseBouton() {
+		boutonModifier = new JButton("Modifier");
+		boutonModifier.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	actionBoutonModifier();
+	        }
+	    });			
+		
+		boutonTerminer = new JButton("Terminer");
+		boutonTerminer.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	actionBoutonTerminer();
+	        }
+	    });			
+		
+		boutonAnnuler = new JButton("Annuler");
+		boutonAnnuler.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	actionBoutonAnnuler();
+	        }
+	    });	
+		
+		boutonSupprimer = new JButton("Supprimer");
+		boutonSupprimer.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	actionBoutonSupprimer();
+	        }
+	    });			
+		
 	}
-
 	
 	public void creerInterface() {
 		this.setBackground(couleurFond);
@@ -45,7 +92,12 @@ public class PanelInfoRessource extends JPanel{
 		
 		GridBagConstraints gc = new GridBagConstraints();
 
-		info(gc);
+		if (modeModification) {
+			infoModifier(gc);
+		}
+		else {
+			info(gc);
+		}
 		
 		if (ressource.getType() == Ressource.PERSONNE) {
 			colChefDeProjet(gc);
@@ -55,7 +107,7 @@ public class PanelInfoRessource extends JPanel{
 	}
 	
 	private void info(GridBagConstraints gc) {
-		gc.insets = new Insets(5, 5, 5, 0);
+		gc.insets = new Insets(2, 5, 2, 0);
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
@@ -64,17 +116,24 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		String nom;
+		String prenom = null;
 		String role = "Collaborateur";
 		String capacite = "0";
+		String login = null;
+		String mdp = null;
 		if (ressource.getType() == Ressource.PERSONNE) {
-			if (((Personne) ressource).getRole() == Personne.ADMINISTRATEUR) {
+			Personne p = ((Personne) ressource);
+			if (p.getRole() == Personne.ADMINISTRATEUR) {
 				role = "Administrateur";
 			}
-			nom = ((Personne) ressource).getPrenom() + " " + ressource.getNom();
+			prenom = ((Personne) ressource).getPrenom();
+			
+			login = p.getLogin();
+			mdp = p.getMdp();
+			
 		}
-		else {
-			nom = ressource.getNom();
-		}
+		
+		nom = ressource.getNom();
 		
 		if (ressource.getType() == Ressource.SALLE) {
 			capacite = Integer.toString(((Salle) ressource).getCapacite());
@@ -84,21 +143,102 @@ public class PanelInfoRessource extends JPanel{
 		
 		if (ressource.getType() == Ressource.PERSONNE) {
 			gc.gridy ++;
-			this.add(labelInfo("Role : " + role), gc);			
+			this.add(labelInfo("Prenom : " + prenom), gc);
+
+			gc.gridy ++;
+			this.add(labelInfo("Role : " + role), gc);		
+			
+			gc.gridy ++;
+			this.add(labelInfo("Login : " + login), gc);
+
+			gc.gridy ++;
+			this.add(labelInfo("Mot de passe : " + mdp), gc);
 		}
 		
 		if (ressource.getType() == Ressource.SALLE) {
 			gc.gridy ++;
-			this.add(labelInfo("CapacitÃ© : " + capacite), gc);			
+			this.add(labelInfo("Capacité : " + capacite), gc);			
 		}
 		
+		gc.gridy ++;
+		this.add(labelInfo("Type : " + ressource.getType()), gc);
+		
+		gc.gridy ++;
+		this.add(panelBouton(), gc);		
+	}
+	
+	private void infoModifier(GridBagConstraints gc) {
+		gc.insets = new Insets(2, 5, 2, 0);
+		
+		gc.fill = GridBagConstraints.BOTH;
+		gc.ipady = gc.anchor = GridBagConstraints.WEST;
+		gc.weightx = 1;
+		gc.weighty = 1;
+		gc.gridx = 0;
+		gc.gridy = 0;
+		String nom;
+		String prenom = null;
+		String role = "Collaborateur";
+		String capacite = "0";
+		String login = null;
+		String mdp = null;
+		if (ressource.getType() == Ressource.PERSONNE) {
+			Personne p = ((Personne) ressource);
+			if (p.getRole() == Personne.ADMINISTRATEUR) {
+				role = "Administrateur";
+			}
+			prenom = ((Personne) ressource).getPrenom();
+			login = p.getLogin();
+			mdp = p.getMdp();
+			textFieldPrenom.setText(prenom);
+			textFieldMdp.setText(mdp);
+
+		}
+		
+		nom = ressource.getNom();
+		textFieldNom.setText(nom);
+		if (ressource.getType() == Ressource.SALLE) {
+			capacite = Integer.toString(((Salle) ressource).getCapacite());
+			textFieldCapacite.setText(capacite);
+
+		}
+
+		
+		if (ressource.getType() == Ressource.PERSONNE) {
+			this.add(panelJtextfield("Prenom : ",textFieldPrenom), gc);
+			gc.gridy ++;
+			this.add(panelJtextfield("Nom : ",textFieldNom), gc);
+
+			gc.gridy ++;
+			checkBoxestAdmin = new Checkbox("administrateur", ((Personne) ressource).estAdmin());
+			this.add(checkBoxestAdmin, gc);		
+			
+			gc.gridy ++;
+			this.add(labelInfo("Login : " + login), gc);
+
+			gc.gridy ++;
+			this.add(panelJtextfield("Mot de passe : ",textFieldMdp), gc);
+		}
+		
+		if (ressource.getType() == Ressource.SALLE || ressource.getType() == Ressource.CALCULATEUR) {
+			this.add(panelJtextfield("Nom : ",textFieldNom), gc);
+			if (ressource.getType() == Ressource.SALLE) {
+				gc.gridy ++;
+				this.add(panelJtextfield("Capacite : ",textFieldCapacite), gc);			
+			}			
+		}
+
 
 		gc.gridy ++;
 		this.add(labelInfo("Type : " + ressource.getType()), gc);
-
+		
+		gc.gridy ++;
+		this.add(panelBouton(), gc);		
 	}
 	
 	private void colChefDeProjet(GridBagConstraints gc) {
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.gridx ++;
 		gc.gridy = 0;
 		this.add(labelTitreColonne("Chef des projets"), gc);
@@ -116,6 +256,8 @@ public class PanelInfoRessource extends JPanel{
 	}
 	
 	private void colCompetence(GridBagConstraints gc) {
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.gridx ++;
 		gc.gridy = 0;
@@ -138,11 +280,13 @@ public class PanelInfoRessource extends JPanel{
 	}
 			
 	private void colActivite(GridBagConstraints gc) {
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.gridx ++;
 		gc.gridy = 0;
 		
-		this.add(labelTitreColonne("ACTIVITÃ‰S"),gc);
+		this.add(labelTitreColonne("ACTIVITÉS"),gc);
 
 		ArrayList<Activite> listeAct = entreprise.getActRes(ressource);
 		ArrayList<Projet> listeProj = entreprise.getProjetPRes(ressource);
@@ -155,7 +299,7 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridy =1;
 		gc.gridheight = GridBagConstraints.REMAINDER;
 		if (listeAct.size()>0) {
-			this.add(panelContenuColonne("ActivitÃ©", "Projet", act, projet), gc);
+			this.add(panelContenuColonne("Activité", "Projet", act, projet), gc);
 		}
 		
 	}
@@ -236,5 +380,157 @@ public class PanelInfoRessource extends JPanel{
 		return label;
 	}
 
+	private JPanel panelJtextfield(String nom, JTextField tf) {
+		JPanel panel = new JPanel();
+		panel.setBackground(couleurFond);
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+
+		gc.insets = new Insets(5, 5, 5, 5);
+		gc.weightx = 3;
+		gc.weighty = 1;
+
+		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+		gc.fill = GridBagConstraints.CENTER;
+
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.gridwidth = 1;
+		panel.add(labelInfoColonne(nom), gc);
+	
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.gridwidth = 2;
+		gc.gridx = 1;
+		panel.add(tf, gc);
+		return panel;
+	}
+	
+	private JPanel panelBouton() {
+		JPanel panel = new JPanel();
+		panel.setBackground(couleurFond);
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.fill = GridBagConstraints.CENTER;
+
+		gc.insets = new Insets(5, 5, 5, 5);
+		gc.weightx = 2;
+		gc.weighty = 1;
+
+
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.gridwidth = 1;
+
+		if (modeModification) {
+			panel.add(boutonAnnuler, gc);
+			gc.gridx ++;
+			panel.add(boutonTerminer, gc);
+		}
+		else {
+			panel.add(boutonSupprimer, gc);
+			gc.gridx ++;
+			panel.add(boutonModifier, gc);
+
+		}
+		return panel;
+	}
+	
+	//------------------------------------------------------------------------------->>>>> Action des boutons
+	private void actionBoutonModifier() {
+		modeModification = true;
+		maj();
+	}
+
+	private void actionBoutonTerminer() {
+		modeModification = false;
+		
+		if (!textFieldNom.getText().isEmpty()) {
+			String nom = textFieldNom.getText();
+			if (ressource.getType() == Ressource.PERSONNE) {
+				if (!textFieldPrenom.getText().isEmpty()) {
+					String role = "";
+					if (checkBoxestAdmin.getState()) {
+						role = Personne.ADMINISTRATEUR;
+					}
+					else {
+						role = Personne.COLLABORATEUR;
+					}
+					String prenom = textFieldPrenom.getText();
+					String mdp =  textFieldMdp.getText();
+					ArrayList<Competence> listeComp = ((Personne) ressource).getListeDeCompetence();
+					entreprise.modifPersonne((Personne) ressource, nom, prenom, role, mdp, listeComp);
+				}
+				else {
+			    	JOptionPane.showMessageDialog(null, "Veillez ecrire son prenom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}
+			}
+			if (ressource.getType() == Ressource.SALLE) {
+				if (estUnEntier(textFieldCapacite.getText())) {
+					int capacite = Integer.parseInt(textFieldCapacite.getText());
+					entreprise.modifSalle((Salle) ressource, nom, capacite);
+				}
+				else {
+			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}
+			}
+			if (ressource.getType() == Ressource.CALCULATEUR) {
+				entreprise.modifCalculateur((Calculateur) ressource, nom);
+			}	
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Veillez ecrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
+
+		
+		maj();
+	}
+
+	private void actionBoutonAnnuler() {
+		modeModification = false;
+		maj();
+	}
+
+	private void actionBoutonSupprimer() {
+		modeModification = false;
+		String texte = "<html> êtes-vous sur de vouloir supprimer cette ressource ? <br> La suppression de cette ressource supprimera tout son contenu. </html>";
+		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
+		if (res == 0) { //0 = yes
+			if (entreprise.ressourceEstLibre(ressource)) {
+				entreprise.suppRessource(ressource);
+				fir.dispose();				
+			}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Cette ressource est attaché aux act/projets suivant (pas encore implémenté)", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+		}		
+		maj();
+	}
+
+	private void maj() {
+		removeAll();
+		creerInterface();
+		revalidate();
+		repaint();			
+	}
+
+	
+	//------------------------------------------------------------------------------->>>>> Getteur
+	public int getIdRessource() {
+		return ressource.getId();
+	}
+
+	
+	
+	private boolean estUnEntier(String chaine) {
+		try {
+			Integer.parseInt(chaine);
+		} catch (NumberFormatException e){
+			return false;
+		}
+		return true;
+	}
 
 }

@@ -41,7 +41,7 @@ public class Personne extends Ressource{
 	}*/
 	
 	public Personne(String nom, String prenom, int numSalarie){
-		//attributs de la classe m�re.
+		//attributs de la classe mere.
 		super(numSalarie, nom, "Personne");
 		//attribut de la classe fille.
 		this.prenom = prenom;		
@@ -49,6 +49,7 @@ public class Personne extends Ressource{
 
 	public Personne(String nom, String prenom, String role, int numSalarie, String mdp, ArrayList<Competence> listeCompetence){
 		super(numSalarie, nom, "Personne");
+		this.mdp = mdp;
 		this.role = role; //Role dans l'entreprise (voir constante ci-dessus)
 		this.prenom = prenom;
 		this.listeCompetence = listeCompetence;
@@ -69,8 +70,24 @@ public class Personne extends Ressource{
 		return this.role;
 	}
 	
+	public boolean estAdmin() {
+		boolean b = false;
+		if (role == ADMINISTRATEUR) {
+			b = true;
+		}
+		return b;
+	}
+	
 	public String getPrenom() {
 		return this.prenom;
+	}
+	
+	public String getLogin() {
+		return nom+"#"+Integer.toString(id);
+	}
+	
+	public String getMdp() {
+		return mdp;
 	}
 	
 	public ArrayList<Projet> getListeDeProjet() {
@@ -92,6 +109,24 @@ public class Personne extends Ressource{
 	}
 	
 	//--------------------------------------------------------------------------------->>>>>>> Setteur
+	
+	public void setPrenom(String p) {
+		this.prenom = p;
+	}
+
+	public void setRole(String r) {
+		this.role = r;
+	}
+
+	public void setMdp(String m) {
+		this.mdp = m;
+	}
+
+	public void setListeCompetence(ArrayList<Competence> l) {
+		this.listeCompetence = l;
+	}
+
+	
 	
 	public void enleverProjet(Projet projet) {
 		for (int i=0; i<listeProjet.size(); i++) {

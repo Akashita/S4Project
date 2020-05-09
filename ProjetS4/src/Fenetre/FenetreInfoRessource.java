@@ -47,7 +47,7 @@ public class FenetreInfoRessource extends JDialog{
 
 	private void creationInterface() {
 		this.setLayout(new BorderLayout());
-		this.add(new PanelInfoRessource(entreprise, ressource), BorderLayout.NORTH);
+		this.add(new PanelInfoRessource(this, entreprise, ressource), BorderLayout.NORTH);
 		this.add(new PanelEDTRessource(ressource), BorderLayout.CENTER);
 		//this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);
 		this.revalidate();

@@ -63,7 +63,9 @@ public class Ressource implements Comparable<Ressource>{
 	
 	//--------------------------------------------------------------------------------->>>>>>> Setteur 
 	
-	//public void supprimer
+	public void setNom (String s) {
+		this.nom = s;
+	}
 	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override

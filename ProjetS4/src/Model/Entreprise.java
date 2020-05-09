@@ -189,6 +189,8 @@ public class Entreprise extends Observable{
 	
 	public void incrementId (){ //fonction a utiliser sur chaque nouvelle ressource pour leur attribuer un iD
 		this.idCour = this.idCour +1 ;
+		//		this.idCour = this.lRessource.size() +1 ;
+
 	}
 	
 	public int getId() {
@@ -445,7 +447,25 @@ public class Entreprise extends Observable{
 	}
 	
 	
+	public void modifPersonne(Personne p, String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {
+		p.setNom(nom);
+		p.setPrenom(prenom);
+		p.setRole(role);
+		p.setMdp(mdp);
+		p.setListeCompetence(listeComp);
+		update();
+	}
 	
+	public void modifSalle(Salle s, String nom, int capacite) {
+		s.setNom(nom);
+		s.setCapacite(capacite);
+		update();
+	}
+
+	public void modifCalculateur(Calculateur c, String nom) {
+		c.setNom(nom);
+		update();
+	}
 
 	public void ajouterRessourceActivite(Ressource res) {
 		Activite act = getActiviteSelectionner();
@@ -462,6 +482,20 @@ public class Entreprise extends Observable{
 	}
 	
 
+	public boolean ressourceEstLibre(Ressource r) { //vérifier qu'une ressource est attacher à aucune act ou projet
+		return true;
+	}
+	
+	public void suppRessource(Ressource r) {
+		for (int i=0; i<lRessource.size(); i++) {
+			if (lRessource.get(i).getId() == r.getId()) {
+				lRessource.remove(i);
+				update();
+				break;
+			}
+		}
+	}
+	
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion domaine
 
 	/*public void nouvDomaine (Domaine domaine) {

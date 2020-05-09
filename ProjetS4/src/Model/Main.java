@@ -8,15 +8,9 @@ import SQL.*;
 
 public class Main {
 	public static void main (String[] args) {
-		//Entreprise e = new Entreprise();
+		Entreprise e = new Entreprise();
 		
-		Entreprise e = new Entreprise("debugBDD");
 
-		
-		//e.nouvPersonne("planchamp", "damien", "none", new ArrayList<Competence>());
-		//e.creerProjet("projet 1", 1);
-		//e.creerActivite(e.getProjetSelectionner(), "activit������ 1", 11, 0, Temps.getAujourdhui());
-		//e.creerActivite(e.getProjetSelectionner(), "activit������ 2", 50, 1, Temps.getAujourdhui());
 		ArrayList<String> testP = new ArrayList<String>();
 		testP.add("php");
 		ArrayList<Integer> testN = new ArrayList<Integer>();
