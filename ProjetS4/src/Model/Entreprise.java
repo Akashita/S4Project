@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
+import DebugFenetre.FenetreDebugBDD;
 import Fenetre.FenetreInfoRessource;
 import Fenetre.FenetrePrincipale;
 import Panel.PanelInfoActivite;
@@ -49,6 +50,7 @@ public class Entreprise extends Observable{
 	public static final int NB_HEURE_JOUR = 8;
 	
 	private FenetrePrincipale fenetrePrincipale;
+	private FenetreDebugBDD fenetreBDD;
 	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
 	
 	private Projet projetSelectionner;
@@ -67,6 +69,17 @@ public class Entreprise extends Observable{
 		this.idCour = 0;
 		this.domaine = new Domaine();
 		fenetrePrincipale = new FenetrePrincipale(this);
+		this.update();
+	}
+	public Entreprise(String typeDebug) {
+		this.lProjet =  new ArrayList<Projet>();
+		this.lType =  new ArrayList<String>();
+		this.lRessource =  new ArrayList<Ressource>();
+		this.idCour = 0;
+		this.domaine = new Domaine();
+		if (typeDebug == "debugBDD") {
+			fenetreBDD = new FenetreDebugBDD(this);
+		}
 		this.update();
 	}
 	
