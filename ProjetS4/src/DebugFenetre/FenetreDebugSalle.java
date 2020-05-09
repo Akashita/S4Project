@@ -1,23 +1,14 @@
 package DebugFenetre;
 
-import java.awt.Button;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.TextField;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import Fenetre.FermerFenetre;
 import Model.Entreprise;
-import Ressource.Personne;
-import SQL.JavaSQLPersonne;
 
-public class FenetreDebugPersonne  extends JFrame{
+public class FenetreDebugSalle extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
@@ -25,11 +16,11 @@ public class FenetreDebugPersonne  extends JFrame{
 	private int type;
 	public static final int AFFICHE = 0, AJOUT = 1, SUPPRIME = 2;
 	
-	public FenetreDebugPersonne(Entreprise entreprise,int type){	
+	public FenetreDebugSalle(Entreprise entreprise,int type){	
 		this.entreprise = entreprise;
 		this.type = type;
 		
-		this.setTitle("gestionBDD personne");
+		this.setTitle("gestionBDD salle");
 		this.setSize(LARGEUR,HAUTEUR);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.addWindowListener(new FermerFenetre(this));
@@ -47,18 +38,25 @@ public class FenetreDebugPersonne  extends JFrame{
         c.weightx = 0.0;                //reset to the default
         c.weighty = 1.0;               
 
-		PanelDebugActionBarre panelAction = new PanelDebugActionBarre(entreprise, this, PanelDebugActionBarre.PERSONNE);
+		PanelDebugActionBarre panelAction = new PanelDebugActionBarre(entreprise, this, PanelDebugActionBarre.SALLE);
 		this.add(panelAction,c);
 
         c.gridwidth = GridBagConstraints.REMAINDER; //end row
 		
+        c.weighty = 2.0;               
 
 		
 		if (type == this.AFFICHE) {
-	        c.weighty = 2.0;               
 
-		PanelDebugAffichage panelAffichage = new PanelDebugAffichage(entreprise,PanelDebugAffichage.PERSONNE);
+		PanelDebugAffichage panelAffichage = new PanelDebugAffichage(entreprise,PanelDebugAffichage.SALLE);
 		this.add(panelAffichage,c);
+		}
+		
+		else if (type == this.AJOUT) {
+	        c.weighty = 0.0;               
+
+			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAffichage.SALLE);
+			this.add(panelAjout,c);
 		}
 		
 		this.setVisible(true);	

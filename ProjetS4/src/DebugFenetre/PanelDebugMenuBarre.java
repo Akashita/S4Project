@@ -21,14 +21,21 @@ public class PanelDebugMenuBarre extends JPanel{
 		
 		Button menu = new Button("menu");
 		Button personne = new Button("personne");
+		Button salle = new Button("salle");
+
+		
 
 		menu.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MENU));
 		personne.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PERSONNE));
+		salle.addActionListener(new NavigationListener(w,entreprise,NavigationListener.SALLE));
+
 
 
 		
 		this.add(menu);		
 		this.add(personne);
+		this.add(salle);
+
 		
 		
 		this.setVisible(true);	
