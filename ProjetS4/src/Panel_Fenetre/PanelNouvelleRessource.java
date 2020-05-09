@@ -154,16 +154,6 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.gridwidth = 2;
 			gc.gridx = 1;
 			this.add(textFieldNom, gc);
-			
-			gc.gridwidth = 1;
-			gc.fill = GridBagConstraints.CENTER;
-			gc.gridx = 0;
-			gc.gridy = 4;
-			this.add(creerTexte("Indiquez sa capacité"), gc);
-			gc.fill = GridBagConstraints.HORIZONTAL;
-			gc.gridwidth = 2;
-			gc.gridx = 1;
-			this.add(textFieldCapacite, gc);			
 		}
 		
 		gc.gridwidth = 1;
