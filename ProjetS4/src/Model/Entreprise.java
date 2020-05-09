@@ -93,8 +93,16 @@ public class Entreprise extends Observable{
 	}
 	
 	public Entreprise(Personne p) {
-		super();
 		user = p;
+		this.lProjet =  new ArrayList<Projet>();
+		this.lType =  new ArrayList<String>();
+		this.lRessource =  new ArrayList<Ressource>();
+		this.idCour = 0;
+		this.domaine = new Domaine();
+		recupInfoBdd();
+		
+		fenetrePrincipale = new FenetrePrincipale(this);
+		this.update();
 	}
 	
 	private void recupInfoBdd() {
@@ -529,7 +537,7 @@ public class Entreprise extends Observable{
 	}
 	
 
-	public boolean ressourceEstLibre(Ressource r) { //vérifier qu'une ressource est attacher à aucune act ou projet
+	public boolean ressourceEstLibre(Ressource r) { //vï¿½rifier qu'une ressource est attacher ï¿½ aucune act ou projet
 		return true;
 	}
 	

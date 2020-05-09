@@ -118,35 +118,44 @@ public class PanelConnexion extends JPanel{
 	    });			
     }   
 
-    //création du model
+    //crï¿½ation du model
     private void actionConnexion(FenetreConnexion fc) {
     	//ABSOLUMENT DEGUEU A MODIFIER APRES LE 12 
     	Boolean compteExiste = false;
     	Boolean compteAdmin = false;
+    	Personne user = null;
     	
     	
     	ArrayList<Personne> personneTab = new ArrayList<Personne>();
 		JavaSQLPersonne sqlPersonne = new JavaSQLPersonne();
 		try {
 			personneTab = sqlPersonne.affiche();
-			setLayout(new GridLayout(personneTab.size(),1));
 
-			for (int i = 0; i < personneTab.size(); i++) {
-				if (personneTab.get(i).getLogin() == textFieldLogin.getText()) {
-					if (personneTab.get(i).getMdp() == textFieldMdp.getText()) {
-						compteExiste = true;
-						user = personneTab.get(i);
-						if (personneTab.get(i).estAdmin()) {
-							compteAdmin = true;
-						}
-					}
-				}
-
-		}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    	
+		for (int i = 0; i < personneTab.size(); i++) {
+			String log = textFieldLogin.getText();
+			String mdp = textFieldMdp.getText();		
+			
+			String logI = personneTab.get(i).getLogin();
+			String mdpI = personneTab.get(i).getMdp();
+
+			if ( logI.equals(log)) {
+				if ( mdpI.equals(mdp)) {
+					compteExiste = true;
+					user = personneTab.get(i);
+					if (personneTab.get(i).estAdmin()) {
+						compteAdmin = true;
+					}
+				}
+			}
+
+	}
+		
+		
+		
 		if (!textFieldLogin.getText().isEmpty()) {
 			if (!textFieldMdp.getText().isEmpty()) {
 				if (compteExiste) {
@@ -155,6 +164,7 @@ public class PanelConnexion extends JPanel{
 					}
 					else {
 						new Entreprise(user);
+						fc.dispose();
 					}
 				}
 			}
