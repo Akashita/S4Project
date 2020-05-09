@@ -29,6 +29,8 @@ public class PanelConnexion extends JPanel{
     private JTextField textFieldLogin = new JTextField(), textFieldMdp = new JTextField();
     private JButton boutonConnexion, boutonQuitter;
     private Color couleurFond;
+    private Personne user = null;
+    
     
     public PanelConnexion(FenetreConnexion fc) {
     	this.fc = fc;
@@ -116,7 +118,7 @@ public class PanelConnexion extends JPanel{
 	    });			
     }   
 
-    //crï¿½ation du model
+    //création du model
     private void actionConnexion(FenetreConnexion fc) {
     	//ABSOLUMENT DEGUEU A MODIFIER APRES LE 12 
     	Boolean compteExiste = false;
@@ -133,6 +135,7 @@ public class PanelConnexion extends JPanel{
 				if (personneTab.get(i).getLogin() == textFieldLogin.getText()) {
 					if (personneTab.get(i).getMdp() == textFieldMdp.getText()) {
 						compteExiste = true;
+						user = personneTab.get(i);
 						if (personneTab.get(i).estAdmin()) {
 							compteAdmin = true;
 						}
@@ -141,7 +144,6 @@ public class PanelConnexion extends JPanel{
 
 		}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
@@ -152,7 +154,7 @@ public class PanelConnexion extends JPanel{
 						new Entreprise("debugBDD");
 					}
 					else {
-						new Entreprise(/*Personne connectï¿½*/);
+						new Entreprise(user);
 					}
 				}
 			}
