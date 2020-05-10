@@ -408,32 +408,34 @@ public class PanelInfoRessource extends JPanel{
 	
 	private JPanel panelBouton() {
 		JPanel panel = new JPanel();
-		panel.setBackground(couleurFond);
-		panel.setLayout(new GridBagLayout());
-		GridBagConstraints gc = new GridBagConstraints();
-		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
-		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-		gc.fill = GridBagConstraints.CENTER;
+		if (entreprise.getUser().estAdmin()) {
+			panel.setBackground(couleurFond);
+			panel.setLayout(new GridBagLayout());
+			GridBagConstraints gc = new GridBagConstraints();
+			gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+			gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+			gc.fill = GridBagConstraints.CENTER;
 
-		gc.insets = new Insets(5, 5, 5, 5);
-		gc.weightx = 2;
-		gc.weighty = 1;
+			gc.insets = new Insets(5, 5, 5, 5);
+			gc.weightx = 2;
+			gc.weighty = 1;
 
 
-		gc.gridx = 0;
-		gc.gridy = 0;
-		gc.gridwidth = 1;
+			gc.gridx = 0;
+			gc.gridy = 0;
+			gc.gridwidth = 1;
 
-		if (modeModification) {
-			panel.add(boutonAnnuler, gc);
-			gc.gridx ++;
-			panel.add(boutonTerminer, gc);
-		}
-		else {
-			panel.add(boutonSupprimer, gc);
-			gc.gridx ++;
-			panel.add(boutonModifier, gc);
+			if (modeModification) {
+				panel.add(boutonAnnuler, gc);
+				gc.gridx ++;
+				panel.add(boutonTerminer, gc);
+			}
+			else {
+				panel.add(boutonSupprimer, gc);
+				gc.gridx ++;
+				panel.add(boutonModifier, gc);
 
+			}			
 		}
 		return panel;
 	}
