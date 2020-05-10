@@ -37,7 +37,7 @@ public final class JavaSQLPersonne extends JavaSQL{
 
 	
 
-	public ArrayList<Personne> affiche() throws SQLException{
+	public static ArrayList<Personne> affiche() throws SQLException{
 		String sql = "SELECT * FROM Personne;";
 		ArrayList<Personne> personnetab = new ArrayList<Personne>();
 

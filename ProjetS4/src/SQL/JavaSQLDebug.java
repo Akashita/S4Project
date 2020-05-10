@@ -51,6 +51,10 @@ public final class JavaSQLDebug extends JavaSQL{
 			 stmt.executeUpdate(sql);
 			 System.out.println("drop Calculateur fait");
 			 
+			 sql = "DROP TABLE IF EXISTS Ticket";
+			 stmt.executeUpdate(sql);
+			 System.out.println("drop Ticket fait");
+			 
 			 sql = "DROP TABLE IF EXISTS Personne";
 			 stmt.executeUpdate(sql);
 			 System.out.println("drop Personne fait");

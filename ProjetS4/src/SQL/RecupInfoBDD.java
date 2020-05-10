@@ -19,7 +19,7 @@ public final class RecupInfoBDD {
 
 	public static void recupBDDDomaine(Entreprise e) throws SQLException {
 		ArrayList<String> dom = new ArrayList<String>();
-		dom = domaine.affiche();
+		dom = JavaSQLDomaine.affiche();
 		for (int i = 0; i < dom.size(); i++) {
 			e.ajoutDomaine(dom.get(i));
 		}
@@ -27,11 +27,11 @@ public final class RecupInfoBDD {
 
 	public static void recupBDDRessource(Entreprise e) throws SQLException {
 		ArrayList<Personne> pers = new ArrayList<Personne>();
-		pers = personne.affiche();
+		pers = JavaSQLPersonne.affiche();
 		ArrayList<Calculateur> cal = new ArrayList<Calculateur>();
-		cal = calculateur.affiche();
+		cal = JavaSQLCalculateur.affiche();
 		ArrayList<Salle> sal= new ArrayList<Salle>();
-		sal = salle.affiche();
+		sal = JavaSQLSalle.affiche();
 		for (int i = 0; i < pers.size(); i++) {
 			e.nouvPersonne(pers.get(i));
 		}
