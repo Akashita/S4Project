@@ -74,7 +74,7 @@ public class Personne extends Ressource{
 	
 	public boolean estAdmin() {
 		boolean b = false;
-		if (role == ADMINISTRATEUR) {
+		if (this.role == Personne.ADMINISTRATEUR) {
 			b = true;
 		}
 		return b;
