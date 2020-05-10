@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -175,9 +177,11 @@ public class Entreprise extends Observable{
 
 		while (chargeAloue < charge) {	
 			for (int i = 0; i < res.size(); i++) {
-				if(res.get(i).creneauDispo(jourCourant, heureCourante)) {
-					res.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
-					chargeAloue++;
+				if(verifierOrdre(res.get(i), act, jourCourant, heureCourante)) {
+					if(res.get(i).creneauDispo(jourCourant, heureCourante)) {
+						res.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
+						chargeAloue++;
+					}
 				}
 			}
 	
@@ -186,6 +190,15 @@ public class Entreprise extends Observable{
 				jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
 			}
 		}
+	}
+	
+	/*Verifie qu'un activitÃ© d'ordre n+1 soit placÃ©e aprÃ¨s une activite d'ordre n*/
+	private boolean verifierOrdre(Ressource res, Activite act, LocalDate jour, int heure) {
+		LocalDateTime tmp = LocalDateTime.of(jour, LocalTime.of(heure, 0));
+		int ordre = act.getOrdre();
+		LocalDateTime premierLibre = res.getPremierCreneauApresAct(ordre);
+		
+		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp));
 	}
 	
 	private void creerLCreneauxSalles(Activite act) {
@@ -529,7 +542,7 @@ public class Entreprise extends Observable{
 	}
 	
 
-	public boolean ressourceEstLibre(Ressource r) { //vérifier qu'une ressource est attacher à aucune act ou projet
+	public boolean ressourceEstLibre(Ressource r) { //vï¿½rifier qu'une ressource est attacher ï¿½ aucune act ou projet
 		return true;
 	}
 	
