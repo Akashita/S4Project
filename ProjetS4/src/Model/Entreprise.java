@@ -29,6 +29,13 @@ import Ressource.Personne;
 import Ressource.Ressource;
 import Ressource.RessourceAutre;
 import Ressource.Salle;
+import SQL.JavaSQL;
+import SQL.JavaSQLActivite;
+import SQL.JavaSQLCalculateur;
+import SQL.JavaSQLParticipe;
+import SQL.JavaSQLPersonne;
+import SQL.JavaSQLProjet;
+import SQL.JavaSQLSalle;
 import SQL.RecupInfoBDD;
 
 
@@ -401,18 +408,23 @@ public class Entreprise extends Observable{
 	}
 
 	
-	public void creerProjet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline) {//cr�e un projet si son nom n'est pas d�j� utilis�
+	public void creerProjet(Personne chefDeProjet, String nom, int priorite, LocalDate deadline) {//cr�e un projet si son nom n'est pas d�j� utilis�
 		idProjet ++;
 		Projet newProjet = new Projet(chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());// --------------------------------------------ATTENTION null pour le moment
 		chefDeProjet.ajouterProjet(newProjet);
 		lProjet.add(newProjet);
 		Collections.sort(lProjet);
 		lPanel.add(new JPanel());
+		try {
+			JavaSQLProjet.insertion(nom, priorite, deadline, 0, chefDeProjet.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		selectionnerProjet(newProjet);
 		update();
 	}
 	
-	public void ajouterProjet(Projet proj) { //Les projets sont ajout�s � la liste en les triant par ordre de priorite
+	public void ajouterProjet(Projet proj) { //Les projets sont ajout�s � la liste en les triant par ordre de priorite
 		Boolean place = false;
 		int i = 0;
 		while (i < lProjet.size() && !place) {
@@ -426,11 +438,16 @@ public class Entreprise extends Observable{
 		}
 	}
 		
-	public void modifierProjet(Projet projet, String nom, float priorite, Personne chefDeProjet, LocalDate deadline) {	
+	public void modifierProjet(Projet projet, String nom, int priorite, Personne chefDeProjet, LocalDate deadline) {	
 		projet.setNom(nom);
 		projet.setPriorite(priorite);
 		projet.setChefDeProjet(chefDeProjet);
 		projet.setDeadline(deadline);
+		try {
+			JavaSQLProjet.modifie(projet.getId(), nom, priorite, deadline, 0, chefDeProjet.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		majEDT();
 		update();
 	}
@@ -451,6 +468,11 @@ public class Entreprise extends Observable{
 				break;
 			}
 		}
+		try {
+			JavaSQLProjet.supprime(projet.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		projetSelectionner = null;// enleve la selection projet
 		majEDT(); // remet à jour les emplois du temps
 		update(); // remet à jour l'interface
@@ -459,19 +481,33 @@ public class Entreprise extends Observable{
 	
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion activite
 	
-	public void creerActivite(Projet projet, String titre, int charge, LocalDate debut, ArrayList<String> listeDomaine) {
+	public void creerActivite(Projet projet, String titre, float charge, LocalDate debut, ArrayList<String> listeDomaine) {
 		this.idAct++;
 		int ordre = projet.getListe().size();
-		Activite act = new Activite(idAct, titre, charge, debut, couleurAleatoire(), /*projetSelectionner,*/ ordre, listeDomaine); // ------------------------------ATTENTION projet plus stocké dans activité, ref Dams
+		Color couleur = couleurAleatoire();
+		Activite act = new Activite(idAct, titre, charge, debut, couleur, /*projetSelectionner,*/ ordre, listeDomaine); // ------------------------------ATTENTION projet plus stocké dans activité, ref Dams
 		projet.ajouter(act);		
 		selectionnerActivite(act);
+		try {
+			JavaSQLActivite.insertion(titre, debut, charge, ordre, couleur.getRGB(), projet.getId(), listeDomaine);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		update();
 	}
 
-	public void modifierActivite(Activite activite, String nom, int charge, LocalDate date) {	
+	public void modifierActivite(Activite activite, String nom, float charge, LocalDate date) {	
 		activite.setTitre(nom);
 		activite.setCharge(charge);
 		activite.setDebut(date);
+		
+		try {
+			JavaSQLActivite.modifie(activite.getId(), nom, date, charge, activite.getOrdre(),
+					activite.getCouleur().getRGB(), projetSelectionner.getId(), activite.getListeDomaine());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		majEDT();
 		update();
 	} 
@@ -486,6 +522,11 @@ public class Entreprise extends Observable{
 				break;
 			}
 		}
+		try {
+			JavaSQLActivite.supprime(activite.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		activite.supprimerToutesRessources(); //on enleve toute ses ressources
 		
@@ -494,6 +535,47 @@ public class Entreprise extends Observable{
 		update(); // met à jour l'interface
 	}
 	
+	
+	public void modifieListeActivite(boolean monte) {
+		Activite activite = activiteSelectionner;
+		Projet projet = chercherProjetParActivite(activite);
+		ArrayList<Activite> listeActivite = projet.getListe();
+		int index = 0;
+		for (int i=0; i<listeActivite.size(); i++) {
+			if (listeActivite.get(i).getId() == activite.getId()) {
+				index = i;
+				listeActivite.remove(i);
+				break;
+			}
+		}
+		if (monte) {
+			if (index>0) {
+				index--;
+			}
+		}
+		else {
+			if (index<listeActivite.size()) {
+				index++;
+			}
+		}
+		listeActivite.add(index, activite);
+		projet.setListeActivite(listeActivite);
+		for (int i=0; i<listeActivite.size(); i++) {
+			Activite a = listeActivite.get(i);
+			a.setOrdre(i);
+			try {
+				JavaSQLActivite.modifie(a.getId(), a.getTitre(), a.getDebut(), a.getChargeJHomme(), a.getOrdre(),
+						a.getCouleur().getRGB(), projetSelectionner.getId(), a.getListeDomaine());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		majEDT();
+		update();
+	}
+
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
 	public void nouvPersonne (Personne pers) {
 		this.ajouterRessource(pers);
@@ -501,35 +583,53 @@ public class Entreprise extends Observable{
 	}
 
 	public void nouvPersonne (String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {
-		Personne nouvPersonne = new Personne(nom,prenom, role, this.idCour, mdp, listeComp);
 		this.incrementId();
+		Personne nouvPersonne = new Personne(nom,prenom, role, this.idCour, mdp, listeComp);
 		this.ajouterRessource(nouvPersonne);
+		ArrayList<String> tag = CompeToTag(listeComp);
+		ArrayList<Integer> niveau = CompeToNiv(listeComp);
+		try {
+			JavaSQLPersonne.insertion(nom, prenom, role, mdp, tag, niveau);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		update();
 
 	}
-	
+		
 	public void nouvSalle(Salle salle) {
-		this.ajouterRessource(salle);
 		this.incrementId();
+		this.ajouterRessource(salle);
 	}
 	
 	public void nouvSalle (String nom, int capacite) {
-		Salle nouvSalle = new Salle(this.idCour,nom, capacite);
 		this.incrementId();
+		Salle nouvSalle = new Salle(this.idCour,nom, capacite);
 		this.ajouterRessource(nouvSalle);
+		try {
+			JavaSQLSalle.insertion(this.idCour, nom, capacite);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		update();
 
 		}
 	
 	public void nouvCalculateur (Calculateur calc) {
-		this.ajouterRessource(calc);
 		this.incrementId();
+		this.ajouterRessource(calc);
 	}
 	
 	public void nouvCalculateur (String nom) {
-		Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
 		this.incrementId();
+		Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
 		this.ajouterRessource(nouvCalculateur);
+		try {
+			JavaSQLCalculateur.insertion(this.idCour, nom, 0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		update();
 	}
 	
@@ -540,17 +640,34 @@ public class Entreprise extends Observable{
 		p.setRole(role);
 		p.setMdp(mdp);
 		p.setListeCompetence(listeComp);
+		ArrayList<String> tag = CompeToTag(listeComp);
+		ArrayList<Integer> niveau = CompeToNiv(listeComp);
+		try {
+			JavaSQLPersonne.modifie(p.getId(), nom, prenom, role, mdp, tag, niveau);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		update();
 	}
 	
 	public void modifSalle(Salle s, String nom, int capacite) {
 		s.setNom(nom);
 		s.setCapacite(capacite);
+		try {
+			JavaSQLSalle.modifie(s.getId(), s.getId(), nom, capacite);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		update();
 	}
 
 	public void modifCalculateur(Calculateur c, String nom) {
 		c.setNom(nom);
+		try {
+			JavaSQLCalculateur.modifie(c.getId(), nom, 0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		update();
 	}
 
@@ -558,6 +675,7 @@ public class Entreprise extends Observable{
 		Activite act = getActiviteSelectionner();
 		act.ajouterRessource(res);
 		majEDT();
+		JavaSQLParticipe.insertion(numSalarie, code, numero, idA);
 		update();
 	}
 	
@@ -569,7 +687,7 @@ public class Entreprise extends Observable{
 	}
 	
 
-	public boolean ressourceEstLibre(Ressource r) { //v�rifier qu'une ressource est attacher � aucune act ou projet
+	public boolean ressourceEstLibre(Ressource r) { //v�rifier qu'une ressource est attacher � aucune act ou projet
 		return true;
 	}
 	
@@ -579,6 +697,28 @@ public class Entreprise extends Observable{
 				lRessource.remove(i);
 				update();
 				break;
+			}
+		}
+		
+		if (r.getType().equals(Ressource.PERSONNE)) {
+			try {
+				JavaSQLPersonne.supprime(r.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (r.getType().equals(Ressource.SALLE)) {
+			try {
+				JavaSQLSalle.supprime(r.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (r.getType().equals(Ressource.CALCULATEUR)) {
+			try {
+				JavaSQLCalculateur.supprime(r.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -753,32 +893,20 @@ public class Entreprise extends Observable{
 		return null;
 	}
 
-	public void modifieListeActivite(boolean monte) {
-		Activite activite = activiteSelectionner;
-		Projet projet = chercherProjetParActivite(activite);
-		ArrayList<Activite> listeActivite = projet.getListe();
-		int index = 0;
-		for (int i=0; i<listeActivite.size(); i++) {
-			if (listeActivite.get(i).getId() == activite.getId()) {
-				index = i;
-				listeActivite.remove(i);
-				break;
-			}
+	private ArrayList<String> CompeToTag(ArrayList<Competence> lc){
+		ArrayList<String> lt = new ArrayList<String>();
+		for (int i=0; i<lc.size(); i++) {
+			lt.add(lc.get(i).getNom());
 		}
-		if (monte) {
-			if (index>0) {
-				index--;
-			}
+		return lt;
+	}
+	
+	private ArrayList<Integer> CompeToNiv(ArrayList<Competence> lc){
+		ArrayList<Integer> ln = new ArrayList<Integer>();
+		for (int i=0; i<lc.size(); i++) {
+			ln.add(lc.get(i).getNiveau());
 		}
-		else {
-			if (index<listeActivite.size()) {
-				index++;
-			}
-		}
-		listeActivite.add(index, activite);
-		projet.setListeActivite(listeActivite);
-		majEDT();
-		update();
+		return ln;
 	}
 
 	
