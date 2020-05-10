@@ -95,8 +95,16 @@ public class Entreprise extends Observable{
 	}
 	
 	public Entreprise(Personne p) {
-		super();
 		user = p;
+		this.lProjet =  new ArrayList<Projet>();
+		this.lType =  new ArrayList<String>();
+		this.lRessource =  new ArrayList<Ressource>();
+		this.idCour = 0;
+		this.domaine = new Domaine();
+		recupInfoBdd();
+		
+		fenetrePrincipale = new FenetrePrincipale(this);
+		this.update();
 	}
 	
 	private void recupInfoBdd() {
