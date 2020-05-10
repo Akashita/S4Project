@@ -21,7 +21,7 @@ public class Personne extends Ressource{
 	private String role;
 	
 	private ArrayList<Competence> listeCompetence = new ArrayList<Competence>();
-	private ArrayList<Projet> listeProjet = new ArrayList<Projet>();
+	private ArrayList<Projet> listeProjet = new ArrayList<Projet>(); //projet que la ressource dirrige
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEURS
@@ -78,8 +78,23 @@ public class Personne extends Ressource{
 		return b;
 	}
 	
+	public boolean estChef(Projet p) {
+		boolean b = false;
+		for (int i=0; i<listeProjet.size(); i++) {
+			if (listeProjet.get(i).getId() == p.getId()) {
+				b = true;
+				break;
+			}
+		}
+		return b;
+	}
+	
 	public String getPrenom() {
 		return this.prenom;
+	}
+	
+	public String getPrenomNom() {
+		return this.prenom + " " + this.nom;
 	}
 	
 	public String getLogin() {

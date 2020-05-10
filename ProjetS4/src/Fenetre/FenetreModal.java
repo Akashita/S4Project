@@ -92,6 +92,15 @@ public class FenetreModal extends JDialog{
 			panelInterface = new PanelEnleverRessource(entreprise, this);
 			break;
 
+		case FenetrePrincipale.InformationCompte:
+			titre = "Ajouter ressource";
+			panelInterface = new PanelAjouterRessource(entreprise, this);
+			break;
+		case FenetrePrincipale.Deconnexion:
+			titre = "Enlever ressource";
+			panelInterface = new PanelEnleverRessource(entreprise, this);
+			break;
+
 		}
 	}
 }

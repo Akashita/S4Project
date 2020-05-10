@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
+import Connexion.FenetreConnexion;
 import DebugFenetre.FenetreDebugBDD;
 import Fenetre.FenetreInfoRessource;
 import Fenetre.FenetrePrincipale;
@@ -142,6 +143,13 @@ public class Entreprise extends Observable{
 		return chaineActProjet;
 	}
 
+	//------------------------------------------------------------------------>>>>>>>> Changement de compte
+	
+	public void changementUtilisateur() {
+		fenetrePrincipale.dispose();
+		new FenetreConnexion();
+	}
+	
 	//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> gestion user
 	
 	public Personne getUser() {
@@ -306,6 +314,17 @@ public class Entreprise extends Observable{
 		return nouvelleListe;
 	}
 			
+	public ArrayList<Projet> getProjetDeLaRessource(Ressource r){ //retourne la liste des projet d'une ressource
+		ArrayList<Projet> lp = new ArrayList<Projet>();
+		for (int i=0; i<lProjet.size(); i++) {
+			Projet p = lProjet.get(i);
+			if (p.ressourcePresente(r)) {
+				lp.add(p);
+			}
+		}
+		return lp;
+	}
+	
 	public boolean ajouterRessource(Ressource ressource) {
 		if(!lRessource.contains(ressource)) {
 			lRessource.add(ressource);

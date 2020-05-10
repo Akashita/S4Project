@@ -151,8 +151,7 @@ public class PanelConnexion extends JPanel{
 					}
 				}
 			}
-
-	}
+		}
 		
 		
 		

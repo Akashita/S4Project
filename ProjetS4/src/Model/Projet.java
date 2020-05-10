@@ -9,6 +9,7 @@ import java.util.Hashtable;
 import javax.swing.JTextArea;
 
 import Ressource.Personne;
+import Ressource.Ressource;
 
 public class Projet implements Comparable<Projet>{
 
@@ -80,6 +81,17 @@ public class Projet implements Comparable<Projet>{
 			ht.put(actCC.getTitre(), actCC.getOrdre());
 		}
 		return ht;
+	}
+	
+	public boolean ressourcePresente(Ressource r) {
+		boolean b = false;
+		for (int i=0; i<lActivite.size(); i++) {
+			if (lActivite.get(i).ressourcePresente(r)) {
+				b = true;
+				break;
+			}
+		}
+		return b;
 	}
 	
 	//------------------------------------------------------------------------------->>>>>>> Setteurs
