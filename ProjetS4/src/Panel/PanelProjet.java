@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import EcouteurEvenement.SourisProjetListener;
 import Model.Entreprise;
 import Model.Projet;
+import Ressource.Personne;
 
 public class PanelProjet extends JPanel{
 	/**
@@ -39,9 +40,9 @@ public class PanelProjet extends JPanel{
 	public JPanel afficherProjet() {
 		JPanel panel = new JPanel();
 		panel.setBackground(PanelPrincipal.BLEU2);
-		ArrayList<Projet> listeProjet = entreprise.getListeProjet();
+		ArrayList<Projet> listeProjet = getProjetUser(entreprise.getUser());
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		if (listeProjet.size()>0) {
+		if (listeProjet.size()>0) { //on vérifie qu'il a des projets dans la liste
 			for (int i=0; i<listeProjet.size(); i++) {
 				Projet projet = listeProjet.get(i);
 				boolean selectionner = false;
@@ -110,4 +111,18 @@ public class PanelProjet extends JPanel{
     	panel.add(new JLabel(" "));
 		return panel;
 	}	
+	
+	
+	private ArrayList<Projet> getProjetUser(Personne p){
+		ArrayList<Projet> lp = new ArrayList<Projet>();
+		boolean estAdmin = p.estAdmin();
+		if(estAdmin) {// on affiche tout les projets de l'entreprise
+			lp = entreprise.getListeProjet(); 		
+		}
+		else { //si c'est un collaborateur ou chef de projet
+			lp.addAll(p.getListeDeProjet()); //projet qu'il dirige
+			lp.addAll(entreprise.getProjetDeLaRessource(p)); //projet ou il travaille
+		}
+		return lp;
+	}
 }

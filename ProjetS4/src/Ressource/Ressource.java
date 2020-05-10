@@ -1,6 +1,9 @@
 package Ressource;
 import java.util.List;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -59,11 +62,14 @@ public class Ressource implements Comparable<Ressource>{
 	public int getId() {
 		return this.id;
 	}
+
 	
 	
 	//--------------------------------------------------------------------------------->>>>>>> Setteur 
 	
-	//public void supprimer
+	public void setNom (String s) {
+		this.nom = s;
+	}
 	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
@@ -89,6 +95,7 @@ public class Ressource implements Comparable<Ressource>{
 		
 		return res;
 	}
+
 	
 	
 	
@@ -118,10 +125,6 @@ public class Ressource implements Comparable<Ressource>{
 		return semaineEDT;
 	}
 	
-	public CreneauHoraire getMoisEDT(int numeroMois) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public void vider() {
 		jours.clear();
@@ -277,5 +280,78 @@ public class Ressource implements Comparable<Ressource>{
 
 		return premCreneau;	
 	}
+	
+	public LocalDateTime getPremierCreneauApresAct(int ordre) {
+		Set<LocalDate> keys = jours.keySet(); //On recupere les cles de la hashtable jours
+		Iterator<LocalDate> itt = keys.iterator();
+		boolean trouve = false;		
+		LocalDate key = null;
+		LocalDateTime res = null;
+		ArrayList<CreneauHoraire> jourCourant;
+		int i = 0;
+		while(itt.hasNext() && !trouve) { //On parcours les jours
+			key = itt.next();
+			jourCourant = jours.get(key); //On recupere le jour courant
+			for (i = 0; i < jourCourant.size(); i++) {
+				if(jourCourant.get(i).getActivite().getOrdre() >= ordre) {
+					trouve = true;
+					break;
+				}
+			}			
+		}
+		if(key == null) {
+			res = null;
+		} else if(!trouve) {
+			res = getCreneauSuivant(key, i);
+		} else {
+			res =  LocalDateTime.of(key, LocalTime.of(indiceToHeure(i), 0));
+		}
+		
+		return res;
+	}
+	
+	private LocalDateTime getCreneauSuivant(LocalDate key, int indice) {
+		if(indice == 7) {
+			key = key.plus(1, ChronoUnit.DAYS);
+			indice = indiceToHeure(indice);
+		}
+		return LocalDateTime.of(key, LocalTime.of(indice, 0));
+	}
+	
+	private int indiceToHeure(int indice) {
+		int heure = Entreprise.HEURE_DEBUT_MATIN + indice;
+		if(indice > 4) {
+			heure = heure + (Entreprise.HEURE_DEBUT_APREM - Entreprise.HEURE_FIN_MATIN);
+		}
+		return heure;
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

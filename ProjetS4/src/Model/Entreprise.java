@@ -1,7 +1,10 @@
 package Model;
 import java.awt.Color;
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
+import Connexion.FenetreConnexion;
+import DebugFenetre.FenetreDebugBDD;
 import Fenetre.FenetreInfoRessource;
 import Fenetre.FenetrePrincipale;
 import Panel.PanelInfoActivite;
@@ -24,6 +29,7 @@ import Ressource.Personne;
 import Ressource.Ressource;
 import Ressource.RessourceAutre;
 import Ressource.Salle;
+import SQL.RecupInfoBDD;
 
 
 //model il sert a cr�er des projets puis leur donne des ressources.
@@ -49,6 +55,7 @@ public class Entreprise extends Observable{
 	public static final int NB_HEURE_JOUR = 8;
 	
 	private FenetrePrincipale fenetrePrincipale;
+	private FenetreDebugBDD fenetreBDD;
 	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
 	
 	private Projet projetSelectionner;
@@ -56,6 +63,9 @@ public class Entreprise extends Observable{
 	private ArrayList<String> ressourceAfficher = new ArrayList<String>();
 
 	private Domaine domaine;
+	
+	
+	private Personne user; //Personne qui utilise le programme
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -66,8 +76,57 @@ public class Entreprise extends Observable{
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
 		this.domaine = new Domaine();
+		recupInfoBdd();
+		
 		fenetrePrincipale = new FenetrePrincipale(this);
 		this.update();
+	}
+	public Entreprise(String typeDebug) {
+		this.lProjet =  new ArrayList<Projet>();
+		this.lType =  new ArrayList<String>();
+		this.lRessource =  new ArrayList<Ressource>();
+		this.idCour = 0;
+		this.domaine = new Domaine();
+		recupInfoBdd();
+		
+		if (typeDebug == "debugBDD") {
+			fenetreBDD = new FenetreDebugBDD(this);
+		}
+		this.update();
+	}
+	
+	public Entreprise(Personne p) {
+		user = p;
+		this.lProjet =  new ArrayList<Projet>();
+		this.lType =  new ArrayList<String>();
+		this.lRessource =  new ArrayList<Ressource>();
+		this.idCour = 0;
+		this.domaine = new Domaine();
+		recupInfoBdd();
+		
+		fenetrePrincipale = new FenetrePrincipale(this);
+		this.update();
+	}
+	
+	private void recupInfoBdd() {
+		try {
+//			testSqlDomaine.insertion();
+//			JavaSQLDomaine.insertion("php");
+//			JavaSQLPersonne.insertion("Geyer","Jules","Chef","putheu", testP, testN);
+//			JavaSQLProjet.insertion("test1",1,date,1, 1);
+//			testprojet.insertion();
+//			testact.insertion();
+			RecupInfoBDD.recupBDDProjet(this);
+			RecupInfoBDD.recupBDDRessource(this);
+//			test.affiche();
+//			test.drop();
+//			java.creation();
+//			test.affiche();
+			
+
+		}catch(SQLException f){
+			f.printStackTrace();
+		}
 	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -84,6 +143,25 @@ public class Entreprise extends Observable{
 		return chaineActProjet;
 	}
 
+	//------------------------------------------------------------------------>>>>>>>> Changement de compte
+	
+	public void changementUtilisateur() {
+		fenetrePrincipale.dispose();
+		new FenetreConnexion();
+	}
+	
+	//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> gestion user
+	
+	public Personne getUser() {
+		return this.user;
+	}
+	
+	public void setUser(Personne user) {
+		this.user = user;
+	}
+	
+	//----------------------------------------------------------------------------------------------------
+	
 	public void majEDT() {
 		ArrayList<Activite> lActivite;
 		viderRessources();
@@ -115,9 +193,11 @@ public class Entreprise extends Observable{
 
 		while (chargeAloue < charge) {	
 			for (int i = 0; i < res.size(); i++) {
-				if(res.get(i).creneauDispo(jourCourant, heureCourante)) {
-					res.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
-					chargeAloue++;
+				if(verifierOrdre(res.get(i), act, jourCourant, heureCourante)) {
+					if(res.get(i).creneauDispo(jourCourant, heureCourante)) {
+						res.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
+						chargeAloue++;
+					}
 				}
 			}
 	
@@ -126,6 +206,15 @@ public class Entreprise extends Observable{
 				jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
 			}
 		}
+	}
+	
+	/*Verifie qu'un activité d'ordre n+1 soit placée après une activite d'ordre n*/
+	private boolean verifierOrdre(Ressource res, Activite act, LocalDate jour, int heure) {
+		LocalDateTime tmp = LocalDateTime.of(jour, LocalTime.of(heure, 0));
+		int ordre = act.getOrdre();
+		LocalDateTime premierLibre = res.getPremierCreneauApresAct(ordre);
+		
+		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp));
 	}
 	
 	private void creerLCreneauxSalles(Activite act) {
@@ -176,6 +265,8 @@ public class Entreprise extends Observable{
 	
 	public void incrementId (){ //fonction a utiliser sur chaque nouvelle ressource pour leur attribuer un iD
 		this.idCour = this.idCour +1 ;
+		//		this.idCour = this.lRessource.size() +1 ;
+
 	}
 	
 	public int getId() {
@@ -223,6 +314,17 @@ public class Entreprise extends Observable{
 		return nouvelleListe;
 	}
 			
+	public ArrayList<Projet> getProjetDeLaRessource(Ressource r){ //retourne la liste des projet d'une ressource
+		ArrayList<Projet> lp = new ArrayList<Projet>();
+		for (int i=0; i<lProjet.size(); i++) {
+			Projet p = lProjet.get(i);
+			if (p.ressourcePresente(r)) {
+				lp.add(p);
+			}
+		}
+		return lp;
+	}
+	
 	public boolean ajouterRessource(Ressource ressource) {
 		if(!lRessource.contains(ressource)) {
 			lRessource.add(ressource);
@@ -432,7 +534,25 @@ public class Entreprise extends Observable{
 	}
 	
 	
+	public void modifPersonne(Personne p, String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {
+		p.setNom(nom);
+		p.setPrenom(prenom);
+		p.setRole(role);
+		p.setMdp(mdp);
+		p.setListeCompetence(listeComp);
+		update();
+	}
 	
+	public void modifSalle(Salle s, String nom, int capacite) {
+		s.setNom(nom);
+		s.setCapacite(capacite);
+		update();
+	}
+
+	public void modifCalculateur(Calculateur c, String nom) {
+		c.setNom(nom);
+		update();
+	}
 
 	public void ajouterRessourceActivite(Ressource res) {
 		Activite act = getActiviteSelectionner();
@@ -449,6 +569,20 @@ public class Entreprise extends Observable{
 	}
 	
 
+	public boolean ressourceEstLibre(Ressource r) { //v�rifier qu'une ressource est attacher � aucune act ou projet
+		return true;
+	}
+	
+	public void suppRessource(Ressource r) {
+		for (int i=0; i<lRessource.size(); i++) {
+			if (lRessource.get(i).getId() == r.getId()) {
+				lRessource.remove(i);
+				update();
+				break;
+			}
+		}
+	}
+	
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion domaine
 
 	/*public void nouvDomaine (Domaine domaine) {

@@ -32,14 +32,20 @@ public class Salle extends Ressource{
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
-	//--------------------------------------------------------------------------------->>>>> Getteurs simples
+	//--------------------------------------------------------------------------------->>>>> Getteurs 
 	public int getCapacite() {
 		return this.capacite;
 	}
 
+	//--------------------------------------------------------------------------------->>>>> Getteurs 
+
+	public void setCapacite(int c) {
+		this.capacite = c;
+	}
+	
 	//--------------------------------------------------------------------------------->>>>> toString
 	public String toString() {
-		return nom;
+		return "nom : " + nom + " numero : " + this.id + " capacite : " + capacite ;
 	}
 
 }

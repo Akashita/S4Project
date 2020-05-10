@@ -13,6 +13,7 @@ import javax.swing.KeyStroke;
 import EcouteurEvenement.MenuBarListener;
 import Model.Entreprise;
 import Panel.*;
+import Ressource.Personne;
 
 
 /**
@@ -36,7 +37,8 @@ public class FenetrePrincipale extends JFrame{
 	private Entreprise entreprise;
 	public static final int NouveauProjet = 0, NouvelleRessource = 1, NouvelleActivite = 2, NouveauDomaine = 3,
 			AjouterRessource = 4, EnleverRessource = 5,
-			ModifierProjet = 6, ModifierActivite = 7, ModifierRessource = 8;
+			ModifierProjet = 6, ModifierActivite = 7, ModifierRessource = 8,
+			InformationCompte = 9, Deconnexion = 10;
 	
 	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
@@ -44,7 +46,7 @@ public class FenetrePrincipale extends JFrame{
 		this.setSize(LARGEUR,HAUTEUR);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setBackground(PanelPrincipal.BLANC);
-		setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout());
 		PanelPrincipal pp = new PanelPrincipal(entreprise);	
 		
 		
@@ -58,12 +60,17 @@ public class FenetrePrincipale extends JFrame{
 	
 	private void creationBarreMenu() {
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setLayout(new BorderLayout());
+		
 		
 		JMenu menuFichier = new JMenu("Fichier");
 		JMenu menuEditer = new JMenu("Editer");
 		JMenu menuModifier = new JMenu("Modifier");
 		JMenu menuPropos = new JMenu("A propos");
+		JMenu menuCompte = new JMenu(entreprise.getUser().getPrenomNom());
+		
 
+		//------------------------------------------------------------------->>> menu fichier
 		JMenuItem itemNouveauProjet = new JMenuItem("Nouveau projet", KeyEvent.VK_P);
 	    KeyStroke ctrlNouveauProjet = KeyStroke.getKeyStroke("control P");
 	    itemNouveauProjet.setAccelerator(ctrlNouveauProjet);
@@ -88,6 +95,7 @@ public class FenetrePrincipale extends JFrame{
 	        }
 	      });		
 		
+		//------------------------------------------------------------------->>> menu editer
 		JMenuItem itemAjout = new JMenuItem("Ajouter ressource", KeyEvent.VK_A);
 	    KeyStroke ctrlAjout = KeyStroke.getKeyStroke("control A");
 	    itemAjout.setAccelerator(ctrlAjout);
@@ -102,10 +110,8 @@ public class FenetrePrincipale extends JFrame{
 	    KeyStroke ctrlNouvelleActivite = KeyStroke.getKeyStroke("control Y");
 	    itemNouvelleActivite.setAccelerator(ctrlNouvelleActivite);
 	    itemNouvelleActivite.addActionListener(new MenuBarListener(entreprise, NouvelleActivite));
-
 	    
-	    
-	    
+		//----------------------------------------->>> sous menu Modifier
 	    JMenuItem itemModifierProjet = new JMenuItem("Modifier Projet", KeyEvent.VK_O);
 	    KeyStroke ctrlModifierProjet = KeyStroke.getKeyStroke("control O");
 	    itemModifierProjet.setAccelerator(ctrlModifierProjet);
@@ -116,14 +122,25 @@ public class FenetrePrincipale extends JFrame{
 	    itemModifierActivite.setAccelerator(ctrlModifierActivite);
 	    itemModifierActivite.addActionListener(new MenuBarListener(entreprise, ModifierActivite));
 	    
-	    
-	    
-	    JMenuItem itemSupprimer = new JMenuItem("Supprimer Projet");
 
+		//------------------------------------------------------------------->>> menu propos
 		JMenuItem itemPropos = new JMenuItem("Projet");
 
-		
-		
+		//------------------------------------------------------------------->>> menu compte
+		JMenuItem itemInfoCompte = new JMenuItem("Information Compte", KeyEvent.VK_I);
+	    KeyStroke ctrlInfoCompte = KeyStroke.getKeyStroke("control I");
+	    itemInfoCompte.setAccelerator(ctrlInfoCompte);
+	    itemInfoCompte.addActionListener(new MenuBarListener(entreprise, InformationCompte));
+
+	    JMenuItem itemDeconnexion = new JMenuItem("Deconnexion", KeyEvent.VK_D);
+	    KeyStroke ctrlDeconnexion = KeyStroke.getKeyStroke("control D");
+	    itemDeconnexion.setAccelerator(ctrlDeconnexion);
+	    itemDeconnexion.addActionListener(new MenuBarListener(entreprise, Deconnexion));
+
+
+	    
+	    
+	    
 		menuFichier.add(itemNouveauProjet);
 		menuFichier.add(itemNouvelleRessource);
 		menuFichier.add(itemNouvelleDomaine);
@@ -134,17 +151,18 @@ public class FenetrePrincipale extends JFrame{
 		menuEditer.add(itemNouvelleActivite);
 		
 		menuModifier.add(itemModifierProjet);
-		menuModifier.add(itemModifierActivite);
-		//menuModifier.add(itemModifierRessource);
-		
+		menuModifier.add(itemModifierActivite);	
 		menuEditer.add(menuModifier);
-		menuEditer.add(itemSupprimer);
 		
 		menuPropos.add(itemPropos);
+		
+		menuCompte.add(itemInfoCompte);
+		menuCompte.add(itemDeconnexion);
 		
 		menuBar.add(menuFichier);
 		menuBar.add(menuEditer);
 		menuBar.add(menuPropos);
+		menuBar.add(menuCompte, BorderLayout.EAST);
 		this.setJMenuBar(menuBar);	
 	}
 
