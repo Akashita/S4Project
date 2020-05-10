@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import Model.Entreprise;
 import Ressource.Personne;
 import Ressource.Salle;
+import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLSalle;
 
@@ -20,7 +21,7 @@ public class PanelDebugAffichage extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2;
 	private int type;
 	public PanelDebugAffichage(Entreprise entreprise, int type) {
 		this.entreprise = entreprise;
@@ -51,8 +52,8 @@ public class PanelDebugAffichage extends JPanel{
 				setLayout(new GridLayout(personneSalle.size(),1));
 
 				for (int i = 0; i < personneSalle.size(); i++) {
-					JLabel personne = new JLabel(personneSalle.get(i).toString());
-					this.add(personne);
+					JLabel salle = new JLabel(personneSalle.get(i).toString());
+					this.add(salle);
 
 			}
 			} catch (SQLException e) {
@@ -61,7 +62,22 @@ public class PanelDebugAffichage extends JPanel{
 			}
 
 		}
-		
+		else if (type == this.DOMAINE) {
+			ArrayList<String> tagtab = new ArrayList<String>();
+			try {
+				tagtab = JavaSQLDomaine.affiche();
+				setLayout(new GridLayout(tagtab.size(),1));
+
+				for (int i = 0; i < tagtab.size(); i++) {
+					JLabel tag = new JLabel(tagtab.get(i));
+					this.add(tag);
+
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		
 	}

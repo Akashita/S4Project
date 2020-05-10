@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import Model.Entreprise;
 import Ressource.Salle;
+import SQL.JavaSQLDomaine;
 import SQL.JavaSQLSalle;
 
 public class ActionDebugAjout implements ActionListener{
@@ -18,13 +19,18 @@ public class ActionDebugAjout implements ActionListener{
 	private TextField place;
 	private int typeVerif;
 	private Entreprise entreprise;
-	public static int SALLE = 0 ;
+	public static int SALLE = 0, DOMAINE = 1 ;
 
 	public ActionDebugAjout (Window w,TextField numero,TextField nom,TextField place, int typeVerif, Entreprise entreprise) {
 		this.w = w;
 		this.numero = numero;
 		this.nom = nom;
 		this.place = place;
+		this.typeVerif = typeVerif;
+	}
+	public ActionDebugAjout (Window w,TextField nom,int typeVerif, Entreprise entreprise) {
+		this.w = w;
+		this.nom = nom;
 		this.typeVerif = typeVerif;
 	}
 
@@ -46,6 +52,21 @@ public class ActionDebugAjout implements ActionListener{
 			}
 
 		}
+	if (typeVerif == this.DOMAINE) {
+		try {
+
+			JavaSQLDomaine.insertion( nom.getText());
+			new FenetreDebugDomaine(entreprise,FenetreDebugDomaine.AFFICHE);
+			w.dispose();
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
+}
 
 }
