@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import Model.Entreprise;
 import SQL.JavaSQLDomaine;
+import SQL.JavaSQLPersonne;
 import SQL.JavaSQLSalle;
 
 public class ActionDebugSupprime implements ActionListener{
@@ -15,7 +16,7 @@ public class ActionDebugSupprime implements ActionListener{
 	private TextField numero;
 	private int typeVerif;
 	private Entreprise entreprise;
-	public static int SALLE = 0, DOMAINE = 1 ;
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2 ;
 
 	public ActionDebugSupprime (Window w,TextField numero, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -47,6 +48,22 @@ public class ActionDebugSupprime implements ActionListener{
 
 				JavaSQLDomaine.supprime(tag);
 				new FenetreDebugDomaine(entreprise,FenetreDebugDomaine.AFFICHE);
+				w.dispose();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		if (typeVerif == this.PERSONNE) {
+			int id = Integer.parseInt(numero.getText());
+			try {
+
+				JavaSQLPersonne.supprime(id);
+				new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.AFFICHE);
 				w.dispose();
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block

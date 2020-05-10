@@ -22,8 +22,19 @@ public class PanelDebugSupprime extends JPanel{
 		this.w = w;
 		this.entreprise = entreprise;
 		this.type = type;
-		if (type == 0) {
-
+		if (type == PERSONNE) {
+			this.setLayout(new GridLayout(2,2));
+			Label numeroLabel = new Label("numero de la personne a supprimer : ");
+			TextField numero = new TextField(20);
+			this.add(numeroLabel);
+			this.add(numero);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,numero,ActionDebugSupprime.PERSONNE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
 			
 		}
 		else if (type == this.SALLE) {
