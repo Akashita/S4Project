@@ -13,7 +13,7 @@ public class PanelDebugActionBarre extends JPanel{
 	private Entreprise entreprise;
 	private Window w;
 	private int type;
-	public static final int PERSONNE = 0, SALLE = 1;
+	public static final int PERSONNE = 0, SALLE = 1,DOMAINE = 2;
 
 	public PanelDebugActionBarre(Entreprise entreprise,Window w,int type) {
 		this.entreprise = entreprise;
@@ -31,8 +31,8 @@ public class PanelDebugActionBarre extends JPanel{
 
 
 		affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PERSONNE));
-		//ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PERSONNE));
-		//supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PERSONNE));
+		ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PERSONNEAJOUT));
+		supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PERSONNESUPPRIME));
 
 
 		
@@ -60,6 +60,23 @@ public class PanelDebugActionBarre extends JPanel{
 
 		}
 		
+		else if (type == this.DOMAINE) {
+			Button affiche = new Button("Affiche Domaine");
+			Button ajout = new Button("Ajout Domaine");
+			Button supprime = new Button("Suppression Domaine");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.DOMAINE));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.DOMAINEAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.DOMAINESUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+
+		}
 		this.setVisible(true);	
 	}
 }

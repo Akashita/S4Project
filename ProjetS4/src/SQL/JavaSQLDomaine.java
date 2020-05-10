@@ -61,11 +61,11 @@ public final class JavaSQLDomaine extends JavaSQL{
 		try{
 			 connection();
 			 Statement stmt = getCon().createStatement();
-			 String sql = "DELETE FROM Competence WHERE tag ="+ tag;
+			 String sql = "DELETE FROM Competence WHERE tag = '" + tag + "'";
 			 stmt.executeUpdate(sql);					 
-			 sql = "DELETE FROM ListeDomaine WHERE tag =" + tag ;
+			 sql = "DELETE FROM ListeDomaine WHERE tag = '" + tag + "'";
 			 stmt.executeUpdate(sql);			 
-			 sql = "DELETE FROM Domaine WHERE tag =" + tag ;
+			 sql = "DELETE FROM Domaine WHERE tag = '" + tag + "'";
 			 stmt.executeUpdate(sql);
 			 con.close();
 		} catch(SQLException e){

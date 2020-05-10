@@ -22,12 +22,16 @@ public class PanelDebugMenuBarre extends JPanel{
 		Button menu = new Button("menu");
 		Button personne = new Button("personne");
 		Button salle = new Button("salle");
+		Button domaine = new Button("domaine");
+
 
 		
 
 		menu.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MENU));
 		personne.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PERSONNE));
 		salle.addActionListener(new NavigationListener(w,entreprise,NavigationListener.SALLE));
+		domaine.addActionListener(new NavigationListener(w,entreprise,NavigationListener.DOMAINE));
+
 
 
 
@@ -35,6 +39,8 @@ public class PanelDebugMenuBarre extends JPanel{
 		this.add(menu);		
 		this.add(personne);
 		this.add(salle);
+		this.add(domaine);
+
 
 		
 		

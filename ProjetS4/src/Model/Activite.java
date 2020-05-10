@@ -17,7 +17,7 @@ public class Activite implements Comparable<Activite>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private int id;
 	private String titre;
-	private double chargeJHomme;
+	private float chargeJHomme;
 	private int chargeHeure;
 	private LocalDate debut;
 	private Color couleur;
@@ -30,7 +30,7 @@ public class Activite implements Comparable<Activite>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Activite(int id, String titre, double chargeJH, LocalDate debut, Color couleur, int ordre, ArrayList<String> listeDomaine) {
+	public Activite(int id, String titre, float chargeJH, LocalDate debut, Color couleur, int ordre, ArrayList<String> listeDomaine) {
 		this.id = id;
 		this.titre = titre;
 		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
@@ -50,7 +50,7 @@ public class Activite implements Comparable<Activite>{
 		return titre;
 	}
 
-	public double getChargeJHomme() {
+	public float getChargeJHomme() {
 		return chargeJHomme;
 	}
 
@@ -120,7 +120,7 @@ public class Activite implements Comparable<Activite>{
 		this.titre = titre;
 	}
 
-	public void setCharge(int charge) {
+	public void setCharge(float charge) {
 		this.chargeJHomme = charge;
 		this.chargeHeure = (int)(charge * Entreprise.NB_HEURE_JOUR);
 	}
@@ -148,7 +148,11 @@ public class Activite implements Comparable<Activite>{
 		lRessources.clear();
 	}
 
-
+	public void setOrdre(int ordre) {
+		this.ordre = ordre;
+	}
+	
+	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {

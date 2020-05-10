@@ -82,7 +82,7 @@ public final class JavaSQLProjet extends JavaSQL{
 												 }
 											 }
 											 LocalDate debut = res5.getDate("debut").toLocalDate();
-											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getDouble("charge"), debut, 
+											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getFloat("charge"), debut, 
 													 new Color(res5.getInt("couleur")), res5.getInt("ordre"),listeDom));
 										 }
 									 }

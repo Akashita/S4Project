@@ -60,6 +60,19 @@ public class FenetreDebugPersonne  extends JFrame{
 		PanelDebugAffichage panelAffichage = new PanelDebugAffichage(entreprise,PanelDebugAffichage.PERSONNE);
 		this.add(panelAffichage,c);
 		}
+		else if (type == this.AJOUT) {
+	        c.weighty = 0.0;               
+
+			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAjout.PERSONNE);
+			this.add(panelAjout,c);
+		}
+		
+		else if (type == this.SUPPRIME) {
+	        c.weighty = 0.0;               
+
+			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugSupprime.PERSONNE);
+			this.add(panelSupprime,c);
+		}
 		
 		this.setVisible(true);	
 }
