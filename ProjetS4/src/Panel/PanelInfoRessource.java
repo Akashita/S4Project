@@ -123,7 +123,7 @@ public class PanelInfoRessource extends JPanel{
 		String mdp = null;
 		if (ressource.getType() == Ressource.PERSONNE) {
 			Personne p = ((Personne) ressource);
-			if (p.getRole() == Personne.ADMINISTRATEUR) {
+			if (p.estAdmin()) {
 				role = "Administrateur";
 			}
 			prenom = ((Personne) ressource).getPrenom();
@@ -184,7 +184,7 @@ public class PanelInfoRessource extends JPanel{
 		String mdp = null;
 		if (ressource.getType() == Ressource.PERSONNE) {
 			Personne p = ((Personne) ressource);
-			if (p.getRole() == Personne.ADMINISTRATEUR) {
+			if (p.estAdmin()) {
 				role = "Administrateur";
 			}
 			prenom = ((Personne) ressource).getPrenom();

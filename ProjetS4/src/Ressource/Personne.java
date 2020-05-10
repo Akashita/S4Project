@@ -74,7 +74,7 @@ public class Personne extends Ressource{
 	
 	public boolean estAdmin() {
 		boolean b = false;
-		if (role == ADMINISTRATEUR) {
+		if (role.equals(ADMINISTRATEUR)) {
 			b = true;
 		}
 		return b;
