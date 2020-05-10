@@ -73,7 +73,7 @@ public class Ressource implements Comparable<Ressource>{
 	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
-	public boolean equals(Object obj) { //test si deux ressources sont �gales
+	public boolean equals(Object obj) { //test si deux ressources sont ���gales
 		if(obj instanceof Ressource && obj != null) {
 			Ressource res = (Ressource)obj;
 			return id == res.id;
@@ -133,7 +133,7 @@ public class Ressource implements Comparable<Ressource>{
 
 	/**
 	 * Cree une journee entierement disponible
-	 * @return Un tableau de CreneauHoraire init � null
+	 * @return Un tableau de CreneauHoraire init ��� null
 	 */
 	private ArrayList<CreneauHoraire> creeJourneeCreneauLibre() {
 		ArrayList<CreneauHoraire> creneaux = new ArrayList<CreneauHoraire>();
@@ -145,7 +145,7 @@ public class Ressource implements Comparable<Ressource>{
 	
 
 	/**
-	 * Ajoute un creneau � la ressource (si possible)
+	 * Ajoute un creneau ��� la ressource (si possible)
 	 * @param creneau   Le creneau a ajouter
 	 * @param jour   	Le jour ou le creneau doit etre ajoute
 	 * @return true si le creneau a ete ajoute
@@ -199,7 +199,7 @@ public class Ressource implements Comparable<Ressource>{
 	 * ont forcement tous leurs creneaux de libres)
 	 * @return une hashtable contenant tous les creneaux libres
 	 */
-	public Hashtable<LocalDate, ArrayList<CreneauHoraire>> getCreneauxLibres(){ //Retourne une hashtable de jour avec tous les cr�neaux libres
+	public Hashtable<LocalDate, ArrayList<CreneauHoraire>> getCreneauxLibres(){ //Retourne une hashtable de jour avec tous les cr���neaux libres
 		Hashtable<LocalDate, ArrayList<CreneauHoraire>> creneauxLibres = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
 		
 		Set<LocalDate> keys = jours.keySet(); //On recupere les cles de la hashtable jours
@@ -220,13 +220,12 @@ public class Ressource implements Comparable<Ressource>{
 		return creneauxLibres;
 	}
 	
-	
 	/**
 	 * Methode utilisee par getCreneauxLibres qui donne la liste des creneaux libres de la journee en parametre
 	 * @param jourCourant   Le jour a traiter
 	 * @return la liste des creneaux libres de la journee
 	 */
-	private ArrayList<CreneauHoraire> getCreneauxLibresJour(ArrayList<CreneauHoraire> jourCourant) { //Retourne les cr�neaux libres d'une journ�e
+	private ArrayList<CreneauHoraire> getCreneauxLibresJour(ArrayList<CreneauHoraire> jourCourant) { //Retourne les cr���neaux libres d'une journ���e
 		ArrayList<CreneauHoraire> creneauxLibres = new ArrayList<CreneauHoraire>();
 		for (int j = 0; j < jourCourant.size(); j++) {
 			if(jourCourant.get(j) == null) {
@@ -237,16 +236,16 @@ public class Ressource implements Comparable<Ressource>{
 		
 	}
 	
-	public CreneauHoraire getPremierCreneauActivite(Activite act) {
+	public LocalDate getPremiereDateActivite(Activite act) {
 		List<LocalDate> listKeys = new ArrayList<LocalDate>(jours.keySet());
-		CreneauHoraire premCreneau = null;
+		LocalDate premDate = null;
 		Collections.sort(listKeys);
 		boolean quitter = false;
 		for (int i = 0; i < listKeys.size(); i++) {
 			ArrayList<CreneauHoraire> jour = jours.get(listKeys.get(i));
 			for (int j = 0; j < jour.size(); j++) {
 				if (jour.get(j).getActivite() == act) {
-					premCreneau = jour.get(j);
+					premDate = listKeys.get(i);
 					quitter = true;
 					break;
 				}
@@ -256,19 +255,19 @@ public class Ressource implements Comparable<Ressource>{
 			}
 		}
 
-		return premCreneau;	
+		return premDate;	
 	}
 	
-	public CreneauHoraire getDernierCreneauActivite(Activite act) {
+	public LocalDate getDerniereDateActivite(Activite act) {
 		List<LocalDate> listKeys = new ArrayList<LocalDate>(jours.keySet());
-		CreneauHoraire premCreneau = null;
+		LocalDate derDate = null;
 		Collections.sort(listKeys);
 		boolean quitter = false;
 		for (int i = listKeys.size()-1; i >= 0; i--) {
 			ArrayList<CreneauHoraire> jour = jours.get(listKeys.get(i));
 			for (int j = jour.size()-1; j >= 0 ; j--) {
 				if (jour.get(j).getActivite() == act) {
-					premCreneau = jour.get(j);
+					derDate = listKeys.get(i);
 					quitter = true;
 					break;
 				}
@@ -277,11 +276,10 @@ public class Ressource implements Comparable<Ressource>{
 				break;
 			}
 		}
-
-		return premCreneau;	
+		return derDate;	
 	}
 	
-	public LocalDateTime getPremierCreneauApresAct(int ordre) {
+	public LocalDateTime getPremiereCreneauApresAct(int ordre) {
 		Set<LocalDate> keys = jours.keySet(); //On recupere les cles de la hashtable jours
 		Iterator<LocalDate> itt = keys.iterator();
 		boolean trouve = false;		
