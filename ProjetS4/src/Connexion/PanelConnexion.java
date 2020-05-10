@@ -146,7 +146,7 @@ public class PanelConnexion extends JPanel{
 				if ( mdpI.equals(mdp)) {
 					compteExiste = true;
 					user = personneTab.get(i);
-					if (personneTab.get(i).getRole().equals(Personne.ADMINISTRATEUR)) {
+					if (personneTab.get(i).getRole().equals(Personne.DEBUG)) {
 						compteAdmin = true;
 					}
 				}

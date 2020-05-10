@@ -18,6 +18,8 @@ public class Personne extends Ressource{
 	public static final String COLLABORATEUR = "Collaborateur";
 	public static final String CHEFDEPROJET = "Chef de projet";
 	public static final String ADMINISTRATEUR = "Administrateur";
+	public static final String DEBUG = "Debugger";
+
 	private String role;
 	
 	private ArrayList<Competence> listeCompetence = new ArrayList<Competence>();
