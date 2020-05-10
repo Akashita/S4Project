@@ -3,6 +3,10 @@ package SQL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import GestionTicket.Ticket;
+import Ressource.Personne;
 
 public class JavaSQLTicket extends JavaSQL{
 	
@@ -13,21 +17,24 @@ public class JavaSQLTicket extends JavaSQL{
 	
 	
 	
-	public static void affiche() throws SQLException{
+	public static ArrayList<Ticket> affiche() throws SQLException{
 		String sql = "SELECT * FROM Ticket;";
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+
 			try{
 				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 System.out.println("idT = " + res.getString("idT") + ", sujet = " + res.getString("sujet") + ", message = " + res.getString("message") + ", modif = " + res.getString("modif"));
+						 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"), res.getInt("numSalarieEnv"), res.getInt("numSalarieERec")));
 					 }
 				 }
 				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
-
+			return ticketTab;
 	}
 	
 	public static void insertion(String sujet ,String message ,String modif ,int numSalarieEnv ,int numSalarieRec) throws SQLException{
