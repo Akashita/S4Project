@@ -44,12 +44,15 @@ public class PanelProjet extends JPanel{
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		if (listeProjet.size()>0) { //on vérifie qu'il a des projets dans la liste
 			for (int i=0; i<listeProjet.size(); i++) {
-				Projet projet = listeProjet.get(i);
-				boolean selectionner = false;
-				if(projet.getId() == entreprise.getProjetSelectionner().getId()) {
-					selectionner = true;
-				}
-				panel.add(creerLabel(projet, selectionner));
+					Projet projet = listeProjet.get(i);
+					boolean selectionner = false;
+					if (entreprise.getProjetSelectionner() != null) {
+						if(projet.getId() == entreprise.getProjetSelectionner().getId()) {
+							selectionner = true;
+						}
+					}
+					panel.add(creerLabel(projet, selectionner));				
+				
 			}			
 		}
 		return panel;
