@@ -12,12 +12,12 @@ public class NavigationListener  implements ActionListener{
 	private Window w;
 	private int direction;
 	private Entreprise entreprise;
-	public static int PERSONNE = 0, MENU = 1, SALLE = 2, SALLEAJOUT = 3, SALLESUPPRIME = 4,DOMAINE = 5, DOMAINEAJOUT = 6, DOMAINESUPPRIME = 7, PERSONNEAJOUT = 8, PERSONNESUPPRIME = 9;
+	public static int PERSONNE = 0, MENU = 1, SALLE = 2, SALLEAJOUT = 3, SALLESUPPRIME = 4,DOMAINE = 5, DOMAINEAJOUT = 6, DOMAINESUPPRIME = 7, PERSONNEAJOUT = 8, PERSONNESUPPRIME = 9,
+			TICKET = 10, TICKETAJOUT = 11, TICKETSUPPRIME = 12;
 	public NavigationListener(Window w,Entreprise entreprise, int direction) {
 		this.w = w;
 		this.direction = direction;
 		this.entreprise = entreprise;
-
 	}
 	
 	@Override

@@ -23,6 +23,8 @@ public class PanelDebugMenuBarre extends JPanel{
 		Button personne = new Button("personne");
 		Button salle = new Button("salle");
 		Button domaine = new Button("domaine");
+		Button ticket = new Button("ticket");
+
 
 
 		
@@ -31,6 +33,7 @@ public class PanelDebugMenuBarre extends JPanel{
 		personne.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PERSONNE));
 		salle.addActionListener(new NavigationListener(w,entreprise,NavigationListener.SALLE));
 		domaine.addActionListener(new NavigationListener(w,entreprise,NavigationListener.DOMAINE));
+		ticket.addActionListener(new NavigationListener(w,entreprise,NavigationListener.TICKET));
 
 
 
@@ -40,6 +43,8 @@ public class PanelDebugMenuBarre extends JPanel{
 		this.add(personne);
 		this.add(salle);
 		this.add(domaine);
+		this.add(ticket);
+
 
 
 		

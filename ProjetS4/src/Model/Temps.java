@@ -16,7 +16,6 @@ public final class Temps {
 	public static LocalDate getAujourdhui() {
 		return LocalDate.now();
 	}
-	
 	public static int getAnnee() {
 		return getAujourdhui().getYear();
 	}
