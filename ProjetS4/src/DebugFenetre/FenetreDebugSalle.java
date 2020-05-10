@@ -55,14 +55,14 @@ public class FenetreDebugSalle extends JFrame{
 		else if (type == this.AJOUT) {
 	        c.weighty = 0.0;               
 
-			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAffichage.SALLE);
+			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAjout.SALLE);
 			this.add(panelAjout,c);
 		}
 		
 		else if (type == this.SUPPRIME) {
 	        c.weighty = 0.0;               
 
-			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugAffichage.SALLE);
+			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugSupprime.SALLE);
 			this.add(panelSupprime,c);
 		}
 		

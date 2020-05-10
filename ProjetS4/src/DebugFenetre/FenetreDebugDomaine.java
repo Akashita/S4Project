@@ -54,14 +54,14 @@ public class FenetreDebugDomaine extends JFrame{
     		else if (type == this.AJOUT) {
     	        c.weighty = 0.0;               
 
-    			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAffichage.DOMAINE);
+    			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAjout.DOMAINE);
     			this.add(panelAjout,c);
     		}
     		
     		else if (type == this.SUPPRIME) {
     	        c.weighty = 0.0;               
 
-    			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugAffichage.DOMAINE);
+    			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugSupprime.DOMAINE);
     			this.add(panelSupprime,c);
     		}
 		

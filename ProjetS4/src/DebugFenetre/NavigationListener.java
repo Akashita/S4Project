@@ -12,7 +12,7 @@ public class NavigationListener  implements ActionListener{
 	private Window w;
 	private int direction;
 	private Entreprise entreprise;
-	public static int PERSONNE = 0, MENU = 1, SALLE = 2, SALLEAJOUT = 3, SALLESUPPRIME = 4,DOMAINE = 5, DOMAINEAJOUT = 6, DOMAINESUPPRIME = 7;
+	public static int PERSONNE = 0, MENU = 1, SALLE = 2, SALLEAJOUT = 3, SALLESUPPRIME = 4,DOMAINE = 5, DOMAINEAJOUT = 6, DOMAINESUPPRIME = 7, PERSONNEAJOUT = 8, PERSONNESUPPRIME = 9;
 	public NavigationListener(Window w,Entreprise entreprise, int direction) {
 		this.w = w;
 		this.direction = direction;
@@ -23,11 +23,18 @@ public class NavigationListener  implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-		if (direction == 0){
+		if (direction == this.PERSONNE){
 			new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.AFFICHE);
 		
 		}
-		else if (direction == 1) {
+		else if (direction == this.PERSONNEAJOUT) {
+			new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.AJOUT);
+		}
+		else if (direction == this.PERSONNESUPPRIME) {
+			new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.SUPPRIME);
+		}
+		
+		else if (direction == this.MENU) {
 			new FenetreDebugBDD(entreprise);
 		}
 		else if (direction == this.SALLE) {
