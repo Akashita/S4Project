@@ -126,7 +126,6 @@ public final class JavaSQLPersonne extends JavaSQL{
 				 sql  = "UPDATE Competence SET tag = " + tag.get(i) + " ,niveau  = " + niveau.get(i)+ "  WHERE numSalarie = "+ numSalarie;
 				 stmt.executeUpdate(sql);
 			 }
-			 
 			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();

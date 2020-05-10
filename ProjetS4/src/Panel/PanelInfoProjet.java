@@ -98,7 +98,7 @@ public class PanelInfoProjet extends JPanel{
 				panel.add(creerLabelInterfaceRessource(type), gc);
 		}
 		
-		//affiche les activitÃ©
+		//affiche les activité
 		if (nbActivite > 0) {
 			gc.gridy = 0;
 			

@@ -11,13 +11,13 @@ public final class JavaSQLActivite extends JavaSQL{
 //	int idA;
 //	private String titre;
 //	private LocalDate debut;
-//	private Double charge;
+//	private float charge;
 //	private int ordre;
 //	private int couleur;
 //	private int idP;
 //	private ArrayList<String> listeDom;
 //
-//	public JavaSQLActivite (int idA, String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) {
+//	public JavaSQLActivite (int idA, String titre, LocalDate debut, float charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) {
 //
 //		super();
 //		this.idA = idA;
@@ -57,7 +57,7 @@ public final class JavaSQLActivite extends JavaSQL{
 								 listeDom.add(res2.getString("tag"));
 							 }
 						 }
-						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getDouble("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom));
+						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getFloat("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom));
 						 System.out.println("idA = " + res.getString("idA") + ", titre = " + res.getString("titre") + ", debut = " + res.getString("debut") + ", charge = " + res.getString("charge")
 						 + ", ordre = " + res.getString("ordre")+ ", couleur = " + res.getString("couleur") +  ", nom = " + res.getString("nom"));
 					 }
@@ -70,7 +70,7 @@ public final class JavaSQLActivite extends JavaSQL{
 
 	}
 
-	public static void insertion(String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) throws SQLException{
+	public static void insertion(String titre, LocalDate debut, float charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) throws SQLException{
 		Date debut1 = Date.valueOf(debut);
 		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idP) VALUE(NULL, '" + titre + "' ,  '"+debut1+"' ,'"+charge+"' , '"+ordre+"' , '"+couleur+"' , '"+idP+"');";
 			try{
@@ -110,7 +110,7 @@ public final class JavaSQLActivite extends JavaSQL{
 			}
 	 }
 	 
-	 public static void modifie(int idA, String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) throws SQLException{
+	 public static void modifie(int idA, String titre, LocalDate debut, float charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) throws SQLException{
 			try{
 				 connection();
 				 Statement stmt = getCon().createStatement();
@@ -127,7 +127,7 @@ public final class JavaSQLActivite extends JavaSQL{
 			}
 		}
 
-	public static String toString(String titre, LocalDate debut, Double charge, int ordre, int couleur, int idP) {
+	public static String toString(String titre, LocalDate debut, float charge, int ordre, int couleur, int idP) {
 		return "nom : " + titre +debut+charge+ordre+couleur+idP;
 	}
 
