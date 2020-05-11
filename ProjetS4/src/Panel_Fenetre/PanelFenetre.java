@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -71,19 +72,13 @@ public class PanelFenetre extends JPanel{
     
 	protected Entreprise entreprise;
     protected FenetreModal fm;
-    protected Color couleurFond = PanelPrincipal.BLEU3;
+    protected Color couleurFond = PanelPrincipal.BLEU2;
     protected Projet projet;
     protected Activite activite;
     protected int actionChoisie;
     
-    String [] jours,
-    	mois = {"Janvier", "Fevrier", "Mars", "Avril",
-    		"Mai", "Juin", "Juillet", "Aout",
-    		"Septembre", "Octobre", "Novembre", "Decembre"},
-    	annees = new String [Temps.nbAnnnee],
-    	actionTicket = {"Envoyer un message", "Transferer Ressource", "Liberer Ressource"};
-    protected JComboBox<String> comboBoxAnnee, comboBoxMois, comboBoxJour, comboBoxActionTicket;	
-    
+    protected JComboBox<String> comboBoxActionTicket;	
+    protected String [] actionTicket = {"Envoyer un message", "Liberer une ressource", "Transferer une ressource"};
     protected Checkbox checkBoxestAdmin = new Checkbox("administrateur", false);
     protected JButton boutonAjoutCompetence, boutonAjoutDomaine;
     
@@ -96,15 +91,18 @@ public class PanelFenetre extends JPanel{
     
     protected JButton boutonAfficherDateDebut, boutonAfficherDateFin, boutonAjoutDate;
     protected boolean afficherDateDebut = false, afficherDateFin = false;
-    protected LocalDate debut, fin;
+    protected LocalDate dateDebut, dateFin;
     
     protected boolean alreadyPressed = false;
     
     protected JTextArea textArea;
     
+    protected Calendrier calendrier1, calendrier2;
+    
 	public PanelFenetre(Entreprise entreprise, FenetreModal fm) {
 		this.entreprise = entreprise;
 		this.fm = fm;
+		this.setBackground(couleurFond);
 	}
 	
 	protected void creerInterface() {}
@@ -140,6 +138,7 @@ public class PanelFenetre extends JPanel{
 		scrollPaneJListDomaine.setViewportView(jListDomaine);
 		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		JPanel panel = new JPanel();
+		panel.setBackground(couleurFond);
 		panel.setLayout(new BorderLayout());
 		panel.add(scrollPaneJListDomaine, BorderLayout.CENTER);
 		return panel;
@@ -305,80 +304,11 @@ public class PanelFenetre extends JPanel{
 
 	//----------------------------------------------------->>>> Gesion jour/mois/annee
 	
-	protected void initialseJMA(LocalDate date, PanelFenetre pf) {
-		int jour = date.getDayOfMonth()-1;
-		int mois = date.getMonthValue()-1;
-		int annee = date.getYear()-Temps.getAnnee();
-		
-		initialiseComboBoxAnnee(pf);
-		initialiseComboBoxMois(pf);
-		initialiseComboBoxJour();
-		
-		comboBoxJour.setSelectedIndex(jour);
-		comboBoxMois.setSelectedIndex(mois);
-		comboBoxAnnee.setSelectedIndex(annee);
+	protected void initialiseCalendrier(LocalDate date, PanelFenetre pf) {
+		calendrier1 = new Calendrier(this, pf, date);
 	}
 
-	protected void initialiseComboBoxAnnee(PanelFenetre pf) {
-		int anneeActuel = Temps.getAnnee();
-		 for (int i=0; i<annees.length; i++) {
-			 annees[i] = Integer.toString(anneeActuel+i);
-		 }
-		 comboBoxAnnee = new JComboBox<String>(annees);
-		 comboBoxAnnee.setSelectedIndex(0);
-		 comboBoxAnnee.addActionListener (new ActionListener () {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					metAJourCalendrier(pf);
-				}
-			});	    	
-	}
-	
-	protected void initialiseComboBoxMois(PanelFenetre pf) {
-		comboBoxMois = new JComboBox<String>(mois);
-		comboBoxMois.setSelectedIndex(Temps.getIndexMois()-1);
-		comboBoxMois.addActionListener (new ActionListener () {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				metAJourCalendrier(pf);
-			}
-		});	    	
-	}
-	
-	protected void initialiseComboBoxJour() {
-		int annee = Integer.parseInt((String) comboBoxAnnee.getSelectedItem());
-		int mois = comboBoxMois.getSelectedIndex()+1;
-		int nbJour = Temps.getJourMois(annee, mois);
-	    jours = new String [nbJour];
-		for (int i=0; i<nbJour; i++) {
-			jours[i] = Integer.toString(i+1);
-		}
-		comboBoxJour = new JComboBox<String>(jours);
-		comboBoxJour.setSelectedIndex(Temps.getIndexJour()-1);
-	}
-
-	protected void adapteComboBoxJour() {
-		int index = comboBoxJour.getSelectedIndex();
-		int annee = Integer.parseInt((String) comboBoxAnnee.getSelectedItem());
-		int mois = comboBoxMois.getSelectedIndex()+1;
-		int nbJour = Temps.getJourMois(annee, mois);
-	    jours = new String [nbJour];
-		for (int i=0; i<nbJour; i++) {
-			jours[i] = Integer.toString(i+1);
-		}
-		comboBoxJour = new JComboBox<String>(jours);
-		if (index >= jours.length) {
-			index = jours.length-1;
-		}
-		comboBoxJour.setSelectedIndex(index);
-	}
-
-	public void metAJourCalendrier(PanelFenetre pf) {
-		adapteComboBoxJour();
-		maj(pf);
-	}
-
-	protected JPanel calendrier() {
+	protected JPanel panelCalendrier(Calendrier c) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		panel.setBackground(couleurFond);
@@ -389,11 +319,11 @@ public class PanelFenetre extends JPanel{
 		gc.weighty = 0;
 		
 		gc.gridx = 0;
-		panel.add(comboBoxJour, gc);			
+		panel.add(c.getComboBoxJour(), gc);			
 		gc.gridx = 1;
-		panel.add(comboBoxMois, gc);			
+		panel.add(c.getComboBoxMois(), gc);			
 		gc.gridx = 2;
-		panel.add(comboBoxAnnee, gc);			
+		panel.add(c.getComboBoxAnnee(), gc);			
 
 		return panel;
 	}
@@ -401,57 +331,31 @@ public class PanelFenetre extends JPanel{
 	//----------------------------------------------------->>>> Gesion ticket
 
 	protected void initialiseTicket(PanelFenetre pf) {
+		//afficherDateDebut =  afficherDateFin = false;
+		comboBoxProjet = new JComboBox<Projet>();
 		comboBoxActionTicket = new JComboBox<String>(actionTicket);
 		comboBoxActionTicket.addActionListener (new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				nouvelleAction(pf);
 			}
-		});	    	
-
-		initialiseBoutonDate(pf);
+		});	    
+		calendrier1 = new Calendrier(this, pf, Temps.getAujourdhui());
+		calendrier2 = new Calendrier(this, pf, Temps.getAujourdhui());
+		//initialiseBoutonDate(pf);
 		initialiseTextFieldLogin(pf);
 		textArea = new JTextArea();
 	}
 	
-	protected void initialiseBoutonDate(PanelFenetre pf) {
-		boutonAfficherDateDebut = new JButton("Ajouter la date du debut");
-		boutonAfficherDateDebut.addActionListener(new ActionListener() {  
-	        public void actionPerformed(ActionEvent e) {
-	        	if (!afficherDateDebut && !afficherDateFin) {
-	        		afficherDateDebut = true;
-	        		initialseJMA(Temps.getAujourdhui(),pf);
-	        	}
-	        	maj(pf);	        
-	        }
-	    });			
-		boutonAfficherDateFin = new JButton("Ajouter la date de fin");
-		boutonAfficherDateFin.addActionListener(new ActionListener() {  
-	        public void actionPerformed(ActionEvent e) {
-	        	if (!afficherDateDebut && !afficherDateFin) {
-	        		afficherDateFin = true;
-	        		initialseJMA(Temps.getAujourdhui(),pf);
-	        	}
-	        	maj(pf);	        
-	        }
-	    });			
-		boutonAjoutDate = new JButton("Ajouter la date");
-		boutonAfficherDateFin.addActionListener(new ActionListener() {  
-	        public void actionPerformed(ActionEvent e) {
-	        	if (afficherDateFin) {
-	        		afficherDateFin = false;
-	        	}
-	        	if (afficherDateDebut) {
-	        		afficherDateDebut = false;
-	        	}
-	        	maj(pf);	        
-	        }
-	    });			
-
+	protected void actualiseTicket(PanelFenetre pf) {
+		afficherDateDebut =  afficherDateFin = false;
+		initialiseTextFieldLogin(pf);		
 	}
+
+	
 	
 	protected void initialiseTextFieldLogin(PanelFenetre pf) {
-    	textFieldLogin = new JTextField("nom#id             ");
+    	textFieldLogin = new JTextField("nom#id");
     	textFieldLogin.getFont().deriveFont(Font.ITALIC);
     	textFieldLogin.setForeground(PanelPrincipal.GRIS2);
     	textFieldLogin.addMouseListener(new MouseListener() {           
@@ -480,8 +384,10 @@ public class PanelFenetre extends JPanel{
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (!alreadyPressed) {
-					alreadyPressed = true;				
-					majComboBoxProjet(pf);
+					alreadyPressed = true;
+					if (textFieldCapacite.getText().indexOf(entreprise.SEPARATEUR)!=-1) {
+						majComboBoxProjet(pf);
+					}
 				}
 			}
 		});
@@ -507,6 +413,7 @@ public class PanelFenetre extends JPanel{
 	
 	protected void nouvelleAction(PanelFenetre pf) {
 		actionChoisie = comboBoxActionTicket.getSelectedIndex();
+		actualiseTicket(this);
 		maj(pf);
 	}
 
@@ -598,7 +505,7 @@ public class PanelFenetre extends JPanel{
 
 //-----------------------------------------------------------------------
 	
-	private void maj (PanelFenetre pf) {
+	public void maj (PanelFenetre pf) {
 		pf.removeAll();
 		pf.creerInterface();
 		pf.revalidate();
@@ -614,10 +521,7 @@ public class PanelFenetre extends JPanel{
 		return true;
 	}
 
-	protected LocalDate creerLaDate() {
-		int jour = Integer.parseInt((String) comboBoxJour.getSelectedItem());
-		int mois = comboBoxMois.getSelectedIndex()+1;
-		int annee = Integer.parseInt((String) comboBoxAnnee.getSelectedItem());
+	protected LocalDate creerLaDate(int jour, int mois, int annee) {
 		LocalDate debut = null;
 		if (Temps.jourValide (jour, mois, annee)) {
 			debut = LocalDate.of(annee, mois, jour);
@@ -629,4 +533,7 @@ public class PanelFenetre extends JPanel{
 		return debut;
 	}
 
+	protected String dateToString(LocalDate date) {
+		return date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();			
+	}
 }

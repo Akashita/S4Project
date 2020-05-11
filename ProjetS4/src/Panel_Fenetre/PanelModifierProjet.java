@@ -22,12 +22,9 @@ public class PanelModifierProjet extends PanelFenetre{
 	
 	public PanelModifierProjet(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
-		initialiseComboBoxAnnee(this);
-		initialiseComboBoxMois(this);
-		initialiseComboBoxJour();
-
 		projet = entreprise.getProjetSelectionner();
-		
+		initialiseCalendrier(projet.getDeadline(), this);
+	
 		textFieldNom.setText(projet.getNom());
 		int prio = (int)projet.getPriorite();
 		textFieldPriorite.setText(Integer.toString(prio));
@@ -115,7 +112,7 @@ public class PanelModifierProjet extends PanelFenetre{
 		
 		gc.gridx = 0;
 		gc.gridy = 5;
-		this.add(calendrier(), gc);
+		this.add(panelCalendrier(calendrier1), gc);
 	
 		
 		gc.gridwidth = 1;
@@ -141,8 +138,11 @@ public class PanelModifierProjet extends PanelFenetre{
 					Personne chefDeProjet = (Personne) comboBoxRessource.getSelectedItem();
 					String nom = textFieldNom.getText();
 					int priorite = Integer.parseInt(textFieldPriorite.getText());
-					LocalDate deadline =  creerLaDate();
-					entreprise.modifierProjet(projet, nom, priorite, chefDeProjet, deadline);
+					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
+					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
+					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
+					LocalDate date =  creerLaDate(jour, mois, annee);
+					entreprise.modifierProjet(projet, nom, priorite, chefDeProjet, date);
 					fm.dispose();
 				}
 				else {

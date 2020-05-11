@@ -6,6 +6,7 @@ import java.awt.Insets;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
+import Model.Temps;
 import Ressource.Ressource;
 
 public class PanelAjouterRessource extends PanelFenetre{
@@ -17,9 +18,6 @@ public class PanelAjouterRessource extends PanelFenetre{
 
 	public PanelAjouterRessource(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
-		initialiseComboBoxAnnee(this);
-		initialiseComboBoxMois(this);
-		initialiseComboBoxJour();
 		creerInterface();
 	}
 	

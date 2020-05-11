@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
+import Model.Temps;
 import Ressource.Personne;
 
 public class PanelNouveauProjet extends PanelFenetre{
@@ -20,9 +21,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 
 	public PanelNouveauProjet(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
-		initialiseComboBoxAnnee(this);
-		initialiseComboBoxMois(this);
-		initialiseComboBoxJour();
+		initialiseCalendrier(Temps.getAujourdhui(), this);
 		creerInterface();
 	}
 	
@@ -30,24 +29,24 @@ public class PanelNouveauProjet extends PanelFenetre{
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va d√©finir la position et la taille des √©l√©ments */
+		/* Le gridBagConstraints va dÈfinir la position et la taille des ÈlÈments */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert √† d√©finir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
+		/* le parametre fill sert √† dÈfinir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
 		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
 		 */
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets d√©finir la marge entre les composant new Insets(margeSup√©rieure, margeGauche, margeInf√©rieur, margeDroite) */
+		/* insets dÈfinir la marge entre les composant new Insets(margeSupÈrieure, margeGauche, margeInfÈrieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir o√π on place le composant s'il n'occupe pas la totalit√© de l'espace disponnible */
+		/* ipady permet de savoir o√π on place le composant s'il n'occupe pas la totalitÈ de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx d√©finit le nombre de cases en abscisse */
+		/* weightx dÈfinit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx d√©finit le nombre de cases en ordonn√©e */
+		/* weightx dÈfinit le nombre de cases en ordonnÈe */
 		gc.weighty = 7;
 
 		gc.gridx = 0;
@@ -76,7 +75,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
 		gc.gridy = 3;
-		this.add(creerTexte("Indiquez sa priorit√©"), gc);
+		this.add(creerTexte("Indiquez sa prioritÈ"), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridwidth = 2;
 		gc.gridx = 1;
@@ -105,7 +104,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 		
 		gc.gridx = 0;
 		gc.gridy = 6;
-		this.add(calendrier(), gc);
+		this.add(panelCalendrier(calendrier1), gc);
 	
 		
 		gc.gridwidth = 1;
@@ -116,7 +115,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Cr√©er"), gc);
+		this.add(creerBoutonFin(this, "CrÈer"), gc);
 
 	}
 	
@@ -127,8 +126,11 @@ public class PanelNouveauProjet extends PanelFenetre{
 					Personne pers = (Personne) comboBoxRessource.getSelectedItem();
 					String titre = textFieldNom.getText();
 					int prio = Integer.parseInt(textFieldPriorite.getText());
-					LocalDate dl =  creerLaDate();
-					entreprise.creerProjet(pers, titre, prio, dl);
+					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
+					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
+					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
+					LocalDate date =  creerLaDate(jour, mois, annee);
+					entreprise.creerProjet(pers, titre, prio, date);
 					fm.dispose();
 				}
 				else {
@@ -136,7 +138,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 				}
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Veillez ecrire sa priorit√©", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veillez ecrire sa prioritÈ", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {

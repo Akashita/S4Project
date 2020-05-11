@@ -75,6 +75,7 @@ public class Entreprise extends Observable{
 	
 	private Domaine domaine;
 	
+	public final String SEPARATEUR = "#";
 	
 	private Personne user; //Personne qui utilise le programme
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -290,13 +291,14 @@ public class Entreprise extends Observable{
 
 	public Ressource ressourceExiste(String login) {
 		Ressource r = null;
-        String[] regex = login.split("#", 2); 
-        int id = Integer.parseInt(regex[1]);
-        for (int i=0; i<lRessource.size(); i++) {
-        	if (lRessource.get(i).getId() == id) {
-        		r = lRessource.get(i);
-        	}
-        }
+	      String[] regex = login.split("#", 2); 
+	      int id = Integer.parseInt(regex[1]);
+	      for (int i=0; i<lRessource.size(); i++) {
+	      if (lRessource.get(i).getId() == id) {
+	        r = lRessource.get(i);
+	       }
+	    }			
+		
 		return r;
 	}
 	
@@ -691,7 +693,7 @@ public class Entreprise extends Observable{
 		Activite act = getActiviteSelectionner();
 		act.ajouterRessource(res);
 		majEDT();
-		JavaSQLParticipe.insertion(numSalarie, code, numero, idA);
+		//JavaSQLParticipe.insertion(numSalarie, code, numero, idA);
 		update();
 	}
 	

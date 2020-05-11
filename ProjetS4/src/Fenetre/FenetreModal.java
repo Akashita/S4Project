@@ -13,6 +13,7 @@ import Panel_Fenetre.PanelModifierActivite;
 import Panel_Fenetre.PanelModifierProjet;
 import Panel_Fenetre.PanelDomaine;
 import Panel_Fenetre.PanelNouveauProjet;
+import Panel_Fenetre.PanelNouveauTicket;
 import Panel_Fenetre.PanelNouvelleActivite;
 import Panel_Fenetre.PanelNouvelleRessource;
 
@@ -27,7 +28,7 @@ public class FenetreModal extends JDialog{
 	private Entreprise entreprise;
 	private JPanel panelInterface;
 	private String titre;
-    protected Color couleurFond = PanelPrincipal.BLEU3;
+    protected Color couleurFond = PanelPrincipal.BLEU2;
     protected int largeur, hauteur;
 
 
@@ -41,9 +42,9 @@ public class FenetreModal extends JDialog{
 		this.setSize(largeur, hauteur);
 		this.setLocationRelativeTo(null);
 		this.addWindowListener(new FermerFenetre(this));
+		this.setBackground(couleurFond);
 		this.setLayout(new BorderLayout());
-		
-		this.setLayout(new BorderLayout());
+		panelInterface.setBackground(couleurFond);
 		this.add(panelInterface, BorderLayout.CENTER);
 		this.setResizable(false);
 		this.setVisible(true);
@@ -76,9 +77,9 @@ public class FenetreModal extends JDialog{
 		case FenetrePrincipale.NouveauTicket:
 			titre = "Creation ticket";
 			largeur = 400;
-			hauteur = 300;
-			panelInterface = new PanelDomaine(entreprise, this);
-			
+			hauteur = 600;
+			panelInterface = new PanelNouveauTicket(entreprise, this);
+			break;
 		
 		
 		case FenetrePrincipale.ModifierProjet:
@@ -86,7 +87,7 @@ public class FenetreModal extends JDialog{
 			panelInterface = new PanelModifierProjet(entreprise, this);
 			break;
 		case FenetrePrincipale.ModifierActivite:
-			titre = "Modifier activitÃ©";
+			titre = "Modifier activité";
 			panelInterface = new PanelModifierActivite(entreprise, this);
 			break;
 			

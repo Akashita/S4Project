@@ -52,28 +52,26 @@ public class PanelTache extends JPanel{
 
 		gc.weightx = 3;
 		
-		gc.weighty = 9;
+		gc.weighty = 3;
 
 		if (afficheTicket) {
 			afficheTicket(gc);
 		}
 		
 		
-		gc.fill = GridBagConstraints.BOTH;
-		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
-		//gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.insets = new Insets(5, 15, 5, 15);
 		gc.gridx = 2;
-		gc.gridy = 0;
+		gc.gridy = 1;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		//gc.gridheight = GridBagConstraints.REMAINDER;
 		this.add(creerLabelIco(new ImageIcon("images/mail_white.png"), TICKET), gc);
 	}
 	
 	
 
 	private void afficheTicket(GridBagConstraints gc) {
-		gc.fill = GridBagConstraints.BOTH;
+		gc.fill = GridBagConstraints.CENTER;
 		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.insets = new Insets(5, 15, 5, 15);
@@ -83,22 +81,19 @@ public class PanelTache extends JPanel{
 		
 		//tickets recu
 		gc.gridheight = 1;
-		this.add(creerLabel("Ticket recu", true));
+		this.add(creerLabel("Ticket recus", true), gc);
 
-		gc.gridy ++;
-		gc.gridheight = 3;
 		
 		//ticket envoyé
-		gc.gridy ++;
-		gc.gridheight = 1;
-		this.add(creerLabel("Ticket recu", true));
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
 		gc.gridy ++;
-		gc.gridheight = 3;
+		this.add(creerLabel("Ticket envoyé", true), gc);
+
 		
 		//bouton nouveau ticket
+		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
 		gc.gridy ++;
-		gc.gridheight = 1;
 		this.add(boutonNouveauTicket, gc);
 		
 	}
