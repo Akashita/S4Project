@@ -157,7 +157,12 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		
 		case Ticket.MESSAGE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), getIdFromLogin(), null);
+				if (entreprise.getRessource(getIdFromLogin()) != null) {
+					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), getIdFromLogin(), null);	
+				}
+				else {
+				   	JOptionPane.showMessageDialog(null, "Ce destinataire n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login du destinataire", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -166,9 +171,15 @@ public class PanelNouveauTicket  extends PanelFenetre{
 
 		case Ticket.LIBERE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				Projet p =  (Projet) comboBoxProjet.getSelectedItem();
-				entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
-						entreprise.getRessource(getIdFromLogin()));
+				if (entreprise.getRessource(getIdFromLogin()) != null) {
+					Projet p =  (Projet) comboBoxProjet.getSelectedItem();
+					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
+							entreprise.getRessource(getIdFromLogin()));				
+				}
+				else {
+				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}
+
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -177,12 +188,16 @@ public class PanelNouveauTicket  extends PanelFenetre{
 
 		case Ticket.TRANSFERT:
 			if (!textFieldLogin.getText().isEmpty()) {
-				ArrayList<Personne> lchef = entreprise.getChefDeProjetConcerner(entreprise.getRessource(getIdFromLogin()));
-				for (int i=0; i<lchef.size(); i++) {
-					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(),
-							lchef.get(i).getId(), entreprise.getRessource(getIdFromLogin()));
+				if (entreprise.getRessource(getIdFromLogin()) != null) {
+					ArrayList<Personne> lchef = entreprise.getChefDeProjetConcerner(entreprise.getRessource(getIdFromLogin()));
+					for (int i=0; i<lchef.size(); i++) {
+						entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(),
+								lchef.get(i).getId(), entreprise.getRessource(getIdFromLogin()));
+					}				
 				}
-
+				else {
+				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
