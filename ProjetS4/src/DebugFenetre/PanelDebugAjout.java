@@ -22,7 +22,7 @@ public class PanelDebugAjout extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3;
 	private int type;
 	private Window w;
 	public PanelDebugAjout(Entreprise entreprise,Window w, int type) {
@@ -105,6 +105,73 @@ public class PanelDebugAjout extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugAjout(w,nom,ActionDebugAjout.DOMAINE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+
+			
+		}
+		
+		else if (type == TICKET) {
+			this.setLayout(new GridLayout(2,2));
+			
+			Label sujetLabel = new Label("sujet : ");
+			TextField sujet = new TextField(20);
+			this.add(sujetLabel);
+			this.add(sujet);
+			
+			Label messageLabel = new Label("message : ");
+			TextField message= new TextField(20);
+			this.add(messageLabel);
+			this.add(message);
+			
+			Label modifLabel = new Label("modif : ");
+			TextField modif= new TextField(20);
+			this.add(modifLabel);
+			this.add(modif);
+			
+			Label PersonneLabel = new Label("Envoyeur : ");
+			final Choice  PersonneChoix = new Choice();
+			
+			ArrayList<Personne> personneTab = new ArrayList<Personne>();
+			try {
+				personneTab = JavaSQLPersonne.affiche();
+				setLayout(new GridLayout(personneTab.size(),1));
+
+				for (int i = 0; i < personneTab.size(); i++) {
+					PersonneChoix.addItem(personneTab.get(i).toString());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(PersonneLabel);
+			this.add(PersonneChoix);
+
+			Label Personne2Label = new Label("Receveur : ");
+			final Choice  Personne2Choix = PersonneChoix;
+			
+			this.add(Personne2Label);
+			this.add(Personne2Choix);
+			
+			for (int i = 0; i < personneTab.size(); i++) {
+				if (PersonneChoix.getItem(PersonneChoix.getSelectedIndex()).isEquals(personneTab.get(i).toString())) {
+					int envoyeurId = personneTab.get(i).getId();
+
+				}
+				if (Personne2Choix.getItem(Personne2Choix.getSelectedIndex()).isEquals(personneTab.get(i).toString())) {
+					int receveurId = personneTab.get(i).getId();
+
+				}
+
+
+
+		}
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugAjout(w,sujet,message,modif,PersonneChoix, Personne2Choix,ActionDebugAjout.TICKET,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 

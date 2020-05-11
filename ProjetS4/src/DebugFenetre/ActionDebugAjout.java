@@ -24,7 +24,16 @@ public class ActionDebugAjout implements ActionListener{
 	private TextField motDePasse;
 	private int typeVerif;
 	private Entreprise entreprise;
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2 ;
+	
+	private TextField sujet;
+	private TextField message;
+	private TextField modif;
+	private String Personne;
+	private String Personne2;
+	private int envoyeur; 
+	private int receveur;
+	
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3 ;
 
 	public ActionDebugAjout (Window w,TextField numero,TextField nom,TextField place, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -46,6 +55,17 @@ public class ActionDebugAjout implements ActionListener{
 		this.role = role.getItem(role.getSelectedIndex());
 		this.motDePasse = motDePasse;
 		this.typeVerif = typeVerif;
+	}
+	
+	public ActionDebugAjout (Window w,TextField sujet,TextField message,TextField modif,Choice Personne,Choice Personne2,int typeVerif, Entreprise entreprise) {
+		this.w = w;
+		this.sujet = sujet;
+		this.message = message;
+		this.modif= modif;
+		this.Personne = Personne.getItem(Personne.getSelectedIndex());
+		this.Personne2 = Personne2.getItem(Personne2.getSelectedIndex());
+		this.typeVerif = typeVerif;
+
 	}
 
 	@Override
