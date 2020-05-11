@@ -17,6 +17,21 @@ public class Ticket {
 		this.idReceveur = idReceveur;
 	}
 	
+	public Ticket(int id, int action, String sujet , Personne expediteur, Personne receveur, LocalDate dateCreation) {
+		
+	}
+	
+	public Ticket(int id, int action, Ressource r, Projet p, String sujet) {
+		super(id, action, sujet);
+		
+	}
+	
+	public Ticket(int id, int action, Ressource r, LocalDate debut, LocalDate fin, String sujet0) {
+		super(id, action, sujet);
+		
+	}
+	
+	
 	public int getId() {
 		return this.id;
 	}
