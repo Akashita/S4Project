@@ -90,7 +90,7 @@ public final class JavaSQLSalle extends JavaSQL{
 			 stmt.executeUpdate(sql);
 			 sql = "UPDATE Creneaux SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
 			 stmt.executeUpdate(sql);
-			 sql = "UPDATE Participe SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
+			 sql = "UPDATE ParticipeSalle SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
 			 stmt.executeUpdate(sql);
 			 con.close();
 		} catch(SQLException e){
