@@ -23,37 +23,47 @@ public class NavigationListener  implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-		if (direction == this.PERSONNE){
+		if (direction == PERSONNE){
 			new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.AFFICHE);
 		
 		}
-		else if (direction == this.PERSONNEAJOUT) {
+		else if (direction == PERSONNEAJOUT) {
 			new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.AJOUT);
 		}
-		else if (direction == this.PERSONNESUPPRIME) {
+		else if (direction == PERSONNESUPPRIME) {
 			new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.SUPPRIME);
 		}
 		
-		else if (direction == this.MENU) {
+		else if (direction == MENU) {
 			new FenetreDebugBDD(entreprise);
 		}
-		else if (direction == this.SALLE) {
+		else if (direction == SALLE) {
 			new FenetreDebugSalle(entreprise,FenetreDebugSalle.AFFICHE);
 		}
-		else if (direction == this.SALLEAJOUT) {
+		else if (direction == SALLEAJOUT) {
 			new FenetreDebugSalle(entreprise,FenetreDebugSalle.AJOUT);
 		}
-		else if (direction == this.SALLESUPPRIME) {
+		else if (direction == SALLESUPPRIME) {
 			new FenetreDebugSalle(entreprise,FenetreDebugSalle.SUPPRIME);
 		}
-		else if (direction == this.DOMAINE) {
+		else if (direction == DOMAINE) {
 			new FenetreDebugDomaine(entreprise,FenetreDebugDomaine.AFFICHE);
 		}
-		else if (direction == this.DOMAINEAJOUT) {
+		else if (direction == DOMAINEAJOUT) {
 			new FenetreDebugDomaine(entreprise,FenetreDebugDomaine.AJOUT);
 		}
-		else if (direction == this.DOMAINESUPPRIME) {
+		else if (direction == DOMAINESUPPRIME) {
 			new FenetreDebugDomaine(entreprise,FenetreDebugDomaine.SUPPRIME);
+		}
+		
+		else if (direction == TICKET) {
+			new FenetreDebugDomaine(entreprise,FenetreDebugTicket.AFFICHE);
+		}
+		else if (direction == TICKETAJOUT) {
+			new FenetreDebugDomaine(entreprise,FenetreDebugTicket.AJOUT);
+		}
+		else if (direction == TICKETSUPPRIME) {
+			new FenetreDebugDomaine(entreprise,FenetreDebugTicket.SUPPRIME);
 		}
 		w.dispose();
 
