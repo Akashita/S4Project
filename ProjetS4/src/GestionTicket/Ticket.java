@@ -128,7 +128,8 @@ public class Ticket {
 		this.statut = s;
 	}
 	public String creerAffichage() {
-		return " sujet = " + this.sujet + ", envoyeur = " + this.getPersonneEnvoyeur().getPrenomNom() + ", receveur = " + this.getPersonneReceveur().getPrenomNom() + ", cree le : " + dateTicket.toString();
+		return "ticket n' = " + this.id + ", sujet = " + this.sujet + ", message = " + this.message + ", modification = " + this.modif + ",statut" + this.getStringStatut() + 
+				", envoyeur = " + this.idEnvoyeur + ", receveur = " + this.idReceveur + ", cree le : " + dateTicket.toString();
 	}
 	
 	public String creerAffichageReceveur() {
@@ -140,8 +141,8 @@ public class Ticket {
 	}
 	
 	public String toString() {
-		return "ticket n' = " + this.id + ", sujet = " + this.sujet + ", message = " + this.message + ", modification = " + this.modif + ",statut" + this.getStringStatut() + 
-				", envoyeur = " + this.idEnvoyeur + ", receveur = " + this.idReceveur + ", cree le : " + dateTicket.toString();
+		return " sujet = " + this.sujet + ", envoyeur = " + this.getPersonneEnvoyeur().getPrenomNom() + ", receveur = " + this.getPersonneReceveur().getPrenomNom() + ", cree le : " + dateTicket.toString();
+ 
 		
 		
 	}

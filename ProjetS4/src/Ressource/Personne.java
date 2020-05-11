@@ -154,10 +154,14 @@ public class Personne extends Ressource{
 		}
 	}
 
+	public String creerAfichage() {
+		return "prenom : " + prenom+", nom : "+nom + ", id : " + this.id + ", role : " + this.role + ", mdp : " + this.mdp + ", login : " + this.getLogin();
+
+	}
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override
 	public String toString() {
-			return "prenom : " + prenom+", nom : "+nom + ", id : " + this.id + ", role : " + this.role + ", mdp : " + this.mdp + ", login : " + this.getLogin();
+			return "prenom : " + prenom+", nom : "+ nom ;
 		}
 	
 	
