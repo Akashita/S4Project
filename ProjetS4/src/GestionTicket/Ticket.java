@@ -20,7 +20,7 @@ public class Ticket {
 		this.id = id;
 		this.sujet = sujet;
 		this.message = message;
-		this.modif = "PAS ENCORE FAIT";
+		this.modif = modif;
 		this.dateTicket = dateTicket;
 		this.statut = statut;
 		this.idEnvoyeur = idEnvoyeur;

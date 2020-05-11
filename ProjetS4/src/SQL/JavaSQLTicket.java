@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import GestionTicket.Ticket;
+import Model.Temps;
 import Ressource.Personne;
 
 public class JavaSQLTicket extends JavaSQL{
@@ -41,10 +42,9 @@ public class JavaSQLTicket extends JavaSQL{
 			return ticketTab;
 	}
 	
-	public static void insertion(String sujet ,String message ,String modif , LocalDate dateTicket, int statut, int numSalarieEnv ,int numSalarieRec) throws SQLException{
-		Date dateTicketModif = Date.valueOf(dateTicket);
+	public static void insertion(String sujet ,String message ,String modif ,  int numSalarieEnv ,int numSalarieRec) throws SQLException{
 
-		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+dateTicketModif+"', '"+statut+"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
+		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+Temps.getAujourdhui()+"', '"+ 0 +"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
 			try{
 				 connection();
 				 Statement stmt = getCon().createStatement();
