@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
+import Model.Temps;
 import Ressource.Personne;
 import Ressource.Ressource;
 
@@ -22,11 +23,9 @@ public class PanelModifierActivite extends PanelFenetre{
 	
 	public PanelModifierActivite(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
-		initialiseComboBoxAnnee(this);
-		initialiseComboBoxMois(this);
-		initialiseComboBoxJour();
-
 		activite = entreprise.getActiviteSelectionner();
+		initialiseCalendrier(activite.getDebut(), this);
+
 		
 		textFieldNom.setText(activite.getTitre());
 		int charge = (int)activite.getChargeJHomme();
@@ -99,7 +98,7 @@ public class PanelModifierActivite extends PanelFenetre{
 		
 		gc.gridx = 0;
 		gc.gridy = 4;
-		this.add(calendrier(), gc);
+		this.add(panelCalendrier(calendrier1), gc);
 	
 		
 		gc.gridwidth = 1;
@@ -124,7 +123,10 @@ public class PanelModifierActivite extends PanelFenetre{
 				if (estUnEntier(textFieldCharge.getText())) {
 					String nom = textFieldNom.getText();
 					int charge = Integer.parseInt(textFieldCharge.getText());
-					LocalDate date =  creerLaDate();
+					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
+					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
+					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
+					LocalDate date =  creerLaDate(jour, mois, annee);
 					entreprise.modifierActivite(activite, nom, charge, date);
 					fm.dispose();
 				}

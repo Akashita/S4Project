@@ -61,7 +61,6 @@ public class FenetrePrincipale extends JFrame{
 	
 	private void creationBarreMenu() {
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setLayout(new BorderLayout());
 		
 		
 		JMenu menuFichier = new JMenu("Fichier");
@@ -163,7 +162,7 @@ public class FenetrePrincipale extends JFrame{
 		menuBar.add(menuFichier);
 		menuBar.add(menuEditer);
 		menuBar.add(menuPropos);
-		menuBar.add(menuCompte, BorderLayout.EAST);
+		menuBar.add(menuCompte);
 		this.setJMenuBar(menuBar);	
 	}
 

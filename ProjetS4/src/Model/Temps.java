@@ -133,4 +133,8 @@ public final class Temps {
 		return getAujourdhui().getDayOfMonth();
 	}
 
+	public static boolean dateUnEstSuperieurDateDeux(LocalDate d1, LocalDate d2) {
+		return d1.isAfter(d2);
+	}
+	
 }

@@ -17,8 +17,6 @@ public class PanelEnleverRessource extends PanelFenetre{
 
 	public PanelEnleverRessource(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
-		initialiseComboBoxAnnee(this);
-		initialiseComboBoxMois(this);
 		creerInterface();
 	}
 	
