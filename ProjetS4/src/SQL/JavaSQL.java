@@ -48,7 +48,7 @@ public class JavaSQL {
 		return res;
 	}
 	
-	public void creation() throws SQLException{
+	public static void creation() throws SQLException{
 		String sql = "CREATE TABLE IF NOT EXISTS Domaine(tag VARCHAR(30) PRIMARY KEY);";
 			try{
 				 connection();
