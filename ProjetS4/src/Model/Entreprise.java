@@ -291,6 +291,26 @@ public class Entreprise extends Observable{
 		return this.domaine;
 	}
 
+	public Ressource getRessource(int id) {
+		Ressource r = null;
+		for(int i=0; i<lRessource.size(); i++) {
+			if (lRessource.get(i).getId() == id) {
+				r = lRessource.get(i);
+			}
+		}
+		return r;
+	}
+	
+	public ArrayList<Personne> getChefDeProjetConcerner(Ressource r){
+		ArrayList<Personne> lp = new ArrayList<Personne>();
+		for (int i=0; i<lProjet.size(); i++) {
+			if (lProjet.get(i).ressourcePresente(r)) {
+				lp.add(lProjet.get(i).getChefDeProjet());
+			}
+		}
+		return lp;
+	}
+	
 	public Ressource ressourceExiste(String login) {
 		Ressource r = null;
 	      String[] regex = login.split("#", 2); 
@@ -603,7 +623,7 @@ public class Entreprise extends Observable{
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
 	
-	public void nouvTicket(int action,String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r,LocalDate dateDebut,LocalDate dateFin) {
+	public void nouvTicket(int action,String sujet, String message,int numSalarieEnv, int numSalarieRec,Ressource r,LocalDate dateDebut,LocalDate dateFin) {
 		try {
 			JavaSQLTicket.insertion(action, sujet, message, numSalarieEnv, numSalarieRec, r, dateDebut, dateFin);
 		} catch (SQLException e) {
