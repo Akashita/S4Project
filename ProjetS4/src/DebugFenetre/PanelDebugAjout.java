@@ -96,7 +96,7 @@ public class PanelDebugAjout extends JPanel{
 			
 		}
 		else if (type == this.DOMAINE) {
-			this.setLayout(new GridLayout(2,2));
+			this.setLayout(new GridLayout(6,2));
 			Label nomLabel = new Label("nom : ");
 			TextField nom = new TextField(20);
 			this.add(nomLabel);
@@ -156,7 +156,8 @@ public class PanelDebugAjout extends JPanel{
 			this.add(Personne2Label);
 			this.add(Personne2Choix);
 			int envoyeurId;
-			int receveurId;
+			envoyeurId = -1;
+			int receveurId = -1;
 			
 			for (int i = 0; i < personneTab.size(); i++) {
 				if (PersonneChoix.getItem(PersonneChoix.getSelectedIndex()).equals(personneTab.get(i).toString())) {

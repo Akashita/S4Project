@@ -13,7 +13,7 @@ public class PanelDebugActionBarre extends JPanel{
 	private Entreprise entreprise;
 	private Window w;
 	private int type;
-	public static final int PERSONNE = 0, SALLE = 1,DOMAINE = 2;
+	public static final int PERSONNE = 0, SALLE = 1,DOMAINE = 2, TICKET = 3;
 
 	public PanelDebugActionBarre(Entreprise entreprise,Window w,int type) {
 		this.entreprise = entreprise;
@@ -69,6 +69,24 @@ public class PanelDebugActionBarre extends JPanel{
 			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.DOMAINE));
 			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.DOMAINEAJOUT));
 			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.DOMAINESUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+
+		}
+		
+		else if (type == TICKET) {
+			Button affiche = new Button("Affiche Ticket");
+			Button ajout = new Button("Ajout Ticket");
+			Button supprime = new Button("Suppression Ticket");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.TICKET));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.TICKETAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.TICKETSUPPRIME));
 
 
 			

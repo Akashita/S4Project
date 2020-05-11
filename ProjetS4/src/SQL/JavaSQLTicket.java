@@ -44,7 +44,7 @@ public class JavaSQLTicket extends JavaSQL{
 	
 	public static void insertion(String sujet ,String message ,String modif ,  int numSalarieEnv ,int numSalarieRec) throws SQLException{
 
-		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+Temps.getAujourdhui()+"', '"+ 5 +"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
+		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+Temps.getAujourdhui()+"', '"+ Ticket.ENCOURS +"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
 			try{
 				 connection();
 				 Statement stmt = getCon().createStatement();

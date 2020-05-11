@@ -13,6 +13,7 @@ import Ressource.Salle;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLSalle;
+import SQL.JavaSQLTicket;
 
 public class ActionDebugAjout implements ActionListener{
 	private Window w;
@@ -25,11 +26,10 @@ public class ActionDebugAjout implements ActionListener{
 	private int typeVerif;
 	private Entreprise entreprise;
 	
+	
 	private TextField sujet;
 	private TextField message;
 	private TextField modif;
-	private String Personne;
-	private String Personne2;
 	private int envoyeur; 
 	private int receveur;
 	
@@ -57,13 +57,13 @@ public class ActionDebugAjout implements ActionListener{
 		this.typeVerif = typeVerif;
 	}
 	
-	public ActionDebugAjout (Window w,TextField sujet,TextField message,TextField modif,Choice Personne,Choice Personne2,int typeVerif, Entreprise entreprise) {
+	public ActionDebugAjout (Window w,TextField sujet,TextField message,TextField modif,int envoyeur,int receveur,int typeVerif, Entreprise entreprise) {
 		this.w = w;
 		this.sujet = sujet;
 		this.message = message;
 		this.modif= modif;
-		this.Personne = Personne.getItem(Personne.getSelectedIndex());
-		this.Personne2 = Personne2.getItem(Personne2.getSelectedIndex());
+		this.envoyeur = envoyeur;
+		this.receveur = receveur;
 		this.typeVerif = typeVerif;
 
 	}
@@ -71,7 +71,7 @@ public class ActionDebugAjout implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		if (typeVerif == this.SALLE) {
+		if (typeVerif == SALLE) {
 			try {
 
 				JavaSQLSalle.insertion(Integer.parseInt(numero.getText()), nom.getText(), Integer.parseInt(place.getText()));
@@ -86,7 +86,7 @@ public class ActionDebugAjout implements ActionListener{
 			}
 
 		}
-		else if (typeVerif == this.DOMAINE) {
+		else if (typeVerif == DOMAINE) {
 		try {
 
 			JavaSQLDomaine.insertion( nom.getText());
@@ -101,7 +101,7 @@ public class ActionDebugAjout implements ActionListener{
 		}
 
 	}
-		else if (typeVerif == this.PERSONNE) {
+		else if (typeVerif == PERSONNE) {
 			ArrayList<String> tag = new ArrayList<String>();
 			ArrayList<Integer> niveau = new ArrayList<Integer>();
 			try {
@@ -116,6 +116,21 @@ public class ActionDebugAjout implements ActionListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+			else if (typeVerif == TICKET) {
+			
+				try {
+
+					JavaSQLTicket.insertion( sujet.getText(),message.getText(), modif.getText(),envoyeur,receveur);
+					new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 		}
 }

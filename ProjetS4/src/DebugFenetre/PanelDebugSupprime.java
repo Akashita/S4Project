@@ -15,7 +15,7 @@ public class PanelDebugSupprime extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3;
 	private int type;
 	private Window w;
 	public PanelDebugSupprime(Entreprise entreprise,Window w, int type) {
@@ -67,6 +67,21 @@ public class PanelDebugSupprime extends JPanel{
 			this.add(okLabel);
 			this.add(ok);
 
+			
+		}
+		else if (type == TICKET) {
+			this.setLayout(new GridLayout(2,2));
+			Label numeroLabel = new Label("numero du ticket a supprimer : ");
+			TextField numero = new TextField(20);
+			this.add(numeroLabel);
+			this.add(numero);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,numero,ActionDebugSupprime.TICKET,entreprise));
+			this.add(okLabel);
+			this.add(ok);
 			
 		}
 	}

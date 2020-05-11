@@ -10,13 +10,14 @@ import Model.Entreprise;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLSalle;
+import SQL.JavaSQLTicket;
 
 public class ActionDebugSupprime implements ActionListener{
 	private Window w;
 	private TextField numero;
 	private int typeVerif;
 	private Entreprise entreprise;
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2 ;
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3 ;
 
 	public ActionDebugSupprime (Window w,TextField numero, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -27,7 +28,7 @@ public class ActionDebugSupprime implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		if (typeVerif == this.SALLE) {
+		if (typeVerif == SALLE) {
 			try {
 
 				JavaSQLSalle.supprime(Integer.parseInt(numero.getText()));
@@ -42,7 +43,7 @@ public class ActionDebugSupprime implements ActionListener{
 			}
 
 		}
-		if (typeVerif == this.DOMAINE) {
+		if (typeVerif == DOMAINE) {
 			String tag = numero.getText();
 			try {
 
@@ -58,12 +59,28 @@ public class ActionDebugSupprime implements ActionListener{
 			}
 
 		}
-		if (typeVerif == this.PERSONNE) {
+		if (typeVerif == PERSONNE) {
 			int id = Integer.parseInt(numero.getText());
 			try {
 
 				JavaSQLPersonne.supprime(id);
 				new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.AFFICHE);
+				w.dispose();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		if (typeVerif == TICKET) {
+			int id = Integer.parseInt(numero.getText());
+			try {
+
+				JavaSQLTicket.supprime(id);
+				new FenetreDebugTicket(entreprise,FenetreDebugTicket.AFFICHE);
 				w.dispose();
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block

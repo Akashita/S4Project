@@ -82,6 +82,23 @@ public class Ticket {
 	}
 	
 	public String toString() {
-		return "ticket n' = " + this.id + ", sujet = " + this.sujet + ", message = " + this.message;
+		return "ticket n' = " + this.id + ", sujet = " + this.sujet + ", message = " + this.message + ", modification = " + this.modif + ",statut" + this.getStringStatut() + ", envoyeur = " + this.idEnvoyeur + ", receveur = " + this.idReceveur;
 	}
+
+
+	private String getStringStatut() {
+		if (this.statut == ENCOURS ) {
+		return "EN COURS";
+		}
+		else if (this.statut == ACCEPTEE) {
+			return "ACCEPTEE";
+		}
+		else if (this.statut == REFUSE) {
+			return "REFUSE";
+		}
+		else {
+			return "ERREUR";
+		}
+	
+		}
 }
