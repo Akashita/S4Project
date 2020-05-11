@@ -15,7 +15,7 @@ public final class JavaSQLDebug extends JavaSQL{
 		JavaSQL.connection();
 	}
 	
-	public void drop() throws SQLException{
+	public static void drop() throws SQLException{
 		String sql = "DROP TABLE IF EXISTS Competence";
 		try{
 			 connection();

@@ -1,5 +1,11 @@
 package GestionTicket;
 
+import java.time.LocalDate;
+
+import Model.Projet;
+import Ressource.Personne;
+import Ressource.Ressource;
+
 public class Ticket {
 	private int id;
 	private String sujet;
@@ -17,17 +23,18 @@ public class Ticket {
 		this.idReceveur = idReceveur;
 	}
 	
+	
 	public Ticket(int id, int action, String sujet , Personne expediteur, Personne receveur, LocalDate dateCreation) {
 		
 	}
 	
-	public Ticket(int id, int action, Ressource r, Projet p, String sujet) {
-		super(id, action, sujet);
+	public Ticket(int id, int action, Ressource r, Projet p, String sujet, Personne expediteur, Personne receveur, LocalDate dateCreation) {
+		super(id, action, sujet, expediteur, receveur, dateCreation);
 		
 	}
 	
-	public Ticket(int id, int action, Ressource r, LocalDate debut, LocalDate fin, String sujet0) {
-		super(id, action, sujet);
+	public Ticket(int id, int action, Ressource r, LocalDate debut, LocalDate fin, String sujet, Personne expediteur, Personne receveur, LocalDate dateCreation) {
+		super(id, action, sujet, expediteur, receveur, dateCreation);
 		
 	}
 	
@@ -56,4 +63,7 @@ public class Ticket {
 		return this.modif;
 	}
 
+	public void setStatut(int s) {
+		this.statu = s;
+	}
 }
