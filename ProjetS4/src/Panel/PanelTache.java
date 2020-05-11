@@ -16,7 +16,10 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import Fenetre.FenetreModal;
 import Fenetre.FenetrePrincipale;
@@ -31,6 +34,8 @@ public class PanelTache extends JPanel{
 	private boolean afficheTicket = false;
 	public final static int TICKET = 0, OPTIMISATION = 1;
 	private JButton boutonNouveauTicket;
+	private JList<Ticket> ticketRecu, ticketEnvoye;
+	
 	
 	public PanelTache(Entreprise entreprise) {
 		this.entreprise = entreprise;
@@ -57,7 +62,7 @@ public class PanelTache extends JPanel{
 
 		gc.weightx = 3;
 		
-		gc.weighty = 3;
+		gc.weighty = 9;
 
 		if (afficheTicket) {
 			afficheTicket(gc);
@@ -68,7 +73,7 @@ public class PanelTache extends JPanel{
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.insets = new Insets(5, 15, 5, 15);
 		gc.gridx = 2;
-		gc.gridy = 1;
+		gc.gridy = 4;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
 		this.add(creerLabelIco(new ImageIcon("images/mail_white.png"), TICKET), gc);
 	}
@@ -106,10 +111,13 @@ public class PanelTache extends JPanel{
 		
 		}
 		}catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
+		gc.gridy ++;
+		gc.gridheight = 2;
+		this.add(creerList(ticketRecuTab), gc);
+		
 		
 		//ticket envoyé
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
@@ -117,6 +125,9 @@ public class PanelTache extends JPanel{
 		gc.gridy ++;
 		this.add(creerLabel("Ticket envoyé", true), gc);
 
+		gc.gridy ++;
+		gc.gridheight = 2;
+		this.add(creerList(ticketEnvTab), gc);
 		
 		//bouton nouveau ticket
 		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
@@ -157,6 +168,17 @@ public class PanelTache extends JPanel{
 		return label;
 	}
 
+	private JList creerList(ArrayList<Ticket> lt) {
+		Ticket [] tt = new Ticket [lt.size()];
+		for (int i=0; i<tt.length; i++) {
+			tt[i] = lt.get(i);
+		}
+		JList<Ticket> jlt = new JList<Ticket>();
+		jlt.setBackground(couleurFond);
+		jlt.setFont(new Font("Arial", Font.PLAIN, 15));
+		return jlt;
+	}
+	
 	public void nouveauTicket() {
 		new FenetreModal(entreprise, FenetrePrincipale.NouveauTicket);
 	}

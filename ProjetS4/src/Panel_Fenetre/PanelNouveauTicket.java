@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -12,6 +13,7 @@ import GestionTicket.Ticket;
 import Model.Entreprise;
 import Model.Projet;
 import Model.Temps;
+import Ressource.Personne;
 
 public class PanelNouveauTicket  extends PanelFenetre{
 
@@ -104,30 +106,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridwidth = GridBagConstraints.REMAINDER;
 		this.add(textFieldLogin, gc);
 
-		gc.fill = GridBagConstraints.WEST;
-		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
-		gc.gridx = 0;
-		gc.gridy ++;
-		gc.gridwidth = 1;
-		gc.gridheight = 1;
-		this.add(creerTexte("Du : "), gc);
-		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.gridx ++;
-		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(panelCalendrier(calendrier1), gc);
-
-		gc.fill = GridBagConstraints.WEST;
-		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
-		gc.gridx = 0;
-		gc.gridy ++;
-		gc.gridwidth = 1;
-		gc.gridheight = 1;
-		this.add(creerTexte("Au : "), gc);
-		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.gridx ++;
-		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(panelCalendrier(calendrier2), gc);
-}
+	}
 	
 	private void afficheLibere(GridBagConstraints gc) {
 		gc.fill = GridBagConstraints.CENTER;
@@ -178,7 +157,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		
 		case Ticket.MESSAGE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				entreprise.nouvTicket(actionChoisie, null, textArea.getText(), )
+				entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), getIdFromLogin(), null, null, null);
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login du destinataire", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -187,7 +166,9 @@ public class PanelNouveauTicket  extends PanelFenetre{
 
 		case Ticket.LIBERE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				//ticket libere
+				Projet p =  (Projet) comboBoxProjet.getSelectedItem();
+				entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
+						entreprise.getRessource(getIdFromLogin()), null, null);
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -196,20 +177,12 @@ public class PanelNouveauTicket  extends PanelFenetre{
 
 		case Ticket.TRANSFERT:
 			if (!textFieldLogin.getText().isEmpty()) {
-				int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
-				int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
-				int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
-				LocalDate debut =  creerLaDate(jour, mois, annee);
-				jour = Integer.parseInt((String) calendrier2.getComboBoxJour().getSelectedItem());
-				mois = calendrier2.getComboBoxMois().getSelectedIndex()+1;
-				annee = Integer.parseInt((String) calendrier2.getComboBoxAnnee().getSelectedItem());
-				LocalDate fin =  creerLaDate(jour, mois, annee);
-				if (Temps.dateUnEstSuperieurDateDeux(fin,debut)) {
-					//ticket transfert
+				ArrayList<Personne> lchef = entreprise.getChefDeProjetConcerner(entreprise.getRessource(getIdFromLogin()));
+				for (int i=0; i<lchef.size(); i++) {
+					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(),
+							lchef.get(i).getId(), entreprise.getRessource(getIdFromLogin()), null, null);
 				}
-				else {
-				   	JOptionPane.showMessageDialog(null, "Veillez indiquer une date de fin supérieure à la date du début", "Erreur", JOptionPane.ERROR_MESSAGE);			
-				}
+
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -219,6 +192,31 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		default:
 			break;
 		}
+	}
+	
+	private String sujet() {
+		String s = "";
+		switch (actionChoisie) {
+		case Ticket.MESSAGE:
+			s = "message";
+			break;
+		case Ticket.LIBERE:
+			s = "liberer" ;
+			break;
+		case Ticket.TRANSFERT:
+			s = "transferer";
+			break;
+
+		default:
+			break;
+		}
+		return s;
+	}
+
+	private int getIdFromLogin() {
+		String[] regex = textFieldLogin.getText().split(entreprise.SEPARATEUR, 2); 
+		int id = Integer.parseInt(regex[1]);
+		return id;
 	}
 
 }

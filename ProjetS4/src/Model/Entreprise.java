@@ -45,7 +45,7 @@ import SQL.RecupInfoBDD;
 //model il sert a creer des projets puis leur donne des ressources.
 
 public class Entreprise extends Observable{
-	
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -61,23 +61,23 @@ public class Entreprise extends Observable{
 	public static final int HEURE_FIN_MATIN = 12;
 	public static final int HEURE_DEBUT_APREM = 13;
 	public static final int HEURE_FIN_APREM = 17;
-	
+
 	public static final int NB_HEURE_JOUR = 8;
-	
+
 	private FenetrePrincipale fenetrePrincipale;
 	private FenetreDebugBDD fenetreBDD;
 	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
-	
+
 	private Projet projetSelectionner;
 	private Activite activiteSelectionner;
 	private ArrayList<String> ressourceAfficher = new ArrayList<String>();
 
 	private boolean afficheTicket = false;
-	
+
 	private Domaine domaine;
-	
+
 	public final String SEPARATEUR = "#";
-	
+
 	private Personne user; //Personne qui utilise le programme
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
@@ -90,7 +90,7 @@ public class Entreprise extends Observable{
 		this.idCour = 0;
 		this.domaine = new Domaine();
 		recupInfoBdd();
-		
+
 		fenetrePrincipale = new FenetrePrincipale(this);
 		this.update();
 	}
@@ -101,13 +101,13 @@ public class Entreprise extends Observable{
 		this.idCour = 0;
 		this.domaine = new Domaine();
 		recupInfoBdd();
-		
+
 		if (typeDebug == "debugBDD") {
 			fenetreBDD = new FenetreDebugBDD(this);
 		}
 		this.update();
 	}
-	
+
 	public Entreprise(Personne p) {
 		user = p;
 		this.lProjet =  new ArrayList<Projet>();
@@ -116,11 +116,11 @@ public class Entreprise extends Observable{
 		this.idCour = 0;
 		this.domaine = new Domaine();
 		recupInfoBdd();
-		
+
 		fenetrePrincipale = new FenetrePrincipale(this);
 		this.update();
 	}
-	
+
 	private void recupInfoBdd() {
 		try {
 //			testSqlDomaine.insertion();
@@ -136,13 +136,13 @@ public class Entreprise extends Observable{
 //			test.drop();
 //			java.creation();
 //			test.affiche();
-			
+
 
 		}catch(SQLException f){
 			f.printStackTrace();
 		}
 	}
-	
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -151,31 +151,31 @@ public class Entreprise extends Observable{
 	public String toString() {
 		String chaineActProjet = "Voici la liste des projets ainsi que leurs activites : ";
 		for (int i = 0; i < this.lProjet.size(); i++) {
-			chaineActProjet += this.lProjet.get(i).toString(); 
-			
+			chaineActProjet += this.lProjet.get(i).toString();
+
 		}
 		return chaineActProjet;
 	}
 
 	//------------------------------------------------------------------------>>>>>>>> Changement de compte
-	
+
 	public void changementUtilisateur() {
 		fenetrePrincipale.dispose();
 		new FenetreConnexion();
 	}
-	
+
 	//------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> gestion user
-	
+
 	public Personne getUser() {
 		return this.user;
 	}
-	
+
 	public void setUser(Personne user) {
 		this.user = user;
 	}
-	
+
 	//----------------------------------------------------------------------------------------------------
-	
+
 	public void majEDT() {
 		ArrayList<Activite> lActivite;
 		viderRessources();
@@ -189,23 +189,23 @@ public class Entreprise extends Observable{
 			}
 		}
 	}
-	
+
 	private void viderRessources() {
 		for (int i = 0; i < lRessource.size(); i++) {
 			lRessource.get(i).vider();
 		}
 	}
 
-	
+
 	private void creerLCreneauxPersonnes(Activite act) {
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
-		
+
 		LocalDate jourCourant = verifierJour(act.getDebut());
 		int heureCourante = HEURE_DEBUT_MATIN;
 		ArrayList<Ressource> res = act.getListeRessourceType("Personne");
 
-		while (chargeAloue < charge) {	
+		while (chargeAloue < charge) {
 			for (int i = 0; i < res.size(); i++) {
 				if(verifierOrdre(res.get(i), act, jourCourant, heureCourante)) {
 					if(res.get(i).creneauDispo(jourCourant, heureCourante)) {
@@ -214,42 +214,42 @@ public class Entreprise extends Observable{
 					}
 				}
 			}
-	
+
 			heureCourante = heureSuivante(heureCourante);
 			if(heureCourante == HEURE_DEBUT_MATIN) {
 				jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
 			}
 		}
 	}
-	
+
 	/*Verifie qu'un activit������ d'ordre n+1 soit plac������e apr������s une activite d'ordre n*/
 	private boolean verifierOrdre(Ressource res, Activite act, LocalDate jour, int heure) {
 		LocalDateTime tmp = LocalDateTime.of(jour, LocalTime.of(heure, 0));
 		int ordre = act.getOrdre();
 		LocalDateTime premierLibre = res.getPremiereCreneauApresAct(ordre);
-		
+
 		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp));
 	}
-	
+
 	private void creerLCreneauxSalles(Activite act) {
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
 		LocalDate jourCourant = verifierJour(act.getDebut());
 		int heureCourante = HEURE_DEBUT_MATIN;
 
-		while (chargeAloue < charge) {	
+		while (chargeAloue < charge) {
 				if(act.creneauDispo("Salle", jourCourant, heureCourante)) {
 					act.ajouterCreneau("Salle", new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
 					chargeAloue++;
 			}
-	
+
 			heureCourante = heureSuivante(heureCourante);
 			if(heureCourante == HEURE_DEBUT_MATIN) {
 				jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
 			}
 		}
 	}
-	
+
 	private LocalDate verifierJour(LocalDate jourCourant) {
 		LocalDate jourVerifie;
 		switch (jourCourant.getDayOfWeek()) {
@@ -272,43 +272,63 @@ public class Entreprise extends Observable{
 			heureSuivante = HEURE_DEBUT_APREM;
 		} else if (heureSuivante == HEURE_FIN_APREM){
 			heureSuivante = HEURE_DEBUT_MATIN;
-		} 
+		}
 		return heureSuivante;
 	}
-	
-	
+
+
 	public void incrementId (){ //fonction a utiliser sur chaque nouvelle ressource pour leur attribuer un iD
 		this.idCour = this.idCour +1 ;
 		//		this.idCour = this.lRessource.size() +1 ;
 
 	}
-	
+
 	public int getId() {
 		return this.idCour;
 	}
-	
+
 	public Domaine getDomaine() {
 		return this.domaine;
 	}
 
+	public Ressource getRessource(int id) {
+		Ressource r = null;
+		for(int i=0; i<lRessource.size(); i++) {
+			if (lRessource.get(i).getId() == id) {
+				r = lRessource.get(i);
+			}
+		}
+		return r;
+	}
+
+	public ArrayList<Personne> getChefDeProjetConcerner(Ressource r){
+		ArrayList<Personne> lp = new ArrayList<Personne>();
+		for (int i=0; i<lProjet.size(); i++) {
+			if (lProjet.get(i).ressourcePresente(r)) {
+				lp.add(lProjet.get(i).getChefDeProjet());
+			}
+		}
+		return lp;
+	}
+
 	public Ressource ressourceExiste(String login) {
 		Ressource r = null;
-	      String[] regex = login.split("#", 2); 
+	      String[] regex = login.split("#", 2);
 	      int id = Integer.parseInt(regex[1]);
 	      for (int i=0; i<lRessource.size(); i++) {
 	      if (lRessource.get(i).getId() == id) {
 	        r = lRessource.get(i);
 	       }
-	    }			
-		
+	    }
+
 		return r;
 	}
-	
+
 	public boolean ressourceEstDansAct(Ressource r, Activite a) {
 		return a.ressourcePresente(r);
 	}
 
-	
+
 	public ArrayList<Activite> getActRes(Ressource r){ //retourne tout les activit������s d'une ressource
 		ArrayList<Activite> lA = new ArrayList<Activite>();
 		for (int i=0; i<lProjet.size(); i++) {
@@ -331,10 +351,10 @@ public class Entreprise extends Observable{
 					lP.add(lProjet.get(i));
 				}
 			}
-		}		
+		}
 		return lP;
 	}
-	
+
 	public ArrayList<Ressource> getListeRessourceType(String type){
 		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
 		for (int i=0; i<lRessource.size(); i++) {
@@ -345,7 +365,7 @@ public class Entreprise extends Observable{
 		}
 		return nouvelleListe;
 	}
-			
+
 	public ArrayList<Projet> getProjetDeLaRessource(Ressource r){ //retourne la liste des projet d'une ressource
 		ArrayList<Projet> lp = new ArrayList<Projet>();
 		for (int i=0; i<lProjet.size(); i++) {
@@ -356,7 +376,7 @@ public class Entreprise extends Observable{
 		}
 		return lp;
 	}
-	
+
 	public boolean ajouterRessource(Ressource ressource) {
 		if(!lRessource.contains(ressource)) {
 			lRessource.add(ressource);
@@ -365,22 +385,22 @@ public class Entreprise extends Observable{
 			return false;
 		}
 	}
-	
+
 	public boolean supprimerRessource(int idRessource) {
 		return lRessource.remove(new Ressource(idRessource));
 	}
 
 	public int[] chercheProjet(String nomProjet) {
-		
+
 		Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
 		int[] res = {0,0};//a droite la place du projet cherch�� et a gauche si il est trouv�� 0 non/1 oui
-		
+
 		if (this.lProjet.size()== 0) {//si l'arrayList est vide il n'y a pas d��j�� ce projet.
-			
+
 			return res;
 		}
 		else {
-			
+
 			do{
 				if (this.lProjet.get(res[1]).getNom() == nomProjet) {
 					res[0] = 1;
@@ -389,14 +409,14 @@ public class Entreprise extends Observable{
 				else {
 					res[1] = res[1] + 1; //on incr��mente res pour acc��der �� chercher plus loin.
 				}
-				
+
 			}
 			while((pasTrouve) && (res[1] < this.lProjet.size()));
 			return res ;
 		}
-		
+
 	}
-	
+
 	//m��thode pour rajouter un type de RessourceAutre
 	public void nouvTypeRessource(String nouvType) {
 		Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
@@ -406,7 +426,7 @@ public class Entreprise extends Observable{
 
 		}
 		else {
-			
+
 			do{
 				if (this.lType.get(i) == nouvType) {//teste si le nom est d��j�� pr��sent dans les types de ressources
 					pasTrouve = false;//sort de la boucle sans rien faire
@@ -414,25 +434,25 @@ public class Entreprise extends Observable{
 				else {
 					i++; //on incr��mente i pour acc��der �� chercher plus loin.
 				}
-				
+
 			}
 			while((pasTrouve) && (i < this.lType.size()));
 			this.lType.add(nouvType);
 		}
 
 	}
-							
+
 	//fonctions de cr��ations d'��l��ments de l'entreprise, les ressources ainsi que les projets
 	//les m��thodes sont doubl��s -> direct dans un projet ou dans l'entreprise
 
-	
+
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion projet
 
 	public void nouvProjet (Projet proj) {
 		this.lProjet.add(proj);
 	}
 
-	
+
 	public void creerProjet(Personne chefDeProjet, String nom, int priorite, LocalDate deadline) {//cr��e un projet si son nom n'est pas d��j�� utilis��
 		idProjet ++;
 		Projet newProjet = new Projet(chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());// --------------------------------------------ATTENTION null pour le moment
@@ -448,7 +468,7 @@ public class Entreprise extends Observable{
 		selectionnerProjet(newProjet);
 		update();
 	}
-	
+
 	public void ajouterProjet(Projet proj) { //Les projets sont ajout���s ��� la liste en les triant par ordre de priorite
 		Boolean place = false;
 		int i = 0;
@@ -462,8 +482,8 @@ public class Entreprise extends Observable{
 			lProjet.add(proj);
 		}
 	}
-		
-	public void modifierProjet(Projet projet, String nom, int priorite, Personne chefDeProjet, LocalDate deadline) {	
+
+	public void modifierProjet(Projet projet, String nom, int priorite, Personne chefDeProjet, LocalDate deadline) {
 		projet.setNom(nom);
 		projet.setPriorite(priorite);
 		projet.setChefDeProjet(chefDeProjet);
@@ -477,16 +497,16 @@ public class Entreprise extends Observable{
 		update();
 	}
 
-	
+
 	public void supprimerProjet(Projet projet) {
-		
+
 		for (int i=0; i<projet.getListe().size(); i++) { // on supprime toutes ses activit������s
 			supprimerActiviter(projet.getListe().get(i));
 		}
-				
+
 		projet.getChefDeProjet().enleverProjet(projet);  // on enleve au chef de projet le projet supprimer
 
-		
+
 		for (int i=0; i<getListeProjet().size(); i++) { // on enleve le projet de l'entreprise
 			if (projet.getId() == getListeProjet().get(i).getId()) {
 				getListeProjet().remove(i);
@@ -502,16 +522,16 @@ public class Entreprise extends Observable{
 		majEDT(); // remet ������ jour les emplois du temps
 		update(); // remet ������ jour l'interface
 	}
-	
-	
+
+
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion activite
-	
+
 	public void creerActivite(Projet projet, String titre, float charge, LocalDate debut, ArrayList<String> listeDomaine) {
 		this.idAct++;
 		int ordre = projet.getListe().size();
 		Color couleur = couleurAleatoire();
 		Activite act = new Activite(idAct, titre, charge, debut, couleur, /*projetSelectionner,*/ ordre, listeDomaine); // ------------------------------ATTENTION projet plus stock������ dans activit������, ref Dams
-		projet.ajouter(act);		
+		projet.ajouter(act);
 		selectionnerActivite(act);
 		try {
 			JavaSQLActivite.insertion(titre, debut, charge, ordre, couleur.getRGB(), projet.getId(), listeDomaine);
@@ -522,11 +542,11 @@ public class Entreprise extends Observable{
 		update();
 	}
 
-	public void modifierActivite(Activite activite, String nom, float charge, LocalDate date) {	
+	public void modifierActivite(Activite activite, String nom, float charge, LocalDate date) {
 		activite.setTitre(nom);
 		activite.setCharge(charge);
 		activite.setDebut(date);
-		
+
 		try {
 			JavaSQLActivite.modifie(activite.getId(), nom, date, charge, activite.getOrdre(),
 					activite.getCouleur().getRGB(), projetSelectionner.getId(), activite.getListeDomaine());
@@ -535,12 +555,12 @@ public class Entreprise extends Observable{
 		}
 		majEDT();
 		update();
-	} 
+	}
 
-	
+
 	public void supprimerActiviter(Activite activite) {
 		Projet projet = getProjetSelectionner();
-		
+
 		for (int i=0; i<projet.getListe().size(); i++) { // on enleve l'act du projet
 			if (activite.getId() == projet.getListe().get(i).getId()) {
 				projet.getListe().remove(i);
@@ -552,15 +572,15 @@ public class Entreprise extends Observable{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		activite.supprimerToutesRessources(); //on enleve toute ses ressources
-		
+
 		activiteSelectionner = null; // on le deselectionne
 		majEDT(); // met ������ jour l'emploi du temps
 		update(); // met ������ jour l'interface
 	}
-	
-	
+
+
 	public void modifieListeActivite(boolean monte) {
 		Activite activite = activiteSelectionner;
 		Projet projet = chercherProjetParActivite(activite);
@@ -602,8 +622,9 @@ public class Entreprise extends Observable{
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
-	
+
 	public void nouvTicket(int action,String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r) {
+
 		try {
 			JavaSQLTicket.insertion(action, sujet, message, numSalarieEnv, numSalarieRec, r);
 		} catch (SQLException e) {
@@ -612,12 +633,12 @@ public class Entreprise extends Observable{
 		}
 
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
 	public void nouvPersonne (Personne pers) {
 		this.ajouterRessource(pers);
@@ -638,12 +659,12 @@ public class Entreprise extends Observable{
 		update();
 
 	}
-		
+
 	public void nouvSalle(Salle salle) {
 		this.incrementId();
 		this.ajouterRessource(salle);
 	}
-	
+
 	public void nouvSalle (String nom, int capacite) {
 		this.incrementId();
 		Salle nouvSalle = new Salle(this.idCour,nom, capacite);
@@ -656,12 +677,12 @@ public class Entreprise extends Observable{
 		update();
 
 		}
-	
+
 	public void nouvCalculateur (Calculateur calc) {
 		this.incrementId();
 		this.ajouterRessource(calc);
 	}
-	
+
 	public void nouvCalculateur (String nom) {
 		this.incrementId();
 		Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
@@ -674,8 +695,8 @@ public class Entreprise extends Observable{
 		}
 		update();
 	}
-	
-	
+
+
 	public void modifPersonne(Personne p, String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {
 		p.setNom(nom);
 		p.setPrenom(prenom);
@@ -691,7 +712,7 @@ public class Entreprise extends Observable{
 		}
 		update();
 	}
-	
+
 	public void modifSalle(Salle s, String nom, int capacite) {
 		s.setNom(nom);
 		s.setCapacite(capacite);
@@ -737,24 +758,24 @@ public class Entreprise extends Observable{
 				e.printStackTrace();
 			}
 		}
-		
+
 		majEDT();
 		//JavaSQLParticipe.insertion(numSalarie, code, numero, idA);
 		update();
 	}
-	
+
 	public void enleverRessourceActivite(Ressource res) {
 		Activite act = getActiviteSelectionner();
 		act.enleverRessource(res.getId());
 		majEDT();
 		update();
 	}
-	
+
 
 	public boolean ressourceEstLibre(Ressource r) { //v���rifier qu'une ressource est attacher �� aucune act ou projet
 		return true;
 	}
-	
+
 	public void suppRessource(Ressource r) {
 		for (int i=0; i<lRessource.size(); i++) {
 			if (lRessource.get(i).getId() == r.getId()) {
@@ -763,7 +784,7 @@ public class Entreprise extends Observable{
 				break;
 			}
 		}
-		
+
 		if (r.getType().equals(Ressource.PERSONNE)) {
 			try {
 				JavaSQLPersonne.supprime(r.getId());
@@ -786,13 +807,13 @@ public class Entreprise extends Observable{
 			}
 		}
 	}
-	
+
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion domaine
 
 	/*public void nouvDomaine (Domaine domaine) {
 		this.domaine = domaine;
 	}*/
-	
+
 	public void ajoutDomaine (String d) {
 		this.domaine.ajoutDomaine(d);
 		try {
@@ -805,7 +826,7 @@ public class Entreprise extends Observable{
 	/*public void setDomaine(ArrayList<String> listeDomaine) {
 		this.domaine.setDomaine(listeDomaine);
 	}*/
-	
+
 	public boolean aucuneRessourceACeDomaine(String domaine) {
 		boolean b = true;
 		ArrayList<Ressource> lP = getListeRessourceType(Ressource.PERSONNE);
@@ -817,12 +838,12 @@ public class Entreprise extends Observable{
 		}
 		return b;
 	}
-	
+
 	public ArrayList<String> personneAvecCeDomaine(String domaine){ // recherche sql de toute les personnes de avec ce domaine
 		ArrayList<String> l = new ArrayList<String>();
 		return l;
 	}
-	
+
 	public void supprimerDomaine (String d) {
 		this.domaine.enleverDomaine(d);
 		try {
@@ -850,13 +871,13 @@ public class Entreprise extends Observable{
 		}
 		update();
 	}
-	
+
 	public boolean getAfficheTicket() {
 		return afficheTicket;
 	}
-	
+
 	//================ Partie Graphique ==========//
-	
+
 	private Color couleurAleatoire() {
 		Random rand = new Random();
 		float r = rand.nextFloat();
@@ -865,11 +886,11 @@ public class Entreprise extends Observable{
 		Color couleur = new Color(r, g, b);
 		return couleur;
 	}
-	
+
 	public Projet getDernierProjet() { //retourne le dernier projet creer, pour PanelProjet
 		return lProjet.get(lProjet.size()-1);
 	}
-	
+
 	public ArrayList<Projet> getListeProjet(){
 		return lProjet;
 	}
@@ -879,7 +900,7 @@ public class Entreprise extends Observable{
 		activiteSelectionner = null;
 		update();
 	}
-	
+
 	public Projet getProjetSelectionner() {
 		return projetSelectionner;
 	}
@@ -891,14 +912,14 @@ public class Entreprise extends Observable{
 			}
 			else {
 				activiteSelectionner = activite;
-			}			
+			}
 		}
 		else {
 			activiteSelectionner = activite;
-		}			
+		}
 		update();
 	}
-	
+
 	public Activite getActiviteSelectionner() {
 		return activiteSelectionner;
 	}
@@ -918,7 +939,7 @@ public class Entreprise extends Observable{
 		adapteListeRessourceAfficher();
 		update();
 	}
-	
+
 	private void adapteListeRessourceAfficher() {
 		int taille = ressourceAfficher.size();
 		for (int i=0; i<taille; i++) {
@@ -951,8 +972,8 @@ public class Entreprise extends Observable{
 			}
 		}
 	}
-	
-	
+
+
 	public ArrayList<String> getListeRessourceAfficher(){
 		return ressourceAfficher;
 	}
@@ -974,12 +995,12 @@ public class Entreprise extends Observable{
 		}
 		listeFenetreInfoRessource.add(new FenetreInfoRessource(this, res));
 	}
-	
+
 	public void afficheEDTActivite(Activite activite) {
 		activite.afficheEDT();
 		update();
 	}
-	
+
 	private Projet chercherProjetParActivite(Activite act) {
 		for (int i = 0; i < lProjet.size(); i++) {
 			if(lProjet.get(i).contientActivite(act)) {
@@ -996,7 +1017,7 @@ public class Entreprise extends Observable{
 		}
 		return lt;
 	}
-	
+
 	private ArrayList<Integer> CompeToNiv(ArrayList<Competence> lc){
 		ArrayList<Integer> ln = new ArrayList<Integer>();
 		for (int i=0; i<lc.size(); i++) {
@@ -1005,10 +1026,9 @@ public class Entreprise extends Observable{
 		return ln;
 	}
 
-	
+
 	public void update() {
 		this.setChanged();
-		this.notifyObservers();	
+		this.notifyObservers();
 	}
 }
-
