@@ -16,6 +16,9 @@ public class Ticket {
 	private int idEnvoyeur;
 	private int idReceveur;
 
+	public static final int ENCOURS = 0, ACCEPTEE= 1, REFUSE= 2, TRANSFERT = 3, LIBERE = 4, MESSAGE = 5;
+
+	
 	public Ticket(int id, String sujet,String message, String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
 		this.id = id;
 		this.sujet = sujet;
