@@ -69,7 +69,7 @@ public final class JavaSQLCalculateur extends JavaSQL{
 			 String sql = "DELETE FROM Creneaux WHERE code =" + code;
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
-			 sql = "DELETE FROM Participe WHERE code =" + code;
+			 sql = "DELETE FROM ParticipeCalcul WHERE code =" + code;
 			 stmt.executeUpdate(sql);
 			 sql = "DELETE FROM Calculateur WHERE code =" + code;
 			 stmt.executeUpdate(sql);

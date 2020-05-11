@@ -70,7 +70,7 @@ public final class JavaSQLSalle extends JavaSQL{
 				 stmt.executeUpdate(sql);
 				 sql = "DELETE FROM Creneaux WHERE numero =" + numero;
 				 stmt.executeUpdate(sql);
-				 sql = "DELETE FROM Participe WHERE numero =" + numero;
+				 sql = "DELETE FROM ParticipeSalle WHERE numero =" + numero;
 				 stmt.executeUpdate(sql);
 				 sql = "DELETE FROM Salle WHERE numero =" + numero;
 				 stmt.executeUpdate(sql);
