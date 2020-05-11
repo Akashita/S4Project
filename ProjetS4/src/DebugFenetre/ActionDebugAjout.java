@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import GestionTicket.Ticket;
 import Model.Entreprise;
 import Ressource.Personne;
 import Ressource.Salle;
@@ -23,7 +24,7 @@ public class ActionDebugAjout implements ActionListener{
 	private TextField nom;
 	private TextField prenom;
 	private TextField place;
-	private String role;
+	private Choice role;
 	private TextField motDePasse;
 	private int typeVerif;
 	private Entreprise entreprise;
@@ -31,7 +32,7 @@ public class ActionDebugAjout implements ActionListener{
 	
 	private TextField sujet;
 	private TextField message;
-	private int action; 
+	private Choice action; 
 	private Choice envoyeur; 
 	private Choice receveur;
 	
@@ -54,7 +55,7 @@ public class ActionDebugAjout implements ActionListener{
 		this.w = w;
 		this.nom = nom;
 		this.prenom = prenom;
-		this.role = role.getItem(role.getSelectedIndex());
+		this.role = role;
 		this.motDePasse = motDePasse;
 		this.typeVerif = typeVerif;
 	}
@@ -63,7 +64,7 @@ public class ActionDebugAjout implements ActionListener{
 		this.w = w;
 		this.sujet = sujet;
 		this.message = message;
-		this.action = Integer.parseInt(action.getItem(action.getSelectedIndex()));
+		this.action = action;		
 		this.envoyeur = envoyeur;
 		this.receveur = receveur;
 		this.typeVerif = typeVerif;
@@ -104,11 +105,12 @@ public class ActionDebugAjout implements ActionListener{
 
 	}
 		else if (typeVerif == PERSONNE) {
+			String roleString = role.getItem(role.getSelectedIndex());
 			ArrayList<String> tag = new ArrayList<String>();
 			ArrayList<Integer> niveau = new ArrayList<Integer>();
 			try {
 
-				JavaSQLPersonne.insertion( nom.getText(),prenom.getText(), role,motDePasse.getText(),tag,niveau);
+				JavaSQLPersonne.insertion( nom.getText(),prenom.getText(), roleString,motDePasse.getText(),tag,niveau);
 				new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.AFFICHE);
 				w.dispose();
 			} catch (NumberFormatException e) {
@@ -140,9 +142,20 @@ public class ActionDebugAjout implements ActionListener{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				int actionNb;
+				
+				if (action.getItem(action.getSelectedIndex()) == "transfert") {
+					actionNb = Ticket.TRANSFERT;
+				}
+				else if (action.getItem(action.getSelectedIndex()) == "libere") {
+					actionNb = Ticket.LIBERE;
+				}
+				else {
+					actionNb = Ticket.MESSAGE;
 
+				}
 				try {
-					JavaSQLTicket.insertion(action, sujet.getText(), message.getText(), envoyeurId, receveurId, null,null, null);
+					JavaSQLTicket.insertion(actionNb, sujet.getText(), message.getText(), envoyeurId, receveurId, null,null, null);
 
 					new FenetreDebugTicket(entreprise,FenetreDebugTicket.AFFICHE);
 					w.dispose();

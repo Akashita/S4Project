@@ -126,10 +126,10 @@ public class PanelDebugAjout extends JPanel{
 			this.add(message);
 			
 			Label actionLabel = new Label("action : ");
-			Choice action= new Choice();
-			action.addItem("" + Ticket.MESSAGE);
-			action.addItem("" + Ticket.TRANSFERT);
-			action.addItem("" + Ticket.LIBERE);
+			final Choice action= new Choice();
+			action.addItem("libere");
+			action.addItem("transfert");
+			action.addItem("message");
 
 
 			
