@@ -14,8 +14,6 @@ public class Ticket {
 	private String message;
 	private String modif;
 	private LocalDate dateTicket;
-	private LocalDate dateDebut;
-	private LocalDate dateFin;
 	private int statut;
 	private int idEnvoyeur;
 	private int idReceveur;
@@ -25,18 +23,6 @@ public class Ticket {
 	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5, ERREUR = 6;
 	private static final String SEPARATEUR = "|";
 
-	public Ticket(int id, String sujet,String message,String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, LocalDate dateDebut, LocalDate dateFin) {
-		this.id = id;
-		this.sujet = sujet;
-		this.message = message;
-		this.modif = modif;
-		this.dateTicket = dateTicket;
-		this.statut = statut;
-		this.idEnvoyeur = idEnvoyeur;
-		this.idReceveur = idReceveur;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
-	}
 	public Ticket(int id, String sujet,String message,String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
 		this.id = id;
 		this.sujet = sujet;
@@ -69,20 +55,14 @@ public class Ticket {
 		
 	}
 	
-	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r,LocalDate dateDebut,LocalDate dateFin) {
-		this(id, action, sujet, message, dateTicket, statut, idEnvoyeur, idReceveur,r);
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
-		this.modif = creeModif(action);
 
-	}
 	
 	private String creeModif(int action) {
 		if (action == MESSAGE) {
 			return "message|";
 		}
 		else if (action == TRANSFERT) {
-			return "transfert|" + r.getId() + "_" + dateDebut.toString() + dateFin.toString();
+			return "transfert|" + r.getId() ;
 		}
 		else if (action == LIBERE) {
 			return "libere|" + r.getId();

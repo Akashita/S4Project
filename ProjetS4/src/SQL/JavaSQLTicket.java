@@ -31,15 +31,10 @@ public class JavaSQLTicket extends JavaSQL{
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
-						 if (Ticket.getTache(res.getString("modif")) == Ticket.TRANSFERT) {
-						 LocalDate dateDebut = res.getDate("date_debut").toLocalDate();
-						 LocalDate dateFin = res.getDate("date_fin").toLocalDate();
-						 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec"), dateDebut, dateFin));
-						  }						
-						 else {
+						
 							 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") ));
  
-						 }
+						 
 					}	
 				 }
 				 con.close();
@@ -49,8 +44,8 @@ public class JavaSQLTicket extends JavaSQL{
 			return ticketTab;
 	}
 	
-	public static void insertion(int action,String sujet ,String message  ,  int numSalarieEnv ,int numSalarieRec,Ressource r,LocalDate dateDebut,LocalDate dateFin) throws SQLException{
-		Ticket ticketCour = new Ticket(0, action, sujet, message, Temps.getAujourdhui(), 0, numSalarieEnv, numSalarieRec, r, dateDebut, dateFin);
+	public static void insertion(int action,String sujet ,String message  ,  int numSalarieEnv ,int numSalarieRec,Ressource r) throws SQLException{
+		Ticket ticketCour = new Ticket(0, action, sujet, message, Temps.getAujourdhui(), 0, numSalarieEnv, numSalarieRec, r);
 		String modif = ticketCour.getModif();
 		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+Temps.getAujourdhui()+"', '"+ Ticket.ENCOURS +"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
 			try{

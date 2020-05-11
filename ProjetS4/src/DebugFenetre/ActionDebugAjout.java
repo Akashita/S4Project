@@ -155,7 +155,7 @@ public class ActionDebugAjout implements ActionListener{
 
 				}
 				try {
-					JavaSQLTicket.insertion(actionNb, sujet.getText(), message.getText(), envoyeurId, receveurId, null,null, null);
+					JavaSQLTicket.insertion(actionNb, sujet.getText(), message.getText(), envoyeurId, receveurId, null);
 
 					new FenetreDebugTicket(entreprise,FenetreDebugTicket.AFFICHE);
 					w.dispose();

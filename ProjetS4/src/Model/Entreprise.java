@@ -50,10 +50,10 @@ public class Entreprise extends Observable{
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private ArrayList<Projet> lProjet;//liste qui contient tous les projets de l'entreprise
-	private ArrayList<String> lType;//liste qui contient tous les types de ressourceAutre qui ont déjé été crée pour les réutiliser
-	private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de léentrepris
+	private ArrayList<String> lType;//liste qui contient tous les types de ressourceAutre qui ont d��j�� ��t�� cr��e pour les r��utiliser
+	private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de l��entrepris
 	private int idCour;//id des ressources
-	private int idAct; //id des activit��s
+	private int idAct; //id des activit������s
 	private int idProjet;
 	private ArrayList<JPanel> lPanel = new ArrayList<JPanel>();
 
@@ -82,7 +82,7 @@ public class Entreprise extends Observable{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//création de l'entreprise unique il faudra lui ajouter un nom si on désire étendre nos activités
+	//cr��ation de l'entreprise unique il faudra lui ajouter un nom si on d��sire ��tendre nos activit��s
 	public Entreprise() {
 		this.lProjet =  new ArrayList<Projet>();
 		this.lType =  new ArrayList<String>();
@@ -146,7 +146,7 @@ public class Entreprise extends Observable{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//classe de base qui permettent de voir la cha��ne et r��cup��rer les infos de la classe
+	//classe de base qui permettent de voir la cha������ne et r������cup������rer les infos de la classe
 	@Override
 	public String toString() {
 		String chaineActProjet = "Voici la liste des projets ainsi que leurs activites : ";
@@ -222,7 +222,7 @@ public class Entreprise extends Observable{
 		}
 	}
 	
-	/*Verifie qu'un activit�� d'ordre n+1 soit plac��e apr��s une activite d'ordre n*/
+	/*Verifie qu'un activit������ d'ordre n+1 soit plac������e apr������s une activite d'ordre n*/
 	private boolean verifierOrdre(Ressource res, Activite act, LocalDate jour, int heure) {
 		LocalDateTime tmp = LocalDateTime.of(jour, LocalTime.of(heure, 0));
 		int ordre = act.getOrdre();
@@ -309,7 +309,7 @@ public class Entreprise extends Observable{
 	}
 
 	
-	public ArrayList<Activite> getActRes(Ressource r){ //retourne tout les activit��s d'une ressource
+	public ArrayList<Activite> getActRes(Ressource r){ //retourne tout les activit������s d'une ressource
 		ArrayList<Activite> lA = new ArrayList<Activite>();
 		for (int i=0; i<lProjet.size(); i++) {
 			ArrayList<Activite> lAP = lProjet.get(i).getListe();
@@ -373,9 +373,9 @@ public class Entreprise extends Observable{
 	public int[] chercheProjet(String nomProjet) {
 		
 		Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
-		int[] res = {0,0};//a droite la place du projet cherché et a gauche si il est trouvé 0 non/1 oui
+		int[] res = {0,0};//a droite la place du projet cherch�� et a gauche si il est trouv�� 0 non/1 oui
 		
-		if (this.lProjet.size()== 0) {//si l'arrayList est vide il n'y a pas déjé ce projet.
+		if (this.lProjet.size()== 0) {//si l'arrayList est vide il n'y a pas d��j�� ce projet.
 			
 			return res;
 		}
@@ -387,7 +387,7 @@ public class Entreprise extends Observable{
 					pasTrouve = false;
 				}
 				else {
-					res[1] = res[1] + 1; //on incrémente res pour accéder é chercher plus loin.
+					res[1] = res[1] + 1; //on incr��mente res pour acc��der �� chercher plus loin.
 				}
 				
 			}
@@ -397,22 +397,22 @@ public class Entreprise extends Observable{
 		
 	}
 	
-	//méthode pour rajouter un type de RessourceAutre
+	//m��thode pour rajouter un type de RessourceAutre
 	public void nouvTypeRessource(String nouvType) {
 		Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
 		int i = 0;
-		if (this.lType.size()== 0) {//si l'arrayList est vide il n'y a pas déjé ce projet.
+		if (this.lType.size()== 0) {//si l'arrayList est vide il n'y a pas d��j�� ce projet.
 			this.lType.add(nouvType);
 
 		}
 		else {
 			
 			do{
-				if (this.lType.get(i) == nouvType) {//teste si le nom est déjé présent dans les types de ressources
+				if (this.lType.get(i) == nouvType) {//teste si le nom est d��j�� pr��sent dans les types de ressources
 					pasTrouve = false;//sort de la boucle sans rien faire
 				}
 				else {
-					i++; //on incrémente i pour accéder é chercher plus loin.
+					i++; //on incr��mente i pour acc��der �� chercher plus loin.
 				}
 				
 			}
@@ -422,8 +422,8 @@ public class Entreprise extends Observable{
 
 	}
 							
-	//fonctions de créations d'éléments de l'entreprise, les ressources ainsi que les projets
-	//les méthodes sont doublés -> direct dans un projet ou dans l'entreprise
+	//fonctions de cr��ations d'��l��ments de l'entreprise, les ressources ainsi que les projets
+	//les m��thodes sont doubl��s -> direct dans un projet ou dans l'entreprise
 
 	
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion projet
@@ -433,7 +433,7 @@ public class Entreprise extends Observable{
 	}
 
 	
-	public void creerProjet(Personne chefDeProjet, String nom, int priorite, LocalDate deadline) {//crée un projet si son nom n'est pas déjé utilisé
+	public void creerProjet(Personne chefDeProjet, String nom, int priorite, LocalDate deadline) {//cr��e un projet si son nom n'est pas d��j�� utilis��
 		idProjet ++;
 		Projet newProjet = new Projet(chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());// --------------------------------------------ATTENTION null pour le moment
 		chefDeProjet.ajouterProjet(newProjet);
@@ -449,7 +449,7 @@ public class Entreprise extends Observable{
 		update();
 	}
 	
-	public void ajouterProjet(Projet proj) { //Les projets sont ajout�s � la liste en les triant par ordre de priorite
+	public void ajouterProjet(Projet proj) { //Les projets sont ajout���s ��� la liste en les triant par ordre de priorite
 		Boolean place = false;
 		int i = 0;
 		while (i < lProjet.size() && !place) {
@@ -480,7 +480,7 @@ public class Entreprise extends Observable{
 	
 	public void supprimerProjet(Projet projet) {
 		
-		for (int i=0; i<projet.getListe().size(); i++) { // on supprime toutes ses activit��s
+		for (int i=0; i<projet.getListe().size(); i++) { // on supprime toutes ses activit������s
 			supprimerActiviter(projet.getListe().get(i));
 		}
 				
@@ -499,8 +499,8 @@ public class Entreprise extends Observable{
 			e.printStackTrace();
 		}
 		projetSelectionner = null;// enleve la selection projet
-		majEDT(); // remet �� jour les emplois du temps
-		update(); // remet �� jour l'interface
+		majEDT(); // remet ������ jour les emplois du temps
+		update(); // remet ������ jour l'interface
 	}
 	
 	
@@ -510,7 +510,7 @@ public class Entreprise extends Observable{
 		this.idAct++;
 		int ordre = projet.getListe().size();
 		Color couleur = couleurAleatoire();
-		Activite act = new Activite(idAct, titre, charge, debut, couleur, /*projetSelectionner,*/ ordre, listeDomaine); // ------------------------------ATTENTION projet plus stock�� dans activit��, ref Dams
+		Activite act = new Activite(idAct, titre, charge, debut, couleur, /*projetSelectionner,*/ ordre, listeDomaine); // ------------------------------ATTENTION projet plus stock������ dans activit������, ref Dams
 		projet.ajouter(act);		
 		selectionnerActivite(act);
 		try {
@@ -556,8 +556,8 @@ public class Entreprise extends Observable{
 		activite.supprimerToutesRessources(); //on enleve toute ses ressources
 		
 		activiteSelectionner = null; // on le deselectionne
-		majEDT(); // met �� jour l'emploi du temps
-		update(); // met �� jour l'interface
+		majEDT(); // met ������ jour l'emploi du temps
+		update(); // met ������ jour l'interface
 	}
 	
 	
@@ -603,9 +603,9 @@ public class Entreprise extends Observable{
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
 	
-	public void nouvTicket(int action,String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r,LocalDate dateDebut,LocalDate dateFin) {
+	public void nouvTicket(int action,String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r) {
 		try {
-			JavaSQLTicket.insertion(action, sujet, message, numSalarieEnv, numSalarieRec, r, dateDebut, dateFin);
+			JavaSQLTicket.insertion(action, sujet, message, numSalarieEnv, numSalarieRec, r);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -751,7 +751,7 @@ public class Entreprise extends Observable{
 	}
 	
 
-	public boolean ressourceEstLibre(Ressource r) { //v�rifier qu'une ressource est attacher à aucune act ou projet
+	public boolean ressourceEstLibre(Ressource r) { //v���rifier qu'une ressource est attacher �� aucune act ou projet
 		return true;
 	}
 	
