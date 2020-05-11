@@ -1,11 +1,13 @@
 package GestionTicket;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Model.Projet;
 import Ressource.Personne;
 import Ressource.Ressource;
+import SQL.JavaSQLPersonne;
 
 public class Ticket {
 	private int id;
@@ -125,6 +127,17 @@ public class Ticket {
 	public void setStatut(int s) {
 		this.statut = s;
 	}
+	public String creerAffichage() {
+		return " sujet = " + this.sujet + ", envoyeur = " + this.getPersonneEnvoyeur().getPrenomNom() + ", receveur = " + this.getPersonneReceveur().getPrenomNom() + ", cree le : " + dateTicket.toString();
+	}
+	
+	public String creerAffichageReceveur() {
+		return " sujet = " + this.sujet + ", envoyeur = " + this.getPersonneEnvoyeur().getPrenomNom()  + ", cree le : " + dateTicket.toString();
+	}
+	
+	public String creerAffichageEnvoyeur() {
+		return " sujet = " + this.sujet  + ", receveur = " + this.getPersonneReceveur().getPrenomNom() + ", cree le : " + dateTicket.toString();
+	}
 	
 	public String toString() {
 		return "ticket n' = " + this.id + ", sujet = " + this.sujet + ", message = " + this.message + ", modification = " + this.modif + ",statut" + this.getStringStatut() + 
@@ -147,4 +160,43 @@ public class Ticket {
 		}
 	
 		}
+	
+	public Personne getPersonneEnvoyeur() {
+		ArrayList<Personne> personneTab = new ArrayList<Personne>();
+		Personne res = null;
+		try {
+			personneTab = JavaSQLPersonne.affiche();
+
+			for (int i = 0; i < personneTab.size(); i++) {
+				if (this.idEnvoyeur ==(personneTab.get(i).getId())) {
+					res =  personneTab.get(i);
+
+				}
+								}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	
+	public Personne getPersonneReceveur() {
+		ArrayList<Personne> personneTab = new ArrayList<Personne>();
+		Personne res = null;
+		try {
+			personneTab = JavaSQLPersonne.affiche();
+
+			for (int i = 0; i < personneTab.size(); i++) {
+				if (this.idReceveur ==(personneTab.get(i).getId())) {
+					res =  personneTab.get(i);
+
+				}
+								}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
 }
