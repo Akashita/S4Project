@@ -178,7 +178,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		
 		case Ticket.MESSAGE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				//ticket message
+				entreprise.nouvTicket(actionChoisie, null, textArea.getText(), )
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login du destinataire", "Erreur", JOptionPane.ERROR_MESSAGE);			
