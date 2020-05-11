@@ -49,7 +49,7 @@ public class Salle extends Ressource{
 	
 	//--------------------------------------------------------------------------------->>>>> toString
 	public String toString() {
-		return "nom : " + nom ;
+		return  nom ;
 	}
 
 }

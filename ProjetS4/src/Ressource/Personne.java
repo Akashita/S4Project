@@ -161,7 +161,7 @@ public class Personne extends Ressource{
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override
 	public String toString() {
-			return "prenom : " + prenom+", nom : "+ nom ;
+			return prenom+ nom ;
 		}
 	
 	
