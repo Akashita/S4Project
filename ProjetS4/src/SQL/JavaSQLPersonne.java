@@ -120,7 +120,8 @@ public final class JavaSQLPersonne extends JavaSQL{
 		try{
 			 connection();
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Personne SET nom = " + nom + " ,prenom  = " + prenom + " ,role = " + role + " ,motDePasse = " + motDePasse + " WHERE numSalarie = "+ numSalarie;
+			 //String sql = "UPDATE Personne SET nom = " + nom + " ,prenom  = " + prenom + " ,role = " + role + " ,motDePasse = " + motDePasse + " WHERE numSalarie = "+ numSalarie;
+			 String sql = "UPDATE Personne SET nom = '" + nom + "' ,prenom  = '" + prenom + "' ,role = '" + role + "' ,motDePasse = '" + motDePasse + "' WHERE numSalarie = '"+ numSalarie + "';";
 			 stmt.executeUpdate(sql);
 			 for (int i=0; i<tag.size(); i++){
 				 sql  = "UPDATE Competence SET tag = " + tag.get(i) + " ,niveau  = " + niveau.get(i)+ "  WHERE numSalarie = "+ numSalarie;

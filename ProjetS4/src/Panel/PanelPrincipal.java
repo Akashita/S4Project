@@ -19,6 +19,8 @@ public class PanelPrincipal extends JPanel implements Observer{
 			NOIR = new Color(0,0,0),
 			INDISPO = new Color(179,62,197);
 	
+	public static Dimension dimensonBar = new Dimension(50, 50);
+	
 	private Entreprise entreprise;
 	
 	public PanelPrincipal (Entreprise entreprise) {
@@ -36,6 +38,8 @@ public class PanelPrincipal extends JPanel implements Observer{
         panel.setLayout(new BorderLayout());
         panel.add(new PanelProjet(entreprise), BorderLayout.NORTH);
         panel.add(new PanelInfoProjet(entreprise), BorderLayout.CENTER);
+        panel.add(new PanelTache(entreprise), BorderLayout.EAST);
+        
         this.add(panel, BorderLayout.CENTER);
         
         

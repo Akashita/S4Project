@@ -27,24 +27,15 @@ public class PanelAjouterRessource extends PanelFenetre{
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
 		GridBagConstraints gc = new GridBagConstraints();
-		
-		/* le parametre fill sert à définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
-		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
-		 */
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx définit le nombre de cases en ordonnée */
 		gc.weighty = 7;
 
 		gc.gridx = 0;
