@@ -93,8 +93,8 @@ public class PanelTache extends JPanel{
 		gc.gridheight = 1;
 		this.add(creerLabel("Ticket recus", true), gc);
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
-		ArrayList<Ticket> ticketRecuTab = null;
-		ArrayList<Ticket> ticketEnvTab = null;
+		ArrayList<Ticket> ticketRecuTab = new ArrayList<Ticket>();
+		ArrayList<Ticket> ticketEnvTab = new ArrayList<Ticket>();
 
 
 		try {
