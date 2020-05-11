@@ -8,10 +8,13 @@ import Ressource.Ressource;
 
 public class Ticket {
 	private int id;
+	private int action;
 	private String sujet;
 	private String message;
 	private String modif;
 	private LocalDate dateTicket;
+	private LocalDate dateDebut;
+	private LocalDate dateFin;
 	private int statut;
 	private int idEnvoyeur;
 	private int idReceveur;
@@ -20,8 +23,9 @@ public class Ticket {
 	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5;
 
 	
-	public Ticket(int id, String sujet,String message, String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
+	public Ticket(int id,int action, String sujet,String message, String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
 		this.id = id;
+		this.action = action;
 		this.sujet = sujet;
 		this.message = message;
 		this.modif = modif;
@@ -32,19 +36,13 @@ public class Ticket {
 	}
 	
 	
-//	public Ticket(int id, int action, String sujet , Personne expediteur, Personne receveur, LocalDate dateCreation) {
-//		
-//	}
-//	
-//	public Ticket(int id, int action, Ressource r, Projet p, String sujet, Personne expediteur, Personne receveur, LocalDate dateCreation) {
-//		super(id, action, sujet, expediteur, receveur, dateCreation);
-//		
-//	}
-//	
-//	public Ticket(int id, int action, Ressource r, LocalDate debut, LocalDate fin, String sujet, Personne expediteur, Personne receveur, LocalDate dateCreation) {
-//		super(id, action, sujet, expediteur, receveur, dateCreation);
-//		
-//	}
+
+	public Ticket(int id,int action, String sujet,String message, String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r) {
+		super(id, action, sujet, message, modif, dateTicket, statut, idEnvoyeur, idReceveur);
+		
+		
+	}
+	
 	
 	
 	public int getId() {
