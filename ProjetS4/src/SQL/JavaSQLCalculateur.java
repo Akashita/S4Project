@@ -83,7 +83,7 @@ public final class JavaSQLCalculateur extends JavaSQL{
 		try{
 			 connection();
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Calculateur SET nom= " + nom + " ,capacite  = " + capacite + " WHERE code= "+ code;
+			 String sql = "UPDATE Calculateur SET nom= '" + nom + "' ,capacite  = '" + capacite + "' WHERE code= '"+ code+"';";
 			 stmt.executeUpdate(sql);
 			 con.close();
 		} catch(SQLException e){

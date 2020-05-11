@@ -115,10 +115,10 @@ public final class JavaSQLActivite extends JavaSQL{
 				 connection();
 				 Statement stmt = getCon().createStatement();
 				 Date debut1 = Date.valueOf(debut);
-				 String sql = "UPDATE Activite SET titre= " + titre + " ,debut  = " + debut1 + " ,charge = " + charge + " ,ordre = " + ordre + " ,couleur = " + couleur + " ,idP = " + idP + " WHERE idA= "+ idA;
+				 String sql = "UPDATE Activite SET titre= '" + titre + "' ,debut  = '" + debut1 + "' ,charge = '" + charge + "' ,ordre = '" + ordre + "' ,couleur = '" + couleur + "' ,idP = '" + idP + "' WHERE idA= '"+ idA+"';";
 				 stmt.executeUpdate(sql);
 				 for (int i=0; i<listeDom.size(); i++){
-					 sql  = "UPDATE ListeDomaine SET tag = " + listeDom.get(i) + " WHERE idA = "+ idA;
+					 sql  = "UPDATE ListeDomaine SET tag = '" + listeDom.get(i) + "' WHERE idA = '"+ idA+"';";
 					 stmt.executeUpdate(sql);
 				 }
 				 con.close();

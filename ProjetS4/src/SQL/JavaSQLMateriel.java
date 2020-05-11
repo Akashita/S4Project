@@ -70,7 +70,7 @@ public final class JavaSQLMateriel extends JavaSQL{
 		try{
 			 connection();
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Materiel SET numSerie= " + nouvNumSerie + " ,type  = " + type + " ,numero = " + numero + " WHERE numSerie= "+ numSerie;
+			 String sql = "UPDATE Materiel SET numSerie= '" + nouvNumSerie + "' ,type  = '" + type + "' ,numero = '" + numero + "' WHERE numSerie= '"+ numSerie+"';";
 			 stmt.executeUpdate(sql);
 			 con.close();
 		} catch(SQLException e){

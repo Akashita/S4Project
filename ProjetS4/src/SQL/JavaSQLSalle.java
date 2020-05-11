@@ -84,13 +84,13 @@ public final class JavaSQLSalle extends JavaSQL{
 		try{
 			 connection();
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Salle SET numero = " + nouvNumero + " ,nom  = " + nom + " ,place = " + place + " WHERE numero = "+ ancienNumero;
+			 String sql = "UPDATE Salle SET numero = '" + nouvNumero + "' ,nom  = '" + nom + "' ,place = '" + place + "' WHERE numero = '"+ ancienNumero+"';";
 			 stmt.executeUpdate(sql);
-			 sql = "UPDATE Materiel SET numero = " + nouvNumero + " WHERE numero = "+ ancienNumero;
+			 sql = "UPDATE Materiel SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
 			 stmt.executeUpdate(sql);
-			 sql = "UPDATE Creneaux SET numero = " + nouvNumero + " WHERE numero = "+ ancienNumero;
+			 sql = "UPDATE Creneaux SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
 			 stmt.executeUpdate(sql);
-			 sql = "UPDATE Participe SET numero = " + nouvNumero + " WHERE numero = "+ ancienNumero;
+			 sql = "UPDATE Participe SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
 			 stmt.executeUpdate(sql);
 			 con.close();
 		} catch(SQLException e){

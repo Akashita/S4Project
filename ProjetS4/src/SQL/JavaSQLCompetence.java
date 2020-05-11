@@ -56,7 +56,7 @@ public final class JavaSQLCompetence extends JavaSQL{
 	public static void supprime(int numSalarie, String tag) throws SQLException{
 		try{
 			 connection();
-			 String sql = "DELETE FROM Competences WHERE numSalarie =" + numSalarie + " AND tag = " + tag;
+			 String sql = "DELETE FROM Competences WHERE numSalarie ='" + numSalarie + "' AND tag = '" + tag+"';";
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
 			 con.close();

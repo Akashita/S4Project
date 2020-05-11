@@ -149,7 +149,7 @@ public final class JavaSQLProjet extends JavaSQL{
 			 connection();
 			 Statement stmt = getCon().createStatement();
 			 Date date1 = Date.valueOf(deadline);
-			 String sql = "UPDATE Projet SET nom = " + nom + " ,priorite  = " + priorite + " ,deadline = " + date1 + " ,couleur = " + couleur + " ,numSalarie = " + numSalarie + " WHERE idP = "+ idP;
+			 String sql = "UPDATE Projet SET nom = '" + nom + "' ,priorite  = '" + priorite + "' ,deadline = '" + date1 + "' ,couleur = '" + couleur + "' ,numSalarie = '" + numSalarie + "' WHERE idP = '"+ idP+"';";
 			 stmt.executeUpdate(sql);
 			 
 			 con.close();

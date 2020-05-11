@@ -58,7 +58,7 @@ public final class JavaSQLParticipe extends JavaSQL{
 	public static void supprime(int numSalarie, int code, int numero, int idA) throws SQLException{
 		try{
 			 connection();
-			 String sql = "DELETE FROM Participe WHERE idA =" + idA + " AND numSalarie = " + numSalarie + "OR idA =" + idA + " AND code = " + code + "OR idA =" + idA + " AND numero = " + numero;
+			 String sql = "DELETE FROM Participe WHERE idA ='" + idA + "' AND numSalarie = '" + numSalarie + "' OR idA ='" + idA + "' AND code = '" + code + "' OR idA ='" + idA + "' AND numero = '" + numero+"';";
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
 			 con.close();
