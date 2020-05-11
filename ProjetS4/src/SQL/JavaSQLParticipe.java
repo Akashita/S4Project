@@ -43,7 +43,7 @@ public final class JavaSQLParticipe extends JavaSQL{
 //	}
 	
 	public static void insertionSalarie(int numSalarie, int idA) throws SQLException{
-		String sql = "INSERT INTO ParticipesSalarie(numSalarie,idA) VALUE('" + numSalarie+ "' , '"+idA+"');";
+		String sql = "INSERT INTO ParticipeSalarie(numSalarie,idA) VALUE('" + numSalarie+ "' , '"+idA+"');";
 			try{
 				 connection();
 				 Statement stmt = getCon().createStatement();
@@ -56,7 +56,7 @@ public final class JavaSQLParticipe extends JavaSQL{
 	}
 	
 	public static void insertionSalle(int numero, int idA) throws SQLException{
-		String sql = "INSERT INTO ParticipesSalle(numSalarie, code, numero, idA) VALUE('"+numero+"' ,  '"+idA+"');";
+		String sql = "INSERT INTO ParticipeSalle(numSalarie, code, numero, idA) VALUE('"+numero+"' ,  '"+idA+"');";
 			try{
 				 connection();
 				 Statement stmt = getCon().createStatement();
