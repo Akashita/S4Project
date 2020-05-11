@@ -128,7 +128,11 @@ public final class JavaSQLProjet extends JavaSQL{
 				 while(res.next()) {
 					 sql = "DELETE FROM ListeDomaine WHERE idA =" + res.getInt("idA");
 					 stmt.executeUpdate(sql);
-					 sql = "DELETE FROM Participe WHERE idA =" + res.getInt("idA");
+					 sql = "DELETE FROM ParticipeSalarie WHERE idA =" + res.getInt("idA");
+					 stmt.executeUpdate(sql);
+					 sql = "DELETE FROM ParticipeCalcul WHERE idA =" + res.getInt("idA");
+					 stmt.executeUpdate(sql);
+					 sql = "DELETE FROM ParticipeSalle WHERE idA =" + res.getInt("idA");
 					 stmt.executeUpdate(sql);
 					 sql = "DELETE FROM Creneaux WHERE idA =" + res.getInt("idA");
 					 stmt.executeUpdate(sql);
