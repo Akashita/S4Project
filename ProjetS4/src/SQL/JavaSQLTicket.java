@@ -1,5 +1,6 @@
 package SQL;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,7 +30,7 @@ public class JavaSQLTicket extends JavaSQL{
 					 while(res.next()) {
 						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
 
-						 System.out.println("idT = " + res.getString("idT") + ", sujet = " + res.getString("sujet") + ", message = " + res.getString("message") + ", modif = " + res.getString("modif"));
+						 System.out.println("idT = " + res.getString("idT") + ", sujet = " + res.getString("sujet") + ", message = " + res.getString("message") + ", modif = " + res.getString("modif")+", statut = " +res.getInt("statut"));
 						 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieERec")));
 					 }
 				 }
@@ -41,7 +42,9 @@ public class JavaSQLTicket extends JavaSQL{
 	}
 	
 	public static void insertion(String sujet ,String message ,String modif , LocalDate dateTicket, int statut, int numSalarieEnv ,int numSalarieRec) throws SQLException{
-		String sql = "INSERT INTO Ticket(sujet, message, modif, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' ,  '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
+		Date dateTicketModif = Date.valueOf(dateTicket);
+
+		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+dateTicketModif+"', '"+statut+"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
 			try{
 				 connection();
 				 Statement stmt = getCon().createStatement();
@@ -65,8 +68,8 @@ public class JavaSQLTicket extends JavaSQL{
 			}
 	 }
 	
-	public static String toString(String sujet ,String message ,String modif ,int numSalarieEnv ,int numSalarieRec) {
-		return "nom : " + sujet+message+modif+numSalarieEnv+numSalarieRec; 
+	public static String toString(String sujet ,String message ,String modif ,LocalDate dateTicket, int statut,int numSalarieEnv ,int numSalarieRec) {
+		return "nom : " + sujet+message+modif+dateTicket+statut+numSalarieEnv+numSalarieRec; 
 	}
 
 }

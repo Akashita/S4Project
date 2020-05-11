@@ -76,4 +76,8 @@ public class Ticket {
 	public void setStatut(int s) {
 		this.statut = s;
 	}
+	
+	public String toString() {
+		return "ticket n' = " + this.id + ", sujet = " + this.sujet + ", message = " + this.message;
+	}
 }
