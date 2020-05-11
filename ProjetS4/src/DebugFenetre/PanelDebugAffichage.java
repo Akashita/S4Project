@@ -81,14 +81,29 @@ public class PanelDebugAffichage extends JPanel{
 		}
 		
 		else if (type == TICKET) {
+			ArrayList<Ticket> ticketRecuTab = null;
+			ArrayList<Ticket> ticketEnvTab = null;
+			
 			ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
 			try {
 				ticketTab = JavaSQLTicket.affiche();
 				setLayout(new GridLayout(ticketTab.size(),1));
 
 				for (int i = 0; i < ticketTab.size(); i++) {
-					JLabel ticket = new JLabel(ticketTab.get(i).toString());
-					this.add(ticket);
+					//JLabel ticket = new JLabel(ticketTab.get(i).toString());
+					//this.add(ticket);
+					
+					if (2 == ticketTab.get(i).getIdReceveur()) {
+						//JLabel ticket2 = new JLabel(ticketTab.get(i).toString());
+						//this.add(ticket2);
+
+					}
+					else if (1 == ticketTab.get(i).getIdEnvoyeur()) {
+						JLabel ticket3 = new JLabel(ticketTab.get(i).toString());
+						this.add(ticket3);
+
+
+					}
 
 			}
 			} catch (SQLException e) {

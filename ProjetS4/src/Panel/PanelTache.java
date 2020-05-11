@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,7 +20,9 @@ import javax.swing.JPanel;
 
 import Fenetre.FenetreModal;
 import Fenetre.FenetrePrincipale;
+import GestionTicket.Ticket;
 import Model.Entreprise;
+import SQL.JavaSQLTicket;
 
 public class PanelTache extends JPanel{
 
@@ -82,7 +87,29 @@ public class PanelTache extends JPanel{
 		//tickets recu
 		gc.gridheight = 1;
 		this.add(creerLabel("Ticket recus", true), gc);
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+		ArrayList<Ticket> ticketRecuTab = null;
+		ArrayList<Ticket> ticketEnvTab = null;
 
+
+		try {
+			ticketTab = JavaSQLTicket.affiche();
+
+			for (int i = 0; i < ticketTab.size(); i++) {
+					if (entreprise.getUser().getId() == ticketTab.get(i).getIdReceveur()) {
+						ticketRecuTab.add(ticketTab.get(i));
+					}
+					else if (entreprise.getUser().getId() == ticketTab.get(i).getIdEnvoyeur()) {
+						ticketEnvTab.add(ticketTab.get(i));
+
+					}
+		
+		}
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 		
 		//ticket envoyé
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;

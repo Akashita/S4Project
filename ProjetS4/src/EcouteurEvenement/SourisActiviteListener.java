@@ -23,6 +23,7 @@ public class SourisActiviteListener implements MouseListener{
 			entreprise.afficheEDTActivite(activite);
 		}*/
 		entreprise.selectionnerActivite(activite);
+		System.out.println(entreprise.getProjetSelectionner().getNom()+" - "+entreprise.getActiviteSelectionner().getTitre());
 	}
 
 	@Override

@@ -18,6 +18,7 @@ public class SourisProjetListener implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		entreprise.selectionnerProjet(projet);
+		System.out.println(entreprise.getProjetSelectionner().getNom()+" - "+entreprise.getActiviteSelectionner().getTitre());
 	}
 
 	@Override

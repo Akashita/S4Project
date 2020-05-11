@@ -38,6 +38,7 @@ import SQL.JavaSQLParticipe;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLProjet;
 import SQL.JavaSQLSalle;
+import SQL.JavaSQLTicket;
 import SQL.RecupInfoBDD;
 
 
@@ -599,7 +600,24 @@ public class Entreprise extends Observable{
 		majEDT();
 		update();
 	}
+	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
+	
+	public void nouvTicket(int action,String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r,LocalDate dateDebut,LocalDate dateFin) {
+		try {
+			JavaSQLTicket.insertion(action, sujet, message, numSalarieEnv, numSalarieRec, r, dateDebut, dateFin);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	
+	
+	
+	
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
 	public void nouvPersonne (Personne pers) {
 		this.ajouterRessource(pers);

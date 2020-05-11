@@ -15,14 +15,14 @@ import SQL.JavaSQLPersonne;
 
 public class LancementRapideDebug {
 	public static void main (String[] args) {
-//		new Entreprise("debugBDD");
+		new Entreprise("debugBDD");
 		
-		try {
+	//	try {
 //			JavaSQLDebug.drop();
-			JavaSQL.creation();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		//	JavaSQL.creation();
+		//} catch (SQLException e) {
+	//		e.printStackTrace();
+		//}
 		
 }
 }
