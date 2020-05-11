@@ -104,13 +104,23 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Creneaux faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Participe(numSalarie INT, code INT, numero INT, idA INT,"
-							+ "CONSTRAINT fk_Participe_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
-							+ "CONSTRAINT fk_Participe_code FOREIGN KEY(code) REFERENCES Calculateur(code),"
-							+ "CONSTRAINT fk_Participe_numero FOREIGN KEY(numero) REFERENCES Salle(numero),"
-							+ "CONSTRAINT fk_Participe_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
+				 sql = "CREATE TABLE IF NOT EXISTS ParticipeSalarie(numSalarie INT, idA INT,"
+							+ "CONSTRAINT fk_ParticipeSalarie_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
+							+ "CONSTRAINT fk_ParticipeSalarie_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
 				 stmt.executeUpdate(sql);
-				 System.out.println("Table Participe faite");
+				 System.out.println("Table ParticipeSalarie faite");
+				 
+				 sql = "CREATE TABLE IF NOT EXISTS ParticipeCalcul(code INT, idA INT,"
+							+ "CONSTRAINT fk_ParticipeCalcul_code FOREIGN KEY(code) REFERENCES Calculateur(code),"
+							+ "CONSTRAINT fk_ParticipeCalcul_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
+				 stmt.executeUpdate(sql);
+				 System.out.println("Table ParticipeCalcul faite");
+				 
+				 sql = "CREATE TABLE IF NOT EXISTS ParticipeSalle(numero INT, idA INT,"
+							+ "CONSTRAINT fk_ParticipeSalle_numero FOREIGN KEY(numero) REFERENCES Salle(numero),"
+							+ "CONSTRAINT fk_ParticipeSalle_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
+				 stmt.executeUpdate(sql);
+				 System.out.println("Table ParticipeSalle faite");
 				 
 				 sql = "CREATE TABLE IF NOT EXISTS ListeDomaine(idA INT, tag VARCHAR(30),"
 							+ "CONSTRAINT fk_ListeDomaine_idA FOREIGN KEY(idA) REFERENCES Activite(idA),"

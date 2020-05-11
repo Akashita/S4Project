@@ -23,9 +23,17 @@ public final class JavaSQLDebug extends JavaSQL{
 			 stmt.executeUpdate(sql);
 			 System.out.println("drop Competence fait");
 			 
-			 sql = "DROP TABLE IF EXISTS Participe";
+			 sql = "DROP TABLE IF EXISTS ParticipeSalarie";
 			 stmt.executeUpdate(sql);
-			 System.out.println("drop Participe fait");
+			 System.out.println("drop ParticipeSalarie fait");
+
+			 sql = "DROP TABLE IF EXISTS ParticipeCalcul";
+			 stmt.executeUpdate(sql);
+			 System.out.println("drop ParticipeCalcul fait");
+
+			 sql = "DROP TABLE IF EXISTS ParticipeSalle";
+			 stmt.executeUpdate(sql);
+			 System.out.println("drop ParticipeSalle fait");
 			 
 			 sql = "DROP TABLE IF EXISTS ListeDomaine";
 			 stmt.executeUpdate(sql);
