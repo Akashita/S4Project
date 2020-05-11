@@ -157,7 +157,7 @@ public class Personne extends Ressource{
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override
 	public String toString() {
-			return prenom+" "+nom + " " + this.id + " " + this.role + " " + this.mdp + " " + this.getLogin();
+			return "prenom : " + prenom+", nom : "+nom + ", id : " + this.id + ", role : " + this.role + ", mdp : " + this.mdp + ", login : " + this.getLogin();
 		}
 	
 	
