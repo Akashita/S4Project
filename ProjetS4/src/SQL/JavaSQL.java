@@ -60,7 +60,7 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Personne faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Ticket(idT INT PRIMARY KEY AUTO_INCREMENT,sujet VARCHAR(50),message VARCHAR(100),modif VARCHAR(100),numSalarieEnv INT,numSalarieERec INT,"
+				 sql = "CREATE TABLE IF NOT EXISTS Ticket(idT INT PRIMARY KEY AUTO_INCREMENT,sujet VARCHAR(50),message VARCHAR(100),modif VARCHAR(100),dateTicket DATE,statut INT,numSalarieEnv INT,numSalarieERec INT,"
 				 		+ "CONSTRAINT fk_Ticket_numSalarieEnv FOREIGN KEY(numSalarieEnv) REFERENCES Personne(numSalarie),"
 				 		+ "CONSTRAINT fk_Ticket_numSalarieRec FOREIGN KEY(numSalarieRec) REFERENCES Personne(numSalarie));";
 				 stmt.executeUpdate(sql);
