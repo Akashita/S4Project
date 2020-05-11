@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import GestionTicket.Ticket;
 import Model.Entreprise;
 import Ressource.Personne;
 import SQL.JavaSQLPersonne;
@@ -124,10 +125,17 @@ public class PanelDebugAjout extends JPanel{
 			this.add(messageLabel);
 			this.add(message);
 			
-			Label modifLabel = new Label("modif : ");
-			TextField modif= new TextField(20);
-			this.add(modifLabel);
-			this.add(modif);
+			Label actionLabel = new Label("action : ");
+			Choice action= new Choice();
+			action.addItem("" + Ticket.MESSAGE);
+			action.addItem("" + Ticket.TRANSFERT);
+			action.addItem("" + Ticket.LIBERE);
+
+
+			
+			
+			this.add(actionLabel);
+			this.add(action);
 			
 			Label PersonneLabel = new Label("Envoyeur : ");
 			final Choice  PersonneChoix = new Choice();
@@ -162,7 +170,7 @@ public class PanelDebugAjout extends JPanel{
 
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
-			ok.addActionListener(new ActionDebugAjout(w,sujet,message,modif,PersonneChoix, Personne2Choix,ActionDebugAjout.TICKET,entreprise));
+			ok.addActionListener(new ActionDebugAjout(w,sujet,message,action,PersonneChoix, Personne2Choix,ActionDebugAjout.TICKET,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 

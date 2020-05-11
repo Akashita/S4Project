@@ -31,7 +31,7 @@ public class ActionDebugAjout implements ActionListener{
 	
 	private TextField sujet;
 	private TextField message;
-	private TextField modif;
+	private int action; 
 	private Choice envoyeur; 
 	private Choice receveur;
 	
@@ -59,11 +59,11 @@ public class ActionDebugAjout implements ActionListener{
 		this.typeVerif = typeVerif;
 	}
 	
-	public ActionDebugAjout (Window w,TextField sujet,TextField message,TextField modif,Choice envoyeur,Choice receveur,int typeVerif, Entreprise entreprise) {
+	public ActionDebugAjout (Window w,TextField sujet,TextField message,Choice action,Choice envoyeur,Choice receveur,int typeVerif, Entreprise entreprise) {
 		this.w = w;
 		this.sujet = sujet;
 		this.message = message;
-		this.modif= modif;
+		this.action = Integer.parseInt(action.getItem(action.getSelectedIndex()));
 		this.envoyeur = envoyeur;
 		this.receveur = receveur;
 		this.typeVerif = typeVerif;
@@ -142,8 +142,8 @@ public class ActionDebugAjout implements ActionListener{
 				}
 
 				try {
+					JavaSQLTicket.insertion(action, sujet.getText(), message.getText(), envoyeurId, receveurId, null,null, null);
 
-					JavaSQLTicket.insertion( sujet.getText(),message.getText(), modif.getText(),envoyeurId,receveurId);
 					new FenetreDebugTicket(entreprise,FenetreDebugTicket.AFFICHE);
 					w.dispose();
 				} catch (NumberFormatException e) {

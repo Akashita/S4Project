@@ -18,14 +18,13 @@ public class Ticket {
 	private int statut;
 	private int idEnvoyeur;
 	private int idReceveur;
+	private Ressource r;
 
 	
 	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5;
 
-	
-	public Ticket(int id,int action, String sujet,String message, String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
+	public Ticket(int id, String sujet,String message,String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
 		this.id = id;
-		this.action = action;
 		this.sujet = sujet;
 		this.message = message;
 		this.modif = modif;
@@ -36,14 +35,49 @@ public class Ticket {
 	}
 	
 	
-
-	public Ticket(int id,int action, String sujet,String message, String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r) {
-		super(id, action, sujet, message, modif, dateTicket, statut, idEnvoyeur, idReceveur);
-		
-		
+	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
+		this.id = id;
+		this.action = action;
+		this.sujet = sujet;
+		this.message = message;
+		this.modif = creeModif(action);
+		this.dateTicket = dateTicket;
+		this.statut = statut;
+		this.idEnvoyeur = idEnvoyeur;
+		this.idReceveur = idReceveur;
 	}
 	
 	
+
+	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r) {
+		this(id, action, sujet, message, dateTicket, statut, idEnvoyeur, idReceveur);
+		this.r = r;
+		this.modif = creeModif(action);
+		
+	}
+	
+	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r,LocalDate dateDebut,LocalDate dateFin) {
+		this(id, action, sujet, message, dateTicket, statut, idEnvoyeur, idReceveur,r);
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.modif = creeModif(action);
+
+	}
+	
+	private String creeModif(int action) {
+		if (action == MESSAGE) {
+			return "message-";
+		}
+		else if (action == TRANSFERT) {
+			return "transfert-" + r.getId() + "_" + dateDebut.toString() + dateFin.toString();
+		}
+		else if (action == LIBERE) {
+			return "libere-" + r.getId();
+		}
+		else {
+			return "erreur-";
+		}
+	}
 	
 	public int getId() {
 		return this.id;

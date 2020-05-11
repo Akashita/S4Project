@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import GestionTicket.Ticket;
 import Model.Temps;
 import Ressource.Personne;
+import Ressource.Ressource;
 
 public class JavaSQLTicket extends JavaSQL{
 	
@@ -42,8 +43,9 @@ public class JavaSQLTicket extends JavaSQL{
 			return ticketTab;
 	}
 	
-	public static void insertion(String sujet ,String message ,String modif ,  int numSalarieEnv ,int numSalarieRec) throws SQLException{
-
+	public static void insertion(int action,String sujet ,String message  ,  int numSalarieEnv ,int numSalarieRec,Ressource r,LocalDate dateDebut,LocalDate dateFin) throws SQLException{
+		Ticket ticketCour = new Ticket(0, action, sujet, message, Temps.getAujourdhui(), 0, numSalarieEnv, numSalarieRec, r, dateDebut, dateFin);
+		String modif = ticketCour.getModif();
 		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+Temps.getAujourdhui()+"', '"+ Ticket.ENCOURS +"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
 			try{
 				 connection();
