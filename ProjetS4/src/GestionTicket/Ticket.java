@@ -23,7 +23,7 @@ public class Ticket {
 	
 	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5;
 
-	public Ticket(int id, String sujet,String message,String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
+	public Ticket(int id, String sujet,String message,String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, LocalDate dateDebut, LocalDate dateFin) {
 		this.id = id;
 		this.sujet = sujet;
 		this.message = message;
@@ -32,6 +32,8 @@ public class Ticket {
 		this.statut = statut;
 		this.idEnvoyeur = idEnvoyeur;
 		this.idReceveur = idReceveur;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
 	}
 	
 	
