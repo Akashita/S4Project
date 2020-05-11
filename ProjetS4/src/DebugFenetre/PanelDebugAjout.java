@@ -155,23 +155,27 @@ public class PanelDebugAjout extends JPanel{
 			
 			this.add(Personne2Label);
 			this.add(Personne2Choix);
+			int envoyeurId;
+			int receveurId;
 			
 			for (int i = 0; i < personneTab.size(); i++) {
 				if (PersonneChoix.getItem(PersonneChoix.getSelectedIndex()).equals(personneTab.get(i).toString())) {
-					int envoyeurId = personneTab.get(i).getId();
+					envoyeurId = personneTab.get(i).getId();
 
 				}
 				if (Personne2Choix.getItem(Personne2Choix.getSelectedIndex()).equals(personneTab.get(i).toString())) {
-					int receveurId = personneTab.get(i).getId();
+					receveurId = personneTab.get(i).getId();
 
 				}
 
 
 
 		}
+			
+
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
-			ok.addActionListener(new ActionDebugAjout(w,sujet,message,modif,PersonneChoix, Personne2Choix,ActionDebugAjout.TICKET,entreprise));
+			ok.addActionListener(new ActionDebugAjout(w,sujet,message,modif,envoyeurId, receveurId,ActionDebugAjout.TICKET,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 
