@@ -627,6 +627,7 @@ public class Entreprise extends Observable{
 
 		try {
 			JavaSQLTicket.insertion(action, sujet, message, numSalarieEnv, numSalarieRec, r);
+			update();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
