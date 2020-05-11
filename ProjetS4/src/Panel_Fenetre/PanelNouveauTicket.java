@@ -157,7 +157,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		
 		case Ticket.MESSAGE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), getIdFromLogin(), null, null, null);
+				entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), getIdFromLogin(), null);
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login du destinataire", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -168,7 +168,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 			if (!textFieldLogin.getText().isEmpty()) {
 				Projet p =  (Projet) comboBoxProjet.getSelectedItem();
 				entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
-						entreprise.getRessource(getIdFromLogin()), null, null);
+						entreprise.getRessource(getIdFromLogin()));
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -180,7 +180,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 				ArrayList<Personne> lchef = entreprise.getChefDeProjetConcerner(entreprise.getRessource(getIdFromLogin()));
 				for (int i=0; i<lchef.size(); i++) {
 					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(),
-							lchef.get(i).getId(), entreprise.getRessource(getIdFromLogin()), null, null);
+							lchef.get(i).getId(), entreprise.getRessource(getIdFromLogin()));
 				}
 
 			}
