@@ -3,6 +3,7 @@ package SQL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import GestionTicket.Ticket;
@@ -26,8 +27,10 @@ public class JavaSQLTicket extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
+						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
+
 						 System.out.println("idT = " + res.getString("idT") + ", sujet = " + res.getString("sujet") + ", message = " + res.getString("message") + ", modif = " + res.getString("modif"));
-						 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"), res.getInt("numSalarieEnv"), res.getInt("numSalarieERec")));
+						 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieERec")));
 					 }
 				 }
 				 con.close();
@@ -37,7 +40,7 @@ public class JavaSQLTicket extends JavaSQL{
 			return ticketTab;
 	}
 	
-	public static void insertion(String sujet ,String message ,String modif ,int numSalarieEnv ,int numSalarieRec) throws SQLException{
+	public static void insertion(String sujet ,String message ,String modif , LocalDate dateTicket, int statut, int numSalarieEnv ,int numSalarieRec) throws SQLException{
 		String sql = "INSERT INTO Ticket(sujet, message, modif, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' ,  '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
 			try{
 				 connection();

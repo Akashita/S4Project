@@ -11,36 +11,43 @@ public class Ticket {
 	private String sujet;
 	private String message;
 	private String modif;
+	private LocalDate dateTicket;
+	private int statut;
 	private int idEnvoyeur;
 	private int idReceveur;
 
-	public Ticket(int id, String sujet,String message, String modif, int idEnvoyeur, int idReceveur) {
+	public Ticket(int id, String sujet,String message, String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
 		this.id = id;
 		this.sujet = sujet;
 		this.message = message;
 		this.modif = "PAS ENCORE FAIT";
+		this.dateTicket = dateTicket;
+		this.statut = statut;
 		this.idEnvoyeur = idEnvoyeur;
 		this.idReceveur = idReceveur;
 	}
 	
 	
-	public Ticket(int id, int action, String sujet , Personne expediteur, Personne receveur, LocalDate dateCreation) {
-		
-	}
-	
-	public Ticket(int id, int action, Ressource r, Projet p, String sujet, Personne expediteur, Personne receveur, LocalDate dateCreation) {
-		super(id, action, sujet, expediteur, receveur, dateCreation);
-		
-	}
-	
-	public Ticket(int id, int action, Ressource r, LocalDate debut, LocalDate fin, String sujet, Personne expediteur, Personne receveur, LocalDate dateCreation) {
-		super(id, action, sujet, expediteur, receveur, dateCreation);
-		
-	}
+//	public Ticket(int id, int action, String sujet , Personne expediteur, Personne receveur, LocalDate dateCreation) {
+//		
+//	}
+//	
+//	public Ticket(int id, int action, Ressource r, Projet p, String sujet, Personne expediteur, Personne receveur, LocalDate dateCreation) {
+//		super(id, action, sujet, expediteur, receveur, dateCreation);
+//		
+//	}
+//	
+//	public Ticket(int id, int action, Ressource r, LocalDate debut, LocalDate fin, String sujet, Personne expediteur, Personne receveur, LocalDate dateCreation) {
+//		super(id, action, sujet, expediteur, receveur, dateCreation);
+//		
+//	}
 	
 	
 	public int getId() {
 		return this.id;
+	}
+	public int getStatut() {
+		return this.statut;
 	}
 	
 	public int getIdEnvoyeur() {
@@ -62,8 +69,11 @@ public class Ticket {
 	public String getModif() {
 		return this.modif;
 	}
-
+	public LocalDate getdateTicket() {
+		return this.dateTicket;
+	}
+	
 	public void setStatut(int s) {
-		this.statu = s;
+		this.statut = s;
 	}
 }
