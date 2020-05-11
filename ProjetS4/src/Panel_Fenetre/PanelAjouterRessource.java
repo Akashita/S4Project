@@ -4,7 +4,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JOptionPane;
+
 import Fenetre.FenetreModal;
+import Model.Activite;
 import Model.Entreprise;
 import Model.Temps;
 import Ressource.Ressource;
@@ -67,7 +70,14 @@ public class PanelAjouterRessource extends PanelFenetre{
 	}
 	
 	protected void actionFin() {
-		entreprise.ajouterRessourceActivite((Ressource) comboBoxRessource.getSelectedItem());
-		fm.dispose();
+		Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
+		Activite a = entreprise.getActiviteSelectionner();
+		if (a.ressourcePresente(r)) {
+			entreprise.ajouterRessourceActivite(r,a);
+			fm.dispose();
+		}
+		else {
+		   	JOptionPane.showMessageDialog(null, "Cette ressource est deja présente dans cette activité", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
 	}
 }
