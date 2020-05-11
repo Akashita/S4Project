@@ -113,7 +113,7 @@ public class PanelDebugAjout extends JPanel{
 		}
 		
 		else if (type == TICKET) {
-			this.setLayout(new GridLayout(2,2));
+			this.setLayout(new GridLayout(6,2));
 			
 			Label sujetLabel = new Label("sujet : ");
 			TextField sujet = new TextField(20);
@@ -143,7 +143,6 @@ public class PanelDebugAjout extends JPanel{
 			ArrayList<Personne> personneTab = new ArrayList<Personne>();
 			try {
 				personneTab = JavaSQLPersonne.affiche();
-				setLayout(new GridLayout(personneTab.size(),1));
 
 				for (int i = 0; i < personneTab.size(); i++) {
 					PersonneChoix.addItem(personneTab.get(i).toString());

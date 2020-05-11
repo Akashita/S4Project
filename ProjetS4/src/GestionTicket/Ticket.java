@@ -1,6 +1,7 @@
 package GestionTicket;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import Model.Projet;
 import Ressource.Personne;
@@ -21,7 +22,8 @@ public class Ticket {
 	private Ressource r;
 
 	
-	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5;
+	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5, ERREUR = 6;
+	private static final String SEPARATEUR = "|";
 
 	public Ticket(int id, String sujet,String message,String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, LocalDate dateDebut, LocalDate dateFin) {
 		this.id = id;
@@ -35,7 +37,16 @@ public class Ticket {
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 	}
-	
+	public Ticket(int id, String sujet,String message,String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
+		this.id = id;
+		this.sujet = sujet;
+		this.message = message;
+		this.modif = modif;
+		this.dateTicket = dateTicket;
+		this.statut = statut;
+		this.idEnvoyeur = idEnvoyeur;
+		this.idReceveur = idReceveur;
+	}
 	
 	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
 		this.id = id;
@@ -68,18 +79,38 @@ public class Ticket {
 	
 	private String creeModif(int action) {
 		if (action == MESSAGE) {
-			return "message-";
+			return "message|";
 		}
 		else if (action == TRANSFERT) {
-			return "transfert-" + r.getId() + "_" + dateDebut.toString() + dateFin.toString();
+			return "transfert|" + r.getId() + "_" + dateDebut.toString() + dateFin.toString();
 		}
 		else if (action == LIBERE) {
-			return "libere-" + r.getId();
+			return "libere|" + r.getId();
 		}
 		else {
-			return "erreur-";
+			return "erreur|";
 		}
 	}
+	
+	public static int getTache(String modif) {
+		String[] regex = modif.split(SEPARATEUR, 2); 
+		String avantSeparateur = regex[0];
+		if (avantSeparateur == "message") {
+			return MESSAGE;
+		}
+		else if (avantSeparateur == "libere") {
+			return LIBERE;
+
+		}
+		else if (avantSeparateur == "transfert") {
+			return TRANSFERT;
+
+		}
+		else {
+			return ERREUR;
+		}
+			
+		}
 	
 	public int getId() {
 		return this.id;
