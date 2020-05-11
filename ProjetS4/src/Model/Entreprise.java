@@ -225,7 +225,7 @@ public class Entreprise extends Observable{
 	private boolean verifierOrdre(Ressource res, Activite act, LocalDate jour, int heure) {
 		LocalDateTime tmp = LocalDateTime.of(jour, LocalTime.of(heure, 0));
 		int ordre = act.getOrdre();
-		LocalDateTime premierLibre = res.getPremierCreneauApresAct(ordre);
+		LocalDateTime premierLibre = res.getPremiereCreneauApresAct(ordre);
 		
 		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp));
 	}
@@ -302,6 +302,11 @@ public class Entreprise extends Observable{
 		
 		return r;
 	}
+	
+	public boolean ressourceEstDansAct(Ressource r, Activite a) {
+		return a.ressourcePresente(r);
+	}
+
 	
 	public ArrayList<Activite> getActRes(Ressource r){ //retourne tout les activit��s d'une ressource
 		ArrayList<Activite> lA = new ArrayList<Activite>();
@@ -690,26 +695,26 @@ public class Entreprise extends Observable{
 		update();
 	}
 
-	public void ajouterRessourceActivite(Ressource res) {
+	public void ajouterRessourceActivite(Ressource res, Activite a) {
 		Activite act = getActiviteSelectionner();
 		act.ajouterRessource(res);
 		if (res.getType() == Ressource.PERSONNE) {
 			try {
-				JavaSQLParticipe.insertionSalarie(res.getId(), activiteSelectionner.getId());
+				JavaSQLParticipe.insertionSalarie(res.getId(), a.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		if (res.getType() == Ressource.SALLE) {
 			try {
-				JavaSQLParticipe.insertionSalle(res.getId(), activiteSelectionner.getId());
+				JavaSQLParticipe.insertionSalle(res.getId(), a.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		if (res.getType() == Ressource.CALCULATEUR) {
 			try {
-				JavaSQLParticipe.insertionCalcul(res.getId(), activiteSelectionner.getId());
+				JavaSQLParticipe.insertionCalcul(res.getId(), a.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
