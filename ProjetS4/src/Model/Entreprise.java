@@ -129,6 +129,7 @@ public class Entreprise extends Observable{
 //			testprojet.insertion();
 //			testact.insertion();
 			RecupInfoBDD.recupBDDProjet(this);
+			RecupInfoBDD.recupBDDDomaine(this);
 			RecupInfoBDD.recupBDDRessource(this);
 //			test.affiche();
 //			test.drop();
@@ -692,6 +693,28 @@ public class Entreprise extends Observable{
 	public void ajouterRessourceActivite(Ressource res) {
 		Activite act = getActiviteSelectionner();
 		act.ajouterRessource(res);
+		if (res.getType() == Ressource.PERSONNE) {
+			try {
+				JavaSQLParticipe.insertionSalarie(res.getId(), activiteSelectionner.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (res.getType() == Ressource.SALLE) {
+			try {
+				JavaSQLParticipe.insertionSalle(res.getId(), activiteSelectionner.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (res.getType() == Ressource.CALCULATEUR) {
+			try {
+				JavaSQLParticipe.insertionCalcul(res.getId(), activiteSelectionner.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		majEDT();
 		//JavaSQLParticipe.insertion(numSalarie, code, numero, idA);
 		update();
