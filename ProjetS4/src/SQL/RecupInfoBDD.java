@@ -54,6 +54,6 @@ public final class RecupInfoBDD {
 		for (int i = 0; i < prog.size(); i++) {
 			e.nouvProjet(prog.get(i));
 		}
-		e.selectionnerProjet(prog.get(0));
+		//e.selectionnerProjet(prog.get(0));
 	}
 }

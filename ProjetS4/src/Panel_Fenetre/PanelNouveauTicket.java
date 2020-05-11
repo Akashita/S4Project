@@ -178,7 +178,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		
 		case Ticket.MESSAGE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				
+				//ticket message
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login du destinataire", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -187,7 +187,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 
 		case Ticket.LIBERE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				
+				//ticket libere
 			}
 			else {
 			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -205,7 +205,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 				annee = Integer.parseInt((String) calendrier2.getComboBoxAnnee().getSelectedItem());
 				LocalDate fin =  creerLaDate(jour, mois, annee);
 				if (Temps.dateUnEstSuperieurDateDeux(fin,debut)) {
-					
+					//ticket transfert
 				}
 				else {
 				   	JOptionPane.showMessageDialog(null, "Veillez indiquer une date de fin supérieure à la date du début", "Erreur", JOptionPane.ERROR_MESSAGE);			
