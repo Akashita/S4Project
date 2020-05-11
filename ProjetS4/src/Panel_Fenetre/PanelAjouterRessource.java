@@ -72,7 +72,7 @@ public class PanelAjouterRessource extends PanelFenetre{
 	protected void actionFin() {
 		Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
 		Activite a = entreprise.getActiviteSelectionner();
-		if (a.ressourcePresente(r)) {
+		if (!a.ressourcePresente(r)) {
 			entreprise.ajouterRessourceActivite(r,a);
 			fm.dispose();
 		}

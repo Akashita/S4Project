@@ -168,14 +168,17 @@ public class PanelTache extends JPanel{
 		return label;
 	}
 
-	private JList creerList(ArrayList<Ticket> lt) {
+	private JList<Ticket> creerList(ArrayList<Ticket> lt) {
 		Ticket [] tt = new Ticket [lt.size()];
 		for (int i=0; i<tt.length; i++) {
 			tt[i] = lt.get(i);
 		}
-		JList<Ticket> jlt = new JList<Ticket>();
+		JList<Ticket> jlt = new JList<Ticket>(tt);
 		jlt.setBackground(couleurFond);
-		jlt.setFont(new Font("Arial", Font.PLAIN, 15));
+		
+		Font font = new Font("Arial", Font.BOLD, 15);
+		//font.set
+		jlt.setFont(font);
 		return jlt;
 	}
 	
