@@ -32,7 +32,7 @@ public class JavaSQLTicket extends JavaSQL{
 						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
 
 						 System.out.println("idT = " + res.getString("idT") + ", sujet = " + res.getString("sujet") + ", message = " + res.getString("message") + ", modif = " + res.getString("modif")+", statut = " +res.getInt("statut"));
-						 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieERec")));
+						 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec")));
 					 }
 				 }
 				 con.close();

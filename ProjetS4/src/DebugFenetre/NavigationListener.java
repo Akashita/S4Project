@@ -57,13 +57,13 @@ public class NavigationListener  implements ActionListener{
 		}
 		
 		else if (direction == TICKET) {
-			new FenetreDebugDomaine(entreprise,FenetreDebugTicket.AFFICHE);
+			new FenetreDebugTicket(entreprise,FenetreDebugTicket.AFFICHE);
 		}
 		else if (direction == TICKETAJOUT) {
-			new FenetreDebugDomaine(entreprise,FenetreDebugTicket.AJOUT);
+			new FenetreDebugTicket(entreprise,FenetreDebugTicket.AJOUT);
 		}
 		else if (direction == TICKETSUPPRIME) {
-			new FenetreDebugDomaine(entreprise,FenetreDebugTicket.SUPPRIME);
+			new FenetreDebugTicket(entreprise,FenetreDebugTicket.SUPPRIME);
 		}
 		w.dispose();
 

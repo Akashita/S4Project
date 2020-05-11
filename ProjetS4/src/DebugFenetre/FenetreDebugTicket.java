@@ -46,20 +46,20 @@ public class FenetreDebugTicket extends JFrame{
         c.weighty = 2.0;               
 
 		
-		if (type == this.AFFICHE) {
+		if (type == AFFICHE) {
 
 		PanelDebugAffichage panelAffichage = new PanelDebugAffichage(entreprise,PanelDebugAffichage.TICKET);
 		this.add(panelAffichage,c);
 		}
 		
-		else if (type == this.AJOUT) {
+		else if (type == AJOUT) {
 	        c.weighty = 0.0;               
 
 			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAjout.TICKET);
 			this.add(panelAjout,c);
 		}
 		
-		else if (type == this.SUPPRIME) {
+		else if (type == SUPPRIME) {
 	        c.weighty = 0.0;               
 
 			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugSupprime.TICKET);

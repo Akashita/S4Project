@@ -1,6 +1,7 @@
 package DebugFenetre;
 
 import java.awt.Choice;
+import java.awt.GridLayout;
 import java.awt.TextField;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Model.Entreprise;
+import Ressource.Personne;
 import Ressource.Salle;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
@@ -30,8 +32,8 @@ public class ActionDebugAjout implements ActionListener{
 	private TextField sujet;
 	private TextField message;
 	private TextField modif;
-	private int envoyeur; 
-	private int receveur;
+	private Choice envoyeur; 
+	private Choice receveur;
 	
 	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3 ;
 
@@ -57,7 +59,7 @@ public class ActionDebugAjout implements ActionListener{
 		this.typeVerif = typeVerif;
 	}
 	
-	public ActionDebugAjout (Window w,TextField sujet,TextField message,TextField modif,int envoyeur,int receveur,int typeVerif, Entreprise entreprise) {
+	public ActionDebugAjout (Window w,TextField sujet,TextField message,TextField modif,Choice envoyeur,Choice receveur,int typeVerif, Entreprise entreprise) {
 		this.w = w;
 		this.sujet = sujet;
 		this.message = message;
@@ -118,11 +120,31 @@ public class ActionDebugAjout implements ActionListener{
 			}
 		}
 			else if (typeVerif == TICKET) {
-			
+				ArrayList<Personne> personneTab = new ArrayList<Personne>();
+				int envoyeurId = -1;
+				int receveurId = -1;
+
+				try {
+					personneTab = JavaSQLPersonne.affiche();
+
+					for (int i = 0; i < personneTab.size(); i++) {
+						if (envoyeur.getItem(envoyeur.getSelectedIndex()).equals(personneTab.get(i).toString())) {
+							envoyeurId = personneTab.get(i).getId();
+
+						}
+						if (receveur.getItem(receveur.getSelectedIndex()).equals(personneTab.get(i).toString())) {
+							receveurId = personneTab.get(i).getId();
+
+						}				}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 				try {
 
-					JavaSQLTicket.insertion( sujet.getText(),message.getText(), modif.getText(),envoyeur,receveur);
-					new FenetreDebugPersonne(entreprise,FenetreDebugPersonne.AFFICHE);
+					JavaSQLTicket.insertion( sujet.getText(),message.getText(), modif.getText(),envoyeurId,receveurId);
+					new FenetreDebugTicket(entreprise,FenetreDebugTicket.AFFICHE);
 					w.dispose();
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block

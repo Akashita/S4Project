@@ -82,7 +82,8 @@ public class Ticket {
 	}
 	
 	public String toString() {
-		return "ticket n' = " + this.id + ", sujet = " + this.sujet + ", message = " + this.message + ", modification = " + this.modif + ",statut" + this.getStringStatut() + ", envoyeur = " + this.idEnvoyeur + ", receveur = " + this.idReceveur;
+		return "ticket n' = " + this.id + ", sujet = " + this.sujet + ", message = " + this.message + ", modification = " + this.modif + ",statut" + this.getStringStatut() + 
+				", envoyeur = " + this.idEnvoyeur + ", receveur = " + this.idReceveur + ", cree le : " + dateTicket.toString();
 	}
 
 
