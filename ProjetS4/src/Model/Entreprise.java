@@ -288,6 +288,18 @@ public class Entreprise extends Observable{
 		return this.domaine;
 	}
 
+	public Ressource ressourceExiste(String login) {
+		Ressource r = null;
+        String[] regex = login.split("#", 2); 
+        int id = Integer.parseInt(regex[1]);
+        for (int i=0; i<lRessource.size(); i++) {
+        	if (lRessource.get(i).getId() == id) {
+        		r = lRessource.get(i);
+        	}
+        }
+		return r;
+	}
+	
 	public ArrayList<Activite> getActRes(Ressource r){ //retourne tout les activit��s d'une ressource
 		ArrayList<Activite> lA = new ArrayList<Activite>();
 		for (int i=0; i<lProjet.size(); i++) {

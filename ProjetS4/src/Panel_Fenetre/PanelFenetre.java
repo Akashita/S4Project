@@ -10,6 +10,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
@@ -51,7 +56,8 @@ public class PanelFenetre extends JPanel{
     	    textFieldMdp = new JTextField(),
     	    textFieldPriorite = new JTextField(),
     	    textFieldCharge = new JTextField(),
-    	    textFieldCapacite = new JTextField();
+    	    textFieldCapacite = new JTextField(),
+    	    textFieldLogin = new JTextField();
     
     	
 
@@ -68,13 +74,15 @@ public class PanelFenetre extends JPanel{
     protected Color couleurFond = PanelPrincipal.BLEU3;
     protected Projet projet;
     protected Activite activite;
-
-    String [] jours;
-    String[] mois = {"Janvier", "Fevrier", "Mars", "Avril",
+    protected int actionChoisie;
+    
+    String [] jours,
+    	mois = {"Janvier", "Fevrier", "Mars", "Avril",
     		"Mai", "Juin", "Juillet", "Aout",
-    		"Septembre", "Octobre", "Novembre", "Decembre"};
-    String[] annees = new String [Temps.nbAnnnee];
-    protected JComboBox<String> comboBoxAnnee, comboBoxMois, comboBoxJour;	
+    		"Septembre", "Octobre", "Novembre", "Decembre"},
+    	annees = new String [Temps.nbAnnnee],
+    	actionTicket = {"Envoyer un message", "Transferer Ressource", "Liberer Ressource"};
+    protected JComboBox<String> comboBoxAnnee, comboBoxMois, comboBoxJour, comboBoxActionTicket;	
     
     protected Checkbox checkBoxestAdmin = new Checkbox("administrateur", false);
     protected JButton boutonAjoutCompetence, boutonAjoutDomaine;
@@ -83,6 +91,16 @@ public class PanelFenetre extends JPanel{
     protected JList<String> jListDomaine;
     protected JScrollPane scrollPaneJListDomaine;
     protected JButton boutonSupprimerDomaine;
+    
+    protected JComboBox<Projet> comboBoxProjet;
+    
+    protected JButton boutonAfficherDateDebut, boutonAfficherDateFin, boutonAjoutDate;
+    protected boolean afficherDateDebut = false, afficherDateFin = false;
+    protected LocalDate debut, fin;
+    
+    protected boolean alreadyPressed = false;
+    
+    protected JTextArea textArea;
     
 	public PanelFenetre(Entreprise entreprise, FenetreModal fm) {
 		this.entreprise = entreprise;
@@ -380,7 +398,120 @@ public class PanelFenetre extends JPanel{
 		return panel;
 	}
 
+	//----------------------------------------------------->>>> Gesion ticket
 
+	protected void initialiseTicket(PanelFenetre pf) {
+		comboBoxActionTicket = new JComboBox<String>(actionTicket);
+		comboBoxActionTicket.addActionListener (new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				nouvelleAction(pf);
+			}
+		});	    	
+
+		initialiseBoutonDate(pf);
+		initialiseTextFieldLogin(pf);
+		textArea = new JTextArea();
+	}
+	
+	protected void initialiseBoutonDate(PanelFenetre pf) {
+		boutonAfficherDateDebut = new JButton("Ajouter la date du debut");
+		boutonAfficherDateDebut.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	if (!afficherDateDebut && !afficherDateFin) {
+	        		afficherDateDebut = true;
+	        		initialseJMA(Temps.getAujourdhui(),pf);
+	        	}
+	        	maj(pf);	        
+	        }
+	    });			
+		boutonAfficherDateFin = new JButton("Ajouter la date de fin");
+		boutonAfficherDateFin.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	if (!afficherDateDebut && !afficherDateFin) {
+	        		afficherDateFin = true;
+	        		initialseJMA(Temps.getAujourdhui(),pf);
+	        	}
+	        	maj(pf);	        
+	        }
+	    });			
+		boutonAjoutDate = new JButton("Ajouter la date");
+		boutonAfficherDateFin.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	if (afficherDateFin) {
+	        		afficherDateFin = false;
+	        	}
+	        	if (afficherDateDebut) {
+	        		afficherDateDebut = false;
+	        	}
+	        	maj(pf);	        
+	        }
+	    });			
+
+	}
+	
+	protected void initialiseTextFieldLogin(PanelFenetre pf) {
+    	textFieldLogin = new JTextField("nom#id             ");
+    	textFieldLogin.getFont().deriveFont(Font.ITALIC);
+    	textFieldLogin.setForeground(PanelPrincipal.GRIS2);
+    	textFieldLogin.addMouseListener(new MouseListener() {           
+			@Override
+			public void mouseClicked(MouseEvent e) {
+    	        JTextField texteField = ((JTextField)e.getSource());
+    	        texteField.setText("");
+    	        texteField.getFont().deriveFont(Font.PLAIN);
+    	        texteField.setForeground(PanelPrincipal.NOIR);
+    	        texteField.removeMouseListener(this);
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+    	});
+    	textFieldLogin.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {alreadyPressed = false;}
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (!alreadyPressed) {
+					alreadyPressed = true;				
+					majComboBoxProjet(pf);
+				}
+			}
+		});
+	}
+	
+	protected void majComboBoxProjet(PanelFenetre pf) {
+		String login = textFieldCapacite.getText();
+		Ressource r = entreprise.ressourceExiste(login);
+		if (r != null) {
+			ArrayList<Projet> lp = entreprise.getProjetDeLaRessource(r);
+			
+			Projet [] tp = new Projet[lp.size()];
+			for (int i=0; i<tp.length; i++) {
+				tp[i] = lp.get(i);
+			}	
+			comboBoxProjet = new JComboBox<Projet>(tp);			
+		}
+		else {
+			comboBoxProjet = new JComboBox<Projet>();
+		}
+		maj(pf);
+	}
+	
+	protected void nouvelleAction(PanelFenetre pf) {
+		actionChoisie = comboBoxActionTicket.getSelectedIndex();
+		maj(pf);
+	}
+
+	
+	
 	//-----------------------------------------
 	
 	protected void initialiseComboBoxType(PanelFenetre pf) {

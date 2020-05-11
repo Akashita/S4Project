@@ -24,7 +24,6 @@ public class PanelAjouterRessource extends PanelFenetre{
 	}
 	
 	protected void creerInterface() {
-	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
 		GridBagConstraints gc = new GridBagConstraints();

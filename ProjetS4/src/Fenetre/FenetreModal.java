@@ -73,7 +73,14 @@ public class FenetreModal extends JDialog{
 			largeur = 400;
 			hauteur = 300;
 			break;
+		case FenetrePrincipale.NouveauTicket:
+			titre = "Creation ticket";
+			largeur = 400;
+			hauteur = 300;
+			panelInterface = new PanelDomaine(entreprise, this);
 			
+		
+		
 		case FenetrePrincipale.ModifierProjet:
 			titre = "Modifier projet";
 			panelInterface = new PanelModifierProjet(entreprise, this);

@@ -157,11 +157,11 @@ public class PanelDebugAjout extends JPanel{
 			this.add(Personne2Choix);
 			
 			for (int i = 0; i < personneTab.size(); i++) {
-				if (PersonneChoix.getItem(PersonneChoix.getSelectedIndex()).isEquals(personneTab.get(i).toString())) {
+				if (PersonneChoix.getItem(PersonneChoix.getSelectedIndex()).equals(personneTab.get(i).toString())) {
 					int envoyeurId = personneTab.get(i).getId();
 
 				}
-				if (Personne2Choix.getItem(Personne2Choix.getSelectedIndex()).isEquals(personneTab.get(i).toString())) {
+				if (Personne2Choix.getItem(Personne2Choix.getSelectedIndex()).equals(personneTab.get(i).toString())) {
 					int receveurId = personneTab.get(i).getId();
 
 				}

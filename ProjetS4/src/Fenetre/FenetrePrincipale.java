@@ -38,7 +38,8 @@ public class FenetrePrincipale extends JFrame{
 	public static final int NouveauProjet = 0, NouvelleRessource = 1, NouvelleActivite = 2, NouveauDomaine = 3,
 			AjouterRessource = 4, EnleverRessource = 5,
 			ModifierProjet = 6, ModifierActivite = 7, ModifierRessource = 8,
-			InformationCompte = 9, Deconnexion = 10;
+			InformationCompte = 9, Deconnexion = 10,
+			NouveauTicket = 11;
 	
 	public FenetrePrincipale(Entreprise entreprise) {	
 		this.entreprise = entreprise;
