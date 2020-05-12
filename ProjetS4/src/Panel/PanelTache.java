@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
@@ -62,36 +64,26 @@ public class PanelTache extends JPanel{
 
 		gc.weightx = 3;
 		
-		gc.weighty = 9;
+		gc.weighty = 7;
 
 		if (afficheTicket) {
 			afficheTicket(gc);
 		}
 		
 		
-		gc.fill = GridBagConstraints.CENTER;
+		gc.fill = GridBagConstraints.VERTICAL;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-		gc.insets = new Insets(5, 15, 5, 15);
+		gc.insets = new Insets(0, 15, 0, 15);
 		gc.gridx = 2;
-		gc.gridy = 4;
+		gc.gridy = 0;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.gridheight= GridBagConstraints.REMAINDER;
 		this.add(creerLabelIco(new ImageIcon("images/mail_white.png"), TICKET), gc);
 	}
 	
 	
 
 	private void afficheTicket(GridBagConstraints gc) {
-		gc.fill = GridBagConstraints.CENTER;
-		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
-		gc.insets = new Insets(5, 15, 5, 15);
-		gc.gridx = 0;
-		gc.gridy = 0;
-		gc.gridwidth = GridBagConstraints.RELATIVE;		
-		
-		//tickets recu
-		gc.gridheight = 1;
-		this.add(creerLabel("Ticket recus", true), gc);
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
 		ArrayList<Ticket> ticketRecuTab = new ArrayList<Ticket>();
 		ArrayList<Ticket> ticketEnvTab = new ArrayList<Ticket>();
@@ -113,25 +105,41 @@ public class PanelTache extends JPanel{
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-	
-		gc.gridy ++;
+		gc.fill = GridBagConstraints.CENTER;
+		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		gc.insets = new Insets(0, 10, 0, 10);
+		gc.gridx = 0;
+		gc.gridy = 0;
+		
+		//tickets recu
+		gc.gridheight = 1;
+		this.add(creerLabel("Ticket recus", true), gc);
+
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		gc.fill = GridBagConstraints.BOTH;
+		gc.gridy=1;
 		gc.gridheight = 2;
 		this.add(creerList(ticketRecuTab), gc);
 		
 		
 		//ticket envoyé
+		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-
-		gc.gridy ++;
+		gc.gridheight = 1;
+		gc.gridy = 3;
 		this.add(creerLabel("Ticket envoyé", true), gc);
 
-		gc.gridy ++;
+		gc.fill = GridBagConstraints.BOTH;
+		gc.gridy = 4;
 		gc.gridheight = 2;
 		this.add(creerList(ticketEnvTab), gc);
 		
 		//bouton nouveau ticket
+		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
-		gc.gridy ++;
+		gc.gridy = 6;
+		gc.gridheight = 1;
 		this.add(boutonNouveauTicket, gc);
 		
 	}
@@ -168,7 +176,7 @@ public class PanelTache extends JPanel{
 		return label;
 	}
 
-	private JList<Ticket> creerList(ArrayList<Ticket> lt) {
+	private JScrollPane creerList(ArrayList<Ticket> lt) {
 		Ticket [] tt = new Ticket [lt.size()];
 		for (int i=0; i<tt.length; i++) {
 			tt[i] = lt.get(i);
@@ -176,10 +184,27 @@ public class PanelTache extends JPanel{
 		JList<Ticket> jlt = new JList<Ticket>(tt);
 		jlt.setBackground(couleurFond);
 		
-		Font font = new Font("Arial", Font.BOLD, 15);
-		//font.set
-		jlt.setFont(font);
-		return jlt;
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.setForeground(PanelPrincipal.BLANC);
+		jlt.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        JList<Ticket> jlt = (JList<Ticket>)evt.getSource();
+		        if (evt.getClickCount() == 2) {
+		            //int index = jlt.locationToIndex(evt.getPoint());
+		            afficheTicket(jlt.getSelectedValue());
+		        }
+		    }
+		});
+		
+		
+		JScrollPane scrollPane = new JScrollPane(jlt);
+		scrollPane.setViewportView(jlt);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return scrollPane;
+	}
+	
+	public void afficheTicket(Ticket t) {
+		entreprise.afficheInfoTicket(t);
 	}
 	
 	public void nouveauTicket() {

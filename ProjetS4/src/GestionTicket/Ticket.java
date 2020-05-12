@@ -141,7 +141,7 @@ public class Ticket {
 	}
 	
 	public String toString() {
-		return " sujet = " + this.sujet + ", envoyeur = " + this.getPersonneEnvoyeur().getPrenomNom() + ", receveur = " + this.getPersonneReceveur().getPrenomNom() + ", cree le : " + dateTicket.toString();
+		return this.sujet + " - " + this.getPersonneEnvoyeur().getPrenomNom() + " - " + dateTicket.toString();
  
 		
 		

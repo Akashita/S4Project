@@ -48,7 +48,7 @@ public class PanelInfoRessource extends JPanel{
 		this.fir = fir;
 		this.entreprise = entreprise;
 		this.ressource = ressource;
-		couleurFond = PanelPrincipal.BLEU3;
+		couleurFond = PanelPrincipal.BLEU2;
 		this.setBackground(couleurFond);
 		modeModification = false;
 		initialiseBouton();

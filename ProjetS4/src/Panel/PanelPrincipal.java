@@ -19,6 +19,8 @@ public class PanelPrincipal extends JPanel implements Observer{
 			NOIR = new Color(0,0,0),
 			INDISPO = new Color(179,62,197);
 	
+	public static final int PANELRESSOURCE = 0, PANELTACHE = 1, PANELPROJET = 2, CENTRE = 3, ALL = Integer.MAX_VALUE;
+	
 	public static Dimension dimensonBar = new Dimension(50, 50);
 	
 	private Entreprise entreprise;

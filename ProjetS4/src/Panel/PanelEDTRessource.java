@@ -41,7 +41,7 @@ public class PanelEDTRessource extends JPanel{
 
 	public PanelEDTRessource(Ressource resssource) {
 		this.ressource = resssource;
-		couleurFond = PanelPrincipal.BLEU3;
+		couleurFond = PanelPrincipal.BLEU2;
 		this.setBackground(couleurFond);
 		semaineSelectionner = Temps.getSemaine();
 		anneeSelectionner = Temps.getAnnee();
@@ -177,6 +177,7 @@ public class PanelEDTRessource extends JPanel{
 		slide.setMaximum(48);
 	    slide.setPaintTicks(false);
 	    slide.setPaintLabels(false);
+	    slide.setBackground(couleurFond);
 	    int defaultPos = semaineSelectionner;
 	    if(defaultPos <= 4) { defaultPos = 4;}
 	    if(defaultPos >= 48) { defaultPos = 48;}

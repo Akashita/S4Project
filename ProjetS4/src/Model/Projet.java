@@ -143,11 +143,8 @@ public class Projet implements Comparable<Projet>{
 
 	//--------------------------------------------------------------------------------->>>>> toString
 	public String toString() {
-		String liste = "Projet : " + this.nom + ". \n Il contient les activites suivantes : ";
-		for(int i = 0; i < this.lActivite.size(); i++){
-			liste += this.lActivite.get(i).toString();
-			liste += "\n";
-		}
+		String liste = this.nom;
+		
 		return liste;
 	}
 

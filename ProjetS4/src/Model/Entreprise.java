@@ -19,7 +19,9 @@ import javax.swing.JPanel;
 import Connexion.FenetreConnexion;
 import DebugFenetre.FenetreDebugBDD;
 import Fenetre.FenetreInfoRessource;
+import Fenetre.FenetreInfoTicket;
 import Fenetre.FenetrePrincipale;
+import GestionTicket.Ticket;
 import Panel.PanelInfoActivite;
 import Panel.PanelInfoProjet;
 import Panel.PanelTache;
@@ -67,6 +69,7 @@ public class Entreprise extends Observable{
 	private FenetrePrincipale fenetrePrincipale;
 	private FenetreDebugBDD fenetreBDD;
 	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
+	private ArrayList<FenetreInfoTicket> listeFenetreInfoTicket = new ArrayList<FenetreInfoTicket>();
 
 	private Projet projetSelectionner;
 	private Activite activiteSelectionner;
@@ -622,7 +625,6 @@ public class Entreprise extends Observable{
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
-
 	public void nouvTicket(int action,String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r) {
 
 		try {
@@ -634,11 +636,21 @@ public class Entreprise extends Observable{
 		}
 
 	}
+	
+	public void afficheInfoTicket(Ticket t) {
+		int exist = -1;
+		for (int i=0; i<listeFenetreInfoTicket.size(); i++) {
+			if (t.getId() == listeFenetreInfoTicket.get(i).getIdTicket()) {
+				exist = i;
+			}
+		}
+		if (exist > -1) {
+			listeFenetreInfoTicket.get(exist).dispose();
+			listeFenetreInfoTicket.remove(exist);
+		}
+		listeFenetreInfoTicket.add(new FenetreInfoTicket(this, t));
 
-
-
-
-
+	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
 	public void nouvPersonne (Personne pers) {

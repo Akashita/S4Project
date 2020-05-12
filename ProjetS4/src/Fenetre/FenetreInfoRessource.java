@@ -38,7 +38,6 @@ public class FenetreInfoRessource extends JDialog{
 	    this.setResizable(false);
 	    creationInterface();
 		this.setVisible(true);
-
 	}
 	
 

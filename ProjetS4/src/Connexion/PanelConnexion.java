@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Model.Entreprise;
@@ -26,7 +27,8 @@ import SQL.JavaSQLPersonne;
 public class PanelConnexion extends JPanel{
 
 	private FenetreConnexion fc;
-    private JTextField textFieldLogin = new JTextField(), textFieldMdp = new JTextField();
+    private JTextField textFieldLogin = new JTextField();
+    private JPasswordField mdpField = new JPasswordField();
     private JButton boutonConnexion, boutonQuitter;
     private Color couleurFond;
     private Personne user = null;
@@ -74,7 +76,7 @@ public class PanelConnexion extends JPanel{
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridwidth = 2;
 		gc.gridx = 1;
-		this.add(textFieldMdp, gc);	
+		this.add(mdpField, gc);	
 
 		//------------------- bouton 
 		gc.gridwidth = 1;
@@ -137,7 +139,7 @@ public class PanelConnexion extends JPanel{
 		}
 		for (int i = 0; i < personneTab.size(); i++) {
 			String log = textFieldLogin.getText();
-			String mdp = textFieldMdp.getText();		
+			String mdp = mdpField.getText();		
 			
 			String logI = personneTab.get(i).getLogin();
 			String mdpI = personneTab.get(i).getMdp();
@@ -156,7 +158,7 @@ public class PanelConnexion extends JPanel{
 		
 		
 		if (!textFieldLogin.getText().isEmpty()) {
-			if (!textFieldMdp.getText().isEmpty()) {
+			if (!mdpField.getText().isEmpty()) {
 				if (compteExiste) {
 					if (compteAdmin) {
 						new Entreprise("debugBDD");
