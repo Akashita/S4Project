@@ -2,11 +2,13 @@ package EcouteurEvenement;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import Model.Activite;
 import Model.Entreprise;
+import Panel.PanelInfoActivite;
 
-public class SourisActiviteListener implements MouseListener {
+public class SourisActiviteListener implements MouseListener{
 
 	private Entreprise entreprise;
 	private Activite activite;
@@ -25,8 +27,6 @@ public class SourisActiviteListener implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -46,5 +46,4 @@ public class SourisActiviteListener implements MouseListener {
 		// TODO Auto-generated method stub
 
 	}
-
 }

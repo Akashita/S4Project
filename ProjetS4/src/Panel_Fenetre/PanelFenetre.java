@@ -1,25 +1,46 @@
 package Panel_Fenetre;
 
+import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 
+import javax.swing.BoxLayout;
+import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
+
 import Fenetre.FenetreModal;
+import Model.Activite;
 import Model.Entreprise;
+import Model.Projet;
 import Model.Temps;
 import Panel.PanelPrincipal;
+import Ressource.Competence;
+import Ressource.Domaine;
 import Ressource.Ressource;
 
 public class PanelFenetre extends JPanel{
@@ -33,80 +54,372 @@ public class PanelFenetre extends JPanel{
 
     protected JTextField textFieldNom = new JTextField(),
     		textFieldPrenom = new JTextField(),
+    	    textFieldMdp = new JTextField(),
     	    textFieldPriorite = new JTextField(),
     	    textFieldCharge = new JTextField(),
-    	    textFieldCapacite = new JTextField();
+    	    textFieldCapacite = new JTextField(),
+    	    textFieldLogin = new JTextField();
+    
+    	
 
     protected JComboBox<String> comboBoxType = new JComboBox<String>(listeType);		
     protected JComboBox<Ressource> comboBoxRessource;		
 
+    String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
+    protected JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
+    protected ArrayList<Competence> listeCompetenceChoisie;
+    protected ArrayList<String> listeDomaineChoisi;
+    
 	protected Entreprise entreprise;
     protected FenetreModal fm;
-    protected Color couleurFond = PanelPrincipal.BLEU3;
-
-    String [] jours;
-    String[] mois = {"Janvier", "FÃ©vrier", "Mars", "Avril",
-    		"Mai", "Juin", "Juillet", "Aout",
-    		"Septembre", "Octobre", "Novembre", "DÃ©cembre"};
-    String[] annees = new String [20];
-    protected JComboBox<String> comboBoxAnnee, comboBoxMois, comboBoxJour;		
-
+    protected Color couleurFond = PanelPrincipal.BLEU2;
+    protected Projet projet;
+    protected Activite activite;
+    protected int actionChoisie;
+    
+    protected JComboBox<String> comboBoxActionTicket;	
+    protected String [] actionTicket = {"Envoyer un message", "Liberer une ressource", "Transferer une ressource"};
+    protected Checkbox checkBoxestAdmin = new Checkbox("administrateur", false);
+    protected JButton boutonAjoutCompetence, boutonAjoutDomaine;
+    
+    protected ArrayList<String> listeDomaine;
+    protected JList<String> jListDomaine;
+    protected JScrollPane scrollPaneJListDomaine;
+    protected JButton boutonSupprimerDomaine;
+    
+    protected JComboBox<Projet> comboBoxProjet;
+    
+    protected JButton boutonAfficherDateDebut, boutonAfficherDateFin, boutonAjoutDate;
+    protected boolean afficherDateDebut = false, afficherDateFin = false;
+    protected LocalDate dateDebut, dateFin;
+    
+    protected boolean alreadyPressed = false;
+    
+    protected JTextArea textArea;
+    
+    protected Calendrier calendrier1, calendrier2;
     
 	public PanelFenetre(Entreprise entreprise, FenetreModal fm) {
 		this.entreprise = entreprise;
 		this.fm = fm;
+		this.setBackground(couleurFond);
 	}
 	
 	protected void creerInterface() {}
 	
-	protected void initialiseComboBoxAnnee(PanelFenetre pf) {
-		int anneeActuel = Temps.getAnnee();
-		 for (int i=0; i<annees.length; i++) {
-			 annees[i] = Integer.toString(anneeActuel+i);
-		 }
-		 comboBoxAnnee = new JComboBox<String>(annees);
-		 comboBoxAnnee.setSelectedIndex(0);
-		 comboBoxAnnee.addActionListener (new ActionListener () {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					metAJourCalendrier(pf);
+	
+	//-------------------------------------------->>>>> gere la liste de domaine 
+	protected void initialiseDomaine (PanelFenetre pf) {
+		listeDomaine = entreprise.getDomaine().getListeDomaine();
+		boutonAjoutDomaine = new JButton("Ajouter");
+		boutonAjoutDomaine.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	ajoutDomaine(pf);
+	        }
+	    });			
+		boutonSupprimerDomaine = new JButton("Supprimer");
+		boutonSupprimerDomaine.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	supprimerDomaine(pf);
+	        }
+	    });			
+	}
+
+	protected Component afficheListeDomaine() {
+		listeDomaine = entreprise.getDomaine().getListeDomaine();
+		String [] domaine = new String [listeDomaine.size()];
+		Collections.sort(listeDomaine); //trie dans l'odre alphabetique
+		for (int i=0; i<listeDomaine.size(); i++) {
+			domaine[i] = listeDomaine.get(i);
+		}
+		jListDomaine = new JList<String>(domaine);
+		jListDomaine.setBackground(couleurFond);
+		scrollPaneJListDomaine = new JScrollPane(jListDomaine);
+		scrollPaneJListDomaine.setViewportView(jListDomaine);
+		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		JPanel panel = new JPanel();
+		panel.setBackground(couleurFond);
+		panel.setLayout(new BorderLayout());
+		panel.add(scrollPaneJListDomaine, BorderLayout.CENTER);
+		return panel;
+	}
+
+	protected void ajoutDomaine (PanelFenetre pf) {
+		if (!textFieldNom.getText().isEmpty()) {
+			String domaine = textFieldNom.getText().toUpperCase();
+			boolean estPresent = false;
+			for (int i=0; i<listeDomaine.size(); i++) {
+				if (domaine.equals(listeDomaine.get(i))) {
+					estPresent = true;
 				}
-			});	    	
+			}
+			if (!estPresent) {
+				entreprise.ajoutDomaine(domaine);
+				textFieldNom = new JTextField();
+				maj(pf);
+				}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Ce domaine existe déjà ", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+		}
+
 	}
 	
-	protected void initialiseComboBoxMois(PanelFenetre pf) {
-		comboBoxMois = new JComboBox<String>(mois);
-		comboBoxMois.setSelectedIndex(Temps.getIndexMois()-1);
-		comboBoxMois.addActionListener (new ActionListener () {
+	protected void supprimerDomaine(PanelFenetre pf) {
+		if (jListDomaine.getModel().getSize() > 0) {
+			int index = jListDomaine.getSelectedIndex();
+			if (index != -1) {
+				String domaine = listeDomaine.get(index);
+				if (entreprise.aucuneRessourceACeDomaine(domaine)) {
+					entreprise.supprimerDomaine(domaine);
+					maj(pf);			
+				}
+				else {
+			    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}			
+			}
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null,"Il y a aucun domaine dans l'entreprise", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
+	}
+	
+	
+	//-------------------------------------------->>>>> Competence pour Ressource
+	protected void initialiseCompetence (PanelFenetre pf) {
+		listeCompetenceChoisie = new ArrayList<Competence>();
+
+		Domaine domaine = entreprise.getDomaine();
+		String [] liste = new String [domaine.getListeDomaine().size()+1];
+		liste[0] = "Competence";
+		for (int i=0; i<liste.length-1; i++) {
+			liste[i+1] = domaine.getListeDomaine().get(i);
+		}
+		comboBoxDomaine = new JComboBox<String>(liste);
+
+		comboBoxNiveau = new JComboBox<String>(niveau);	
+
+		boutonAjoutCompetence = new JButton("Ajouter");
+		boutonAjoutCompetence.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	ajoutCompetenceChoisie(pf);
+	        }
+	    });			
+	}
+		
+	public void ajoutCompetenceChoisie(PanelFenetre pf) {
+		if (comboBoxDomaine.getSelectedIndex()>0) {
+			if (comboBoxNiveau.getSelectedIndex()>0) {
+				boolean estPresent = false;
+				Competence competence = new Competence((String) comboBoxDomaine.getSelectedItem(), comboBoxNiveau.getSelectedIndex());
+				for (int i=0; i<listeCompetenceChoisie.size(); i++) {
+					if (competence.getNom().equals(listeCompetenceChoisie.get(i).getNom())) {
+						estPresent = true;
+					}
+				}
+				if (!estPresent) {
+					listeCompetenceChoisie.add(competence);
+					maj(pf);
+				}	
+				else {
+			    	JOptionPane.showMessageDialog(null, "Vous l'avez deja  choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}
+			}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Choissisez un niveau", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Choissisez une competence", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
+	}
+	
+	protected JPanel afficherListeCompetenceChoisie() {
+		JPanel panel = new JPanel();
+		panel.setBackground(couleurFond);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.add(creerTexte("Competences choisies: "));
+		for (int i=0; i<listeCompetenceChoisie.size(); i++) {
+			panel.add(creerTexte(listeCompetenceChoisie.get(i).getNom()));
+		}
+		return panel;
+	}
+	
+	
+	//------------------------------------------------------->>>>>> Domaine pour activite
+	
+
+	protected void initialiseDomaineActivite (PanelFenetre pf) {
+		listeDomaineChoisi = new ArrayList<String>();
+
+		Domaine domaine = entreprise.getDomaine();
+		String [] liste = new String [domaine.getListeDomaine().size()+1];
+		liste[0] = "Competence";
+		for (int i=0; i<liste.length-1; i++) {
+			liste[i+1] = domaine.getListeDomaine().get(i);
+		}
+		comboBoxDomaine = new JComboBox<String>(liste);
+
+
+		boutonAjoutCompetence = new JButton("Ajouter");
+		boutonAjoutCompetence.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	ajoutDomaineChoisi(pf);
+	        }
+	    });			
+	}
+		
+	public void ajoutDomaineChoisi(PanelFenetre pf) {
+		if (comboBoxDomaine.getSelectedIndex()>0) {
+			boolean estPresent = false;
+			String domaine = (String) comboBoxDomaine.getSelectedItem();
+			for (int i=0; i<listeDomaineChoisi.size(); i++) {
+				if (domaine.equals(listeDomaineChoisi.get(i))) {
+					estPresent = true;
+				}
+			}
+			if (!estPresent) {
+				listeDomaineChoisi.add(domaine);
+				maj(pf);
+			}	
+			else {
+			    JOptionPane.showMessageDialog(null, "Vous l'avez deja  choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Choissisez une competence", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
+	}
+	
+	protected JPanel afficherListeDomaineChoisi() {
+		JPanel panel = new JPanel();
+		panel.setBackground(couleurFond);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.add(creerTexte("Competences choisies: "));
+		for (int i=0; i<listeDomaineChoisi.size(); i++) {
+			panel.add(creerTexte(listeDomaineChoisi.get(i)));
+		}
+		return panel;
+	}
+
+	//----------------------------------------------------->>>> Gesion jour/mois/annee
+	
+	protected void initialiseCalendrier(LocalDate date, PanelFenetre pf) {
+		calendrier1 = new Calendrier(this, pf, date);
+	}
+
+	protected JPanel panelCalendrier(Calendrier c) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
+		panel.setBackground(couleurFond);
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.weightx = 3;
+		gc.weighty = 0;
+		
+		gc.gridx = 0;
+		panel.add(c.getComboBoxJour(), gc);			
+		gc.gridx = 1;
+		panel.add(c.getComboBoxMois(), gc);			
+		gc.gridx = 2;
+		panel.add(c.getComboBoxAnnee(), gc);			
+
+		return panel;
+	}
+
+	//----------------------------------------------------->>>> Gesion ticket
+
+	protected void initialiseTicket(PanelFenetre pf) {
+		//afficherDateDebut =  afficherDateFin = false;
+		comboBoxProjet = new JComboBox<Projet>();
+		comboBoxActionTicket = new JComboBox<String>(actionTicket);
+		comboBoxActionTicket.addActionListener (new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				metAJourCalendrier(pf);
+				nouvelleAction(pf);
 			}
-		});	    	
+		});	    
+		calendrier1 = new Calendrier(this, pf, Temps.getAujourdhui());
+		calendrier2 = new Calendrier(this, pf, Temps.getAujourdhui());
+		//initialiseBoutonDate(pf);
+		initialiseTextFieldLogin(pf);
+		textArea = new JTextArea();
+	}
+	
+	protected void actualiseTicket(PanelFenetre pf) {
+		afficherDateDebut =  afficherDateFin = false;
+		initialiseTextFieldLogin(pf);		
 	}
 
 	
 	
-	protected void adapteComboBoxJour() {
-		int annee = Integer.parseInt((String) comboBoxAnnee.getSelectedItem());
-		int mois = comboBoxMois.getSelectedIndex()+1;
-		int nbJour = Temps.getJourMois(annee, mois);
-	    jours = new String [nbJour];
-		for (int i=0; i<nbJour; i++) {
-			jours[i] = Integer.toString(i+1);
+	protected void initialiseTextFieldLogin(PanelFenetre pf) {
+    	textFieldLogin = new JTextField("nom#id");
+    	textFieldLogin.getFont().deriveFont(Font.ITALIC);
+    	textFieldLogin.setForeground(PanelPrincipal.GRIS2);
+    	textFieldLogin.addMouseListener(new MouseListener() {           
+			@Override
+			public void mouseClicked(MouseEvent e) {
+    	        JTextField texteField = ((JTextField)e.getSource());
+    	        texteField.setText("");
+    	        texteField.getFont().deriveFont(Font.PLAIN);
+    	        texteField.setForeground(PanelPrincipal.NOIR);
+    	        texteField.removeMouseListener(this);
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+    	});
+    	textFieldLogin.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {alreadyPressed = false;}
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (!alreadyPressed) {
+					alreadyPressed = true;
+					if (textFieldCapacite.getText().indexOf(entreprise.SEPARATEUR)!=-1) {
+						majComboBoxProjet(pf);
+					}
+				}
+			}
+		});
+	}
+	
+	protected void majComboBoxProjet(PanelFenetre pf) {
+		String login = textFieldCapacite.getText();
+		Ressource r = entreprise.ressourceExiste(login);
+		if (r != null) {
+			ArrayList<Projet> lp = entreprise.getProjetDeLaRessource(r);
+			
+			Projet [] tp = new Projet[lp.size()];
+			for (int i=0; i<tp.length; i++) {
+				tp[i] = lp.get(i);
+			}	
+			comboBoxProjet = new JComboBox<Projet>(tp);			
 		}
-		comboBoxJour = new JComboBox<String>(jours);
-		comboBoxJour.setSelectedIndex(Temps.getIndexJour()-1);
+		else {
+			comboBoxProjet = new JComboBox<Projet>();
+		}
+		maj(pf);
 	}
 	
-	public void metAJourCalendrier(PanelFenetre pf) {
-		adapteComboBoxJour();
-		pf.removeAll();
-		pf.creerInterface();
-		pf.revalidate();
-		pf.repaint();		
+	protected void nouvelleAction(PanelFenetre pf) {
+		actionChoisie = comboBoxActionTicket.getSelectedIndex();
+		actualiseTicket(this);
+		maj(pf);
 	}
 
+	
+	
+	//-----------------------------------------
 	
 	protected void initialiseComboBoxType(PanelFenetre pf) {
 		comboBoxType.addActionListener (new ActionListener () {
@@ -119,32 +432,13 @@ public class PanelFenetre extends JPanel{
 	
 	protected void nouveauChoix(PanelFenetre pf) {
 		typeChoisi = (String) comboBoxType.getSelectedItem();
-		pf.removeAll();
-		creerInterface();
-		pf.revalidate();
-		pf.repaint();
+		maj(pf);
 	}
 
-	protected JPanel calendrier() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridBagLayout());
-		panel.setBackground(couleurFond);
-		GridBagConstraints gc = new GridBagConstraints();
-		gc.fill = GridBagConstraints.CENTER;
-		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-		gc.weightx = 3;
-		gc.weighty = 0;
-		
-		gc.gridx = 0;
-		panel.add(comboBoxJour, gc);			
-		gc.gridx = 1;
-		panel.add(comboBoxMois, gc);			
-		gc.gridx = 2;
-		panel.add(comboBoxAnnee, gc);			
-
-		return panel;
-	}
-
+	
+	
+	
+	
 	protected void initialiseComboBoxRessource(ArrayList<Ressource> listeRessource) {
 		Ressource [] tabRes = new Ressource[listeRessource.size()];
 		for (int i=0; i<tabRes.length; i++) {
@@ -153,7 +447,9 @@ public class PanelFenetre extends JPanel{
 		comboBoxRessource = new JComboBox<Ressource>(tabRes);
 	}
 
-
+	protected void adapteComboBoxRessource(Ressource ressource) {
+		comboBoxRessource.setSelectedItem(ressource);
+	}
 
 	protected JLabel creerTitre(String titre) {
 		JLabel label = new JLabel(titre);
@@ -168,7 +464,9 @@ public class PanelFenetre extends JPanel{
 		return label;
 	}
 	
-	public JButton creerBoutonAnnuler() {
+//----------------------------------------------------------------------------->>>>> Bouton	
+	
+	protected JButton creerBoutonAnnuler() {
 		JButton bouton = new JButton("Annuler");
 	    bouton.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -178,7 +476,7 @@ public class PanelFenetre extends JPanel{
 	    return bouton;
 	}
 
-	public JButton creerBoutonFin(PanelFenetre pf, String titre) {
+	protected JButton creerBoutonFin(PanelFenetre pf, String titre) {
 		JButton bouton = new JButton(titre);
 	    bouton.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -190,10 +488,30 @@ public class PanelFenetre extends JPanel{
 
 	protected void actionFin() {}
 
-	public void creerRessource() {
-	}
+	public void creerRessource() {}
 
 	
+	protected JButton creerBoutonSupprimer(PanelFenetre pf) {
+		JButton bouton = new JButton("Supprimer");
+	    bouton.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	pf.supprimer();
+	        }
+	    });			
+	    return bouton;
+	}
+	
+	protected void supprimer() {}
+
+//-----------------------------------------------------------------------
+	
+	public void maj (PanelFenetre pf) {
+		pf.removeAll();
+		pf.creerInterface();
+		pf.revalidate();
+		pf.repaint();		
+	}
+
 	protected boolean estUnEntier(String chaine) {
 		try {
 			Integer.parseInt(chaine);
@@ -203,10 +521,7 @@ public class PanelFenetre extends JPanel{
 		return true;
 	}
 
-	protected LocalDate creerLaDate() {
-		int jour = Integer.parseInt((String) comboBoxJour.getSelectedItem());
-		int mois = comboBoxMois.getSelectedIndex()+1;
-		int annee = Integer.parseInt((String) comboBoxAnnee.getSelectedItem());
+	protected LocalDate creerLaDate(int jour, int mois, int annee) {
 		LocalDate debut = null;
 		if (Temps.jourValide (jour, mois, annee)) {
 			debut = LocalDate.of(annee, mois, jour);
@@ -218,4 +533,7 @@ public class PanelFenetre extends JPanel{
 		return debut;
 	}
 
+	protected String dateToString(LocalDate date) {
+		return date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();			
+	}
 }

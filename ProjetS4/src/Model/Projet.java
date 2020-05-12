@@ -1,5 +1,6 @@
 package Model;
 import java.awt.Color;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +9,7 @@ import java.util.Hashtable;
 import javax.swing.JTextArea;
 
 import Ressource.Personne;
+import Ressource.Ressource;
 
 public class Projet implements Comparable<Projet>{
 
@@ -25,14 +27,18 @@ public class Projet implements Comparable<Projet>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Projet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
+	public Projet(ArrayList<Activite> Activite, Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
 		this.chefDeProjet = chefDeProjet;
-		this.lActivite =  new ArrayList<Activite>();
+		this.lActivite =  Activite;   // liste des activité du projet (demander pas Dams)
 		this.nom = nom;
 		this.priorite = priorite;
 		this.deadline = deadline;
 		this.id = id;
 		this.couleur = couleur;
+	}
+	
+	public Projet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
+		this(new ArrayList<Activite>(), chefDeProjet, nom, priorite, deadline, id, couleur);
 	}
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -77,6 +83,39 @@ public class Projet implements Comparable<Projet>{
 		return ht;
 	}
 	
+	public boolean ressourcePresente(Ressource r) {
+		boolean b = false;
+		for (int i=0; i<lActivite.size(); i++) {
+			if (lActivite.get(i).ressourcePresente(r)) {
+				b = true;
+				break;
+			}
+		}
+		return b;
+	}
+	
+	//------------------------------------------------------------------------------->>>>>>> Setteurs
+	
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public void setPriorite(float priorite) {
+		this.priorite = priorite;
+	}
+
+	public void setChefDeProjet(Personne chefDeProjet) {
+		this.chefDeProjet = chefDeProjet;
+	}
+
+	public void setDeadline(LocalDate deadline) {
+		this.deadline = deadline;
+	}
+
+	public void setListeActivite(ArrayList<Activite> lActivite) {
+		this.lActivite = lActivite;
+	}
+	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {//permet de tester si deux projets ont le m�me nom.
@@ -104,11 +143,8 @@ public class Projet implements Comparable<Projet>{
 
 	//--------------------------------------------------------------------------------->>>>> toString
 	public String toString() {
-		String liste = "Projet : " + this.nom + ". \n Il contient les activites suivantes : ";
-		for(int i = 0; i < this.lActivite.size(); i++){
-			liste += this.lActivite.get(i).toString();
-			liste += "\n";
-		}
+		String liste = this.nom;
+		
 		return liste;
 	}
 
@@ -144,6 +180,17 @@ public class Projet implements Comparable<Projet>{
 	 */
 	public boolean enlever(Activite activite) {
 		return lActivite.remove(activite);
+	}
+	
+	
+	public boolean contientActivite(Activite act) {
+		boolean contient = false;
+		for (int i = 0; i < lActivite.size(); i++) {
+			if(lActivite.get(i).equals(act)) {
+				contient = true;
+			}
+		}
+		return contient;
 	}
 
 

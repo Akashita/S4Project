@@ -2,7 +2,13 @@ package Panel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
@@ -14,7 +20,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import EcouteurEvenement.SourisSemaineListener;
 import Model.CreneauHoraire;
 import Model.Temps;
 import Ressource.Ressource;
@@ -28,179 +33,245 @@ public class PanelEDTRessource extends JPanel{
 	private Ressource ressource;
 	private CreneauHoraire [][] tableauCreneau;
 	private int semaineSelectionner;
-	
+	private int anneeSelectionner;
+	private Color couleurFond;
 	private JSlider slide = new JSlider();
 	
-	private JPanel panelCompletListeSemaine = new JPanel();
-	private JPanel panelListeSemaine = new JPanel();
-	
-	private JPanel panelCompletJourDeLasemaine = new JPanel();
-	private JPanel panelJourDeLasemaine = new JPanel();
-	
-	private JPanel panelCompletSemaineCreneau = new JPanel();
-	private JPanel panelSemaineCreneau = new JPanel();
 
 
 	public PanelEDTRessource(Ressource resssource) {
 		this.ressource = resssource;
-		this.setLayout(new BorderLayout());
-		this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);
-	}
-
-
-	private JPanel afficherEmploiDuTemps() {
-	semaineSelectionner = Temps.getSemaine();
-	tableauCreneau = ressource.getSemaineEDT(Temps.getAnnee(), Temps.getSemaine());
-	JPanel panelPrincipal = new JPanel();		
-	panelPrincipal.setLayout(new BorderLayout());
-	
-	
-	panelPrincipal.add(afficheHeure(), BorderLayout.WEST);
-	
-	JPanel panel = new JPanel();		
-	panel.setLayout(new BorderLayout());
-	
-	panelPrincipal.add(panelCompletJourDeLasemaine, BorderLayout.NORTH);
-	panelCompletJourDeLasemaine.setLayout(new BorderLayout());
-	afficheJourDeLaSemaine();
-	
-	panelPrincipal.add(panelCompletSemaineCreneau, BorderLayout.CENTER);
-	panelCompletSemaineCreneau.setLayout(new BorderLayout());
-	afficheCreneauDeLaSemaine();
-	
-	panelPrincipal.add(panelCompletListeSemaine, BorderLayout.SOUTH);
-	afficherListeSemaine();
-	
-	//panelPrincipal.add(panel);
-	return panelPrincipal;
-	}
-	
-	
-	private void afficheJourDeLaSemaine() {
-		panelCompletJourDeLasemaine.remove(panelJourDeLasemaine);
-		panelJourDeLasemaine = new JPanel();
-		int nbJour = tableauCreneau.length;
-		panelJourDeLasemaine.setLayout(new GridLayout(0,nbJour));
-		LocalDate[] jours = Temps.getJourSemaine(Temps.getAnnee(), semaineSelectionner);
-		for (int i=0; i<nbJour; i++) {
-			LocalDate jourActuel = jours[i];
-			String jour = jourActuel.getDayOfWeek().toString();	
-			String date = jourActuel.getDayOfMonth() + "/" + jourActuel.getMonthValue() + "/" + jourActuel.getYear();			
-			panelJourDeLasemaine.add(creerLabelInterface("<html>"+jour+"<br>"+date+"</html>", false));
-		}
-		panelCompletJourDeLasemaine.add(panelJourDeLasemaine,BorderLayout.CENTER);
-		this.revalidate();
-	}
-	
-	
-	private JPanel afficheHeure() {
-		JPanel panel = new JPanel();
-		int nbHeure = (tableauCreneau[0].length+1);
-		panel.setLayout(new GridLayout(nbHeure,0));
-		for (int i=0; i<nbHeure; i++) {
-			panel.add(creerLabelInterface(Integer.toString(i+8)+"h", true));
-		}
-		return panel;
-	}
-	
-	
-	private void afficherListeSemaine() {
+		couleurFond = PanelPrincipal.BLEU2;
+		this.setBackground(couleurFond);
+		semaineSelectionner = Temps.getSemaine();
+		anneeSelectionner = Temps.getAnnee();
 		configureSlider();
-		panelCompletListeSemaine.setLayout(new BoxLayout(panelCompletListeSemaine, BoxLayout.Y_AXIS));
-		panelCompletListeSemaine.add(slide);
-		changeSemaine();
+		afficherEmploiDuTemps();
 	}
+
+
+	private void afficherEmploiDuTemps() {
+		tableauCreneau = ressource.getSemaineEDT(anneeSelectionner, semaineSelectionner);
+		
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.fill = GridBagConstraints.BOTH;
+		gc.insets = new Insets(0, 0, 0, 1);
+		
+		
+		gc.weightx = 6.5; //5 jour de la semaine + 0.5 pour les heures
+		gc.weighty = 11.5; //1 pour la date, 9 pour le planning, 0,5 pour le slider, 0,5 pour la liste semaine, 0,5 pour la liste année
+
+		
+		//liste heure
+		gc.fill = GridBagConstraints.NORTH;
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		gc.weightx = 0.5;
+		gc.weighty = 1;
+		gc.gridx = 0;
+		gc.gridy = 1;
+		for (int i=0; i<9; i++) {
+			this.add(creerLabelInterface(Integer.toString(i+8)+"h", true), gc);
+			gc.gridy ++;
+		}	
+		gc.gridy = 9;
+		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
+		this.add(creerLabelInterface(Integer.toString(17)+"h", true), gc);
+
+		
+		//liste date
+		gc.fill = GridBagConstraints.BOTH;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.weightx = 1;
+		gc.weighty = 1;
+		gc.gridx = 1;
+		gc.gridy = 0;
+		gc.gridwidth=1;
+		LocalDate[] tabDate = Temps.getJourSemaine(anneeSelectionner, semaineSelectionner);
+		for (int i=0; i<5; i++) {
+			LocalDate jourActuel = tabDate[i];
+			String jour = jourActuel.getDayOfWeek().toString();	
+			int intJourDate = jourActuel.getDayOfMonth();
+			String stringJourDate = Integer.toString(intJourDate);
+			if (intJourDate < 10) { stringJourDate = 0 + stringJourDate; }
+			
+			int intMoisDate = jourActuel.getMonthValue();
+			String stringMoisDate = Integer.toString(intMoisDate);
+			if (intMoisDate < 10) { stringMoisDate = 0 + stringMoisDate; }
+			String date = stringJourDate + "/" + stringMoisDate + "/" + jourActuel.getYear();			
+			this.add(creerLabelInterface("<html>"+jour+"<br>"+date+"</html>", false), gc);		
+			gc.gridx ++;	
+		}
+		
+		gc.insets = new Insets(0, 0, 0, 0);
+		//planning
+		gc.weightx = 1;
+		gc.weighty = 1;
+		gc.gridx = 1;
+		gc.gridy = 1;
+		gc.gridwidth=1;
+		for (int i=0; i<5; i++) {
+			gc.gridy = 1;
+			for (int j=0; j<8; j++) {
+				this.add(creerLabelCreneau(tableauCreneau[i][j]), gc);
+				if (j==3) { // on laisse un espace pour le creneau de la pose
+					gc.gridy ++;
+				}
+				gc.gridy ++;
+			}
+			gc.gridy=5;
+			JPanel panel = new JPanel();
+			panel.setBackground(PanelPrincipal.INDISPO);
+			if(i == 2) {
+				panel.setLayout(new BorderLayout());
+				JLabel label = new JLabel("pause déjeuner");
+				label.setForeground(PanelPrincipal.BLANC);
+				//label.setFont(new Font("Arial", Font.BOLD, 10));
+			    label.setHorizontalAlignment(JLabel.CENTER);
+			    label.setVerticalAlignment(JLabel.CENTER);
+				panel.add(label, BorderLayout.CENTER);				
+			}
+			this.add(panel, gc);
+			gc.gridx ++;
+		}
+		
+		//gc.insets = new Insets(0, 0, 5, 5);
+		//slider
+		gc.fill = GridBagConstraints.BOTH;
+		gc.weightx = 0.5;
+		gc.weighty = 0.5;
+		gc.gridx = 1;
+		gc.gridy = 10;
+		gc.gridwidth=6;
+		this.add(slide, gc);
+		
+		//liste semaine
+		gc.weightx = 0.5;
+		gc.weighty = 0.5;
+		gc.gridx = 1;
+		gc.gridy = 11;
+		gc.gridwidth=1;
+		int ecart = slide.getValue();
+		for(int i=0; i<5; i++) {
+			this.add(creerLabelInteractifSemaine(1+i+ecart),gc);	
+			gc.gridx ++;
+		}
+		
+		//liste des annees
+		gc.weightx = 10;
+		gc.weighty = 0.5;
+		gc.gridx = 1;
+		gc.gridy = 12;
+		for(int i=0; i<5; i++) {
+			this.add(creerLabelInteractifAnnee(i+Temps.getAnnee()-1),gc);	
+			gc.gridx ++;
+		}
+		
+
+	
+	}
+	
 	
 	private void configureSlider() {
 		slide.setMinimum(0);
-		slide.setMaximum(42);
+		slide.setMaximum(48);
 	    slide.setPaintTicks(false);
 	    slide.setPaintLabels(false);
+	    slide.setBackground(couleurFond);
 	    int defaultPos = semaineSelectionner;
-	    if(defaultPos <= 10) { defaultPos = 10;}
-	    if(defaultPos >= 42) { defaultPos = 42;}
-	    slide.setValue(defaultPos-5);
+	    if(defaultPos <= 4) { defaultPos = 4;}
+	    if(defaultPos >= 48) { defaultPos = 48;}
+	    slide.setValue(defaultPos-3);
 	    slide.addChangeListener(new ChangeListener(){
 	        public void stateChanged(ChangeEvent event){
-	        	changeSemaine();
-	        	afficheJourDeLaSemaine();
+	        	modification();	        	
 	        }
 	      });  
 	}
 	
-	private void changeSemaine() {
-		panelCompletListeSemaine.remove(panelListeSemaine);
-		panelListeSemaine = new JPanel();
-		int nbSemaine = 10;
-		int ecart = slide.getValue();
-		panelListeSemaine.setLayout(new GridLayout(0, nbSemaine));
-		for (int i=1; i<=nbSemaine; i++) {
-			panelListeSemaine.add(creerLabelInteractif(Integer.toString(i+ecart)));
-		}
-		panelCompletListeSemaine.add(panelListeSemaine);
-		this.revalidate();
-	}
 	
-	private JLabel creerLabelInteractif(String texte) {
-		JLabel label = new JLabel(texte);
-		label.addMouseListener(new SourisSemaineListener(this, label));
-		if(semaineSelectionner == Integer.parseInt(texte)) {
+	private JLabel creerLabelInteractifSemaine(int numeroSemaine) {
+		JLabel label = new JLabel(Integer.toString(numeroSemaine));
+		if(semaineSelectionner == numeroSemaine) {
 			label.setOpaque(true);
 			label.setBackground(Color.YELLOW);
 		}
 		label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		label.setHorizontalAlignment(JLabel.CENTER);
+		label.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				selectionnerSemaine(label);
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}	
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			
+		});
 		return label;
 	}
-	
-	public void selectionnerProjet(JLabel label) {
+
+	public void selectionnerSemaine(JLabel label) {
 		semaineSelectionner = Integer.parseInt(label.getText());
-		changeSemaine();
-		afficheJourDeLaSemaine();
-		tableauCreneau = ressource.getSemaineEDT(Temps.getAnnee(), semaineSelectionner);
-		afficheCreneauDeLaSemaine();
+		modification();
+	} 
+
+	private JLabel creerLabelInteractifAnnee(int numeroAnnee) {
+		JLabel label = new JLabel(Integer.toString(numeroAnnee));
+		if(anneeSelectionner == numeroAnnee) {
+			label.setOpaque(true);
+			label.setBackground(Color.YELLOW);
+		}
+		label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				selectionnerAnnee(label);
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {}			
+			@Override
+			public void mousePressed(MouseEvent e) {}		
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			
+		});
+		return label;
+	}
+
+	public void selectionnerAnnee(JLabel label) {
+		anneeSelectionner = Integer.parseInt(label.getText());
+		modification();
 	} 
 	
-	private void afficheCreneauDeLaSemaine() {
-		panelCompletSemaineCreneau.remove(panelCompletSemaineCreneau);
-		panelSemaineCreneau = new JPanel();
-		int nbJour = tableauCreneau.length;
-		panelSemaineCreneau.setLayout(new GridLayout(0, nbJour));
-		for (int i=0; i<nbJour; i++) {
-			panelSemaineCreneau.add(afficheJour(tableauCreneau[i]));
-		}
-		panelCompletSemaineCreneau.add(panelSemaineCreneau, BorderLayout.CENTER);
+	private void modification() {
+		this.removeAll();
+		this.afficherEmploiDuTemps();
 		this.revalidate();
+		this.repaint();
 	}
-	
-	private JPanel afficheJour(CreneauHoraire [] tableauCreneau) {
-		JPanel panel = new JPanel();
-		int nbHeure = tableauCreneau.length+1;
-		panel.setLayout(new GridLayout(nbHeure,0));
-		for (int i=0; i<nbHeure; i++) {
-			if (i == 4) {
-				panel.add(new JLabel("Pause déjeuner"));
-			}
-			else {
-				int index = i;
-				if (i > 4) {
-					index --;
-				}
-				CreneauHoraire creneau = tableauCreneau[index];
-				panel.add(creerLabelCreneau(creneau));				
-			}
-		}
-		return panel;
-	}
-	
+
 	
 	private JLabel creerLabelCreneau(CreneauHoraire creneau) {
 		JLabel label = new JLabel();
 		if (creneau != null) {
 			
+			//TODO LE NOM DU PROJET EST INDEFINI POUR LE MOMENT
+			/*
             String[] regex = creneau.getTitre().split("%", 2); 
-            
 			label.setText("<html>"+regex[0]+"<br>"+regex[1]+"</html>");
+			*/
+			
+			label.setText("Activité n°"+creneau.getTitre());
+			
 			label.setOpaque(true);
 			label.setBackground(creneau.getCouleurActivite());			
 		}
@@ -217,6 +288,8 @@ public class PanelEDTRessource extends JPanel{
 	
 	private JPanel creerLabelInterface(String texte, boolean heure) {
 		JPanel panel = new JPanel();
+		panel.setBackground(couleurFond);
+
 		panel.setLayout(new BorderLayout());
 		JLabel label = new JLabel(texte);
 		if (heure) {

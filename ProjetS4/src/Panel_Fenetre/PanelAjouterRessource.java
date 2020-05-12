@@ -4,8 +4,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JOptionPane;
+
 import Fenetre.FenetreModal;
+import Model.Activite;
 import Model.Entreprise;
+import Model.Temps;
 import Ressource.Ressource;
 
 public class PanelAjouterRessource extends PanelFenetre{
@@ -17,34 +21,21 @@ public class PanelAjouterRessource extends PanelFenetre{
 
 	public PanelAjouterRessource(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
-		initialiseComboBoxAnnee(this);
-		initialiseComboBoxMois(this);
-		adapteComboBoxJour();
 		creerInterface();
 	}
 	
 	protected void creerInterface() {
-	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
 		GridBagConstraints gc = new GridBagConstraints();
-		
-		/* le parametre fill sert à définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
-		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
-		 */
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx définit le nombre de cases en ordonnée */
 		gc.weighty = 7;
 
 		gc.gridx = 0;
@@ -79,7 +70,14 @@ public class PanelAjouterRessource extends PanelFenetre{
 	}
 	
 	protected void actionFin() {
-		entreprise.ajouterRessourceActivite((Ressource) comboBoxRessource.getSelectedItem());
-		fm.dispose();
+		Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
+		Activite a = entreprise.getActiviteSelectionner();
+		if (!a.ressourcePresente(r)) {
+			entreprise.ajouterRessourceActivite(r,a);
+			fm.dispose();
+		}
+		else {
+		   	JOptionPane.showMessageDialog(null, "Cette ressource est deja pr�sente dans cette activit�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
 	}
 }

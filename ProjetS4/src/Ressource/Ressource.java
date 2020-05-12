@@ -1,11 +1,20 @@
 package Ressource;
+import java.util.List;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
+
+import Model.Activite;
 import Model.CreneauHoraire;
 import Model.Entreprise;
+import Model.Projet;
 import Model.Temps;
 
 public class Ressource implements Comparable<Ressource>{
@@ -53,10 +62,18 @@ public class Ressource implements Comparable<Ressource>{
 	public int getId() {
 		return this.id;
 	}
+
+	
+	
+	//--------------------------------------------------------------------------------->>>>>>> Setteur 
+	
+	public void setNom (String s) {
+		this.nom = s;
+	}
 	
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
-	public boolean equals(Object obj) { //test si deux ressources sont �gales
+	public boolean equals(Object obj) { //test si deux ressources sont ���gales
 		if(obj instanceof Ressource && obj != null) {
 			Ressource res = (Ressource)obj;
 			return id == res.id;
@@ -78,6 +95,7 @@ public class Ressource implements Comparable<Ressource>{
 		
 		return res;
 	}
+
 	
 	
 	
@@ -107,10 +125,6 @@ public class Ressource implements Comparable<Ressource>{
 		return semaineEDT;
 	}
 	
-	public CreneauHoraire getMoisEDT(int numeroMois) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public void vider() {
 		jours.clear();
@@ -119,7 +133,7 @@ public class Ressource implements Comparable<Ressource>{
 
 	/**
 	 * Cree une journee entierement disponible
-	 * @return Un tableau de CreneauHoraire init � null
+	 * @return Un tableau de CreneauHoraire init ��� null
 	 */
 	private ArrayList<CreneauHoraire> creeJourneeCreneauLibre() {
 		ArrayList<CreneauHoraire> creneaux = new ArrayList<CreneauHoraire>();
@@ -131,7 +145,7 @@ public class Ressource implements Comparable<Ressource>{
 	
 
 	/**
-	 * Ajoute un creneau � la ressource (si possible)
+	 * Ajoute un creneau ��� la ressource (si possible)
 	 * @param creneau   Le creneau a ajouter
 	 * @param jour   	Le jour ou le creneau doit etre ajoute
 	 * @return true si le creneau a ete ajoute
@@ -185,7 +199,7 @@ public class Ressource implements Comparable<Ressource>{
 	 * ont forcement tous leurs creneaux de libres)
 	 * @return une hashtable contenant tous les creneaux libres
 	 */
-	public Hashtable<LocalDate, ArrayList<CreneauHoraire>> getCreneauxLibres(){ //Retourne une hashtable de jour avec tous les cr�neaux libres
+	public Hashtable<LocalDate, ArrayList<CreneauHoraire>> getCreneauxLibres(){ //Retourne une hashtable de jour avec tous les cr���neaux libres
 		Hashtable<LocalDate, ArrayList<CreneauHoraire>> creneauxLibres = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
 		
 		Set<LocalDate> keys = jours.keySet(); //On recupere les cles de la hashtable jours
@@ -206,13 +220,12 @@ public class Ressource implements Comparable<Ressource>{
 		return creneauxLibres;
 	}
 	
-	
 	/**
 	 * Methode utilisee par getCreneauxLibres qui donne la liste des creneaux libres de la journee en parametre
 	 * @param jourCourant   Le jour a traiter
 	 * @return la liste des creneaux libres de la journee
 	 */
-	private ArrayList<CreneauHoraire> getCreneauxLibresJour(ArrayList<CreneauHoraire> jourCourant) { //Retourne les cr�neaux libres d'une journ�e
+	private ArrayList<CreneauHoraire> getCreneauxLibresJour(ArrayList<CreneauHoraire> jourCourant) { //Retourne les cr���neaux libres d'une journ���e
 		ArrayList<CreneauHoraire> creneauxLibres = new ArrayList<CreneauHoraire>();
 		for (int j = 0; j < jourCourant.size(); j++) {
 			if(jourCourant.get(j) == null) {
@@ -222,8 +235,121 @@ public class Ressource implements Comparable<Ressource>{
 		return creneauxLibres;
 		
 	}
+	
+	public LocalDate getPremiereDateActivite(Activite act) {
+		List<LocalDate> listKeys = new ArrayList<LocalDate>(jours.keySet());
+		LocalDate premDate = null;
+		Collections.sort(listKeys);
+		boolean quitter = false;
+		for (int i = 0; i < listKeys.size(); i++) {
+			ArrayList<CreneauHoraire> jour = jours.get(listKeys.get(i));
+			for (int j = 0; j < jour.size(); j++) {
+				if (jour.get(j).getActivite() == act) {
+					premDate = listKeys.get(i);
+					quitter = true;
+					break;
+				}
+			}
+			if (quitter) {
+				break;
+			}
+		}
 
-
-
+		return premDate;	
+	}
+	
+	public LocalDate getDerniereDateActivite(Activite act) {
+		List<LocalDate> listKeys = new ArrayList<LocalDate>(jours.keySet());
+		LocalDate derDate = null;
+		Collections.sort(listKeys);
+		boolean quitter = false;
+		for (int i = listKeys.size()-1; i >= 0; i--) {
+			ArrayList<CreneauHoraire> jour = jours.get(listKeys.get(i));
+			for (int j = jour.size()-1; j >= 0 ; j--) {
+				if (jour.get(j).getActivite() == act) {
+					derDate = listKeys.get(i);
+					quitter = true;
+					break;
+				}
+			}
+			if (quitter) {
+				break;
+			}
+		}
+		return derDate;	
+	}
+	
+	public LocalDateTime getPremiereCreneauApresAct(int ordre) {
+		Set<LocalDate> keys = jours.keySet(); //On recupere les cles de la hashtable jours
+		Iterator<LocalDate> itt = keys.iterator();
+		boolean trouve = false;		
+		LocalDate key = null;
+		LocalDateTime res = null;
+		ArrayList<CreneauHoraire> jourCourant;
+		int i = 0;
+		while(itt.hasNext() && !trouve) { //On parcours les jours
+			key = itt.next();
+			jourCourant = jours.get(key); //On recupere le jour courant
+			for (i = 0; i < jourCourant.size(); i++) {
+				if(jourCourant.get(i).getActivite().getOrdre() >= ordre) {
+					trouve = true;
+					break;
+				}
+			}			
+		}
+		if(key == null) {
+			res = null;
+		} else if(!trouve) {
+			res = getCreneauSuivant(key, i);
+		} else {
+			res =  LocalDateTime.of(key, LocalTime.of(indiceToHeure(i), 0));
+		}
+		
+		return res;
+	}
+	
+	private LocalDateTime getCreneauSuivant(LocalDate key, int indice) {
+		if(indice == 7) {
+			key = key.plus(1, ChronoUnit.DAYS);
+			indice = indiceToHeure(indice);
+		}
+		return LocalDateTime.of(key, LocalTime.of(indice, 0));
+	}
+	
+	private int indiceToHeure(int indice) {
+		int heure = Entreprise.HEURE_DEBUT_MATIN + indice;
+		if(indice > 4) {
+			heure = heure + (Entreprise.HEURE_DEBUT_APREM - Entreprise.HEURE_FIN_MATIN);
+		}
+		return heure;
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

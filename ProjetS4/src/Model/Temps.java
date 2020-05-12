@@ -3,6 +3,7 @@ package Model;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.Calendar;
@@ -10,11 +11,11 @@ import java.util.Locale;
 
 public final class Temps {
 	
-		
+	public final static int nbAnnnee = 4;
+	
 	public static LocalDate getAujourdhui() {
 		return LocalDate.now();
 	}
-	
 	public static int getAnnee() {
 		return getAujourdhui().getYear();
 	}
@@ -26,41 +27,48 @@ public final class Temps {
 	}
 	
 	
-	//TODO Risque de poser probl�me lors du changement d'ann�e
 	public static LocalDate[] getJourSemaine(int annee, int semaine) {
-		LocalDate[] tab = new LocalDate[5];
 		
-		//On r�cup�re le num�ro du premier jour (initialis� au lundi) de la semaine pass�e en param�tre
 		Calendar cal = Calendar.getInstance();
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
-		cal.setWeekDate(annee, semaine, Calendar.MONDAY);
-		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
+		int premierJour = cal.getMinimalDaysInFirstWeek();
+
 		
-		//On remplit le tableau avec les 5 jours ouvrables de la semaine (lundi -> vendredi)
-		// en incr�mentant le num�ro du jour 
-		for (int i = 0; i < 5; i++) {
-			tab[i] = LocalDate.ofYearDay(annee, numJour+i);
+		if(semaine == 1 && premierJour > Calendar.MONDAY) {
+			cal.set(Calendar.YEAR, annee-1);
+			cal.set(Calendar.WEEK_OF_YEAR, cal.getActualMaximum(Calendar.WEEK_OF_YEAR) + 1);
+			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		} else {
+			cal.setWeekDate(annee, semaine, Calendar.MONDAY);
 		}
 		
-		return tab;	
+		
+		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
+		int numAnne = cal.get(Calendar.YEAR);
+		
+		LocalDate init = LocalDate.ofYearDay(numAnne, numJour);
+		LocalDate[] tab = new LocalDate[5];
+		
+		for (int i = 0; i < 5; i++) {
+			tab[i] = init;
+			init = init.plus(1, ChronoUnit.DAYS);
+		}
+
+		return tab;
+		
 	}
 	
-	public static LocalDate[] getJourSemaine() {
-		LocalDate[] tab = new LocalDate[5];
-		LocalDate date = LocalDate.now();
-		//On recuere le numero du premier jour (initialise au lundi) de la semaine passee en parametre
+	
+	public static int getNbSemaine(int annee) {
 		Calendar cal = Calendar.getInstance();
-		cal.setFirstDayOfWeek(Calendar.MONDAY);
-		cal.setWeekDate(date.getYear(), date.getMonthValue(), Calendar.MONDAY);
-		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
-		
-		//On remplit le tableau avec les 5 jours ouvrables de la semaine (lundi -> vendredi)
-		// en incrementant le numero du jour 
-		for (int i = 0; i < 5; i++) {
-			tab[i] = LocalDate.ofYearDay(date.getYear(), numJour+i);
-		}
-		
-		return tab;	
+		cal.set(Calendar.YEAR, annee);
+		return cal.getActualMaximum(Calendar.WEEK_OF_YEAR);
+	}
+	
+	
+	public static LocalDate[] getJourSemaine() {
+		Calendar cal = Calendar.getInstance();
+		return getJourSemaine(cal.get(Calendar.YEAR), cal.get(Calendar.WEEK_OF_YEAR));
 	}
 	
 	public static String getLocalDateString(LocalDate date) {
@@ -125,4 +133,8 @@ public final class Temps {
 		return getAujourdhui().getDayOfMonth();
 	}
 
+	public static boolean dateUnEstSuperieurDateDeux(LocalDate d1, LocalDate d2) {
+		return d1.isAfter(d2);
+	}
+	
 }

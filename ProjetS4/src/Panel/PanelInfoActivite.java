@@ -12,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import EcouteurEvenement.KeyActiviteListener;
 import EcouteurEvenement.SourisRessourceListener;
 import Model.Activite;
 import Model.Entreprise;
@@ -27,56 +28,57 @@ public class PanelInfoActivite extends JPanel{
 	private Entreprise entreprise;
 	private Activite activite;
 	private Color couleurFond;
-
-	public PanelInfoActivite (Entreprise entreprise) {
-		this.entreprise = entreprise;
-		activite = entreprise.getActiviteSelectionner();
-		this.setBackground(PanelPrincipal.BLEU3);
-		if (activite != null) {
-			afficheInterface();
-		}
-	}
+	
 
 	public PanelInfoActivite (Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;
 		this.activite = activite;
+
 		if (activite != null) {
 			couleurFond = PanelPrincipal.BLEU3;
-			if (entreprise.getActiviteSelectionner() != null) {
-				if (activite.getId() == entreprise.getActiviteSelectionner().getId()) {
-					couleurFond = PanelPrincipal.BLEU2;
-				}					
-			}
 			this.setBackground(couleurFond);
 			this.setLayout(new BorderLayout());
-			this.add(afficheInterface(), BorderLayout.CENTER);
+
+			ArrayList<Ressource> listeRes = activite.getListeRessourceType(Ressource.PERSONNE);
+			if (activite.getAfficheEDT() && listeRes.size() > 0) { //on affiche son edt
+				this.add(new PanelEDTActivite(entreprise, activite));
+			}
+			else {
+				if (entreprise.getActiviteSelectionner() != null) {
+					if (activite.getId() == entreprise.getActiviteSelectionner().getId()) {
+						couleurFond = PanelPrincipal.BLEU2;
+					}					
+				}
+				this.add(afficheInterface(), BorderLayout.CENTER);
+			}
 		}
 	}
 
+	
 
 	public JPanel afficheInterface() {
 		JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
 		panel.setLayout(new GridBagLayout());
 		
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
+		/* Le gridBagConstraints va definir la position et la taille des elements */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert à définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
+		/* le parametre fill sert à definir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
 		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
 		 */
 		gc.fill = GridBagConstraints.BOTH;
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
+		/* insets definir la marge entre les composant new Insets(margeSuperieure, margeGauche, margeInferieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
+		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalite de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
+		/* weightx definit le nombre de cases en abscisse */
 		gc.weightx = 5;
 		
-		/* weightx définit le nombre de cases en ordonnée */
+		/* weightx definit le nombre de cases en ordonnee */
 		gc.weighty = 1;
 		
 		gc.gridx = 0;
@@ -87,10 +89,23 @@ public class PanelInfoActivite extends JPanel{
 		
 		
 			panel.add(creerLabel(activite.getTitre(), true), gc);
+			
 			gc.gridx = 0;
 			gc.gridy = 1;
-			panel.add(labelInfo("Travail achevée: pas encore implementé"), gc);
+			String liste = "";
+			for (int i=0; i<activite.getListeDomaine().size(); i++) {
+				liste += activite.getListeDomaine().get(i);
+				if (i<activite.getListeDomaine().size()-1) {
+					liste += " / ";
+				}
+			}
+			panel.add(labelInfo("Domaines demandes: "+liste), gc);
 			
+
+			gc.gridx = 0;
+			gc.gridy = 2;
+			panel.add(labelInfo("Travail achevee: pas encore implemente"), gc);
+
 			gc.gridx = 1;
 			gc.gridy = 0;
 			panel.add(labelInfo("Commence le: " + activite.getJourDebut()), gc);
@@ -124,8 +139,6 @@ public class PanelInfoActivite extends JPanel{
 					panel.add(listeVide, gc);				
 				}
 			}			
-		
-		
 		return panel;
 	}
 
@@ -187,7 +200,11 @@ public class PanelInfoActivite extends JPanel{
 		return panel;
 	}
 
+	
 	public Activite getActivite() {
 		return activite;
 	}
+	
+	
+	
 }

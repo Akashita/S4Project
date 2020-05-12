@@ -3,6 +3,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
+import EcouteurEvenement.KeyActiviteListener;
 import Model.Entreprise;
 
 public class PanelPrincipal extends JPanel implements Observer{
@@ -15,7 +16,12 @@ public class PanelPrincipal extends JPanel implements Observer{
 			GRIS1 = new Color(231,234,235),
 			GRIS2 = Color.GRAY,
 		    BLANC = new Color(255,255,255),
-			NOIR = new Color(0,0,0);
+			NOIR = new Color(0,0,0),
+			INDISPO = new Color(179,62,197);
+	
+	public static final int PANELRESSOURCE = 0, PANELTACHE = 1, PANELPROJET = 2, CENTRE = 3, ALL = Integer.MAX_VALUE;
+	
+	public static Dimension dimensonBar = new Dimension(50, 50);
 	
 	private Entreprise entreprise;
 	
@@ -34,7 +40,17 @@ public class PanelPrincipal extends JPanel implements Observer{
         panel.setLayout(new BorderLayout());
         panel.add(new PanelProjet(entreprise), BorderLayout.NORTH);
         panel.add(new PanelInfoProjet(entreprise), BorderLayout.CENTER);
+        panel.add(new PanelTache(entreprise), BorderLayout.EAST);
+        
         this.add(panel, BorderLayout.CENTER);
+        
+        
+        if (entreprise.getActiviteSelectionner() != null) {
+    		this.setFocusable(true);
+    		this.requestFocus();
+    		this.addKeyListener(new KeyActiviteListener(entreprise));        	
+        }
+		
 		this.revalidate();	
 	}
 }

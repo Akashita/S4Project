@@ -4,10 +4,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.AbstractButton;
 import javax.swing.JOptionPane;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
+import Ressource.Personne;
 import Ressource.Ressource;
 
 public class PanelNouvelleRessource extends PanelFenetre{
@@ -20,6 +22,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 
 	public PanelNouvelleRessource(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
+		initialiseCompetence(this);
 		creerInterface();
 	}
 	
@@ -27,25 +30,26 @@ public class PanelNouvelleRessource extends PanelFenetre{
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va d√©finir la position et la taille des √©l√©ments */
+		/* Le gridBagConstraints va dÈfinir la position et la taille des ÈlÈments */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert √† d√©finir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
+		/* le parametre fill sert √† dÈfinir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
 		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
 		 */
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets d√©finir la marge entre les composant new Insets(margeSup√©rieure, margeGauche, margeInf√©rieur, margeDroite) */
+		/* insets dÈfinir la marge entre les composant new Insets(margeSupÈrieure, margeGauche, margeInfÈrieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir o√π on place le composant s'il n'occupe pas la totalit√© de l'espace disponnible */
+		/* ipady permet de savoir o√π on place le composant s'il n'occupe pas la totalitÈ de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx d√©finit le nombre de cases en abscisse */
+		/* weightx dÈfinit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx d√©finit le nombre de cases en ordonn√©e */
-		gc.weighty = 6;
+		/* weightx dÈfinit le nombre de cases en ordonnÈe */
+		int maxHauteur = 10;
+		gc.weighty = maxHauteur;
 
 		gc.gridx = 0;
 		gc.gridy = 0;
@@ -64,8 +68,8 @@ public class PanelNouvelleRessource extends PanelFenetre{
 		if (typeChoisi == Ressource.PERSONNE) {
 			gc.gridwidth = 1;
 			gc.gridx = 0;
-			gc.gridy = 3;
-			this.add(creerTexte("Indiquez son pr√©nom"), gc);
+			gc.gridy ++;
+			this.add(creerTexte("Indiquez son prÈnom"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
@@ -74,12 +78,48 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.gridwidth = 1;
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
-			gc.gridy = 4;
+			gc.gridy ++;
 			this.add(creerTexte("Indiquez son nom"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
-			this.add(textFieldNom, gc);			
+			this.add(textFieldNom, gc);	
+			
+			gc.gridwidth = 1;
+			gc.fill = GridBagConstraints.CENTER;
+			gc.gridx = 0;
+			gc.gridy ++;
+			this.add(creerTexte("Mot de passe"), gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridwidth = 2;
+			gc.gridx = 1;
+			this.add(textFieldMdp, gc);	
+			
+			
+			gc.gridwidth = 3;
+			gc.fill = GridBagConstraints.CENTER;
+			gc.gridx = 0;
+			gc.gridy ++;
+			this.add(creerTitre("Indiquez ses compÈtences"), gc);
+
+			gc.fill = GridBagConstraints.WEST;
+			gc.gridy ++;		
+			this.add(afficherListeCompetenceChoisie(), gc);
+
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridwidth = 1;
+			gc.gridx = 0;
+			gc.gridy ++;
+			this.add(comboBoxDomaine, gc);
+			gc.gridx = 1;
+			this.add(comboBoxNiveau, gc);
+			gc.gridx = 2;
+			this.add(boutonAjoutCompetence, gc);
+						
+			gc.gridwidth = 1;
+			gc.gridx = 0;
+			gc.gridy = maxHauteur;
+			this.add(checkBoxestAdmin, gc);
 		}
 
 		if (typeChoisi == Ressource.SALLE) {
@@ -96,7 +136,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
 			gc.gridy = 4;
-			this.add(creerTexte("Indiquez sa capacit√©"), gc);
+			this.add(creerTexte("Indiquez sa capacitÈ"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
@@ -114,27 +154,17 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.gridwidth = 2;
 			gc.gridx = 1;
 			this.add(textFieldNom, gc);
-			
-			gc.gridwidth = 1;
-			gc.fill = GridBagConstraints.CENTER;
-			gc.gridx = 0;
-			gc.gridy = 4;
-			this.add(creerTexte("Indiquez sa capacit√©"), gc);
-			gc.fill = GridBagConstraints.HORIZONTAL;
-			gc.gridwidth = 2;
-			gc.gridx = 1;
-			this.add(textFieldCapacite, gc);			
 		}
 		
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridx = 1;
-		gc.gridy = 6;
+		gc.gridy = maxHauteur;
 		this.add(creerBoutonAnnuler(), gc);
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Cr√©er"), gc);
+		this.add(creerBoutonFin(this, "CrÈer"), gc);
 
 	}
 	
@@ -143,7 +173,15 @@ public class PanelNouvelleRessource extends PanelFenetre{
 		if (!textFieldNom.getText().isEmpty()) {
 			if (typeChoisi == Ressource.PERSONNE) {
 				if (!textFieldPrenom.getText().isEmpty()) {
-					entreprise.nouvPersonne(textFieldNom.getText(), textFieldPrenom.getText());	 
+					String role = "";
+					if (checkBoxestAdmin.getState()) {
+						role = Personne.ADMINISTRATEUR;
+					}
+					else {
+						role = Personne.COLLABORATEUR;
+					}
+					
+					entreprise.nouvPersonne(textFieldNom.getText(), textFieldPrenom.getText(), role, textFieldMdp.getText(), listeCompetenceChoisie);	 
 					fm.dispose();
 				}
 				else {
@@ -153,13 +191,17 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			if (typeChoisi == Ressource.SALLE) {
 				if (estUnEntier(textFieldCapacite.getText())) {
 					entreprise.nouvSalle(textFieldNom.getText(), Integer.parseInt(textFieldCapacite.getText()));
+					fm.dispose();
 				}
 				else {
 			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			if (typeChoisi == Ressource.CALCULATEUR) {
-				entreprise.nouvCalculateur(textFieldNom.getText());
+				if (estUnEntier(textFieldCapacite.getText())) {
+					entreprise.nouvCalculateur(textFieldNom.getText());
+					fm.dispose();
+				}
 			}	
 		}
 		else {

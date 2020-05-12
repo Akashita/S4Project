@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import Fenetre.FenetreModal;
 import Model.Entreprise;
 import Model.Projet;
+import Model.Temps;
 
 public class PanelNouvelleActivite extends PanelFenetre{
 	
@@ -20,9 +21,8 @@ public class PanelNouvelleActivite extends PanelFenetre{
 
 	public PanelNouvelleActivite(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
-		initialiseComboBoxAnnee(this);
-		initialiseComboBoxMois(this);
-		adapteComboBoxJour();
+		initialiseDomaineActivite(this);
+		initialiseCalendrier(Temps.getAujourdhui(), this);
 		creerInterface();
 	}
 	
@@ -84,23 +84,42 @@ public class PanelNouvelleActivite extends PanelFenetre{
 				
 		
 		
+		gc.gridwidth = 3;
+		gc.fill = GridBagConstraints.CENTER;
+		gc.gridx = 0;
+		gc.gridy = 4;
+		this.add(creerTitre("Indiquez des domaines"), gc);
+
+		gc.fill = GridBagConstraints.WEST;
+		gc.gridy = 5;		
+		this.add(afficherListeDomaineChoisi(), gc);
+
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.gridwidth = 2;
+		gc.gridx = 0;
+		gc.gridy = 6;
+		this.add(comboBoxDomaine, gc);
+		gc.gridx = 2;
+		this.add(boutonAjoutCompetence, gc);
+
+		
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridx = 0;
-		gc.gridy = 5;
+		gc.gridy = 7;
 		gc.gridwidth = 3;
 		this.add(creerTitre("Commence à partir du"), gc);
 		
 		gc.gridx = 0;
-		gc.gridy = 6;
-		this.add(calendrier(), gc);
+		gc.gridy = 8;
+		this.add(panelCalendrier(calendrier1), gc);
 	
 		
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridx = 1;
-		gc.gridy = 7;
+		gc.gridy = 9;
 		this.add(creerBoutonAnnuler(), gc);
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
@@ -115,8 +134,11 @@ public class PanelNouvelleActivite extends PanelFenetre{
 				if (estUnEntier(textFieldCharge.getText())) {
 					Projet projet = entreprise.getProjetSelectionner();
 					int charge = Integer.parseInt(textFieldCharge.getText());
-					LocalDate debut = creerLaDate();
-					entreprise.creerActivite(projet, textFieldNom.getText(), charge, debut);
+					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
+					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
+					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
+					LocalDate date =  creerLaDate(jour, mois, annee);
+					entreprise.creerActivite(projet, textFieldNom.getText(), charge, date, listeDomaineChoisi);
 					fm.dispose();
 				}
 				else {
