@@ -48,24 +48,24 @@ public class PanelInfoProjet extends JPanel{
 		panel.setLayout(new GridBagLayout());
 		
 		
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
+		/* Le gridBagConstraints va definir la position et la taille des elements */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert à définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
+		/* le parametre fill sert à definir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
 		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
 		 */
 		gc.fill = GridBagConstraints.BOTH;
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
+		/* insets definir la marge entre les composant new Insets(margeSuperieure, margeGauche, margeInferieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
+		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalite de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
+		/* weightx definit le nombre de cases en abscisse */
 		gc.weightx = 5;
 		
-		/* weightx définit le nombre de cases en ordonnée */
+		/* weightx definit le nombre de cases en ordonnee */
 		int nbActivite = 5;
 		gc.weighty = nbActivite+1;
 		
@@ -75,7 +75,7 @@ public class PanelInfoProjet extends JPanel{
 		String nom = projet.getChefDeProjet().getPrenom() + " " + projet.getChefDeProjet().getNom();
 		panel.add(creerLabel("Chef de projet: "+ nom), gc);
 		gc.gridx = 1;
-		panel.add(creerLabel("Priorité: "+(int)projet.getPriorite()), gc);
+		panel.add(creerLabel("Priorite: "+(int)projet.getPriorite()), gc);
 		gc.gridx = 2;
 		
 		LocalDate deadline = projet.getDeadline();

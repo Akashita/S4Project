@@ -55,7 +55,7 @@ public class PanelConnexion extends JPanel{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Veillez entrer vos coordonn�es"), gc);
+		this.add(creerTitre("Veillez entrer vos coordonnees"), gc);
 		
 		//--------------- zone saisie
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
