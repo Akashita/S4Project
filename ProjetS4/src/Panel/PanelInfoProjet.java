@@ -31,7 +31,8 @@ public class PanelInfoProjet extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
 	private Projet projet;
-
+	private int test;
+	
 	public PanelInfoProjet(Entreprise entreprise) {
 		this.entreprise = entreprise;
 		this.projet = entreprise.getProjetSelectionner();
