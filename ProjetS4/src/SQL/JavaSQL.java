@@ -21,13 +21,13 @@ public class JavaSQL {
 
 
 	public static void connection(){
-		//System.out.println("connection au pilote");
+		System.out.println("connection au pilote");
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			arret("disfonctionnement du pilote");
 		}
-		//System.out.println("connection � la base de donn�e");
+		System.out.println("connection � la base de donn�e");
 		try {
 			String URLdb = "jdbc:mysql://localhost:3306/l2_gr_6";
 	       con = DriverManager.getConnection(URLdb,"l2_gr_6","DMDRjUP2");
