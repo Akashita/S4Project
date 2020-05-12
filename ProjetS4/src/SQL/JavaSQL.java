@@ -31,9 +31,6 @@ public class JavaSQL {
 		try {
 			String URLdb = "jdbc:mysql://localhost:3306/l2_gr_6";
 	       con = DriverManager.getConnection(URLdb,"l2_gr_6","DMDRjUP2");
-			//-------------------------------------------base tmp----------------------------------------
-	//		String URLdb = "jdbc:mysql://localhost";
-	//	       this.con = DriverManager.getConnection(URLdb,"phpmyadmin","elrouliobdd");
 	   } catch (SQLException e) {
 	       arret("Connection � la base de donn�es impossible");
 	   }
@@ -42,6 +39,15 @@ public class JavaSQL {
 
 	public static Connection getCon(){
 		return con;
+	}
+	
+	public static void finCo() {
+			try {
+				con.close();
+				System.out.println("Connection fini");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	}
 
 	public ResultSet getRes(){

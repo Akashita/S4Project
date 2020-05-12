@@ -17,8 +17,13 @@ public class LancementRapideDebug {
 	public static void main (String[] args) {
 		new Entreprise("debugBDD");
 		
+			JavaSQL.connection();
+			System.out.println("test");
+			JavaSQL.finCo();
+			System.out.println("fintest");
+		
 //		try {
-//		JavaSQLDebug.drop();
+//			JavaSQLDebug.drop();
 //			JavaSQL.creation();
 //		} catch (SQLException e) {
 //			e.printStackTrace();
