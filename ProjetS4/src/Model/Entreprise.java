@@ -92,7 +92,7 @@ public class Entreprise extends Observable{
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
 		this.domaine = new Domaine();
-		recupInfoBdd();
+		//recupInfoBdd();
 
 		fenetrePrincipale = new FenetrePrincipale(this);
 		this.update();
@@ -103,7 +103,7 @@ public class Entreprise extends Observable{
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
 		this.domaine = new Domaine();
-		recupInfoBdd();
+		//recupInfoBdd();
 
 		if (typeDebug == "debugBDD") {
 			fenetreBDD = new FenetreDebugBDD(this);
@@ -118,33 +118,33 @@ public class Entreprise extends Observable{
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
 		this.domaine = new Domaine();
-		recupInfoBdd();
+		//recupInfoBdd();
 
 		fenetrePrincipale = new FenetrePrincipale(this);
 		this.update();
 	}
 
-	private void recupInfoBdd() {
-		try {
+//	private void recupInfoBdd() {
+//		try {
 //			testSqlDomaine.insertion();
 //			JavaSQLDomaine.insertion("php");
 //			JavaSQLPersonne.insertion("Geyer","Jules","Chef","putheu", testP, testN);
 //			JavaSQLProjet.insertion("test1",1,date,1, 1);
 //			testprojet.insertion();
 //			testact.insertion();
-			RecupInfoBDD.recupBDDProjet(this);
-			RecupInfoBDD.recupBDDDomaine(this);
-			RecupInfoBDD.recupBDDRessource(this);
+//			RecupInfoBDD.recupBDDProjet(this);
+//			RecupInfoBDD.recupBDDDomaine(this);
+//			RecupInfoBDD.recupBDDRessource(this);
 //			test.affiche();
 //			test.drop();
 //			java.creation();
 //			test.affiche();
 
-
-		}catch(SQLException f){
-			f.printStackTrace();
-		}
-	}
+//
+//		}catch(SQLException f){
+//			f.printStackTrace();
+//		}
+//	}
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES

@@ -28,7 +28,6 @@ public final class JavaSQLDomaine extends JavaSQL{
 		String sql = "SELECT * FROM Domaine;";
 		ArrayList<String> tagtab = new ArrayList<String>();
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -36,7 +35,6 @@ public final class JavaSQLDomaine extends JavaSQL{
 						 System.out.println("tag = " + res.getString("tag"));
 					 }
 				 }
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -47,11 +45,9 @@ public final class JavaSQLDomaine extends JavaSQL{
 	public static void insertion(String tag) throws SQLException{
 		String sql = "INSERT INTO Domaine(tag) VALUE('" + tag + "');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -59,7 +55,6 @@ public final class JavaSQLDomaine extends JavaSQL{
 	
 	public static void supprime(String tag) throws SQLException{
 		try{
-			 connection();
 			 Statement stmt = getCon().createStatement();
 			 String sql = "DELETE FROM Competence WHERE tag = '" + tag + "'";
 			 stmt.executeUpdate(sql);					 
@@ -67,7 +62,6 @@ public final class JavaSQLDomaine extends JavaSQL{
 			 stmt.executeUpdate(sql);			 
 			 sql = "DELETE FROM Domaine WHERE tag = '" + tag + "'";
 			 stmt.executeUpdate(sql);
-			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
