@@ -40,7 +40,7 @@ public class PanelProjet extends JPanel{
 	public JPanel afficherProjet() {
 		JPanel panel = new JPanel();
 		panel.setBackground(PanelPrincipal.BLEU2);
-		ArrayList<Projet> listeProjet = getProjetUser(entreprise.getUser());
+		ArrayList<Projet> listeProjet = entreprise.getProjetUser(entreprise.getUser());
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		if (listeProjet.size()>0) { //on vérifie qu'il a des projets dans la liste
 			for (int i=0; i<listeProjet.size(); i++) {
@@ -116,16 +116,4 @@ public class PanelProjet extends JPanel{
 	}	
 	
 	
-	private ArrayList<Projet> getProjetUser(Personne p){
-		ArrayList<Projet> lp = new ArrayList<Projet>();
-		boolean estAdmin = p.estAdmin();
-		if(estAdmin) {// on affiche tout les projets de l'entreprise
-			lp = entreprise.getListeProjet(); 		
-		}
-		else { //si c'est un collaborateur ou chef de projet
-			lp.addAll(p.getListeDeProjet()); //projet qu'il dirige
-			lp.addAll(entreprise.getProjetDeLaRessource(p)); //projet ou il travaille
-		}
-		return lp;
-	}
 }

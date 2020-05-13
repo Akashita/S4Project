@@ -908,7 +908,13 @@ public class Entreprise extends Observable{
 	}
 
 	public ArrayList<Projet> getListeProjet(){
-		return lProjet;
+		try {
+			return	JavaSQLProjet.affiche();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public void selectionnerProjet(Projet projet) {
@@ -921,6 +927,26 @@ public class Entreprise extends Observable{
 		return projetSelectionner;
 	}
 
+	public ArrayList<Projet> getProjetUser(Personne p){
+		ArrayList<Projet> lp = new ArrayList<Projet>();
+		boolean estAdmin = p.estAdmin();
+		if(estAdmin) {// on affiche tout les projets de l'entreprise
+			try {
+				lp = JavaSQLProjet.affiche();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		}
+		else { //si c'est un collaborateur ou chef de projet
+			lp.addAll(p.getListeDeProjet()); //projet qu'il dirige
+			lp.addAll(this.getProjetDeLaRessource(p)); //projet ou il travaille
+		}
+		return lp;
+	}
+
+	
 	public void selectionnerActivite(Activite activite) {
 		if (activiteSelectionner != null) {
 			if (activite.getId() == activiteSelectionner.getId()) {

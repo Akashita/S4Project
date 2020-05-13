@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import EcouteurEvenement.SourisActiviteListener;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
+import Panel_Fenetre.PanelNouveauTicket;
 import Ressource.Ressource;
 
 public class PanelInfoProjet extends JPanel{
@@ -100,25 +102,13 @@ public class PanelInfoProjet extends JPanel{
 		
 		//affiche les activité
 		if (nbActivite > 0) {
-			gc.gridy = 0;
 			
-			ArrayList<Activite> listeActivite = projet.getListe();
+			//gc.ipady = gc.anchor = GridBagConstraints.BOTH;
 			gc.gridx = 0;
+			gc.gridy ++;
 			gc.gridwidth = GridBagConstraints.REMAINDER;
-			for (int i=0; i<nbActivite; i++) {
-				gc.gridy ++;
-				if (i<projet.getListe().size()) {
-					Activite activite = listeActivite.get(i);							
-					PanelInfoActivite pia = new PanelInfoActivite(entreprise, activite);
-					pia.addMouseListener(new SourisActiviteListener(entreprise, activite));	
-					panel.add(pia, gc);								
-				}
-				else {
-					JPanel caseVide = new JPanel();
-					caseVide.setBackground(PanelPrincipal.BLANC);
-					panel.add(caseVide, gc);					
-				}
-			}
+			gc.gridheight = GridBagConstraints.REMAINDER;
+			panel.add(panelActivite(), gc);
 		}
 		
 
@@ -159,7 +149,25 @@ public class PanelInfoProjet extends JPanel{
 			return label;
 		}
 	
-	
+		
+		private JScrollPane panelActivite() {
+			JPanel p = new JPanel();
+			ArrayList<Activite> listeActivite = projet.getListe();
+			p.setLayout(new GridLayout(listeActivite.size(),1,10,10));
+
+			for (int i=0; i<listeActivite.size(); i++) {
+				Activite activite = listeActivite.get(i);							
+				PanelInfoActivite pia = new PanelInfoActivite(entreprise, activite);
+				pia.addMouseListener(new SourisActiviteListener(entreprise, activite));	
+				p.add(pia);								
+			}
+			JScrollPane jsp = new JScrollPane(p);
+			jsp.setViewportView(p);
+			jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			return jsp;
+
+		}
+		
 //	==================METHODE GENERAL============================================	
 	
 

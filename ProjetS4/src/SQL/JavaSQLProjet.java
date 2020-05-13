@@ -48,7 +48,6 @@ public final class JavaSQLProjet extends JavaSQL{
 		String sql = "SELECT * FROM Projet;";
 		Personne personne;
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -97,7 +96,6 @@ public final class JavaSQLProjet extends JavaSQL{
 								 ", couleur = " + res.getString("couleur") + ", numSalarie = " + res.getString("numSalarie"));
 					 }
 				 }
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -109,11 +107,9 @@ public final class JavaSQLProjet extends JavaSQL{
 		Date tadat = Date.valueOf(deadline);
 		String sql = "INSERT INTO Projet(idP, nom, priorite, deadline, couleur, numSalarie) VALUE(NULL,'" + nom + "' ,  '"+priorite+"' ,'"+tadat+"' , '"+couleur+"' , '"+numSalarie+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -122,7 +118,6 @@ public final class JavaSQLProjet extends JavaSQL{
 	public static void supprime(int idP) throws SQLException{
 		String sql = "SELECT idA FROM Activite WHERE idP =" + idP;
 		try{
-			 connection();
 			 Statement stmt = getCon().createStatement();
 			 try (ResultSet res = stmt.executeQuery(sql)){
 				 while(res.next()) {
@@ -142,7 +137,6 @@ public final class JavaSQLProjet extends JavaSQL{
 				 sql = "DELETE FROM Projet WHERE idP = " + idP;
 				 stmt.executeUpdate(sql);
 			 }
-			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -150,13 +144,11 @@ public final class JavaSQLProjet extends JavaSQL{
 	
 	public static void modifie(int idP, String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
 		try{
-			 connection();
 			 Statement stmt = getCon().createStatement();
 			 Date date1 = Date.valueOf(deadline);
 			 String sql = "UPDATE Projet SET nom = '" + nom + "' ,priorite  = '" + priorite + "' ,deadline = '" + date1 + "' ,couleur = '" + couleur + "' ,numSalarie = '" + numSalarie + "' WHERE idP = '"+ idP+"';";
 			 stmt.executeUpdate(sql);
 			 
-			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
