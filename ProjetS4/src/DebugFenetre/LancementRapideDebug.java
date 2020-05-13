@@ -15,12 +15,11 @@ import SQL.JavaSQLPersonne;
 
 public class LancementRapideDebug {
 	public static void main (String[] args) {
+		JavaSQL.connection();
+		System.out.println("test");
 		new Entreprise("debugBDD");
 		
-			JavaSQL.connection();
-			System.out.println("test");
-			JavaSQL.finCo();
-			System.out.println("fintest");
+	
 		
 //		try {
 //			JavaSQLDebug.drop();

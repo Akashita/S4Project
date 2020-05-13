@@ -163,7 +163,10 @@ public class Entreprise extends Observable{
 	//------------------------------------------------------------------------>>>>>>>> Changement de compte
 
 	public void changementUtilisateur() {
-		fenetrePrincipale.dispose();
+
+		JavaSQL.finCo();
+		System.out.println("fintest");
+		fenetrePrincipale.dispose();		
 		new FenetreConnexion();
 	}
 
