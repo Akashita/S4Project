@@ -3,6 +3,8 @@ package Fenetre;
 import java.awt.Window;
 import java.awt.event.*;
 
+import SQL.JavaSQL;
+
 /**
  * permet la fermeture d'une fenetre via le bouton fermer de la fenetre
  * @author damien planchamp
@@ -16,6 +18,8 @@ public class FermerFenetre extends WindowAdapter {
 	}
 
 	public void windowClosing(WindowEvent arg0) {
+
+		JavaSQL.finCo();
 		w.dispose();
 	}
 
