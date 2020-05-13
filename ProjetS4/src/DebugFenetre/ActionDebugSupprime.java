@@ -10,7 +10,9 @@ import java.util.ArrayList;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Ressource.Competence;
 import Ressource.Personne;
+import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLSalle;
@@ -23,10 +25,14 @@ public class ActionDebugSupprime implements ActionListener{
 	
 	private Choice ticketASupprime;
 	
+	private Choice competenceASupprime;
+	private String tag;
+
+	
 	
 	private int typeVerif;
 	private Entreprise entreprise;
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3 ;
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4  ;
 
 	public ActionDebugSupprime (Window w,TextField numero, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -34,11 +40,20 @@ public class ActionDebugSupprime implements ActionListener{
 		this.typeVerif = typeVerif;
 	}
 	
-	public ActionDebugSupprime (Window w,Choice ticket, int typeVerif, Entreprise entreprise) {
+	public ActionDebugSupprime (Window w,Choice choix, int typeVerif, Entreprise entreprise) {
 		this.w = w;
-		this.ticketASupprime = ticket;
 		this.typeVerif = typeVerif;
-	}
+		if (typeVerif == TICKET) {
+		this.ticketASupprime = choix;
+		}
+		else if (typeVerif == COMPETENCE) {
+			this.competenceASupprime = choix;
+		}
+		}
+	
+	
+	
+	
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -112,6 +127,40 @@ public class ActionDebugSupprime implements ActionListener{
 
 				JavaSQLTicket.supprime(ticketId);
 				new FenetreDebugTicket(entreprise,FenetreDebugTicket.AFFICHE);
+				w.dispose();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		
+		else if (typeVerif == COMPETENCE) {
+			
+			ArrayList<Competence> competenceTab = new ArrayList<Competence>();
+			int competenceId = -1;
+
+			try {
+				competenceTab = JavaSQLCompetence.affiche();
+
+				for (int i = 0; i < competenceTab.size(); i++) {
+					if (this.competenceASupprime.getItem(competenceASupprime.getSelectedIndex()).equals(competenceTab.get(i).creeAffiche())) {
+						competenceId = competenceTab.get(i).getNumSalarie();
+						tag = competenceTab.get(i).getNom();
+					}
+								}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			try {
+
+				JavaSQLCompetence.supprime(competenceId,tag);
+				new FenetreDebugCompetence(entreprise,FenetreDebugCompetence.AFFICHE);
 				w.dispose();
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block

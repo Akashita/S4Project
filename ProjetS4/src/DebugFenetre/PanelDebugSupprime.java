@@ -13,7 +13,9 @@ import javax.swing.JPanel;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Ressource.Competence;
 import Ressource.Personne;
+import SQL.JavaSQLCompetence;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLTicket;
 
@@ -22,7 +24,7 @@ public class PanelDebugSupprime extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4;
 	private int type;
 	private Window w;
 	public PanelDebugSupprime(Entreprise entreprise,Window w, int type) {
@@ -103,6 +105,38 @@ public class PanelDebugSupprime extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugSupprime(w,ticketChoix,ActionDebugSupprime.TICKET,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+			
+		}
+		
+		else if (type == COMPETENCE) {
+			this.setLayout(new GridLayout(2,2));
+			
+			Label competenceLabel = new Label("id : ");
+			final Choice  competenceChoix = new Choice();
+			
+			ArrayList<Competence> competenceTab = new ArrayList<Competence>();
+			try {
+				competenceTab = JavaSQLCompetence.affiche();
+
+				for (int i = 0; i < competenceTab.size(); i++) {
+					competenceChoix.addItem(competenceTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(competenceLabel);
+			this.add(competenceChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,competenceChoix,ActionDebugSupprime.COMPETENCE,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 			

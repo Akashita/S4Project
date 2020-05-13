@@ -11,8 +11,10 @@ import java.util.ArrayList;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Ressource.Competence;
 import Ressource.Personne;
 import Ressource.Salle;
+import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLSalle;
@@ -36,7 +38,12 @@ public class ActionDebugAjout implements ActionListener{
 	private Choice envoyeur; 
 	private Choice receveur;
 	
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3 ;
+	
+	private TextField competence;
+	private Choice personne; 
+	private Choice niveau; 
+	
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4 ;
 
 	public ActionDebugAjout (Window w,TextField numero,TextField nom,TextField place, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -67,6 +74,15 @@ public class ActionDebugAjout implements ActionListener{
 		this.action = action;		
 		this.envoyeur = envoyeur;
 		this.receveur = receveur;
+		this.typeVerif = typeVerif;
+
+	}
+	
+	public ActionDebugAjout (Window w,TextField competence,Choice personne,Choice niveau,int typeVerif, Entreprise entreprise) {
+		this.w = w;
+		this.competence = competence;
+		this.personne = personne;
+		this.niveau = niveau;
 		this.typeVerif = typeVerif;
 
 	}
@@ -158,6 +174,49 @@ public class ActionDebugAjout implements ActionListener{
 					JavaSQLTicket.insertion(actionNb, sujet.getText(), message.getText(), envoyeurId, receveurId, null);
 
 					new FenetreDebugTicket(entreprise,FenetreDebugTicket.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+		}
+			else if (typeVerif == COMPETENCE) {
+				ArrayList<Personne> personneTab = new ArrayList<Personne>();
+				int personneId = -1;
+
+				try {
+					personneTab = JavaSQLPersonne.affiche();
+
+					for (int i = 0; i < personneTab.size(); i++) {
+						if (personne.getItem(personne.getSelectedIndex()).equals(personneTab.get(i).toString())) {
+							personneId = personneTab.get(i).getId();
+
+						}
+									}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				int niveauNb;
+				
+				if (niveau.getItem(niveau.getSelectedIndex()) == "confirme") {
+					niveauNb = Competence.CONFIRME;
+				}
+				else if (niveau.getItem(niveau.getSelectedIndex()) == "expert") {
+					niveauNb = Competence.EXPERT;
+				}
+				else {
+					niveauNb = Competence.DEBUTANT;
+
+				}
+				try {
+					JavaSQLCompetence.insertion(niveauNb, competence.getText(),personneId);
+
+					new FenetreDebugCompetence(entreprise,FenetreDebugCompetence.AFFICHE);
 					w.dispose();
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block

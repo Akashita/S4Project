@@ -4,6 +4,7 @@ public class Competence {
 
 	public final static int DEBUTANT = 1, CONFIRME = 2, EXPERT = 3;
 	
+	private int numSalarie;
 	private String nom;
 	private int niveau;
 	
@@ -12,12 +13,21 @@ public class Competence {
 		this.niveau = niveau;
 	}
 	
+	public Competence (int numSalarie, String nom, int niveau) {
+		this.nom = nom;
+		this.niveau = niveau;
+		this.numSalarie = numSalarie;
+	}
+	
 	public String getNom() {
 		return nom;
 	}
 	
 	public int getNiveau() {
 		return niveau;
+	}
+	public int getNumSalarie() {
+		return numSalarie;
 	}
 	
 	public String getStringNiveau() {
@@ -32,5 +42,9 @@ public class Competence {
 			niveau = "EXPERT";
 		}
 		return niveau;
+	}
+
+	public String creeAffiche() {
+		return "numero de la personne : " + numSalarie + ", niveau : " + getStringNiveau() + ", nom de la compétence : " + nom;
 	}
 }

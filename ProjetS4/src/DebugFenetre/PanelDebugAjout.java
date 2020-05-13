@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Ressource.Competence;
 import Ressource.Personne;
 import SQL.JavaSQLPersonne;
 
@@ -23,7 +24,7 @@ public class PanelDebugAjout extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4;
 	private int type;
 	private Window w;
 	public PanelDebugAjout(Entreprise entreprise,Window w, int type) {
@@ -170,6 +171,56 @@ public class PanelDebugAjout extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugAjout(w,sujet,message,action,PersonneChoix, Personne2Choix,ActionDebugAjout.TICKET,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+
+			
+		}
+		else if (type == COMPETENCE) {
+			this.setLayout(new GridLayout(4,2));
+			
+			Label competenceLabel = new Label("competence : ");
+			TextField competence = new TextField(20);
+			this.add(competenceLabel);
+			this.add(competence);
+			
+			Label niveauLabel = new Label("niveau : ");
+			Choice niveauChoix= new Choice();
+			
+			niveauChoix.addItem("debutant");
+			niveauChoix.addItem("confirme");
+			niveauChoix.addItem("expert");
+			
+			this.add(niveauLabel);
+			this.add(niveauChoix);
+			
+			
+			Label PersonneLabel = new Label("personne : ");
+			final Choice  PersonneChoix = new Choice();
+			
+			ArrayList<Personne> personneTab = new ArrayList<Personne>();
+			try {
+				personneTab = JavaSQLPersonne.affiche();
+
+				for (int i = 0; i < personneTab.size(); i++) {
+					PersonneChoix.addItem(personneTab.get(i).toString());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(PersonneLabel);
+			this.add(PersonneChoix);
+
+			
+
+
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugAjout(w,competence,niveauChoix,PersonneChoix, ActionDebugAjout.COMPETENCE,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 

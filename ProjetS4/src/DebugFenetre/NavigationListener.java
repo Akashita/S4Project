@@ -13,7 +13,7 @@ public class NavigationListener  implements ActionListener{
 	private int direction;
 	private Entreprise entreprise;
 	public static int PERSONNE = 0, MENU = 1, SALLE = 2, SALLEAJOUT = 3, SALLESUPPRIME = 4,DOMAINE = 5, DOMAINEAJOUT = 6, DOMAINESUPPRIME = 7, PERSONNEAJOUT = 8, PERSONNESUPPRIME = 9,
-			TICKET = 10, TICKETAJOUT = 11, TICKETSUPPRIME = 12;
+			TICKET = 10, TICKETAJOUT = 11, TICKETSUPPRIME = 12, COMPETENCE = 13, COMPETENCEAJOUT = 14, COMPETENCESUPPRIME = 15;
 	public NavigationListener(Window w,Entreprise entreprise, int direction) {
 		this.w = w;
 		this.direction = direction;
@@ -64,6 +64,15 @@ public class NavigationListener  implements ActionListener{
 		}
 		else if (direction == TICKETSUPPRIME) {
 			new FenetreDebugTicket(entreprise,FenetreDebugTicket.SUPPRIME);
+		}
+		else if (direction == COMPETENCE) {
+			new FenetreDebugCompetence(entreprise,FenetreDebugTicket.AFFICHE);
+		}
+		else if (direction == COMPETENCEAJOUT) {
+			new FenetreDebugCompetence(entreprise,FenetreDebugCompetence.AJOUT);
+		}
+		else if (direction == COMPETENCESUPPRIME) {
+			new FenetreDebugCompetence(entreprise,FenetreDebugCompetence.SUPPRIME);
 		}
 		w.dispose();
 
