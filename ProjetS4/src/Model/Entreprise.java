@@ -74,9 +74,11 @@ public class Entreprise extends Observable{
 	private Projet projetSelectionner;
 	private Activite activiteSelectionner;
 	private ArrayList<String> ressourceAfficher = new ArrayList<String>();
-
-	private boolean afficheTicket = false;
-
+	
+	private boolean afficheListeTicket = false;
+	private String afficheListeRessource = "";
+	
+	
 	private Domaine domaine;
 
 	public final String SEPARATEUR = "#";
@@ -823,6 +825,20 @@ public class Entreprise extends Observable{
 			}
 		}
 	}
+	
+	public void setAfficheListeRessource(String s) {
+		if (s.equals(afficheListeRessource)) {
+			afficheListeRessource = "";
+		}
+		else {
+			afficheListeRessource = s;
+		}
+		update();
+	}
+
+	public String getAfficheListeRessource() {
+		return afficheListeRessource;
+	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion domaine
 
@@ -874,11 +890,11 @@ public class Entreprise extends Observable{
 	public void selectionnerTache(int tache) {
 		switch (tache) {
 		case PanelTache.TICKET:
-			if (afficheTicket) {
-				afficheTicket = false;
+			if (afficheListeTicket) {
+				afficheListeTicket = false;
 			}
 			else {
-				afficheTicket = true;
+				afficheListeTicket = true;
 			}
 			break;
 
@@ -889,7 +905,7 @@ public class Entreprise extends Observable{
 	}
 
 	public boolean getAfficheTicket() {
-		return afficheTicket;
+		return afficheListeTicket;
 	}
 
 	//================ Partie Graphique ==========//

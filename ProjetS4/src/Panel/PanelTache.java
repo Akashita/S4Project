@@ -29,7 +29,7 @@ import GestionTicket.Ticket;
 import Model.Entreprise;
 import SQL.JavaSQLTicket;
 
-public class PanelTache extends JPanel{
+public class PanelTache extends JPanel {
 
 	private Entreprise entreprise;
 	private Color couleurFond;
