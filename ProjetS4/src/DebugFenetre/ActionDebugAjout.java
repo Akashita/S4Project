@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import GestionTicket.Ticket;
 import Model.Entreprise;
 import Ressource.Competence;
+import Ressource.Domaine;
 import Ressource.Personne;
 import Ressource.Salle;
 import SQL.JavaSQLCompetence;
@@ -39,7 +40,7 @@ public class ActionDebugAjout implements ActionListener{
 	private Choice receveur;
 	
 	
-	private TextField competence;
+	private Choice competence;
 	private Choice personne; 
 	private Choice niveau; 
 	
@@ -78,7 +79,7 @@ public class ActionDebugAjout implements ActionListener{
 
 	}
 	
-	public ActionDebugAjout (Window w,TextField competence,Choice personne,Choice niveau,int typeVerif, Entreprise entreprise) {
+	public ActionDebugAjout (Window w,Choice competence,Choice personne,Choice niveau,int typeVerif, Entreprise entreprise) {
 		this.w = w;
 		this.competence = competence;
 		this.personne = personne;
@@ -185,6 +186,23 @@ public class ActionDebugAjout implements ActionListener{
 
 		}
 			else if (typeVerif == COMPETENCE) {
+				String tag = "erreur";
+				try {
+					ArrayList<String> domaineTab =JavaSQLDomaine.affiche();
+
+					for (int i = 0; i < domaineTab.size(); i++) {
+						if (competence.getItem(competence.getSelectedIndex()).equals(domaineTab.get(i))) {
+							tag = domaineTab.get(i);
+
+						}
+				}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				
 				ArrayList<Personne> personneTab = new ArrayList<Personne>();
 				int personneId = -1;
 
@@ -192,7 +210,7 @@ public class ActionDebugAjout implements ActionListener{
 					personneTab = JavaSQLPersonne.affiche();
 
 					for (int i = 0; i < personneTab.size(); i++) {
-						if (personne.getItem(personne.getSelectedIndex()).equals(personneTab.get(i).toString())) {
+						if (personne.getItem(personne.getSelectedIndex()).equals(personneTab.get(i).creerAfichage())) {
 							personneId = personneTab.get(i).getId();
 
 						}
@@ -214,7 +232,7 @@ public class ActionDebugAjout implements ActionListener{
 
 				}
 				try {
-					JavaSQLCompetence.insertion(niveauNb, competence.getText(),personneId);
+					JavaSQLCompetence.insertion(niveauNb,tag ,personneId);
 
 					new FenetreDebugCompetence(entreprise,FenetreDebugCompetence.AFFICHE);
 					w.dispose();

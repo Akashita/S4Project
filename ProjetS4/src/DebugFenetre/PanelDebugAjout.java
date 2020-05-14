@@ -16,7 +16,9 @@ import javax.swing.JPanel;
 import GestionTicket.Ticket;
 import Model.Entreprise;
 import Ressource.Competence;
+import Ressource.Domaine;
 import Ressource.Personne;
+import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
 
 public class PanelDebugAjout extends JPanel{
@@ -180,9 +182,21 @@ public class PanelDebugAjout extends JPanel{
 			this.setLayout(new GridLayout(4,2));
 			
 			Label competenceLabel = new Label("competence : ");
-			TextField competence = new TextField(20);
+			Choice competenceChoix = new Choice();
+			
+			try {
+				ArrayList<String> domaineTab = JavaSQLDomaine.affiche();
+
+				for (int i = 0; i < domaineTab.size(); i++) {
+					competenceChoix.addItem(domaineTab.get(i).toString());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			this.add(competenceLabel);
-			this.add(competence);
+			this.add(competenceChoix);
 			
 			Label niveauLabel = new Label("niveau : ");
 			Choice niveauChoix= new Choice();
@@ -203,7 +217,7 @@ public class PanelDebugAjout extends JPanel{
 				personneTab = JavaSQLPersonne.affiche();
 
 				for (int i = 0; i < personneTab.size(); i++) {
-					PersonneChoix.addItem(personneTab.get(i).toString());
+					PersonneChoix.addItem(personneTab.get(i).creerAfichage());
 			}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -220,7 +234,7 @@ public class PanelDebugAjout extends JPanel{
 
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
-			ok.addActionListener(new ActionDebugAjout(w,competence,niveauChoix,PersonneChoix, ActionDebugAjout.COMPETENCE,entreprise));
+			ok.addActionListener(new ActionDebugAjout(w,competenceChoix,niveauChoix,PersonneChoix, ActionDebugAjout.COMPETENCE,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 
