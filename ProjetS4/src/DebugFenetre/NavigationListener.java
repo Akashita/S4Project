@@ -83,10 +83,10 @@ public class NavigationListener  implements ActionListener{
 			new FenetreDebugCalculateur(entreprise,FenetreDebugCalculateur.AJOUT);
 		}
 		else if (direction == CALCULATEURSUPPRIME) {
-			new FenetreDebugMateriel(entreprise,FenetreDebugMateriel.SUPPRIME);
+			new FenetreDebugCalculateur(entreprise,FenetreDebugCalculateur.SUPPRIME);
 		}
 		else if (direction == MATERIEL) {
-			new FenetreDebugCalculateur(entreprise,FenetreDebugMateriel.AFFICHE);
+			new FenetreDebugMateriel(entreprise,FenetreDebugMateriel.AFFICHE);
 		}
 		else if (direction == MATERIELAJOUT) {
 			new FenetreDebugMateriel(entreprise,FenetreDebugMateriel.AJOUT);

@@ -47,7 +47,7 @@ public class ActionDebugAjout implements ActionListener{
 	private Choice niveau; 
 	
 	private TextField typeMatos;
-	private TextField quantite;
+	private Choice numSalle;
 
 	
 	
@@ -106,9 +106,16 @@ public class ActionDebugAjout implements ActionListener{
 			this.capacite = texteDeux;
 		}
 			
-			else if (typeVerif == MATERIEL) {
+		
+		
+
+	}
+	public ActionDebugAjout (Window w,TextField texteUn,Choice choix,int typeVerif, Entreprise entreprise) {
+		this.w = w;
+		this.typeVerif = typeVerif;
+		 if (typeVerif == MATERIEL) {
 				 this.typeMatos = texteUn;
-				 this.quantite = texteDeux;		
+				 this.numSalle= choix;		
 				 }
 		
 		
@@ -291,9 +298,24 @@ public class ActionDebugAjout implements ActionListener{
 			}
 		
 			else if (typeVerif == MATERIEL) {
+				int salleId = -1;
+				ArrayList<Salle> salleTab = new ArrayList<Salle>();
+				try {
+					salleTab = JavaSQLSalle.affiche();
+
+					for (int i = 0; i < salleTab.size(); i++) {
+						if (numSalle.getItem(numSalle.getSelectedIndex()).equals(salleTab.get(i).creeAffiche())) {
+							salleId = salleTab.get(i).getId();
+
+						}
+				}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				try {
 
-					JavaSQLMateriel.insertion( typeMatos.getText(), Integer.parseInt(quantite.getText()));
+					JavaSQLMateriel.insertion( typeMatos.getText(),salleId);
 					new FenetreDebugMateriel(entreprise,FenetreDebugMateriel.AFFICHE);
 					w.dispose();
 				} catch (NumberFormatException e) {

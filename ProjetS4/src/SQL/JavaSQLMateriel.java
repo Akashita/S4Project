@@ -47,7 +47,7 @@ public final class JavaSQLMateriel extends JavaSQL{
 	}
 	
 	public static void insertion(String type, int numero) throws SQLException{
-		String sql = "INSERT INTO Materiel(numSerie, type, numero) VALUE('"+type+"' ,  '"+numero+"');";
+		String sql = "INSERT INTO Materiel(type, numero) VALUE('"+type+"' ,  '"+numero+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);

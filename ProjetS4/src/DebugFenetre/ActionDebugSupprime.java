@@ -229,7 +229,7 @@ else if (typeVerif == CALCULATEUR) {
 			materielTab = JavaSQLMateriel.affiche();
 	
 			for (int i = 0; i < materielTab.size(); i++) {
-				if (this.calculateurASupprime.getItem(calculateurASupprime.getSelectedIndex()).equals(materielTab.get(i).creeAffiche())) {
+				if (this.materielASupprime.getItem(materielASupprime.getSelectedIndex()).equals(materielTab.get(i).creeAffiche())) {
 					materielId = materielTab.get(i).getId();
 				}
 							}

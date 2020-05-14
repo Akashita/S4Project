@@ -18,8 +18,10 @@ import Model.Entreprise;
 import Ressource.Competence;
 import Ressource.Domaine;
 import Ressource.Personne;
+import Ressource.Salle;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
+import SQL.JavaSQLSalle;
 
 public class PanelDebugAjout extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -272,14 +274,29 @@ public class PanelDebugAjout extends JPanel{
 			this.add(typeLabel);
 			this.add(typeMatos);
 			
-			Label quantiteLabel = new Label("quantite : ");
-			TextField quantite = new TextField(20);
-			this.add(quantiteLabel);
-			this.add(quantite);
+			Label salleLabel = new Label("salle : ");
+			final Choice  salleChoix = new Choice();
+			
+			ArrayList<Salle> salleTab = new ArrayList<Salle>();
+			try {
+				salleTab = JavaSQLSalle.affiche();
+
+				for (int i = 0; i < salleTab.size(); i++) {
+					salleChoix.addItem(salleTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(salleLabel);
+			this.add(salleChoix);
 			
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
-			ok.addActionListener(new ActionDebugAjout(w,typeMatos,quantite,ActionDebugAjout.CALCULATEUR,entreprise));
+			ok.addActionListener(new ActionDebugAjout(w,typeMatos,salleChoix,ActionDebugAjout.MATERIEL,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 

@@ -43,7 +43,7 @@ public class Salle extends Ressource{
 		this.capacite = c;
 	}
 	
-	public String creerAffichage() {
+	public String creeAffiche() {
 		return "nom : " + nom + " numero : " + this.id + " capacite : " + capacite ;
 	}
 	
