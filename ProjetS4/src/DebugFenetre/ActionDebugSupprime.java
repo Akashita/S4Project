@@ -12,10 +12,12 @@ import GestionTicket.Ticket;
 import Model.Entreprise;
 import Ressource.Calculateur;
 import Ressource.Competence;
+import Ressource.Materiel;
 import Ressource.Personne;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
+import SQL.JavaSQLMateriel;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
@@ -32,9 +34,12 @@ public class ActionDebugSupprime implements ActionListener{
 
 	private Choice calculateurASupprime;
 	
+	private Choice materielASupprime;
+
+	
 	private int typeVerif;
 	private Entreprise entreprise;
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5  ;
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6  ;
 
 	public ActionDebugSupprime (Window w,TextField numero, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -55,6 +60,9 @@ public class ActionDebugSupprime implements ActionListener{
 		
 		else if (typeVerif == CALCULATEUR) {
 			this.calculateurASupprime = choix;
+		}
+		else if (typeVerif == MATERIEL) {
+			this.materielASupprime = choix;
 		}
 		}
 	
@@ -211,6 +219,40 @@ else if (typeVerif == CALCULATEUR) {
 			}
 
 		}
+
+	else if (typeVerif == MATERIEL) {
+	
+		ArrayList<Materiel> materielTab = new ArrayList<Materiel>();
+		int materielId = -1;
+	
+		try {
+			materielTab = JavaSQLMateriel.affiche();
+	
+			for (int i = 0; i < materielTab.size(); i++) {
+				if (this.calculateurASupprime.getItem(calculateurASupprime.getSelectedIndex()).equals(materielTab.get(i).creeAffiche())) {
+					materielId = materielTab.get(i).getId();
+				}
+							}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+	
+			JavaSQLMateriel.supprime(materielId);
+			new FenetreDebugMateriel(entreprise,FenetreDebugMateriel.AFFICHE);
+			w.dispose();
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+}
+	
 	}
 
 }

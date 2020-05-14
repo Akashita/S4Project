@@ -35,4 +35,8 @@ public class Materiel { // = Fourniture de bureau, compose un salle
 	public String toString() {
 		return "Materiel : " +  quantite + " " + type;
 	}
+	public int getId() {
+		// TODO Auto-generated method stub
+		return this.numMatos;
+	}
 }

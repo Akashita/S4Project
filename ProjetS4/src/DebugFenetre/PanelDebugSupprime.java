@@ -15,9 +15,11 @@ import GestionTicket.Ticket;
 import Model.Entreprise;
 import Ressource.Calculateur;
 import Ressource.Competence;
+import Ressource.Materiel;
 import Ressource.Personne;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
+import SQL.JavaSQLMateriel;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLTicket;
 
@@ -176,18 +178,18 @@ public class PanelDebugSupprime extends JPanel{
 			
 		}
 		
-		lse if (type == MATERIEL) {
+		else if (type == MATERIEL) {
 			this.setLayout(new GridLayout(2,2));
 			
-			Label calculateurLabel = new Label("calculateur a supprime : ");
-			final Choice  calculateurChoix = new Choice();
+			Label materielLabel = new Label("materiel a supprime : ");
+			final Choice  materielChoix = new Choice();
 			
-			ArrayList<Calculateur> calculateurTab = new ArrayList<Calculateur>();
+			ArrayList<Materiel> materielTab = new ArrayList<Materiel>();
 			try {
-				calculateurTab = JavaSQLCalculateur.affiche();
+				materielTab = JavaSQLMateriel.affiche();
 
-				for (int i = 0; i < calculateurTab.size(); i++) {
-					calculateurChoix.addItem(calculateurTab.get(i).creeAffiche());
+				for (int i = 0; i < materielTab.size(); i++) {
+					materielChoix.addItem(materielTab.get(i).creeAffiche());
 			}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -196,13 +198,13 @@ public class PanelDebugSupprime extends JPanel{
 			
 
 									
-			this.add(calculateurLabel);
-			this.add(calculateurChoix);
+			this.add(materielLabel);
+			this.add(materielChoix);
 			
 			
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
-			ok.addActionListener(new ActionDebugSupprime(w,calculateurChoix,ActionDebugSupprime.CALCULATEUR,entreprise));
+			ok.addActionListener(new ActionDebugSupprime(w,materielChoix,ActionDebugSupprime.MATERIEL,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 			
