@@ -78,7 +78,7 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Competence faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Calculateur(code INT PRIMARY KEY, nom VARCHAR(30), capacite INT NOT NULL);";
+				 sql = "CREATE TABLE IF NOT EXISTS Calculateur(code INT PRIMARY KEY AUTO_INCREMENT, nom VARCHAR(30), capacite INT NOT NULL);";
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Calculateur faite");
 				 
@@ -86,7 +86,7 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Salle faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Materiel(numSerie INT PRIMARY KEY, type VARCHAR(30), numero INT, "
+				 sql = "CREATE TABLE IF NOT EXISTS Materiel(numSerie INT PRIMARY KEY AUTO_INCREMENT, type VARCHAR(30), numero INT, "
 							+ "CONSTRAINT fk_Materiel_numero FOREIGN KEY(numero) REFERENCES Salle(numero) );";
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Materiel faite");

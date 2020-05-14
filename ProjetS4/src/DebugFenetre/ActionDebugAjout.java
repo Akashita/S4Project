@@ -15,8 +15,10 @@ import Ressource.Competence;
 import Ressource.Domaine;
 import Ressource.Personne;
 import Ressource.Salle;
+import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
+import SQL.JavaSQLMateriel;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
@@ -44,7 +46,15 @@ public class ActionDebugAjout implements ActionListener{
 	private Choice personne; 
 	private Choice niveau; 
 	
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4 ;
+	private TextField typeMatos;
+	private TextField quantite;
+
+	
+	
+	
+	private TextField capacite;
+	
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6 ;
 
 	public ActionDebugAjout (Window w,TextField numero,TextField nom,TextField place, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -87,6 +97,25 @@ public class ActionDebugAjout implements ActionListener{
 		this.typeVerif = typeVerif;
 
 	}
+	
+	public ActionDebugAjout (Window w,TextField texteUn,TextField texteDeux,int typeVerif, Entreprise entreprise) {
+		this.w = w;
+		this.typeVerif = typeVerif;
+		if (typeVerif == CALCULATEUR) {
+			this.nom = texteUn;
+			this.capacite = texteDeux;
+		}
+			
+			else if (typeVerif == MATERIEL) {
+				 this.typeMatos = texteUn;
+				 this.quantite = texteDeux;		
+				 }
+		
+		
+
+	}
+	
+	
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -245,6 +274,38 @@ public class ActionDebugAjout implements ActionListener{
 				}
 
 		}
+			else if (typeVerif == CALCULATEUR) {
+				try {
+
+					JavaSQLCalculateur.insertion( nom.getText(), Integer.parseInt(capacite.getText()));
+					new FenetreDebugCalculateur(entreprise,FenetreDebugCalculateur.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		
+			else if (typeVerif == MATERIEL) {
+				try {
+
+					JavaSQLMateriel.insertion( typeMatos.getText(), Integer.parseInt(quantite.getText()));
+					new FenetreDebugMateriel(entreprise,FenetreDebugMateriel.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		
 }
 
 }

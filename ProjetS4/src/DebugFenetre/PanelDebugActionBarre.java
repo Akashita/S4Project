@@ -13,7 +13,7 @@ public class PanelDebugActionBarre extends JPanel{
 	private Entreprise entreprise;
 	private Window w;
 	private int type;
-	public static final int PERSONNE = 0, SALLE = 1,DOMAINE = 2, TICKET = 3, COMPETENCE = 4;
+	public static final int PERSONNE = 0, SALLE = 1,DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6;
 
 	public PanelDebugActionBarre(Entreprise entreprise,Window w,int type) {
 		this.entreprise = entreprise;
@@ -22,7 +22,7 @@ public class PanelDebugActionBarre extends JPanel{
 		setLayout(new FlowLayout());
 
 
-		if (type == this.PERSONNE) {
+		if (type == PERSONNE) {
 			
 		
 		Button affiche = new Button("Affiche Personne");
@@ -42,7 +42,7 @@ public class PanelDebugActionBarre extends JPanel{
 
 		}
 		
-		else if (type == this.SALLE) {
+		else if (type == SALLE) {
 			Button affiche = new Button("Affiche Salle");
 			Button ajout = new Button("Ajout Salle");
 			Button supprime = new Button("Suppression Salle");
@@ -95,6 +95,8 @@ public class PanelDebugActionBarre extends JPanel{
 			this.add(supprime);
 
 		}
+		
+		
 		else if (type == COMPETENCE) {
 			Button affiche = new Button("Affiche Competence");
 			Button ajout = new Button("Ajout Competence");
@@ -104,6 +106,41 @@ public class PanelDebugActionBarre extends JPanel{
 			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.COMPETENCE));
 			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.COMPETENCEAJOUT));
 			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.COMPETENCESUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+
+		}
+		else if (type == CALCULATEUR) {
+			Button affiche = new Button("Affiche calculateur");
+			Button ajout = new Button("Ajout calculateur");
+			Button supprime = new Button("Suppression calculateur");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.CALCULATEUR));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.CALCULATEURAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.CALCULATEURSUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+
+		}
+		
+		else if (type == MATERIEL) {
+			Button affiche = new Button("Affiche materiel");
+			Button ajout = new Button("Ajout materiel");
+			Button supprime = new Button("Suppression materiel");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MATERIEL));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MATERIELAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MATERIELSUPPRIME));
 
 
 			

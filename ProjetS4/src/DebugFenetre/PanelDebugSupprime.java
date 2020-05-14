@@ -13,9 +13,13 @@ import javax.swing.JPanel;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Ressource.Calculateur;
 import Ressource.Competence;
+import Ressource.Materiel;
 import Ressource.Personne;
+import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
+import SQL.JavaSQLMateriel;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLTicket;
 
@@ -24,7 +28,7 @@ public class PanelDebugSupprime extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6;
 	private int type;
 	private Window w;
 	public PanelDebugSupprime(Entreprise entreprise,Window w, int type) {
@@ -137,6 +141,70 @@ public class PanelDebugSupprime extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugSupprime(w,competenceChoix,ActionDebugSupprime.COMPETENCE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+			
+		}
+		
+		else if (type == CALCULATEUR) {
+			this.setLayout(new GridLayout(2,2));
+			
+			Label calculateurLabel = new Label("calculateur a supprime : ");
+			final Choice  calculateurChoix = new Choice();
+			
+			ArrayList<Calculateur> calculateurTab = new ArrayList<Calculateur>();
+			try {
+				calculateurTab = JavaSQLCalculateur.affiche();
+
+				for (int i = 0; i < calculateurTab.size(); i++) {
+					calculateurChoix.addItem(calculateurTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(calculateurLabel);
+			this.add(calculateurChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,calculateurChoix,ActionDebugSupprime.CALCULATEUR,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+			
+		}
+		
+		else if (type == MATERIEL) {
+			this.setLayout(new GridLayout(2,2));
+			
+			Label materielLabel = new Label("materiel a supprime : ");
+			final Choice  materielChoix = new Choice();
+			
+			ArrayList<Materiel> materielTab = new ArrayList<Materiel>();
+			try {
+				materielTab = JavaSQLMateriel.affiche();
+
+				for (int i = 0; i < materielTab.size(); i++) {
+					materielChoix.addItem(materielTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(materielLabel);
+			this.add(materielChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,materielChoix,ActionDebugSupprime.MATERIEL,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 			

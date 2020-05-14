@@ -23,4 +23,8 @@ public class Calculateur extends Ressource{
 	public String toString() {
 		return nom;
 	}
+
+	public String creeAffiche() {
+		return "id : " + this.id + ", nom : " + this.nom + ", capacite calculateur : " + this.capacite;
+	}
 }
