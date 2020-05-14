@@ -1,86 +1,114 @@
 package Panel;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
-import EcouteurEvenement.SourisRessourceListener;
 import Model.Entreprise;
-import Ressource.Personne;
 import Ressource.Ressource;
 
-public class PanelRessource extends JPanel{
+public class PanelRessource extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
+	private Color couleurFond;
+	private JTextField rechercher;
 	
 	public PanelRessource(Entreprise entreprise) {
 		this.entreprise= entreprise;
+		couleurFond = PanelPrincipal.BLEU1;
 		afficheInterface();
 	}
 	
-	private void afficheInterface() {
-		this.removeAll();
-		this.setLayout(new BorderLayout());
-		this.setBackground(PanelPrincipal.BLEU1);
-		this.add(menuRessource(), BorderLayout.WEST);
-		ArrayList<String> ressourceAfficher = entreprise.getListeRessourceAfficher();
-		if (ressourceAfficher.size() > 0) {
-			JPanel panel = new JPanel();
-			panel.setBackground(PanelPrincipal.BLEU1);
-			panel.setLayout(new BorderLayout());
-			panel.add(marge(), BorderLayout.NORTH);
-			panel.add(marge(), BorderLayout.WEST);
-			panel.add(creerPanelListe(ressourceAfficher), BorderLayout.EAST);
-			this.add(panel, BorderLayout.EAST);
-		}
-		this.revalidate();		
-	}
-
-	private JPanel marge() {
-		JPanel panel = new JPanel();
-		panel.setBackground(PanelPrincipal.BLEU1);
-		panel.setPreferredSize(new Dimension(20,15));
-		return panel;
-	}
-
-	private JPanel menuRessource() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(3,0));
-		panel.setBackground(PanelPrincipal.BLEU1);
-		panel.add(new JLabel("                        "));
-		
-		JPanel panelIco = new JPanel();
-		panelIco.setBackground(PanelPrincipal.BLEU1);
-		panelIco.setLayout(new GridLayout(3,0));
-
-		panelIco.add(creerLabelIco(new ImageIcon("images/user_white.png"), Ressource.PERSONNE));
-		panelIco.add(creerLabelIco(new ImageIcon("images/door_white.png"), Ressource.SALLE));
-		panelIco.add(creerLabelIco(new ImageIcon("images/computer_white.png"), Ressource.CALCULATEUR));
-		panel.add(panelIco);
-		
-		//panel.add(new JLabel("      "));
-
-		return panel;
-	}
 	
-	private JLabel creerLabelIco(ImageIcon icon, String type) {
-		JLabel label = new JLabel(icon);
+	public void afficheInterface() {
+		this.setLayout(new GridBagLayout());
+		this.setBackground(couleurFond);
+		
+		GridBagConstraints gc = new GridBagConstraints();
+		
+		gc.fill = GridBagConstraints.BOTH;
+		
+		gc.insets = new Insets(5, 10, 5, 10);
+		
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
+		gc.weightx = 3;
+		gc.weighty = 3;
+
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.gridwidth = 1;
+		gc.gridheight = 1;
+		this.add(creerImageRessource(Ressource.PERSONNE), gc);
+		gc.gridy ++;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		this.add(creerImageRessource(Ressource.SALLE), gc);
+		gc.gridy ++;
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		this.add(creerImageRessource(Ressource.CALCULATEUR), gc);
+		
+		
+		if (entreprise.getAfficheListeRessource() != "") {
+			gc.gridx ++;
+			gc.gridy = 0;
+			gc.gridwidth = GridBagConstraints.REMAINDER;
+			gc.gridheight = GridBagConstraints.REMAINDER;
+			this.add(creerList(entreprise.getListeRessourceType(entreprise.getAfficheListeRessource())), gc);
+		}
+	}
+
+	
+	private JLabel creerImageRessource(String type) {
+		String resSelection = entreprise.getAfficheListeRessource();
+		ImageIcon ico = new ImageIcon();
+		if (type.equals(Ressource.PERSONNE)) {
+			if (resSelection.equals(Ressource.PERSONNE)) {
+				ico = new ImageIcon("images/user_grey_grand.png");
+			}
+			else {
+				ico = new ImageIcon("images/user_white.png");
+			}
+		}
+		if (type.equals(Ressource.SALLE)) {
+			if (resSelection.equals(Ressource.SALLE)) {
+				ico = new ImageIcon("images/door_grey_grand.png");
+			}
+			else {
+				ico = new ImageIcon("images/door_white.png");
+			}
+		}
+		if (type.equals(Ressource.CALCULATEUR)) {
+			if (resSelection.equals(Ressource.CALCULATEUR)) {
+				ico = new ImageIcon("images/computer_grey_grand.png");
+			}
+			else {
+				ico = new ImageIcon("images/computer_white.png");
+			}
+		}
+		
+		
+		JLabel label = new JLabel(ico);
 		label.addMouseListener(new MouseListener() {           
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				entreprise.selectionnerListeRessource(type);
+				entreprise.setAfficheListeRessource(type);
  			}
 			@Override
 			public void mousePressed(MouseEvent e) {}
@@ -93,94 +121,65 @@ public class PanelRessource extends JPanel{
     	});
 		return label;
 	}
-	
-	private JPanel creerPanelListe(ArrayList<String> ressourceAfficher) {
-		JPanel panel = new JPanel();
-		panel.setBackground(PanelPrincipal.BLEU1);
-		panel.setLayout(new GridLayout(ressourceAfficher.size(),0));
-		for (int i=0; i<ressourceAfficher.size(); i++) {
-			panel.add(creerPanelRessource(ressourceAfficher.get(i)));
-		}			
-		return panel;
+
+	private JScrollPane creerList(ArrayList<Ressource> lr) {
+		Ressource [] tr = new Ressource [lr.size()];
+		for (int i=0; i<tr.length; i++) {
+			tr[i] = lr.get(i);
+		}
+		JList<Ressource> jlt = new JList<Ressource>(tr);
+		jlt.setBackground(couleurFond);
+		
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.setForeground(PanelPrincipal.BLANC);
+		jlt.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        JList<Ressource> jlt = (JList<Ressource>)evt.getSource();
+		        if (evt.getClickCount() == 2) {
+		        	afficheRessource(jlt.getSelectedValue());
+		        }
+		    }
+		});
+		
+		JScrollPane scrollPane = new JScrollPane(jlt);
+		scrollPane.setViewportView(jlt);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return scrollPane;
 	}
-		
-	
-	private JPanel creerPanelRessource(String type) {
-		ArrayList<Ressource> listeRessource = entreprise.getListeRessourceType(type);
-		JPanel panelPrincipale = new JPanel();
-		panelPrincipale.setBackground(PanelPrincipal.BLEU1);
-		panelPrincipale.setLayout(new BorderLayout());
-		panelPrincipale.add(creerLabelInterfaceRessource(type), BorderLayout.NORTH);
-		
-		JPanel principalListe = new JPanel();
-		principalListe.setLayout(new BorderLayout());
-		principalListe.add(marge(), BorderLayout.NORTH);
-		
-		JPanel panelListe = new JPanel();
-		panelListe.setBackground(PanelPrincipal.BLEU1);
 
-		panelListe.setLayout(new BoxLayout(panelListe, BoxLayout.Y_AXIS));
-		panelListe.setPreferredSize(new Dimension(180,this.getHeight()));
+	public void afficheRessource(Ressource r) {
+			entreprise.afficheInfoRessource(r);
+	}
 
-		if (listeRessource.size() > 0) {	 
-			for (int i=0; i<listeRessource.size(); i++) {
-				Ressource ressource = listeRessource.get(i);
-				String nom;
-				if (ressource.getType() == Ressource.PERSONNE) {
-					nom = (((Personne) ressource).getPrenom()) + " " + ressource.getNom();
-				}
-				else {
-					nom = ressource.getNom();
-				}
-				panelListe.add(creerLabel(nom, ressource));
+	private JPanel afficherRechercher() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(3,3));
+		panel.setBackground(PanelPrincipal.BLEU2);
+    	rechercher = new JTextField("rechercher");
+    	rechercher.getFont().deriveFont(Font.ITALIC);
+    	rechercher.setForeground(PanelPrincipal.GRIS2);
+    	rechercher.addMouseListener(new MouseListener() {           
+			@Override
+			public void mouseClicked(MouseEvent e) {
+    	        JTextField texteField = ((JTextField)e.getSource());
+    	        texteField.setText("");
+    	        texteField.getFont().deriveFont(Font.PLAIN);
+    	        texteField.setForeground(PanelPrincipal.NOIR);
+    	        texteField.removeMouseListener(this);
 			}
-		}
-		principalListe.add(panelListe);
-		panelPrincipale.add(principalListe, BorderLayout.WEST);
-		return panelPrincipale;			
-	}
-	
-	private JLabel creerLabel(String nom, Ressource ressource) {
-		JLabel label = new JLabel(nom);
-		label.setForeground(PanelPrincipal.BLANC);
-		label.setFont(new Font("Arial", Font.BOLD, 15));
-		label.addMouseListener(new SourisRessourceListener(entreprise, ressource));
-		return label;
-	}
-	
-	private JLabel creerLabel(String nom, boolean estGras) {
-		JLabel label = new JLabel(nom);
-		if(estGras) {
-			label.setFont(new Font("Arial", Font.BOLD, 15));
-		}
-		else {
-			label.setFont(new Font("Arial", Font.PLAIN, 15));
-		}
-		return label;
-	}
-
-	private JPanel creerLabelInterfaceRessource(String type) {
-		JPanel panel = new JPanel();
-		panel.setBackground(PanelPrincipal.BLEU1);
-	    panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		JLabel labelTxt = new JLabel();
-		JLabel labelIco = new JLabel();
-		if (type == Ressource.PERSONNE) {
-			labelIco = new JLabel(new ImageIcon("images/user_white.png"));
-			labelTxt = creerLabel("  "+Ressource.PERSONNE+"s", true);
-		}
-		if (type == Ressource.SALLE) {
-			labelIco = new JLabel(new ImageIcon("images/door_white.png"));
-			labelTxt = creerLabel("  "+Ressource.SALLE+"s", true);					
-		}
-		if (type == Ressource.CALCULATEUR) {
-			labelIco = new JLabel(new ImageIcon("images/computer_white.png"));	
-			labelTxt = creerLabel("  "+Ressource.CALCULATEUR+"s", true);	
-		}
-		labelTxt.setForeground(PanelPrincipal.BLANC);
-		panel.add(labelIco);
-		panel.add(labelTxt);
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+    	});
+    	panel.add(new JLabel(" "));
+    	panel.add(rechercher);
+    	panel.add(new JLabel(" "));
 		return panel;
-	}
+	}	
 
 }

@@ -1,6 +1,7 @@
 package Panel;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -33,57 +34,47 @@ public class PanelInfoProjet extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
 	private Projet projet;
-
+	private Color couleurFond;
+	
+	
 	public PanelInfoProjet(Entreprise entreprise) {
 		this.entreprise = entreprise;
+		couleurFond = PanelPrincipal.BLANC;
 		this.projet = entreprise.getProjetSelectionner();
 		if (projet != null) {
-			this.setBackground(PanelPrincipal.BLANC);
+			this.setBackground(couleurFond);
 			this.setLayout(new BorderLayout());
-			this.add(afficheInterface(), BorderLayout.CENTER);
+			afficheInterface();
 		}
 	}
 	
-	public JPanel afficheInterface() {
-		JPanel panel = new JPanel();
-		panel.setBackground(PanelPrincipal.BLANC);
-		panel.setLayout(new GridBagLayout());
-		
-		
-		/* Le gridBagConstraints va definir la position et la taille des elements */
+	public void afficheInterface() {
+		this.setBackground(couleurFond);
+		this.setLayout(new GridBagLayout());		
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert à definir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
-		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
-		 */
 		gc.fill = GridBagConstraints.BOTH;
-		
-		/* insets definir la marge entre les composant new Insets(margeSuperieure, margeGauche, margeInferieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalite de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx definit le nombre de cases en abscisse */
 		gc.weightx = 5;
 		
-		/* weightx definit le nombre de cases en ordonnee */
-		int nbActivite = 5;
-		gc.weighty = nbActivite+1;
+		gc.weighty = 3;
 		
 		
 		gc.gridx = 0;
 		gc.gridy = 0;
 		String nom = projet.getChefDeProjet().getPrenom() + " " + projet.getChefDeProjet().getNom();
-		panel.add(creerLabel("Chef de projet: "+ nom), gc);
+		this.add(creerLabel("Chef de projet: "+ nom), gc);
 		gc.gridx = 1;
-		panel.add(creerLabel("Priorite: "+(int)projet.getPriorite()), gc);
+		this.add(creerLabel("Priorite: "+(int)projet.getPriorite()), gc);
 		gc.gridx = 2;
 		
 		LocalDate deadline = projet.getDeadline();
 		String date = deadline.getDayOfMonth() + "/" + deadline.getMonthValue() + "/" + deadline.getYear();			
 
-		panel.add(creerLabel("DeadLine: "+date), gc);
+		this.add(creerLabel("DeadLine: "+date), gc);
 
 		for (int i=0; i<3; i++) {
 			String type = null;
@@ -97,22 +88,17 @@ public class PanelInfoProjet extends JPanel{
 			}
 				gc.gridx = i+3;
 				gc.gridy = 0;
-				panel.add(creerLabelInterfaceRessource(type), gc);
+				this.add(creerLabelInterfaceRessource(type), gc);
 		}
 		
 		//affiche les activit�
-		if (nbActivite > 0) {
 			
-			//gc.ipady = gc.anchor = GridBagConstraints.BOTH;
-			gc.gridx = 0;
-			gc.gridy ++;
-			gc.gridwidth = GridBagConstraints.REMAINDER;
-			gc.gridheight = GridBagConstraints.REMAINDER;
-			panel.add(panelActivite(), gc);
-		}
-		
+		gc.gridx = 0;
+		gc.gridy ++;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.gridheight = GridBagConstraints.REMAINDER;
+		this.add(panelActivite(), gc);
 
-		return panel;
 	}
 		
 		private JPanel creerLabelInterfaceRessource(String type) {
@@ -152,6 +138,7 @@ public class PanelInfoProjet extends JPanel{
 		
 		private JScrollPane panelActivite() {
 			JPanel p = new JPanel();
+			p.setBackground(couleurFond);
 			ArrayList<Activite> listeActivite = projet.getListe();
 			p.setLayout(new GridLayout(listeActivite.size(),1,10,10));
 
@@ -165,7 +152,6 @@ public class PanelInfoProjet extends JPanel{
 			jsp.setViewportView(p);
 			jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			return jsp;
-
 		}
 		
 //	==================METHODE GENERAL============================================	
