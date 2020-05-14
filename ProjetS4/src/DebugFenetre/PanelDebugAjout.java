@@ -28,7 +28,7 @@ public class PanelDebugAjout extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7;
 	private int type;
 	private Window w;
 	public PanelDebugAjout(Entreprise entreprise,Window w, int type) {
@@ -222,7 +222,7 @@ public class PanelDebugAjout extends JPanel{
 				personneTab = JavaSQLPersonne.affiche();
 
 				for (int i = 0; i < personneTab.size(); i++) {
-					PersonneChoix.addItem(personneTab.get(i).creerAfichage());
+					PersonneChoix.addItem(personneTab.get(i).creeAffiche());
 			}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -297,6 +297,76 @@ public class PanelDebugAjout extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugAjout(w,typeMatos,salleChoix,ActionDebugAjout.MATERIEL,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+
+			
+		}
+		
+		else if (type == PROJET) {
+			this.setLayout(new GridLayout(8,2));
+			
+			Label nomLabel = new Label("nom : ");
+			TextField nom = new TextField(20);
+			
+			this.add(nomLabel);
+			this.add(nom);
+			
+			
+			Label prioriteLabel = new Label("priorite : ");
+			TextField priorite= new TextField(20);
+			
+			this.add(prioriteLabel);
+			this.add(priorite);
+			
+			Label jourLabel = new Label("jour deadLine : ");
+			TextField jour = new TextField(20);
+			
+			this.add(jourLabel);
+			this.add(jour);
+			
+			Label moisLabel = new Label("mois deadLine : ");
+			TextField mois= new TextField(20);
+			
+			this.add(moisLabel);
+			this.add(mois);
+			
+			Label anneeLabel = new Label("annee deadLine : ");
+			TextField annee= new TextField(20);
+			
+			this.add(anneeLabel);
+			this.add(annee);
+			
+			Label couleurLabel = new Label("couleur  : ");
+			TextField couleur= new TextField(20);
+			
+			this.add(couleurLabel);
+			this.add(couleur);
+			
+			
+			Label chefLabel = new Label("chef de projet : ");
+			final Choice  chefChoix = new Choice();
+			
+			ArrayList<Personne> chefTab = new ArrayList<Personne>();
+			try {
+				chefTab = JavaSQLPersonne.affiche();
+
+				for (int i = 0; i < chefTab.size(); i++) {
+					chefChoix.addItem(chefTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(chefLabel);
+			this.add(chefChoix);
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugAjout(w,nom,priorite,jour,mois,annee,couleur,chefChoix,ActionDebugAjout.PROJET,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 

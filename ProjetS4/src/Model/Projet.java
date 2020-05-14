@@ -193,6 +193,11 @@ public class Projet implements Comparable<Projet>{
 		return contient;
 	}
 
+	public String creeAffiche() {
+		// TODO Auto-generated method stub
+		return "nom : " + this.nom + ",id :" + this.id + ",priorite : " + this.priorite + ", chef de projet : " + this.chefDeProjet + ", couleur : " + this.couleur + ", deadline : " + this.deadline;
+	}
+
 
 
 }

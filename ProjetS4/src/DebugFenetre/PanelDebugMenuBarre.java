@@ -27,7 +27,8 @@ public class PanelDebugMenuBarre extends JPanel{
 		Button competence = new Button("competence");
 		Button calculateur = new Button("calculateur");
 		Button materiel = new Button("materiel");
-
+		Button projet = new Button("projet");
+		Button activite = new Button("activite");
 
 
 
@@ -43,7 +44,8 @@ public class PanelDebugMenuBarre extends JPanel{
 		competence.addActionListener(new NavigationListener(w,entreprise,NavigationListener.COMPETENCE));
 		calculateur.addActionListener(new NavigationListener(w,entreprise,NavigationListener.CALCULATEUR));
 		materiel.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MATERIEL));
-
+		projet.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PROJET));
+		activite.addActionListener(new NavigationListener(w,entreprise,NavigationListener.ACTIVITE));
 
 
 
@@ -57,8 +59,8 @@ public class PanelDebugMenuBarre extends JPanel{
 		this.add(competence);
 		this.add(calculateur);
 		this.add(materiel);
-
-
+		this.add(projet);
+		this.add(activite);
 
 
 

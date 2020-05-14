@@ -7,6 +7,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import GestionTicket.Ticket;
@@ -20,6 +21,7 @@ import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLMateriel;
 import SQL.JavaSQLPersonne;
+import SQL.JavaSQLProjet;
 import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
 
@@ -50,11 +52,20 @@ public class ActionDebugAjout implements ActionListener{
 	private Choice numSalle;
 
 	
+	private TextField jour;
+	private TextField mois;
+	private TextField annee;
+	private TextField priorite;
+	private Choice chefChoix;
+	private TextField couleur;
+
+
+	
 	
 	
 	private TextField capacite;
 	
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6 ;
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7 ;
 
 	public ActionDebugAjout (Window w,TextField numero,TextField nom,TextField place, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -124,6 +135,25 @@ public class ActionDebugAjout implements ActionListener{
 	
 	
 
+	public ActionDebugAjout(Window w, TextField nom2, TextField priorite, TextField jour, TextField mois,
+			TextField annee, TextField couleur, Choice chefChoix, int typeVerif, Entreprise entreprise) {
+		this.w = w;
+		this.typeVerif = typeVerif;
+		if (typeVerif == PROJET) {
+			this.jour = jour;
+			this.mois = mois;
+			this.annee = annee;
+			this.nom = nom2;
+			this.priorite = priorite;
+			this.chefChoix = chefChoix;
+			this.couleur = couleur;
+		}
+
+	}
+	
+	
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
@@ -246,7 +276,7 @@ public class ActionDebugAjout implements ActionListener{
 					personneTab = JavaSQLPersonne.affiche();
 
 					for (int i = 0; i < personneTab.size(); i++) {
-						if (personne.getItem(personne.getSelectedIndex()).equals(personneTab.get(i).creerAfichage())) {
+						if (personne.getItem(personne.getSelectedIndex()).equals(personneTab.get(i).creeAffiche())) {
 							personneId = personneTab.get(i).getId();
 
 						}
@@ -317,6 +347,37 @@ public class ActionDebugAjout implements ActionListener{
 
 					JavaSQLMateriel.insertion( typeMatos.getText(),salleId);
 					new FenetreDebugMateriel(entreprise,FenetreDebugMateriel.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		
+			else if (typeVerif == PROJET) {
+				LocalDate deadLine = LocalDate.of( Integer.parseInt(annee.getText()), Integer.parseInt(mois.getText()), Integer.parseInt(jour.getText()));
+				int chefId = -1;
+				ArrayList<Personne> personneTab = new ArrayList<Personne>();
+				try {
+					personneTab = JavaSQLPersonne.affiche();
+
+					for (int i = 0; i < personneTab.size(); i++) {
+						if (chefChoix.getItem(chefChoix.getSelectedIndex()).equals(personneTab.get(i).creeAffiche())) {
+							chefId = personneTab.get(i).getId();
+
+						}
+				}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					JavaSQLProjet.insertion(nom.getText(), Integer.parseInt(priorite.getText()), deadLine, Integer.parseInt(couleur.getText()), chefId);
+					new FenetreDebugProjet(entreprise,FenetreDebugProjet.AFFICHE);
 					w.dispose();
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block

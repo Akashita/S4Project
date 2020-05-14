@@ -299,4 +299,10 @@ public class Activite implements Comparable<Activite>{
 		return nouvelleListe;
 	}
 
+	public String creeAffiche() {
+		// TODO Auto-generated method stub
+		return "titre : " + this.titre + ", id : " + this.id + ", ordre : " + this.ordre + ", charge heure : " + this.chargeHeure + ", charge JHomme : " + this.chargeJHomme 
+			+ ", couleur : " + this.couleur + ", debut : " + this.debut + ", liste de domaine : " + this.listeDomaine + ",liste de ressource : " + this.lRessources;
+	}
+
 }

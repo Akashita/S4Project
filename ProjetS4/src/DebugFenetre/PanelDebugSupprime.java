@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Model.Projet;
 import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Materiel;
@@ -21,6 +22,7 @@ import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLMateriel;
 import SQL.JavaSQLPersonne;
+import SQL.JavaSQLProjet;
 import SQL.JavaSQLTicket;
 
 public class PanelDebugSupprime extends JPanel{
@@ -28,7 +30,7 @@ public class PanelDebugSupprime extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7;
 	private int type;
 	private Window w;
 	public PanelDebugSupprime(Entreprise entreprise,Window w, int type) {
@@ -205,6 +207,39 @@ public class PanelDebugSupprime extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugSupprime(w,materielChoix,ActionDebugSupprime.MATERIEL,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+			
+		}
+		
+		
+		else if (type == PROJET) {
+			this.setLayout(new GridLayout(2,2));
+			
+			Label projetLabel = new Label("projet a supprime : ");
+			final Choice  projetChoix = new Choice();
+			
+			ArrayList<Projet> projetTab = new ArrayList<Projet>();
+			try {
+				projetTab = JavaSQLProjet.affiche();
+
+				for (int i = 0; i < projetTab.size(); i++) {
+					projetChoix.addItem(projetTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(projetLabel);
+			this.add(projetChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,projetChoix,ActionDebugSupprime.PROJET,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 			

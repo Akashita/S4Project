@@ -154,7 +154,7 @@ public class Personne extends Ressource{
 		}
 	}
 
-	public String creerAfichage() {
+	public String creeAffiche() {
 		return "prenom : " + prenom+", nom : "+nom + ", id : " + this.id + ", role : " + this.role + ", mdp : " + this.mdp + ", login : " + this.getLogin();
 
 	}
@@ -163,6 +163,7 @@ public class Personne extends Ressource{
 	public String toString() {
 			return prenom +" "+ nom ;
 		}
+
 	
 	
 }

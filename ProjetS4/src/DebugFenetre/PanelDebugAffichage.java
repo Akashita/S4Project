@@ -10,17 +10,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import GestionTicket.Ticket;
+import Model.Activite;
 import Model.Entreprise;
+import Model.Projet;
 import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Materiel;
 import Ressource.Personne;
 import Ressource.Salle;
+import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLMateriel;
 import SQL.JavaSQLPersonne;
+import SQL.JavaSQLProjet;
 import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
 
@@ -29,7 +33,7 @@ public class PanelDebugAffichage extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6,PROJET = 7, ACTIVITE = 8;
 	private int type;
 	public PanelDebugAffichage(Entreprise entreprise, int type) {
 		this.entreprise = entreprise;
@@ -146,6 +150,40 @@ public class PanelDebugAffichage extends JPanel{
                 for (int i = 0; i < materielTab.size(); i++) {
                     JLabel materiel = new JLabel(materielTab.get(i).creeAffiche());
                     this.add(materiel);
+
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+		
+		else if (type == PROJET) {
+            ArrayList<Projet> projetTab = new ArrayList<Projet>();
+            try {
+            	projetTab = JavaSQLProjet.affiche();
+                setLayout(new GridLayout(projetTab.size(),1));
+
+                for (int i = 0; i < projetTab.size(); i++) {
+                    JLabel projetLabel = new JLabel(projetTab.get(i).creeAffiche());
+                    this.add(projetLabel);
+
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+		
+		else if (type == ACTIVITE) {
+            ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+            try {
+            	activiteTab = JavaSQLActivite.affiche();
+                setLayout(new GridLayout(activiteTab.size(),1));
+
+                for (int i = 0; i < activiteTab.size(); i++) {
+                    JLabel projetLabel = new JLabel(activiteTab.get(i).creeAffiche());
+                    this.add(projetLabel);
 
             }
             } catch (SQLException e) {

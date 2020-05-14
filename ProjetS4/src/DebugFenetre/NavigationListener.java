@@ -14,7 +14,8 @@ public class NavigationListener  implements ActionListener{
 	private Entreprise entreprise;
 	public static int PERSONNE = 0, MENU = 1, SALLE = 2, SALLEAJOUT = 3, SALLESUPPRIME = 4,DOMAINE = 5, DOMAINEAJOUT = 6, DOMAINESUPPRIME = 7, PERSONNEAJOUT = 8, PERSONNESUPPRIME = 9,
 			TICKET = 10, TICKETAJOUT = 11, TICKETSUPPRIME = 12, COMPETENCE = 13, COMPETENCEAJOUT = 14, COMPETENCESUPPRIME = 15, CALCULATEUR = 16, CALCULATEURAJOUT = 17,
-			CALCULATEURSUPPRIME = 18,MATERIEL = 19, MATERIELAJOUT = 20, MATERIELSUPPRIME = 21 ;
+			CALCULATEURSUPPRIME = 18,MATERIEL = 19, MATERIELAJOUT = 20, MATERIELSUPPRIME = 21,PROJET = 22, PROJETAJOUT = 23, PROJETSUPPRIME = 24,
+			ACTIVITE = 25, ACTIVITEAJOUT = 26, ACTIVITESUPPRIME = 27;
 	public NavigationListener(Window w,Entreprise entreprise, int direction) {
 		this.w = w;
 		this.direction = direction;
@@ -93,6 +94,24 @@ public class NavigationListener  implements ActionListener{
 		}
 		else if (direction == MATERIELSUPPRIME) {
 			new FenetreDebugMateriel(entreprise,FenetreDebugMateriel.SUPPRIME);
+		}
+		else if (direction == PROJET) {
+			new FenetreDebugProjet(entreprise,FenetreDebugProjet.AFFICHE);
+		}
+		else if (direction == PROJETAJOUT) {
+			new FenetreDebugProjet(entreprise,FenetreDebugProjet.AJOUT);
+		}
+		else if (direction == PROJETSUPPRIME) {
+			new FenetreDebugProjet(entreprise,FenetreDebugProjet.SUPPRIME);
+		}
+		else if (direction == ACTIVITE) {
+			new FenetreDebugActivite(entreprise,FenetreDebugActivite.AFFICHE);
+		}
+		else if (direction == ACTIVITEAJOUT) {
+			new FenetreDebugActivite(entreprise,FenetreDebugActivite.AJOUT);
+		}
+		else if (direction == ACTIVITESUPPRIME) {
+			new FenetreDebugActivite(entreprise,FenetreDebugActivite.SUPPRIME);
 		}
 		w.dispose();
 

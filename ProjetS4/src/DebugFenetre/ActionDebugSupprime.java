@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Model.Projet;
 import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Materiel;
@@ -19,6 +20,7 @@ import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLMateriel;
 import SQL.JavaSQLPersonne;
+import SQL.JavaSQLProjet;
 import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
 
@@ -35,11 +37,14 @@ public class ActionDebugSupprime implements ActionListener{
 	private Choice calculateurASupprime;
 	
 	private Choice materielASupprime;
+	
+	private Choice projetASupprime;
+
 
 	
 	private int typeVerif;
 	private Entreprise entreprise;
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6  ;
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7  ;
 
 	public ActionDebugSupprime (Window w,TextField numero, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -63,6 +68,9 @@ public class ActionDebugSupprime implements ActionListener{
 		}
 		else if (typeVerif == MATERIEL) {
 			this.materielASupprime = choix;
+		}
+		else if (typeVerif == PROJET) {
+			this.projetASupprime = choix;
 		}
 		}
 	
@@ -250,8 +258,39 @@ else if (typeVerif == CALCULATEUR) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-}
+		
+	}
+		else if (typeVerif == PROJET) {
+			
+			ArrayList<Projet> projetTab = new ArrayList<Projet>();
+			int projetId = -1;
+		
+			try {
+				projetTab = JavaSQLProjet.affiche();
+		
+				for (int i = 0; i < projetTab.size(); i++) {
+					if (this.projetASupprime.getItem(projetASupprime.getSelectedIndex()).equals(projetTab.get(i).creeAffiche())) {
+						projetId = projetTab.get(i).getId();
+					}
+								}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			try {
+		
+				JavaSQLProjet.supprime(projetId);
+				new FenetreDebugProjet(entreprise,FenetreDebugProjet.AFFICHE);
+				w.dispose();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	
 	}
 
