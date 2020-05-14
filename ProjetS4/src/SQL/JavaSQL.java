@@ -78,7 +78,7 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Competence faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Calculateur(code INT PRIMARY KEY, nom VARCHAR(30), capacite INT NOT NULL);";
+				 sql = "CREATE TABLE IF NOT EXISTS Calculateur(code INT PRIMARY KEY AUTO_INCREMENT, nom VARCHAR(30), capacite INT NOT NULL);";
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Calculateur faite");
 				 
