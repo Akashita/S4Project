@@ -26,13 +26,16 @@ public class PanelDebugAjout extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5;
 	private int type;
 	private Window w;
 	public PanelDebugAjout(Entreprise entreprise,Window w, int type) {
 		this.w = w;
 		this.entreprise = entreprise;
 		this.type = type;
+		
+		
+		
 		if (type == PERSONNE) {
 			this.setLayout(new GridLayout(5,2));
 			Label nomLabel = new Label("nom : ");
@@ -74,7 +77,7 @@ public class PanelDebugAjout extends JPanel{
 			this.add(ok);
 			
 		}
-		else if (type == this.SALLE) {
+		else if (type == SALLE) {
 			this.setLayout(new GridLayout(4,2));
 			Label numeroLabel = new Label("numero : ");
 			TextField numero = new TextField(20);
@@ -99,8 +102,8 @@ public class PanelDebugAjout extends JPanel{
 
 			
 		}
-		else if (type == this.DOMAINE) {
-			this.setLayout(new GridLayout(6,2));
+		else if (type == DOMAINE) {
+			this.setLayout(new GridLayout(2,2));
 			Label nomLabel = new Label("nom : ");
 			TextField nom = new TextField(20);
 			this.add(nomLabel);
@@ -235,6 +238,27 @@ public class PanelDebugAjout extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugAjout(w,competenceChoix,niveauChoix,PersonneChoix, ActionDebugAjout.COMPETENCE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+
+			
+		}
+		
+		else if (type == CALCULATEUR) {
+			this.setLayout(new GridLayout(3,2));
+			Label nomLabel = new Label("nom : ");
+			TextField nom = new TextField(20);
+			this.add(nomLabel);
+			this.add(nom);
+			
+			Label capaciteLabel = new Label("capacite : ");
+			TextField capacite = new TextField(20);
+			this.add(capaciteLabel);
+			this.add(capacite);
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugAjout(w,nom,capacite,ActionDebugAjout.CALCULATEUR,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 

@@ -20,7 +20,7 @@ public class FenetreDebugCompetence extends JFrame{
 		this.entreprise = entreprise;
 		this.type = type;
 		
-		this.setTitle("gestionBDD domaine");
+		this.setTitle("gestionBDD competence");
 		this.setSize(LARGEUR,HAUTEUR);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.addWindowListener(new FermerFenetre(this));

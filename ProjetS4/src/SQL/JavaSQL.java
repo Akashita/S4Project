@@ -86,7 +86,7 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Salle faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Materiel(numSerie INT PRIMARY KEY, type VARCHAR(30), numero INT, "
+				 sql = "CREATE TABLE IF NOT EXISTS Materiel(numSerie INT PRIMARY KEY AUTO_INCREMENT, type VARCHAR(30), numero INT, "
 							+ "CONSTRAINT fk_Materiel_numero FOREIGN KEY(numero) REFERENCES Salle(numero) );";
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Materiel faite");

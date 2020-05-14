@@ -704,7 +704,7 @@ public class Entreprise extends Observable{
 		Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
 		this.ajouterRessource(nouvCalculateur);
 		try {
-			JavaSQLCalculateur.insertion(this.idCour, nom, 0);
+			JavaSQLCalculateur.insertion( nom, 0);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

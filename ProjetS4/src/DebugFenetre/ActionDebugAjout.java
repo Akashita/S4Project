@@ -15,6 +15,7 @@ import Ressource.Competence;
 import Ressource.Domaine;
 import Ressource.Personne;
 import Ressource.Salle;
+import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
@@ -44,7 +45,10 @@ public class ActionDebugAjout implements ActionListener{
 	private Choice personne; 
 	private Choice niveau; 
 	
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4 ;
+	
+	private TextField capacite;
+	
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5 ;
 
 	public ActionDebugAjout (Window w,TextField numero,TextField nom,TextField place, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -87,6 +91,16 @@ public class ActionDebugAjout implements ActionListener{
 		this.typeVerif = typeVerif;
 
 	}
+	
+	public ActionDebugAjout (Window w,TextField nom,TextField capacite,int typeVerif, Entreprise entreprise) {
+		this.w = w;
+		this.capacite = capacite;
+		this.nom = nom;
+		this.typeVerif = typeVerif;
+
+	}
+	
+	
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -245,6 +259,22 @@ public class ActionDebugAjout implements ActionListener{
 				}
 
 		}
+			else if (typeVerif == CALCULATEUR) {
+				try {
+
+					JavaSQLCalculateur.insertion( nom.getText(), Integer.parseInt(capacite.getText()));
+					new FenetreDebugCalculateur(entreprise,FenetreDebugCalculateur.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		
 }
 
 }

@@ -10,8 +10,10 @@ import java.util.ArrayList;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Personne;
+import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
@@ -28,11 +30,11 @@ public class ActionDebugSupprime implements ActionListener{
 	private Choice competenceASupprime;
 	private String tag;
 
-	
+	private Choice calculateurASupprime;
 	
 	private int typeVerif;
 	private Entreprise entreprise;
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4  ;
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5  ;
 
 	public ActionDebugSupprime (Window w,TextField numero, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -46,8 +48,13 @@ public class ActionDebugSupprime implements ActionListener{
 		if (typeVerif == TICKET) {
 		this.ticketASupprime = choix;
 		}
+		
 		else if (typeVerif == COMPETENCE) {
 			this.competenceASupprime = choix;
+		}
+		
+		else if (typeVerif == CALCULATEUR) {
+			this.calculateurASupprime = choix;
 		}
 		}
 	
@@ -161,6 +168,39 @@ public class ActionDebugSupprime implements ActionListener{
 
 				JavaSQLCompetence.supprime(competenceId,tag);
 				new FenetreDebugCompetence(entreprise,FenetreDebugCompetence.AFFICHE);
+				w.dispose();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		
+else if (typeVerif == CALCULATEUR) {
+			
+			ArrayList<Calculateur> calculateurTab = new ArrayList<Calculateur>();
+			int calculateurId = -1;
+
+			try {
+				calculateurTab = JavaSQLCalculateur.affiche();
+
+				for (int i = 0; i < calculateurTab.size(); i++) {
+					if (this.calculateurASupprime.getItem(calculateurASupprime.getSelectedIndex()).equals(calculateurTab.get(i).creeAffiche())) {
+						calculateurId = calculateurTab.get(i).getId();
+					}
+								}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			try {
+
+				JavaSQLCalculateur.supprime(calculateurId);
+				new FenetreDebugCalculateur(entreprise,FenetreDebugCalculateur.AFFICHE);
 				w.dispose();
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
