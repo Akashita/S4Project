@@ -13,11 +13,13 @@ import GestionTicket.Ticket;
 import Model.Entreprise;
 import Ressource.Calculateur;
 import Ressource.Competence;
+import Ressource.Materiel;
 import Ressource.Personne;
 import Ressource.Salle;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
+import SQL.JavaSQLMateriel;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
@@ -27,7 +29,7 @@ public class PanelDebugAffichage extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6;
 	private int type;
 	public PanelDebugAffichage(Entreprise entreprise, int type) {
 		this.entreprise = entreprise;
@@ -127,6 +129,23 @@ public class PanelDebugAffichage extends JPanel{
                 for (int i = 0; i < calculateurTab.size(); i++) {
                     JLabel calculateur = new JLabel(calculateurTab.get(i).creeAffiche());
                     this.add(calculateur);
+
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+		
+		else if (type == MATERIEL) {
+            ArrayList<Materiel> materielTab = new ArrayList<Materiel>();
+            try {
+            	materielTab = JavaSQLMateriel.affiche();
+                setLayout(new GridLayout(materielTab.size(),1));
+
+                for (int i = 0; i < materielTab.size(); i++) {
+                    JLabel materiel = new JLabel(materielTab.get(i).creeAffiche());
+                    this.add(materiel);
 
             }
             } catch (SQLException e) {

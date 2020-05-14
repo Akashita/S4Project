@@ -26,7 +26,7 @@ public class PanelDebugAjout extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6;
 	private int type;
 	private Window w;
 	public PanelDebugAjout(Entreprise entreprise,Window w, int type) {
@@ -259,6 +259,27 @@ public class PanelDebugAjout extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugAjout(w,nom,capacite,ActionDebugAjout.CALCULATEUR,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+
+			
+		}
+		
+		else if (type == MATERIEL) {
+			this.setLayout(new GridLayout(3,2));
+			Label typeLabel = new Label("type : ");
+			TextField typeMatos = new TextField(20);
+			this.add(typeLabel);
+			this.add(typeMatos);
+			
+			Label quantiteLabel = new Label("quantite : ");
+			TextField quantite = new TextField(20);
+			this.add(quantiteLabel);
+			this.add(quantite);
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugAjout(w,typeMatos,quantite,ActionDebugAjout.CALCULATEUR,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 

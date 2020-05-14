@@ -20,7 +20,6 @@ public class LancementRapideDebug {
 		System.out.println("test");
 		new Entreprise("debugBDD");
 
-	
 
 		
 
