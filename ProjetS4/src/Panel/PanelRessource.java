@@ -77,16 +77,40 @@ public class PanelRessource extends JPanel {
 	}
 
 	
-	private JLabel creerImageRessource(String type) {
+	private JLabel creerImageRessource(int type) {
 		String resSelection = entreprise.getAfficheListeRessource();
 		ImageIcon ico = new ImageIcon();
-		if (type.equals(Ressource.PERSONNE)) {
+		switch (type) {
+		case Ressource.PERSONNE:
 			if (resSelection.equals(Ressource.PERSONNE)) {
 				ico = new ImageIcon("images/user_grey_grand.png");
 			}
 			else {
 				ico = new ImageIcon("images/user_white.png");
+			}		
+			break;
+		case Ressource.SALLE:
+			if (resSelection.equals(Ressource.CALCULATEUR)) {
+				ico = new ImageIcon("images/user_grey_grand.png");
 			}
+			else {
+				ico = new ImageIcon("images/user_white.png");
+			}		
+			break;
+		case Ressource.CALCULATEUR:
+			if (resSelection.equals(Ressource.CALCULATEUR)) {
+				ico = new ImageIcon("images/user_grey_grand.png");
+			}
+			else {
+				ico = new ImageIcon("images/user_white.png");
+			}		
+			break;
+
+		default:
+			break;
+		}
+
+		if (type.equals(Ressource.PERSONNE)) {
 		}
 		if (type.equals(Ressource.SALLE)) {
 			if (resSelection.equals(Ressource.SALLE)) {

@@ -23,10 +23,8 @@ public class Ressource implements Comparable<Ressource>{
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	protected String nom; 
-	public static final String PERSONNE = "Personne";
-	public static final String SALLE = "Salle";
-	public static final String CALCULATEUR = "Calculateur";
-	protected String type; //Type de la ressource (personne/salle/...)
+	//public static final String PERSONNE = "Personne", SALLE = "Salle", CALCULATEUR = "Calculateur";
+	public static final int RIEN = -1, PERSONNE = 0, SALLE = 1, CALCULATEUR = 2;
 	protected int id;
 	
 	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> jours; 
@@ -35,15 +33,14 @@ public class Ressource implements Comparable<Ressource>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Ressource(int id, String nom, String type) {
+	public Ressource(int id, String nom) {
 		this.id = id;
 		this.nom = nom;
-		this.type = type;
 		this.jours = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>(); 
 	}
 	
 	public Ressource(int id) {
-		this(id, null, null);
+		this(id, null);
 	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -55,9 +52,6 @@ public class Ressource implements Comparable<Ressource>{
 		return this.nom;
 	}
 
-	public String getType() {
-		return this.type;
-	}
 
 	public int getId() {
 		return this.id;

@@ -14,7 +14,7 @@ public class Salle extends Ressource{
 	//			CONSTRUCTEURS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Salle(int numSalle, String nom, int capacite, ArrayList<Materiel> matos) {
-		super(numSalle, nom, "Salle");
+		super(numSalle, nom);
 		
 		this.lMatos = matos; //La liste du matos qui compose la salle
 		this.capacite = capacite; //Capacite de la salle en terme d'effectif

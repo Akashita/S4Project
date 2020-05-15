@@ -82,8 +82,7 @@ public class Entreprise extends Observable{
 	private Activite activiteSelectionner;
 	private ArrayList<String> ressourceAfficher = new ArrayList<String>();
 	
-	private String afficheListeRessource = "";
-	private int afficheTache = PanelTache.RIEN;
+	private int afficheListeRessource = Ressource.RIEN, afficheTache = PanelTache.RIEN;
 	//===============================
 	
 
@@ -313,16 +312,20 @@ public class Entreprise extends Observable{
 	 * @param type de la ressource
 	 * @return liste de ressource
 	 */
-	public  ArrayList<Ressource> getListeRessourceEntrepriseParType(String type){
+	public  ArrayList<Ressource> getListeRessourceEntrepriseParType(int type){
 		ArrayList<Ressource> l = new ArrayList<Ressource>();
-		if (type.equals(Ressource.PERSONNE)) {
+		switch (type) {
+		case Ressource.PERSONNE:
 			l = getListePersonneEntreprise();
-		}
-		if (type.equals(Ressource.SALLE)) {
+			break;
+		case Ressource.SALLE:
 			l = getListeSalleEntreprise();
-		}
-		if (type.equals(Ressource.CALCULATEUR)) {
+			break;
+		case Ressource.CALCULATEUR:
 			l = getListeCalculateurEntreprise();
+			break;
+		default:
+			break;
 		}
 		return l;
 		
@@ -435,7 +438,31 @@ public class Entreprise extends Observable{
 		return null;
 	}	
 	
-
+	
+	/**
+	 * cherche dans la bdd la ressource avec le login correspondant
+	 * @param type de la ressource
+	 * @param login de la ressource
+	 * @return la ressource 
+	 */
+	public Ressource getRessourceParLogin(int type, String login) {
+		Ressource r = null;
+		switch (type) {
+		case Ressource.PERSONNE:
+			r = getPersonneParLogin(login);
+			break;
+		case Ressource.SALLE:
+			r = getSalleParLogin(login);
+			break;
+		case Ressource.CALCULATEUR:
+			r = getCalculateurParLogin(login);
+			break;
+		default:
+			break;
+		}
+		return r;
+	}
+	
 	/**
 	 * cherche dans la bdd la personne avec le login correspondant
 	 * @param login de la ressource
@@ -463,22 +490,27 @@ public class Entreprise extends Observable{
 		return null;
 	}
 	
+	
 	/**
 	 * Cherche tout les projets concerné de la ressource par son login
 	 * @param type de la ressource
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
 	 */	
-	public ArrayList<Projet> getListeProjetdeRessourceParLogin(String type, String login){
+	public ArrayList<Projet> getListeProjetdeRessourceParLogin(int type, String login){
 		ArrayList<Projet> l = new ArrayList<Projet>();
-		if (type.equals(Ressource.PERSONNE)) {
+		switch (type) {
+		case Ressource.PERSONNE:
 			l = getListeProjetDePersonneParLogin(login);
-		}
-		if (type.equals(Ressource.SALLE)) {
+			break;
+		case Ressource.SALLE:
 			l = getListeProjetDeSalleParLogin(login);
-		}
-		if (type.equals(Ressource.CALCULATEUR)) {
+			break;
+		case Ressource.CALCULATEUR:
 			l = getListeProjetDeCalculateurParLogin(login);
+			break;
+		default:
+			break;
 		}
 		return l;
 	}
@@ -516,16 +548,20 @@ public class Entreprise extends Observable{
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
 	 */	
-	public ArrayList<Activite> getListeActivitetdeRessourceParLogin(String type, String login){
+	public ArrayList<Activite> getListeActivitetdeRessourceParLogin(int type, String login){
 		ArrayList<Activite> l = new ArrayList<Activite>();
-		if (type.equals(Ressource.PERSONNE)) {
+		switch (type) {
+		case Ressource.PERSONNE:
 			l = getListeActiviteDePersonneParLogin(login);
-		}
-		if (type.equals(Ressource.SALLE)) {
+			break;
+		case Ressource.SALLE:
 			l = getListeActiviteDeSalleParLogin(login);
-		}
-		if (type.equals(Ressource.CALCULATEUR)) {
+			break;
+		case Ressource.CALCULATEUR:
 			l = getListeActiviteDeCalculateurParLogin(login);
+			break;
+		default:
+			break;
 		}
 		return l;
 	}
@@ -557,7 +593,15 @@ public class Entreprise extends Observable{
 		return null;
 	}
 
-	
+	/**
+	 * Cherche dans la bdd tout les chefs de projets qui gere la ressource tester
+	 * @param type de la ressource 
+	 * @param login de la ressource 
+	 * @return la liste de personne
+	 */
+	public ArrayList<Personne> getListeDesChefDeProjetPossedantLaRessourceParLogin(int type, String login){
+		return null;
+	}
 	//------------------------------>>>>> Verifie condition dans la bdd
 
 	
@@ -569,16 +613,20 @@ public class Entreprise extends Observable{
 	 * @param p projet  tester
 	 * @return vrai si la ressource est presente sinon faux
 	 */
-	public boolean ressourcePresenteDansProjet(String type, Ressource r, Projet p) {
+	public boolean ressourcePresenteDansProjet(int type, Ressource r, Projet p) {
 		boolean b = false;
-		if (type.equals(Ressource.PERSONNE)) {
+		switch (type) {
+		case Ressource.PERSONNE:
 			b = personnePresenteDansProjet((Personne) r, p);
-		}
-		if (type.equals(Ressource.SALLE)) {
+			break;
+		case Ressource.SALLE:
 			b = sallePresenteDansProjet((Salle) r, p);
-		}
-		if (type.equals(Ressource.CALCULATEUR)) {
+			break;
+		case Ressource.CALCULATEUR:
 			b = calculateurPresenteDansProjet((Calculateur) r, p);
+			break;
+		default:
+			break;
 		}
 		return b;
 	}
@@ -623,16 +671,20 @@ public class Entreprise extends Observable{
 	 * @param a activite  tester
 	 * @return vrai si la ressource est presente dans l'activite sinon faux
 	 */
-	public boolean ressourcePresenteDansActivite(String type, Ressource r, Activite a) {
+	public boolean ressourcePresenteDansActivite(int type, Ressource r, Activite a) {
 		boolean b = false;
-		if (type.equals(Ressource.PERSONNE)) {
+		switch (type) {
+		case Ressource.PERSONNE:
 			b = personnePresenteDansActivite((Personne) r, a);
-		}
-		if (type.equals(Ressource.SALLE)) {
+			break;
+		case Ressource.SALLE:
 			b = sallePresenteDansActivite((Salle) r, a);
-		}
-		if (type.equals(Ressource.CALCULATEUR)) {
+			break;
+		case Ressource.CALCULATEUR:
 			b = calculateurPresenteDansActivite((Calculateur) r, a);
+			break;
+		default:
+			break;
 		}
 		return b;
 	}
@@ -840,33 +892,37 @@ public class Entreprise extends Observable{
 		update();
 	}*/
 	
-	public void ajouterRessourceActivite(Ressource res, Activite a) {
+	public void ajouterRessourceActivite(int type, Ressource res, Activite a) {
 		Activite act = getActiviteSelectionner();
 		act.ajouterRessource(res);
-		if (res.getType() == Ressource.PERSONNE) {
+		switch (type) {
+		case Ressource.PERSONNE:
 			try {
 				JavaSQLParticipe.insertionSalarie(res.getId(), a.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-		if (res.getType() == Ressource.SALLE) {
+			break;
+		case Ressource.SALLE:
 			try {
 				JavaSQLParticipe.insertionSalle(res.getId(), a.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-		if (res.getType() == Ressource.CALCULATEUR) {
+			break;
+		case Ressource.CALCULATEUR:
 			try {
 				JavaSQLParticipe.insertionCalcul(res.getId(), a.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			break;
+
+		default:
+			break;
 		}
 
 		majEDT();
-		//JavaSQLParticipe.insertion(numSalarie, code, numero, idA);
 		update();
 	}
 
@@ -924,7 +980,7 @@ public class Entreprise extends Observable{
 
 	public void nouvSalle (String nom, int capacite) {
 		try {
-			JavaSQLSalle.insertion(nom, capacite);
+			JavaSQLSalle.insertion(nom, capacite);  
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -985,42 +1041,47 @@ public class Entreprise extends Observable{
 		return true;
 	}
 
-	public void suppRessource(Ressource r) {
-		if (r.getType().equals(Ressource.PERSONNE)) {
+	public void suppRessource(int type, Ressource r) {
+		switch (type) {
+		case Ressource.PERSONNE:
 			try {
 				JavaSQLPersonne.supprime(r.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}
-		}
-		if (r.getType().equals(Ressource.SALLE)) {
+			}			
+			break;
+		case Ressource.SALLE:
 			try {
 				JavaSQLSalle.supprime(r.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-		if (r.getType().equals(Ressource.CALCULATEUR)) {
+			break;
+		case Ressource.CALCULATEUR:
 			try {
 				JavaSQLCalculateur.supprime(r.getId());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			break;
+
+		default:
+			break;
 		}
 		update();
 	}
 	
-	public void setAfficheListeRessource(String s) {
-		if (s.equals(afficheListeRessource)) {
-			afficheListeRessource = "";
+	public void setAfficheListeRessource(int type) {
+		if (type == afficheListeRessource) {
+			afficheListeRessource = Ressource.RIEN;
 		}
 		else {
-			afficheListeRessource = s;
+			afficheListeRessource = type;
 		}
 		update();
 	}
 
-	public String getAfficheListeRessource() {
+	public int getAfficheListeRessource() {
 		return afficheListeRessource;
 	}
 
@@ -1114,7 +1175,7 @@ public class Entreprise extends Observable{
 	}
 
 
-	public void selectionnerListeRessource(String type) {
+	/*public void selectionnerListeRessource(String type) {
 		boolean estPresent = false;
 		for (int i=0; i<ressourceAfficher.size(); i++) {
 			if (ressourceAfficher.get(i) == type) {
@@ -1161,7 +1222,7 @@ public class Entreprise extends Observable{
 				}
 			}
 		}
-	}
+	}*/
 
 
 	public ArrayList<String> getListeRessourceAfficher(){

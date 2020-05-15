@@ -9,7 +9,7 @@ public class Calculateur extends Ressource{
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Calculateur(String nom, int numCalculateur) {
-		super(numCalculateur, nom, "Calculateur");
+		super(numCalculateur, nom);
 	}
 	
 	public Calculateur(int code, String nom, int capacite) {

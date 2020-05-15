@@ -288,7 +288,7 @@ public class Activite implements Comparable<Activite>{
 	 * @param type  Le type de la ressource
 	 * @return la liste des lRessources selectionnees
 	 */
-	public ArrayList<Ressource> getListeRessourceType(String type){
+	public ArrayList<Ressource> getListeRessourceType(int type){
 		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
 		for (int i=0; i<lRessources.size(); i++) {
 			Ressource ressource = lRessources.get(i);

@@ -115,7 +115,7 @@ public class PanelInfoActivite extends JPanel{
 
 
 			for (int i=2; i<5; i++) {
-				String type = null;
+				int type = Ressource.RIEN;
 				switch (i){
 				case 2: type = Ressource.PERSONNE;
 				break;

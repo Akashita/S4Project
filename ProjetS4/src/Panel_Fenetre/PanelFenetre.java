@@ -49,8 +49,8 @@ public class PanelFenetre extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static String[] listeType = {Ressource.PERSONNE, Ressource.SALLE, Ressource.CALCULATEUR};
-    protected String typeChoisi = listeType[0];
+	private static String[] listeType = {"Personne", "Salle", "Calculateur"};
+    protected int typeChoisi = Ressource.PERSONNE;
 
     protected JTextField textFieldNom = new JTextField(),
     		textFieldPrenom = new JTextField(),
@@ -395,19 +395,10 @@ public class PanelFenetre extends JPanel{
 	
 	protected void majComboBoxProjet(PanelFenetre pf) {
 		String login = textFieldCapacite.getText();
-		Ressource r = entreprise.ressourceExiste(login);
-		if (r != null) {
-			ArrayList<Projet> lp = entreprise.getProjetDeLaRessource(r);
-			
-			Projet [] tp = new Projet[lp.size()];
-			for (int i=0; i<tp.length; i++) {
-				tp[i] = lp.get(i);
-			}	
-			comboBoxProjet = new JComboBox<Projet>(tp);			
-		}
-		else {
-			comboBoxProjet = new JComboBox<Projet>();
-		}
+		int type = comboBoxType.getSelectedIndex();
+		ArrayList<Projet> l = entreprise.getListeProjetdeRessourceParLogin(type, login);
+		
+		comboBoxProjet = new JComboBox<Projet>((Projet[]) l.toArray());			
 		maj(pf);
 	}
 	
@@ -431,7 +422,7 @@ public class PanelFenetre extends JPanel{
 	}
 	
 	protected void nouveauChoix(PanelFenetre pf) {
-		typeChoisi = (String) comboBoxType.getSelectedItem();
+		typeChoisi = comboBoxType.getSelectedIndex();
 		maj(pf);
 	}
 
@@ -521,7 +512,7 @@ public class PanelFenetre extends JPanel{
 		return true;
 	}
 
-
+	
 	protected String dateToString(LocalDate date) {
 		return date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();			
 	}

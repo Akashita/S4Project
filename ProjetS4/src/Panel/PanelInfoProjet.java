@@ -77,7 +77,7 @@ public class PanelInfoProjet extends JPanel{
 		this.add(creerLabel("DeadLine: "+date), gc);
 
 		for (int i=0; i<3; i++) {
-			String type = null;
+			int type = Ressource.RIEN;
 			switch (i){
 			case 0: type = Ressource.PERSONNE;
 			break;
@@ -101,23 +101,28 @@ public class PanelInfoProjet extends JPanel{
 
 	}
 		
-		private JPanel creerLabelInterfaceRessource(String type) {
+		private JPanel creerLabelInterfaceRessource(int type) {
 			JPanel panel = new JPanel();
 			panel.setBackground(PanelPrincipal.BLANC);		
 		    panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 			JLabel labelTxt = new JLabel();
 			JLabel labelIco = new JLabel();
-			if (type == Ressource.PERSONNE) {
+			switch (type) {
+			case Ressource.PERSONNE:
 				labelIco = new JLabel(new ImageIcon("images/user_grey.png"));
-				labelTxt = creerLabel("  "+Ressource.PERSONNE+"s", true);
-			}
-			if (type == Ressource.SALLE) {
+				labelTxt = creerLabel("  "+Ressource.PERSONNE+"s", true);			
+				break;
+			case Ressource.SALLE:
 				labelIco = new JLabel(new ImageIcon("images/door_grey.png"));
 				labelTxt = creerLabel("  "+Ressource.SALLE+"s", true);					
-			}
-			if (type == Ressource.CALCULATEUR) {
+				break;
+			case Ressource.CALCULATEUR:
 				labelIco = new JLabel(new ImageIcon("images/computer_grey.png"));	
 				labelTxt = creerLabel("  "+Ressource.CALCULATEUR+"s", true);	
+				break;
+
+			default:
+				break;
 			}
 			panel.add(labelIco);
 			panel.add(labelTxt);
