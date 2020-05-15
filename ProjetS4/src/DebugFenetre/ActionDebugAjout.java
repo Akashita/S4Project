@@ -75,13 +75,7 @@ public class ActionDebugAjout implements ActionListener{
 	
 	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7, ACTIVITE = 8 ;
 
-	public ActionDebugAjout (Window w,TextField numero,TextField nom,TextField place, int typeVerif, Entreprise entreprise) {
-		this.w = w;
-		this.numero = numero;
-		this.nom = nom;
-		this.place = place;
-		this.typeVerif = typeVerif;
-	}
+	
 	public ActionDebugAjout (Window w,TextField nom,int typeVerif, Entreprise entreprise) {
 		this.w = w;
 		this.nom = nom;
@@ -124,6 +118,10 @@ public class ActionDebugAjout implements ActionListener{
 			this.nom = texteUn;
 			this.capacite = texteDeux;
 		}
+		else if (typeVerif == SALLE) {
+			this.nom = texteUn;
+			this.place = texteUn;
+		}
 			
 		
 		
@@ -156,19 +154,7 @@ public class ActionDebugAjout implements ActionListener{
 			this.chefChoix = chefChoix;
 			this.couleur = couleur;
 		}
-		else if (typeVerif == ACTIVITE) {
-			this.jour = jour;
-			this.mois = mois;
-			this.annee = annee;
-			this.titre = nom2;
-			this.charge = priorite;
-			this.couleur = couleur;
-			this.projetChoix = chefChoix;
-			this.ordre = ordre;
-
-			
-
-		}
+		
 
 	}
 	
@@ -200,7 +186,7 @@ public class ActionDebugAjout implements ActionListener{
 		if (typeVerif == SALLE) {
 			try {
 
-				JavaSQLSalle.insertion(Integer.parseInt(numero.getText()), nom.getText(), Integer.parseInt(place.getText()));
+				JavaSQLSalle.insertion( nom.getText(), Integer.parseInt(place.getText()));
 				new FenetreDebugSalle(entreprise,FenetreDebugSalle.AFFICHE);
 				w.dispose();
 			} catch (NumberFormatException e) {

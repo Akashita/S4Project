@@ -47,8 +47,8 @@ public final class JavaSQLSalle extends JavaSQL{
 
 	}
 	
-	public static void insertion(int numero, String nom, int place) throws SQLException{
-		String sql = "INSERT INTO Salle(numero, nom, place) VALUE('" + numero+ "' ,  '"+nom+"' ,  '"+place+"');";
+	public static void insertion( String nom, int place) throws SQLException{
+		String sql = "INSERT INTO Salle( nom, place) VALUE('"+nom+"' ,  '"+place+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
@@ -74,16 +74,10 @@ public final class JavaSQLSalle extends JavaSQL{
 			}
 	 }
 	
-	public static void modifie(int ancienNumero, int nouvNumero, String nom, int place) throws SQLException{
+	public static void modifie(int numero, String nom, int place) throws SQLException{
 		try{
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Salle SET numero = '" + nouvNumero + "' ,nom  = '" + nom + "' ,place = '" + place + "' WHERE numero = '"+ ancienNumero+"';";
-			 stmt.executeUpdate(sql);
-			 sql = "UPDATE Materiel SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
-			 stmt.executeUpdate(sql);
-			 sql = "UPDATE Creneaux SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
-			 stmt.executeUpdate(sql);
-			 sql = "UPDATE ParticipeSalle SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
+			 String sql = "UPDATE Salle SET numero = nom  = '" + nom + "' ,place = '" + place + "' WHERE numero = '"+ numero+"';";
 			 stmt.executeUpdate(sql);
 		} catch(SQLException e){
 			e.printStackTrace();

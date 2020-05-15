@@ -82,7 +82,7 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Calculateur faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Salle(numero INT PRIMARY KEY, nom VARCHAR(30), place INT NOT NULL);";
+				 sql = "CREATE TABLE IF NOT EXISTS Salle(numero INT PRIMARY KEY AUTO_INCREMENT, nom VARCHAR(30), place INT NOT NULL);";
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Salle faite");
 				 

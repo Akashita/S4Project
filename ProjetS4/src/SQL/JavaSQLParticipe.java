@@ -45,11 +45,9 @@ public final class JavaSQLParticipe extends JavaSQL{
 	public static void insertionSalarie(int numSalarie, int idA) throws SQLException{
 		String sql = "INSERT INTO ParticipeSalarie(numSalarie,idA) VALUE('" + numSalarie+ "' , '"+idA+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -58,11 +56,9 @@ public final class JavaSQLParticipe extends JavaSQL{
 	public static void insertionSalle(int numero, int idA) throws SQLException{
 		String sql = "INSERT INTO ParticipeSalle(numSalarie, code, numero, idA) VALUE('"+numero+"' ,  '"+idA+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -71,11 +67,9 @@ public final class JavaSQLParticipe extends JavaSQL{
 	public static void insertionCalcul(int code, int idA) throws SQLException{
 		String sql = "INSERT INTO ParticipeCalcul(numSalarie, code, numero, idA) VALUE('"+code+"' , '"+idA+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -83,7 +77,6 @@ public final class JavaSQLParticipe extends JavaSQL{
 	
 	public static void supprime(int numSalarie, int code, int numero, int idA) throws SQLException{
 		try{
-			 connection();
 			 String sql = "DELETE FROM ParticipeSalarie WHERE idA ='" + idA + "' AND numSalarie = '" + numSalarie + "';";
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
@@ -96,7 +89,43 @@ public final class JavaSQLParticipe extends JavaSQL{
 			 stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
 			 
-			 con.close();
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static void supprimeParticipeSalle( int numero, int idA) throws SQLException{
+		try{
+
+			 
+			 String sql = "DELETE FROM ParticipeSalle WHERE idA ='" + idA + "' AND numero = '" + numero+"';";
+			 Statement stmt = getCon().createStatement();
+			 stmt.executeUpdate(sql);
+			 
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static void supprimeParticipeCalcul( int code, int idA) throws SQLException{
+		try{
+			 
+			 String sql = "DELETE FROM ParticipeCalcul WHERE idA ='" + idA + "' AND code = '" + code + "';";
+			 Statement stmt = getCon().createStatement();
+			 stmt.executeUpdate(sql);
+
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static void supprimeParticipeSalarie(int numSalarie, int idA) throws SQLException{
+		try{
+			 String sql = "DELETE FROM ParticipeSalarie WHERE idA ='" + idA + "' AND numSalarie = '" + numSalarie + "';";
+			 Statement stmt = getCon().createStatement();
+			 stmt.executeUpdate(sql);
+			 
+			
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
