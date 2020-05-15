@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +20,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import Fenetre.FenetreModal;
 import Fenetre.FenetrePrincipale;
@@ -31,18 +29,22 @@ import SQL.JavaSQLTicket;
 
 public class PanelTache extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
 	private Color couleurFond;
-	private boolean afficheTicket = false;
-	public final static int TICKET = 0, OPTIMISATION = 1;
+	public final static int RIEN = -1, TICKET = 0, OPTIMISATION = 1;
+	private int afficheTache;
+
 	private JButton boutonNouveauTicket;
-	private JList<Ticket> ticketRecu, ticketEnvoye;
 	
 	
 	public PanelTache(Entreprise entreprise) {
 		this.entreprise = entreprise;
 		couleurFond = PanelPrincipal.BLEU1;
-		afficheTicket = entreprise.getAfficheTicket();
+		afficheTache = entreprise.getAfficheTache();
 		boutonNouveauTicket = new JButton("Nouveau ticket");
 		boutonNouveauTicket.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -66,8 +68,12 @@ public class PanelTache extends JPanel {
 		
 		gc.weighty = 7;
 
-		if (afficheTicket) {
-			afficheTicket(gc);
+		switch (afficheTache) {
+		case TICKET: afficheTicket(gc);
+			break;
+
+		default:
+			break;
 		}
 		
 		
@@ -162,7 +168,7 @@ public class PanelTache extends JPanel {
 		label.addMouseListener(new MouseListener() {           
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				entreprise.selectionnerTache(tache);
+				entreprise.setAfficheTache(tache);
  			}
 			@Override
 			public void mousePressed(MouseEvent e) {}

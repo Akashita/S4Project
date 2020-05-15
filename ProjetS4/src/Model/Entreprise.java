@@ -28,6 +28,7 @@ import Panel.PanelTache;
 import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Domaine;
+import Ressource.Materiel;
 import Ressource.Personne;
 import Ressource.Ressource;
 import Ressource.RessourceAutre;
@@ -51,13 +52,13 @@ public class Entreprise extends Observable{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	private ArrayList<Projet> lProjet;//liste qui contient tous les projets de l'entreprise
+	/*private ArrayList<Projet> lProjet;//liste qui contient tous les projets de l'entreprise
 	private ArrayList<String> lType;//liste qui contient tous les types de ressourceAutre qui ont d��j�� ��t�� cr��e pour les r��utiliser
 	private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de l��entrepris
 	private int idCour;//id des ressources
 	private int idAct; //id des activit������s
 	private int idProjet;
-	private ArrayList<JPanel> lPanel = new ArrayList<JPanel>();
+	private Domaine domaine;*/
 
 	public static final int HEURE_DEBUT_MATIN = 8;
 	public static final int HEURE_FIN_MATIN = 12;
@@ -66,8 +67,14 @@ public class Entreprise extends Observable{
 
 	public static final int NB_HEURE_JOUR = 8;
 
-	private FenetrePrincipale fenetrePrincipale;
 	private FenetreDebugBDD fenetreBDD;
+	
+	
+	
+	
+	//=========== Attribut graphique
+	private ArrayList<JPanel> lPanel = new ArrayList<JPanel>();
+	private FenetrePrincipale fenetrePrincipale;
 	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
 	private ArrayList<FenetreInfoTicket> listeFenetreInfoTicket = new ArrayList<FenetreInfoTicket>();
 
@@ -75,11 +82,10 @@ public class Entreprise extends Observable{
 	private Activite activiteSelectionner;
 	private ArrayList<String> ressourceAfficher = new ArrayList<String>();
 	
-	private boolean afficheListeTicket = false;
 	private String afficheListeRessource = "";
+	private int afficheTache = PanelTache.RIEN;
+	//===============================
 	
-	
-	private Domaine domaine;
 
 	public final String SEPARATEUR = "#";
 
@@ -89,22 +95,22 @@ public class Entreprise extends Observable{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//cr��ation de l'entreprise unique il faudra lui ajouter un nom si on d��sire ��tendre nos activit��s
 	public Entreprise() {
-		this.lProjet =  new ArrayList<Projet>();
+		/*this.lProjet =  new ArrayList<Projet>();
 		this.lType =  new ArrayList<String>();
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
-		this.domaine = new Domaine();
+		this.domaine = new Domaine();*/
 		//recupInfoBdd();
 
 		fenetrePrincipale = new FenetrePrincipale(this);
 		this.update();
 	}
 	public Entreprise(String typeDebug) {
-		this.lProjet =  new ArrayList<Projet>();
+		/*this.lProjet =  new ArrayList<Projet>();
 		this.lType =  new ArrayList<String>();
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
-		this.domaine = new Domaine();
+		this.domaine = new Domaine();*/
 		//recupInfoBdd();
 
 		if (typeDebug == "debugBDD") {
@@ -115,11 +121,11 @@ public class Entreprise extends Observable{
 
 	public Entreprise(Personne p) {
 		user = p;
-		this.lProjet =  new ArrayList<Projet>();
+		/*this.lProjet =  new ArrayList<Projet>();
 		this.lType =  new ArrayList<String>();
 		this.lRessource =  new ArrayList<Ressource>();
 		this.idCour = 0;
-		this.domaine = new Domaine();
+		this.domaine = new Domaine();*/
 		//recupInfoBdd();
 
 		fenetrePrincipale = new FenetrePrincipale(this);
@@ -152,7 +158,7 @@ public class Entreprise extends Observable{
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//classe de base qui permettent de voir la cha������ne et r������cup������rer les infos de la classe
-	@Override
+	/*@Override
 	public String toString() {
 		String chaineActProjet = "Voici la liste des projets ainsi que leurs activites : ";
 		for (int i = 0; i < this.lProjet.size(); i++) {
@@ -160,7 +166,7 @@ public class Entreprise extends Observable{
 
 		}
 		return chaineActProjet;
-	}
+	}*/
 
 	//------------------------------------------------------------------------>>>>>>>> Changement de compte
 
@@ -182,9 +188,10 @@ public class Entreprise extends Observable{
 		this.user = user;
 	}
 
-	//----------------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------->>>>>>>>> EDT
 
 	public void majEDT() {
+		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite;
 		viderRessources();
 		 for (int i = 0; i < lProjet.size(); i++) {
@@ -199,6 +206,7 @@ public class Entreprise extends Observable{
 	}
 
 	private void viderRessources() {
+		ArrayList<Ressource> lRessource = getListeRessourceEntreprise();
 		for (int i = 0; i < lRessource.size(); i++) {
 			lRessource.get(i).vider();
 		}
@@ -285,199 +293,404 @@ public class Entreprise extends Observable{
 	}
 
 
-	public void incrementId (){ //fonction a utiliser sur chaque nouvelle ressource pour leur attribuer un iD
-		this.idCour = this.idCour +1 ;
-		//		this.idCour = this.lRessource.size() +1 ;
+	
+	//-------------------------------------------------------------------------------------------------------------->>>>>>>>>>> Recherche dans la bdd
 
+	//------------------------------>>>>> Retourne element de la bdd
+	
+	
+	/**
+	 * Cherche toute les ressource de l'entreprise de la bdd
+	 * @return la liste des ressource de l'entreprise
+	 */
+	public ArrayList<Ressource> getListeRessourceEntreprise(){
+		return null;
 	}
 
-	public int getId() {
-		return this.idCour;
-	}
-
-	public Domaine getDomaine() {
-		return this.domaine;
-	}
-
-	public Ressource getRessource(int id) {
-		Ressource r = null;
-		for(int i=0; i<lRessource.size(); i++) {
-			if (lRessource.get(i).getId() == id) {
-				r = lRessource.get(i);
-			}
+	
+	/**
+	 * Cherche toute les ressource du type choisi de l'entreprise de la bdd 
+	 * @param type de la ressource
+	 * @return liste de ressource
+	 */
+	public  ArrayList<Ressource> getListeRessourceEntrepriseParType(String type){
+		ArrayList<Ressource> l = new ArrayList<Ressource>();
+		if (type.equals(Ressource.PERSONNE)) {
+			l = getListePersonneEntreprise();
 		}
-		return r;
-	}
-
-	public ArrayList<Personne> getChefDeProjetConcerner(Ressource r){
-		ArrayList<Personne> lp = new ArrayList<Personne>();
-		for (int i=0; i<lProjet.size(); i++) {
-			if (lProjet.get(i).ressourcePresente(r)) {
-				lp.add(lProjet.get(i).getChefDeProjet());
-			}
+		if (type.equals(Ressource.SALLE)) {
+			l = getListeSalleEntreprise();
 		}
-		return lp;
-	}
-
-	public Ressource ressourceExiste(String login) {
-		Ressource r = null;
-	      String[] regex = login.split("#", 2);
-	      int id = Integer.parseInt(regex[1]);
-	      for (int i=0; i<lRessource.size(); i++) {
-	      if (lRessource.get(i).getId() == id) {
-	        r = lRessource.get(i);
-	       }
-	    }
-
-		return r;
-	}
-
-	public boolean ressourceEstDansAct(Ressource r, Activite a) {
-		return a.ressourcePresente(r);
-	}
-
-
-	public ArrayList<Activite> getActRes(Ressource r){ //retourne tout les activit������s d'une ressource
-		ArrayList<Activite> lA = new ArrayList<Activite>();
-		for (int i=0; i<lProjet.size(); i++) {
-			ArrayList<Activite> lAP = lProjet.get(i).getListe();
-			for (int j=0; j<lAP.size(); j++) {
-				if (lAP.get(j).ressourcePresente(r)) {
-					lA.add(lAP.get(j));
-				}
-			}
+		if (type.equals(Ressource.CALCULATEUR)) {
+			l = getListeCalculateurEntreprise();
 		}
-		return lA;
+		return l;
+		
+	}
+	
+	/**
+	 * Cherche toute les personnes de l'entreprise de la bdd
+	 * @return la liste des personnes de l'entreprise
+	 */
+	public ArrayList<Ressource> getListePersonneEntreprise(){
+		return null;
 	}
 
-	public ArrayList<Projet> getProjetPRes(Ressource r){ //retourne tout les projets d'une ressource
-		ArrayList<Projet> lP = new ArrayList<Projet>();
-		for (int i=0; i<lProjet.size(); i++) {
-			ArrayList<Activite> lAP = lProjet.get(i).getListe();
-			for (int j=0; j<lAP.size(); j++) {
-				if (lAP.get(j).ressourcePresente(r)) {
-					lP.add(lProjet.get(i));
-				}
-			}
-		}
-		return lP;
+	/**
+	 * Cherche toute les salles de l'entreprise de la bdd
+	 * @return la liste des salles de l'entreprise
+	 */
+	public ArrayList<Ressource> getListeSalleEntreprise(){
+		return null;
 	}
 
-	public ArrayList<Ressource> getListeRessourceType(String type){
-		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
-		for (int i=0; i<lRessource.size(); i++) {
-			Ressource ressource = lRessource.get(i);
-			if(ressource.getType() == type) {
-				nouvelleListe.add(ressource);
-			}
-		}
-		return nouvelleListe;
+	/**
+	 * Cherche toute les calculateurs de l'entreprise de la bdd
+	 * @return la liste des calculateurs de l'entreprise
+	 */
+	public ArrayList<Ressource> getListeCalculateurEntreprise(){
+		return null;
 	}
 
-	public ArrayList<Projet> getProjetDeLaRessource(Ressource r){ //retourne la liste des projet d'une ressource
-		ArrayList<Projet> lp = new ArrayList<Projet>();
-		for (int i=0; i<lProjet.size(); i++) {
-			Projet p = lProjet.get(i);
-			if (p.ressourcePresente(r)) {
-				lp.add(p);
-			}
-		}
-		return lp;
+	/**
+	 * Cherche toute les domaines de l'entreprise de la bdd
+	 * @return la liste des domaines de l'entreprise
+	 */
+	public ArrayList<Domaine> getListeDomaineEntreprise(){
+		return null;
 	}
 
-	public boolean ajouterRessource(Ressource ressource) {
-		if(!lRessource.contains(ressource)) {
-			lRessource.add(ressource);
-			return true;
-		} else {
-			return false;
-		}
+	/**
+	 * Cherche toute les materiels de l'entreprise de la bdd
+	 * @return la liste des materiels de l'entreprise
+	 */
+	public ArrayList<Materiel> getListeMaterielEntreprise(){
+		return null;
 	}
 
-	public boolean supprimerRessource(int idRessource) {
-		return lRessource.remove(new Ressource(idRessource));
+	/**
+	 * Cherche tout les projets concerné par l'user
+	 * @param id de l'user
+	 * @return la liste de projet
+	 */	
+	public ArrayList<Projet> getListeProjetDeUser(){
+		return null;
 	}
 
-	public int[] chercheProjet(String nomProjet) {
-
-		Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
-		int[] res = {0,0};//a droite la place du projet cherch�� et a gauche si il est trouv�� 0 non/1 oui
-
-		if (this.lProjet.size()== 0) {//si l'arrayList est vide il n'y a pas d��j�� ce projet.
-
-			return res;
-		}
-		else {
-
-			do{
-				if (this.lProjet.get(res[1]).getNom() == nomProjet) {
-					res[0] = 1;
-					pasTrouve = false;
-				}
-				else {
-					res[1] = res[1] + 1; //on incr��mente res pour acc��der �� chercher plus loin.
-				}
-
-			}
-			while((pasTrouve) && (res[1] < this.lProjet.size()));
-			return res ;
-		}
-
+	/**
+	 * Cherche tout les projets de l'entreprise
+	 * @param id de l'user
+	 * @return la liste de projet
+	 */	
+	public ArrayList<Projet> getListeProjetDeEntreprise(){
+		return null;
 	}
 
-	//m��thode pour rajouter un type de RessourceAutre
-	public void nouvTypeRessource(String nouvType) {
-		Boolean pasTrouve = true;//sert a sortir plus vite de la boucle
-		int i = 0;
-		if (this.lType.size()== 0) {//si l'arrayList est vide il n'y a pas d��j�� ce projet.
-			this.lType.add(nouvType);
-
-		}
-		else {
-
-			do{
-				if (this.lType.get(i) == nouvType) {//teste si le nom est d��j�� pr��sent dans les types de ressources
-					pasTrouve = false;//sort de la boucle sans rien faire
-				}
-				else {
-					i++; //on incr��mente i pour acc��der �� chercher plus loin.
-				}
-
-			}
-			while((pasTrouve) && (i < this.lType.size()));
-			this.lType.add(nouvType);
-		}
-
+	/**
+	 * Cherche tout les tickets envoyé par l'user
+	 * @param id de l'user
+	 * @return la liste de ticket envoyé
+	 */	
+	public ArrayList<Ticket> getListeTicketEnvoyeDeUser(){
+		return null;
 	}
 
-	//fonctions de cr��ations d'��l��ments de l'entreprise, les ressources ainsi que les projets
-	//les m��thodes sont doubl��s -> direct dans un projet ou dans l'entreprise
+	/**
+	 * Cherche tout les tickets recu par l'user
+	 * @param id de l'user
+	 * @return la liste de ticket recu
+	 */	
+	public ArrayList<Ticket> getListeTicketRecuDeUser(){
+		return null;
+	}
 
+	
+	
+	//------------------------------>>>>> Recherche element dans la bdd
 
+	/**
+	 * cherche dans la bdd la personne avec l'id correspondant
+	 * @param id de la ressource
+	 * @return personne concerné, sinon null
+	 */
+	public Personne getPersonneParId(int id) {
+		return null;
+	}
+
+	/**
+	 * cherche  dans la bdd la Salle avec l'id correspondant
+	 * @param id de la ressource
+	 * @return Salle concerné, sinon null
+	 */
+	public Salle getSalleParId(int id) {
+		return null;
+	}
+
+	/**
+	 * cherche dans la bdd la Calculateur avec l'id correspondant
+	 * @param id de la ressource
+	 * @return Calculateur concerné, sinon null
+	 */
+	public Calculateur getCalculateurParId(int id) {
+		return null;
+	}	
+	
+	/**
+	 * cherche dans la bdd la personne avec le login correspondant
+	 * @param login de la ressource
+	 * @return personne concerné, sinon null
+	 */
+	public Personne getPersonneParLogin(String login) {
+		return null;
+	}
+
+	/**
+	 * cherche  dans la bdd la Salle avec le login correspondant
+	 * @param login de la ressource
+	 * @return Salle concerné, sinon null
+	 */
+	public Salle getSalleParLogin(String login) {
+		return null;
+	}
+
+	/**
+	 * cherche dans la bdd la Calculateur avec le login correspondant
+	 * @param login de la ressource
+	 * @return Calculateur concerné, sinon null
+	 */
+	public Calculateur getCalculateurParLogin(String login) {
+		return null;
+	}
+	
+	/**
+	 * Cherche tout les projets concerné de la ressource par son login
+	 * @param type de la ressource
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Projet> getListeProjetdeRessourceParLogin(String type, String login){
+		ArrayList<Projet> l = new ArrayList<Projet>();
+		if (type.equals(Ressource.PERSONNE)) {
+			l = getListeProjetDePersonneParLogin(login);
+		}
+		if (type.equals(Ressource.SALLE)) {
+			l = getListeProjetDeSalleParLogin(login);
+		}
+		if (type.equals(Ressource.CALCULATEUR)) {
+			l = getListeProjetDeCalculateurParLogin(login);
+		}
+		return l;
+	}
+	
+	/**
+	 * Cherche tout les projets concerné de la personne par son login
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Projet> getListeProjetDePersonneParLogin(String login){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les projets concerné de la salle par son login
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Projet> getListeProjetDeSalleParLogin(String login){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les projets concerné de la calculateur par son login
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Projet> getListeProjetDeCalculateurParLogin(String login){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les activites concerné de la ressource par son login
+	 * @param type de la ressource
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Activite> getListeActivitetdeRessourceParLogin(String type, String login){
+		ArrayList<Activite> l = new ArrayList<Activite>();
+		if (type.equals(Ressource.PERSONNE)) {
+			l = getListeActiviteDePersonneParLogin(login);
+		}
+		if (type.equals(Ressource.SALLE)) {
+			l = getListeActiviteDeSalleParLogin(login);
+		}
+		if (type.equals(Ressource.CALCULATEUR)) {
+			l = getListeActiviteDeCalculateurParLogin(login);
+		}
+		return l;
+	}
+	
+	/**
+	 * Cherche tout les activites concerné de la personne par son login
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Activite> getListeActiviteDePersonneParLogin(String login){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les activites concerné de la salle par son login
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Activite> getListeActiviteDeSalleParLogin(String login){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les activites concerné de la calculateur par son login
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Activite> getListeActiviteDeCalculateurParLogin(String login){
+		return null;
+	}
+
+	
+	//------------------------------>>>>> Verifie condition dans la bdd
+
+	
+
+	/**
+	 * Cherche dans la bdd si la ressource est dans le projet 
+	 * @param type de la ressource
+	 * @param r ressource tester
+	 * @param p projet  tester
+	 * @return vrai si la ressource est presente sinon faux
+	 */
+	public boolean ressourcePresenteDansProjet(String type, Ressource r, Projet p) {
+		boolean b = false;
+		if (type.equals(Ressource.PERSONNE)) {
+			b = personnePresenteDansProjet((Personne) r, p);
+		}
+		if (type.equals(Ressource.SALLE)) {
+			b = sallePresenteDansProjet((Salle) r, p);
+		}
+		if (type.equals(Ressource.CALCULATEUR)) {
+			b = calculateurPresenteDansProjet((Calculateur) r, p);
+		}
+		return b;
+	}
+
+	/**
+	 * cherche dans la bdd si la personne est presente dans le projet tester
+	 * Permet d'eviter de placer deux fois la meme ressource
+	 * @param personne à tester
+	 * @param projet à tester
+	 * @return vrai si la personne est presente sinon faux
+	 */
+	public boolean personnePresenteDansProjet(Personne r, Projet p) {
+		return false;
+	}
+
+	/**
+	 * cherche dans la bdd si la salle est presente dans le projet tester
+	 * Permet d'eviter de placer deux fois la meme ressource
+	 * @param salle à tester
+	 * @param projet à tester
+	 * @return vrai si la salle est presente sinon faux
+	 */
+	public boolean sallePresenteDansProjet(Salle r, Projet p) {
+		return false;
+	}
+
+	/**
+	 * cherche dans la bdd si la calculateur est presente dans le projet tester
+	 * Permet d'eviter de placer deux fois la meme ressource
+	 * @param calculateur à tester
+	 * @param projet à tester
+	 * @return vrai si la calculateur est presente sinon faux
+	 */
+	public boolean calculateurPresenteDansProjet(Calculateur r, Projet p) {
+		return false;
+	}
+
+	/**
+	 * Cherche dans la bdd si la ressource est dans l'activite
+	 * @param type de la ressource
+	 * @param r ressource tester
+	 * @param a activite  tester
+	 * @return vrai si la ressource est presente dans l'activite sinon faux
+	 */
+	public boolean ressourcePresenteDansActivite(String type, Ressource r, Activite a) {
+		boolean b = false;
+		if (type.equals(Ressource.PERSONNE)) {
+			b = personnePresenteDansActivite((Personne) r, a);
+		}
+		if (type.equals(Ressource.SALLE)) {
+			b = sallePresenteDansActivite((Salle) r, a);
+		}
+		if (type.equals(Ressource.CALCULATEUR)) {
+			b = calculateurPresenteDansActivite((Calculateur) r, a);
+		}
+		return b;
+	}
+
+	/**
+	 * cherche dans la bdd si la personne est presente dans le activiter tester
+	 * Permet d'eviter de placer deux fois la meme ressource
+	 * @param personne à tester
+	 * @param activite à tester
+	 * @return vrai si la personne est presente sinon faux
+	 */
+	public boolean personnePresenteDansActivite(Personne r, Activite a) {
+		return false;
+	}
+	
+	/**
+	 * cherche dans la bdd si la salle est presente dans le activiter tester
+	 * Permet d'eviter de placer deux fois la meme ressource
+	 * @param salle à tester
+	 * @param activite à tester
+	 * @return vrai si la salle est presente sinon faux
+	 */
+	public boolean sallePresenteDansActivite(Salle r, Activite a) {
+		return false;
+	}
+
+	/**
+	 * cherche dans la bdd si la calculateur est presente dans le activiter tester
+	 * Permet d'eviter de placer deux fois la meme ressource
+	 * @param calculateur à tester
+	 * @param activite à tester
+	 * @return vrai si la calculateur est presente sinon faux
+	 */
+	public boolean calculateurPresenteDansActivite(Calculateur r, Activite a) {
+		return false;
+	}
+
+	/**
+	 * cherche dans la bdd si il y a une personne ou une activite qui possede le domaine tester
+	 * @param d domaine tester
+	 * @return vrai si une personne ou une activite à ce domaine, sinon faux
+	 */
+	public boolean PersonneOuActiviteACeDomaine(String d) {
+		return false;
+	}
+	
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion projet
 
-	public void nouvProjet (Projet proj) {
-		this.lProjet.add(proj);
-	}
-
-
 	public void creerProjet(Personne chefDeProjet, String nom, int priorite, LocalDate deadline) {//cr��e un projet si son nom n'est pas d��j�� utilis��
-		idProjet ++;
-		Projet newProjet = new Projet(chefDeProjet, nom, priorite, deadline, idProjet, couleurAleatoire());// --------------------------------------------ATTENTION null pour le moment
-		chefDeProjet.ajouterProjet(newProjet);
-		lProjet.add(newProjet);
-		Collections.sort(lProjet);
-		lPanel.add(new JPanel());
 		try {
 			JavaSQLProjet.insertion(nom, priorite, deadline, 0, chefDeProjet.getId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		selectionnerProjet(newProjet);
+	//	selectionnerProjet(newProjet);
 		update();
 	}
 
-	public void ajouterProjet(Projet proj) { //Les projets sont ajout���s ��� la liste en les triant par ordre de priorite
+	/*public void ajouterProjet(Projet proj) { //Les projets sont ajout���s ��� la liste en les triant par ordre de priorite
 		Boolean place = false;
 		int i = 0;
 		while (i < lProjet.size() && !place) {
@@ -489,7 +702,7 @@ public class Entreprise extends Observable{
 		if (place = false) {
 			lProjet.add(proj);
 		}
-	}
+	}*/
 
 	public void modifierProjet(Projet projet, String nom, int priorite, Personne chefDeProjet, LocalDate deadline) {
 		projet.setNom(nom);
@@ -535,12 +748,9 @@ public class Entreprise extends Observable{
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion activite
 
 	public void creerActivite(Projet projet, String titre, float charge, LocalDate debut, ArrayList<String> listeDomaine) {
-		this.idAct++;
 		int ordre = projet.getListe().size();
 		Color couleur = couleurAleatoire();
-		Activite act = new Activite(idAct, titre, charge, debut, couleur, /*projetSelectionner,*/ ordre, listeDomaine); // ------------------------------ATTENTION projet plus stock������ dans activit������, ref Dams
-		projet.ajouter(act);
-		selectionnerActivite(act);
+		//selectionnerActivite(act);
 		try {
 			JavaSQLActivite.insertion(titre, debut, charge, ordre, couleur.getRGB(), projet.getId(), listeDomaine);
 		} catch (SQLException e) {
@@ -589,7 +799,7 @@ public class Entreprise extends Observable{
 	}
 
 
-	public void modifieListeActivite(boolean monte) {
+	/*public void modifieListeActivite(boolean monte) {
 		Activite activite = activiteSelectionner;
 		Projet projet = chercherProjetParActivite(activite);
 		ArrayList<Activite> listeActivite = projet.getListe();
@@ -627,7 +837,46 @@ public class Entreprise extends Observable{
 
 		majEDT();
 		update();
+	}*/
+	
+	public void ajouterRessourceActivite(Ressource res, Activite a) {
+		Activite act = getActiviteSelectionner();
+		act.ajouterRessource(res);
+		if (res.getType() == Ressource.PERSONNE) {
+			try {
+				JavaSQLParticipe.insertionSalarie(res.getId(), a.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (res.getType() == Ressource.SALLE) {
+			try {
+				JavaSQLParticipe.insertionSalle(res.getId(), a.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (res.getType() == Ressource.CALCULATEUR) {
+			try {
+				JavaSQLParticipe.insertionCalcul(res.getId(), a.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		majEDT();
+		//JavaSQLParticipe.insertion(numSalarie, code, numero, idA);
+		update();
 	}
+
+	public void enleverRessourceActivite(Ressource res) {
+		Activite act = getActiviteSelectionner();
+		act.enleverRessource(res.getId());
+		majEDT();
+		update();
+	}
+
+
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
 	public void nouvTicket(int action,String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r) {
@@ -658,15 +907,8 @@ public class Entreprise extends Observable{
 	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
-	public void nouvPersonne (Personne pers) {
-		this.ajouterRessource(pers);
-		this.incrementId();
-	}
 
 	public void nouvPersonne (String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {
-		this.incrementId();
-		Personne nouvPersonne = new Personne(nom,prenom, role, this.idCour, mdp, listeComp);
-		this.ajouterRessource(nouvPersonne);
 		ArrayList<String> tag = CompeToTag(listeComp);
 		ArrayList<Integer> niveau = CompeToNiv(listeComp);
 		try {
@@ -678,17 +920,10 @@ public class Entreprise extends Observable{
 
 	}
 
-	public void nouvSalle(Salle salle) {
-		this.incrementId();
-		this.ajouterRessource(salle);
-	}
 
 	public void nouvSalle (String nom, int capacite) {
-		this.incrementId();
-		Salle nouvSalle = new Salle(this.idCour,nom, capacite);
-		this.ajouterRessource(nouvSalle);
 		try {
-			JavaSQLSalle.insertion(this.idCour, nom, capacite);
+			JavaSQLSalle.insertion(nom, capacite);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -696,19 +931,11 @@ public class Entreprise extends Observable{
 
 		}
 
-	public void nouvCalculateur (Calculateur calc) {
-		this.incrementId();
-		this.ajouterRessource(calc);
-	}
 
 	public void nouvCalculateur (String nom) {
-		this.incrementId();
-		Calculateur nouvCalculateur = new Calculateur(nom, this.idCour);
-		this.ajouterRessource(nouvCalculateur);
 		try {
 			JavaSQLCalculateur.insertion( nom, 0);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		update();
@@ -752,57 +979,12 @@ public class Entreprise extends Observable{
 		update();
 	}
 
-	public void ajouterRessourceActivite(Ressource res, Activite a) {
-		Activite act = getActiviteSelectionner();
-		act.ajouterRessource(res);
-		if (res.getType() == Ressource.PERSONNE) {
-			try {
-				JavaSQLParticipe.insertionSalarie(res.getId(), a.getId());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		if (res.getType() == Ressource.SALLE) {
-			try {
-				JavaSQLParticipe.insertionSalle(res.getId(), a.getId());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		if (res.getType() == Ressource.CALCULATEUR) {
-			try {
-				JavaSQLParticipe.insertionCalcul(res.getId(), a.getId());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		majEDT();
-		//JavaSQLParticipe.insertion(numSalarie, code, numero, idA);
-		update();
-	}
-
-	public void enleverRessourceActivite(Ressource res) {
-		Activite act = getActiviteSelectionner();
-		act.enleverRessource(res.getId());
-		majEDT();
-		update();
-	}
-
 
 	public boolean ressourceEstLibre(Ressource r) { //v���rifier qu'une ressource est attacher �� aucune act ou projet
 		return true;
 	}
 
 	public void suppRessource(Ressource r) {
-		for (int i=0; i<lRessource.size(); i++) {
-			if (lRessource.get(i).getId() == r.getId()) {
-				lRessource.remove(i);
-				update();
-				break;
-			}
-		}
-
 		if (r.getType().equals(Ressource.PERSONNE)) {
 			try {
 				JavaSQLPersonne.supprime(r.getId());
@@ -824,6 +1006,7 @@ public class Entreprise extends Observable{
 				e.printStackTrace();
 			}
 		}
+		update();
 	}
 	
 	public void setAfficheListeRessource(String s) {
@@ -842,12 +1025,7 @@ public class Entreprise extends Observable{
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion domaine
 
-	/*public void nouvDomaine (Domaine domaine) {
-		this.domaine = domaine;
-	}*/
-
 	public void ajoutDomaine (String d) {
-		this.domaine.ajoutDomaine(d);
 		try {
 			JavaSQLDomaine.insertion(d);
 		} catch (SQLException e) {
@@ -855,21 +1033,6 @@ public class Entreprise extends Observable{
 		}
 	}
 
-	/*public void setDomaine(ArrayList<String> listeDomaine) {
-		this.domaine.setDomaine(listeDomaine);
-	}*/
-
-	public boolean aucuneRessourceACeDomaine(String domaine) {
-		boolean b = true;
-		ArrayList<Ressource> lP = getListeRessourceType(Ressource.PERSONNE);
-		for (int i=0; i<lP.size(); i++) {
-			Personne p  = (Personne) lP.get(i);
-			if (p.aDomaine(domaine)) {
-				b = false;
-			}
-		}
-		return b;
-	}
 
 	public ArrayList<String> personneAvecCeDomaine(String domaine){ // recherche sql de toute les personnes de avec ce domaine
 		ArrayList<String> l = new ArrayList<String>();
@@ -877,7 +1040,6 @@ public class Entreprise extends Observable{
 	}
 
 	public void supprimerDomaine (String d) {
-		this.domaine.enleverDomaine(d);
 		try {
 			JavaSQLDomaine.supprime(d);
 		} catch (SQLException e) {
@@ -887,52 +1049,9 @@ public class Entreprise extends Observable{
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion tache
 
-	public void selectionnerTache(int tache) {
-		switch (tache) {
-		case PanelTache.TICKET:
-			if (afficheListeTicket) {
-				afficheListeTicket = false;
-			}
-			else {
-				afficheListeTicket = true;
-			}
-			break;
 
-		default:
-			break;
-		}
-		update();
-	}
-
-	public boolean getAfficheTicket() {
-		return afficheListeTicket;
-	}
 
 	//================ Partie Graphique ==========//
-
-	private Color couleurAleatoire() {
-		Random rand = new Random();
-		float r = rand.nextFloat();
-		float g = rand.nextFloat();
-		float b = rand.nextFloat();
-		Color couleur = new Color(r, g, b);
-		return couleur;
-	}
-
-	public Projet getDernierProjet() { //retourne le dernier projet creer, pour PanelProjet
-		return lProjet.get(lProjet.size()-1);
-	}
-
-	public ArrayList<Projet> getListeProjet(){
-		try {
-			return	JavaSQLProjet.affiche();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	public void selectionnerProjet(Projet projet) {
 		projetSelectionner = projet;
 		activiteSelectionner = null;
@@ -943,24 +1062,6 @@ public class Entreprise extends Observable{
 		return projetSelectionner;
 	}
 
-	public ArrayList<Projet> getProjetUser(Personne p){
-		ArrayList<Projet> lp = new ArrayList<Projet>();
-		boolean estAdmin = p.estAdmin();
-		if(estAdmin) {// on affiche tout les projets de l'entreprise
-			try {
-				lp = JavaSQLProjet.affiche();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		}
-		else { //si c'est un collaborateur ou chef de projet
-			lp.addAll(p.getListeDeProjet()); //projet qu'il dirige
-			lp.addAll(this.getProjetDeLaRessource(p)); //projet ou il travaille
-		}
-		return lp;
-	}
 
 	
 	public void selectionnerActivite(Activite activite) {
@@ -981,6 +1082,36 @@ public class Entreprise extends Observable{
 	public Activite getActiviteSelectionner() {
 		return activiteSelectionner;
 	}
+
+	
+	public void setAfficheTache(int tache) {
+		afficheTache = tache;
+	}
+	
+	public int getAfficheTache() {
+		return afficheTache;
+	}
+	
+	private Color couleurAleatoire() {
+		Random rand = new Random();
+		float r = rand.nextFloat();
+		float g = rand.nextFloat();
+		float b = rand.nextFloat();
+		Color couleur = new Color(r, g, b);
+		return couleur;
+	}
+
+
+	public ArrayList<Projet> getListeProjet(){
+		try {
+			return	JavaSQLProjet.affiche();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 
 	public void selectionnerListeRessource(String type) {
 		boolean estPresent = false;
@@ -1059,14 +1190,6 @@ public class Entreprise extends Observable{
 		update();
 	}
 
-	private Projet chercherProjetParActivite(Activite act) {
-		for (int i = 0; i < lProjet.size(); i++) {
-			if(lProjet.get(i).contientActivite(act)) {
-				return lProjet.get(i);
-			}
-		}
-		return null;
-	}
 
 	private ArrayList<String> CompeToTag(ArrayList<Competence> lc){
 		ArrayList<String> lt = new ArrayList<String>();

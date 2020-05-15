@@ -288,7 +288,7 @@ public class PanelInfoRessource extends JPanel{
 		
 		this.add(labelTitreColonne("ACTIVITÉS"),gc);
 
-		ArrayList<Activite> listeAct = entreprise.getActRes(ressource);
+		ArrayList<Activite> listeAct = entreprise.g(ressource);
 		ArrayList<Projet> listeProj = entreprise.getProjetPRes(ressource);
 		ArrayList<String> act = new ArrayList<String>();
 		ArrayList<String> projet = new ArrayList<String>();

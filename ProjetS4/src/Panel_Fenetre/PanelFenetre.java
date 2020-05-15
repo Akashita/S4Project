@@ -521,17 +521,6 @@ public class PanelFenetre extends JPanel{
 		return true;
 	}
 
-	protected LocalDate creerLaDate(int jour, int mois, int annee) {
-		LocalDate debut = null;
-		if (Temps.jourValide (jour, mois, annee)) {
-			debut = LocalDate.of(annee, mois, jour);
-		}
-		else {
-	    	JOptionPane.showMessageDialog(null, "Date invalide", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}
-		
-		return debut;
-	}
 
 	protected String dateToString(LocalDate date) {
 		return date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();			

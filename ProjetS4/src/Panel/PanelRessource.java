@@ -70,7 +70,9 @@ public class PanelRessource extends JPanel {
 			gc.gridy = 0;
 			gc.gridwidth = GridBagConstraints.REMAINDER;
 			gc.gridheight = GridBagConstraints.REMAINDER;
-			this.add(creerList(entreprise.getListeRessourceType(entreprise.getAfficheListeRessource())), gc);
+			String type = entreprise.getAfficheListeRessource();
+			ArrayList<Ressource> l = entreprise.getListeRessourceEntrepriseParType(type);
+			this.add(creerList(l), gc);
 		}
 	}
 

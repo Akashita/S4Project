@@ -9,6 +9,8 @@ import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.swing.JOptionPane;
+
 public final class Temps {
 	
 	public final static int nbAnnnee = 4;
@@ -108,6 +110,18 @@ public final class Temps {
 		return res;
 	}
 
+
+	public static LocalDate creerLaDate(int jour, int mois, int annee) {
+		LocalDate debut = null;
+		if (Temps.jourValide (jour, mois, annee)) {
+			debut = LocalDate.of(annee, mois, jour);
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Date invalide", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
+		
+		return debut;
+	}
 
 	
 	public static boolean jourValide(int jour, int mois, int annee){

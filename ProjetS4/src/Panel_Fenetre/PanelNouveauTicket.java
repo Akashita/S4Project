@@ -157,7 +157,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		
 		case Ticket.MESSAGE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				if (entreprise.getRessource(getIdFromLogin()) != null) {
+				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
 					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), getIdFromLogin(), null);	
 				}
 				else {
@@ -171,7 +171,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 
 		case Ticket.LIBERE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				if (entreprise.getRessource(getIdFromLogin()) != null) {
+				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
 					Projet p =  (Projet) comboBoxProjet.getSelectedItem();
 					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
 							entreprise.getRessource(getIdFromLogin()));				
@@ -188,7 +188,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 
 		case Ticket.TRANSFERT:
 			if (!textFieldLogin.getText().isEmpty()) {
-				if (entreprise.getRessource(getIdFromLogin()) != null) {
+				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
 					ArrayList<Personne> lchef = entreprise.getChefDeProjetConcerner(entreprise.getRessource(getIdFromLogin()));
 					for (int i=0; i<lchef.size(); i++) {
 						entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(),

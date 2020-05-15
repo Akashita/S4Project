@@ -49,7 +49,7 @@ public class MenuBarListener implements ActionListener{
 			}					
 		}	
 		if (choix == FenetrePrincipale.NouveauProjet) {
-			if (entreprise.getListeRessourceType(Ressource.PERSONNE).size()>0) {
+			if (entreprise.getListePersonneEntreprise().size()>0) {
 				if (estAdmin) { //fonction autorisé pour les admin uniquement
 					creerFenetre();
 				}

@@ -120,53 +120,21 @@ public class PanelConnexion extends JPanel{
 	    });			
     }   
 
-    //crï¿½ation du model
-    private void actionConnexion(FenetreConnexion fc) {
+    //connexion au compte et creation du model
+    @SuppressWarnings("deprecation")
+	private void actionConnexion(FenetreConnexion fc) {
     	//ABSOLUMENT DEGUEU A MODIFIER APRES LE 12 
-    	Boolean compteExiste = false;
-    	Boolean compteAdmin = false;
-    	Personne user = null;
     	
-    	
-    	ArrayList<Personne> personneTab = new ArrayList<Personne>();
-		JavaSQLPersonne sqlPersonne = new JavaSQLPersonne();
-		try {
-			personneTab = sqlPersonne.affiche();
-
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		for (int i = 0; i < personneTab.size(); i++) {
-			String log = textFieldLogin.getText();
-			String mdp = mdpField.getText();		
-			
-			String logI = personneTab.get(i).getLogin();
-			String mdpI = personneTab.get(i).getMdp();
-
-			if ( logI.equals(log)) {
-				if ( mdpI.equals(mdp)) {
-					compteExiste = true;
-					user = personneTab.get(i);
-					if (personneTab.get(i).getRole().equals(Personne.DEBUG)) {
-						compteAdmin = true;
-					}
+    	String login = textFieldLogin.getText();
+    	String mdp = mdpField.getText();
+		if (!login.isEmpty()) {
+			if (!mdp.isEmpty()) {
+				if (chercheUser(login, mdp) != null) {
+					new Entreprise(user);
+					fc.dispose();
 				}
-			}
-		}
-		
-		
-		
-		if (!textFieldLogin.getText().isEmpty()) {
-			if (!mdpField.getText().isEmpty()) {
-				if (compteExiste) {
-					if (compteAdmin) {
-						new Entreprise("debugBDD");
-					}
-					else {
-						new Entreprise(user);
-						fc.dispose();
-					}
+				else {
+			    	JOptionPane.showMessageDialog(null, "Le login ou le mot de passe sont incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
@@ -176,6 +144,17 @@ public class PanelConnexion extends JPanel{
 		else {
 	    	JOptionPane.showMessageDialog(null, "Veuillez ecrire le login", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}	
+    }
+    
+    /**
+     * cherche l'user avec son login et son mdp
+     * @param login du compte	
+     * @param mdp du compte
+     * @return la personne asssocié sinon null
+     */
+	private Personne chercheUser(String login, String mdp) {
+    	Personne p = null;
+    	return p;
     }
     
     private void actionQuitter(FenetreConnexion fc) {
