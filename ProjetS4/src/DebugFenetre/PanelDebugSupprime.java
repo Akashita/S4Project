@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import GestionTicket.Ticket;
+import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
 import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Materiel;
 import Ressource.Personne;
+import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLMateriel;
@@ -30,7 +32,7 @@ public class PanelDebugSupprime extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7, ACTIVITE = 8;
 	private int type;
 	private Window w;
 	public PanelDebugSupprime(Entreprise entreprise,Window w, int type) {
@@ -240,6 +242,38 @@ public class PanelDebugSupprime extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugSupprime(w,projetChoix,ActionDebugSupprime.PROJET,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+			
+		}
+		
+		else if (type == ACTIVITE) {
+			this.setLayout(new GridLayout(2,2));
+			
+			Label activiteLabel = new Label("activite a supprime : ");
+			final Choice  activiteChoix = new Choice();
+			
+			ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+			try {
+				activiteTab = JavaSQLActivite.affiche();
+
+				for (int i = 0; i < activiteTab.size(); i++) {
+					activiteChoix.addItem(activiteTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(activiteLabel);
+			this.add(activiteChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,activiteChoix,ActionDebugSupprime.ACTIVITE,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 			

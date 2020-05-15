@@ -15,12 +15,14 @@ import javax.swing.JPanel;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Model.Projet;
 import Ressource.Competence;
 import Ressource.Domaine;
 import Ressource.Personne;
 import Ressource.Salle;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
+import SQL.JavaSQLProjet;
 import SQL.JavaSQLSalle;
 
 public class PanelDebugAjout extends JPanel{
@@ -28,7 +30,7 @@ public class PanelDebugAjout extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7, ACTIVITE = 8;
 	private int type;
 	private Window w;
 	public PanelDebugAjout(Entreprise entreprise,Window w, int type) {
@@ -367,6 +369,82 @@ public class PanelDebugAjout extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugAjout(w,nom,priorite,jour,mois,annee,couleur,chefChoix,ActionDebugAjout.PROJET,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+
+			
+		}
+		
+		else if (type == ACTIVITE) {
+			this.setLayout(new GridLayout(9,2));
+			
+			Label titreLabel = new Label("titre : ");
+			TextField titre = new TextField(20);
+			
+			this.add(titreLabel);
+			this.add(titre);
+			
+			
+			Label jourLabel = new Label("jour debut : ");
+			TextField jour = new TextField(20);
+			
+			this.add(jourLabel);
+			this.add(jour);
+			
+			Label moisLabel = new Label("mois debut : ");
+			TextField mois= new TextField(20);
+			
+			this.add(moisLabel);
+			this.add(mois);
+			
+			Label anneeLabel = new Label("annee debut : ");
+			TextField annee= new TextField(20);
+			
+			this.add(anneeLabel);
+			this.add(annee);
+			
+			Label chargeLabel = new Label("charge : ");
+			TextField charge= new TextField(20);
+			
+			this.add(chargeLabel);
+			this.add(charge);
+			
+			Label ordreLabel = new Label("ordre : ");
+			TextField ordre= new TextField(20);
+			
+			this.add(ordreLabel);
+			this.add(ordre);
+			
+			Label couleurLabel = new Label("couleur  : ");
+			TextField couleur= new TextField(20);
+			
+			this.add(couleurLabel);
+			this.add(couleur);
+			
+			
+			Label projetLabel = new Label("projet : ");
+			final Choice  projetChoix = new Choice();
+			
+			ArrayList<Projet> projetTab = new ArrayList<Projet>();
+			try {
+				projetTab = JavaSQLProjet.affiche();
+
+				for (int i = 0; i < projetTab.size(); i++) {
+					projetChoix.addItem(projetTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(projetLabel);
+			this.add(projetChoix);
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugAjout(w,titre,charge,jour,mois,annee,couleur,projetChoix,ordre,ActionDebugAjout.ACTIVITE,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 

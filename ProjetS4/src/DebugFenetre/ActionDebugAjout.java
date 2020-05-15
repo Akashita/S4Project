@@ -12,10 +12,12 @@ import java.util.ArrayList;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Model.Projet;
 import Ressource.Competence;
 import Ressource.Domaine;
 import Ressource.Personne;
 import Ressource.Salle;
+import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
@@ -59,13 +61,19 @@ public class ActionDebugAjout implements ActionListener{
 	private Choice chefChoix;
 	private TextField couleur;
 
+	private TextField titre;
+	private TextField charge;
+	private Choice projetChoix;
+	private TextField ordre;
+
+
 
 	
 	
 	
 	private TextField capacite;
 	
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7 ;
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7, ACTIVITE = 8 ;
 
 	public ActionDebugAjout (Window w,TextField numero,TextField nom,TextField place, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -147,6 +155,38 @@ public class ActionDebugAjout implements ActionListener{
 			this.priorite = priorite;
 			this.chefChoix = chefChoix;
 			this.couleur = couleur;
+		}
+		else if (typeVerif == ACTIVITE) {
+			this.jour = jour;
+			this.mois = mois;
+			this.annee = annee;
+			this.titre = nom2;
+			this.charge = priorite;
+			this.couleur = couleur;
+			this.projetChoix = chefChoix;
+			this.ordre = ordre;
+
+			
+
+		}
+
+	}
+	
+	public ActionDebugAjout(Window w, TextField nom2, TextField priorite, TextField jour, TextField mois,
+			TextField annee, TextField couleur, Choice chefChoix,TextField ordre, int typeVerif, Entreprise entreprise) {
+		this.w = w;
+		this.typeVerif = typeVerif;
+		if (typeVerif == ACTIVITE) {
+			this.jour = jour;
+			this.mois = mois;
+			this.annee = annee;
+			this.titre = nom2;
+			this.charge = priorite;
+			this.couleur = couleur;
+			this.projetChoix = chefChoix;
+			this.ordre = ordre;
+
+
 		}
 
 	}
@@ -377,6 +417,37 @@ public class ActionDebugAjout implements ActionListener{
 				}
 				try {
 					JavaSQLProjet.insertion(nom.getText(), Integer.parseInt(priorite.getText()), deadLine, Integer.parseInt(couleur.getText()), chefId);
+					new FenetreDebugProjet(entreprise,FenetreDebugProjet.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		
+			else if (typeVerif == ACTIVITE) {
+				LocalDate debut = LocalDate.of( Integer.parseInt(annee.getText()), Integer.parseInt(mois.getText()), Integer.parseInt(jour.getText()));
+				int projetId = -1;
+				ArrayList<Projet> projetTab = new ArrayList<Projet>();
+				try {
+					projetTab = JavaSQLProjet.affiche();
+
+					for (int i = 0; i < projetTab.size(); i++) {
+						if (projetChoix.getItem(projetChoix.getSelectedIndex()).equals(projetTab.get(i).creeAffiche())) {
+							projetId = projetTab.get(i).getId();
+
+						}
+				}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					JavaSQLActivite.insertion(titre.getText(),debut, Float.parseFloat(charge.getText()), Integer.parseInt(ordre.getText()),Integer.parseInt(couleur.getText()), projetId,null);
 					new FenetreDebugProjet(entreprise,FenetreDebugProjet.AFFICHE);
 					w.dispose();
 				} catch (NumberFormatException e) {
