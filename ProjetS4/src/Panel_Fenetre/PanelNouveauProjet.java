@@ -89,7 +89,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridwidth = 2;
 		gc.gridx = 1;
-		initialiseComboBoxRessource(entreprise.getListeRessourceType(typeChoisi));
+		initialiseComboBoxRessource(entreprise.getListeRessourceEntrepriseParType(typeChoisi));
 		this.add(comboBoxRessource, gc);			
 		
 		
@@ -129,7 +129,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
 					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
 					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
-					LocalDate date =  creerLaDate(jour, mois, annee);
+					LocalDate date =  Temps.creerLaDate(jour, mois, annee);
 					entreprise.creerProjet(pers, titre, prio, date);
 					fm.dispose();
 				}

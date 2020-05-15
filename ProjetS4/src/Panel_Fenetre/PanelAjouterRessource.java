@@ -49,7 +49,7 @@ public class PanelAjouterRessource extends PanelFenetre{
 		
 		
 		gc.gridy = 2;
-		initialiseComboBoxRessource(entreprise.getListeRessourceType(typeChoisi));
+		initialiseComboBoxRessource(entreprise.getListeRessourceEntrepriseParType(typeChoisi));
 		this.add(comboBoxRessource, gc);			
 
 		

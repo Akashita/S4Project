@@ -110,7 +110,7 @@ public class PanelFenetre extends JPanel{
 	
 	//-------------------------------------------->>>>> gere la liste de domaine 
 	protected void initialiseDomaine (PanelFenetre pf) {
-		listeDomaine = entreprise.getDomaine().getListeDomaine();
+		listeDomaine = entreprise.getListeDomaineEntreprise();
 		boutonAjoutDomaine = new JButton("Ajouter");
 		boutonAjoutDomaine.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -126,7 +126,7 @@ public class PanelFenetre extends JPanel{
 	}
 
 	protected Component afficheListeDomaine() {
-		listeDomaine = entreprise.getDomaine().getListeDomaine();
+		listeDomaine = entreprise.getListeDomaineEntreprise();
 		String [] domaine = new String [listeDomaine.size()];
 		Collections.sort(listeDomaine); //trie dans l'odre alphabetique
 		for (int i=0; i<listeDomaine.size(); i++) {
@@ -170,7 +170,7 @@ public class PanelFenetre extends JPanel{
 			int index = jListDomaine.getSelectedIndex();
 			if (index != -1) {
 				String domaine = listeDomaine.get(index);
-				if (entreprise.aucuneRessourceACeDomaine(domaine)) {
+				if (entreprise.PersonneOuActiviteACeDomaine(domaine)) {
 					entreprise.supprimerDomaine(domaine);
 					maj(pf);			
 				}
@@ -188,12 +188,12 @@ public class PanelFenetre extends JPanel{
 	//-------------------------------------------->>>>> Competence pour Ressource
 	protected void initialiseCompetence (PanelFenetre pf) {
 		listeCompetenceChoisie = new ArrayList<Competence>();
+		listeDomaine = entreprise.getListeDomaineEntreprise();
 
-		Domaine domaine = entreprise.getDomaine();
-		String [] liste = new String [domaine.getListeDomaine().size()+1];
+		String [] liste = new String [listeDomaine.size()+1];
 		liste[0] = "Competence";
 		for (int i=0; i<liste.length-1; i++) {
-			liste[i+1] = domaine.getListeDomaine().get(i);
+			liste[i+1] = listeDomaine.get(i);
 		}
 		comboBoxDomaine = new JComboBox<String>(liste);
 
@@ -252,11 +252,11 @@ public class PanelFenetre extends JPanel{
 	protected void initialiseDomaineActivite (PanelFenetre pf) {
 		listeDomaineChoisi = new ArrayList<String>();
 
-		Domaine domaine = entreprise.getDomaine();
-		String [] liste = new String [domaine.getListeDomaine().size()+1];
+		listeDomaine = entreprise.getListeDomaineEntreprise();
+		String [] liste = new String [listeDomaine.size()+1];
 		liste[0] = "Competence";
 		for (int i=0; i<liste.length-1; i++) {
-			liste[i+1] = domaine.getListeDomaine().get(i);
+			liste[i+1] = listeDomaine.get(i);
 		}
 		comboBoxDomaine = new JComboBox<String>(liste);
 

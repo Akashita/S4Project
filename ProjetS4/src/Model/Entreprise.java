@@ -356,7 +356,7 @@ public class Entreprise extends Observable{
 	 * Cherche toute les domaines de l'entreprise de la bdd
 	 * @return la liste des domaines de l'entreprise
 	 */
-	public ArrayList<Domaine> getListeDomaineEntreprise(){
+	public ArrayList<String> getListeDomaineEntreprise(){
 		return null;
 	}
 
@@ -435,6 +435,7 @@ public class Entreprise extends Observable{
 		return null;
 	}	
 	
+
 	/**
 	 * cherche dans la bdd la personne avec le login correspondant
 	 * @param login de la ressource
