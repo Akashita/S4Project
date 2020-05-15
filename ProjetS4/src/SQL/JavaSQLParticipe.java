@@ -3,6 +3,9 @@ package SQL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import Ressource.Materiel;
 
 public final class JavaSQLParticipe extends JavaSQL{
 //	private int numSalarie;
@@ -41,6 +44,27 @@ public final class JavaSQLParticipe extends JavaSQL{
 //			}
 //
 //	}
+	
+public static  ArrayList<int[]> afficheParticipeSalarie() throws SQLException{
+			
+		ArrayList<int[]> liste = new ArrayList<int[]>();
+		String sql = "SELECT * FROM ParticipeSalarie;";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 int [] tab= {res.getInt("numSalarie"), res.getInt("idA") };
+						 liste.add( tab);
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return liste;
+
+	}
+	
+	
 	
 	public static void insertionSalarie(int numSalarie, int idA) throws SQLException{
 		String sql = "INSERT INTO ParticipeSalarie(numSalarie,idA) VALUE('" + numSalarie+ "' , '"+idA+"');";
