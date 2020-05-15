@@ -54,20 +54,20 @@ public class FenetreDebugPersonne  extends JFrame{
 		
 
 		
-		if (type == this.AFFICHE) {
+		if (type == AFFICHE) {
 	        c.weighty = 2.0;               
 
 		PanelDebugAffichage panelAffichage = new PanelDebugAffichage(entreprise,PanelDebugAffichage.PERSONNE);
 		this.add(panelAffichage,c);
 		}
-		else if (type == this.AJOUT) {
+		else if (type == AJOUT) {
 	        c.weighty = 0.0;               
 
 			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAjout.PERSONNE);
 			this.add(panelAjout,c);
 		}
 		
-		else if (type == this.SUPPRIME) {
+		else if (type == SUPPRIME) {
 	        c.weighty = 0.0;               
 
 			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugSupprime.PERSONNE);
