@@ -17,8 +17,8 @@ import Ressource.Ressource;
  */
  public class SourisRessourceListener implements MouseListener {
 	 //PanelInfoProjet pip;
-	 Ressource res;
-	 Entreprise entreprise;
+	 private Ressource res;
+	 private Entreprise entreprise;
 	
 	public SourisRessourceListener(Entreprise entreprise, Ressource res) {
 		this.entreprise = entreprise;
@@ -29,7 +29,7 @@ import Ressource.Ressource;
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		//pip.afficheInfoRessource(res);
-		entreprise.afficheInfoRessource(res);
+		entreprise.afficheInfoRessource(res, res.getType());
 		//new FenetreInfoRessource(entreprise, res);
 	}
 

@@ -29,7 +29,7 @@ public class Personne extends Ressource{
 	//			CONSTRUCTEURS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Personne(String nom, String prenom, String role, int numSalarie){
-		super(numSalarie, nom);
+		super(numSalarie, nom, Ressource.PERSONNE);
 		
 		this.role = role; //Role dans l'entreprise (voir constante ci-dessus)
 		this.prenom = prenom;
@@ -44,13 +44,13 @@ public class Personne extends Ressource{
 	
 	public Personne(String nom, String prenom, int numSalarie){
 		//attributs de la classe mere.
-		super(numSalarie, nom);
+		super(numSalarie, nom, Ressource.PERSONNE);
 		//attribut de la classe fille.
 		this.prenom = prenom;		
 	}
 
 	public Personne(String nom, String prenom, String role, int numSalarie, String mdp, ArrayList<Competence> listeCompetence){
-		super(numSalarie, nom);
+		super(numSalarie, nom, Ressource.PERSONNE);
 		this.mdp = mdp;
 		this.role = role; //Role dans l'entreprise (voir constante ci-dessus)
 		this.prenom = prenom;

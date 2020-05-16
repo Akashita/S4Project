@@ -28,6 +28,7 @@ public class PanelInfoActivite extends JPanel{
 	private Entreprise entreprise;
 	private Activite activite;
 	private Color couleurFond;
+	private int typeDeLaRessource;
 	
 
 	public PanelInfoActivite (Entreprise entreprise, Activite activite) {
@@ -131,7 +132,7 @@ public class PanelInfoActivite extends JPanel{
 
 				ArrayList<Ressource> listeR = activite.getListeRessourceType(type);
 				if (listeR.size() > 0) {
-					panel.add(afficheListe(listeR), gc);				
+					panel.add(afficheListe(type, listeR), gc);				
 				}
 				else {
 					JPanel listeVide = new JPanel();
@@ -144,14 +145,15 @@ public class PanelInfoActivite extends JPanel{
 
 	
 	
-	private JPanel afficheListe(ArrayList<Ressource> listeR) {
+	private JPanel afficheListe(int type, ArrayList<Ressource> listeR) {
 		JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
 		for (int i=0; i<listeR.size(); i++) {
 			String nom;
 			Ressource ressource = listeR.get(i);
-			if (ressource.getType() == Ressource.PERSONNE) {
+			if (type == Ressource.PERSONNE) {
 				nom = (((Personne) ressource).getPrenom()) + " " + ressource.getNom();
 			}
 			else {

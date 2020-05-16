@@ -65,12 +65,12 @@ public class PanelRessource extends JPanel {
 		this.add(creerImageRessource(Ressource.CALCULATEUR), gc);
 		
 		
-		if (entreprise.getAfficheListeRessource() != "") {
+		if (entreprise.getAfficheListeRessource() != Ressource.RIEN) {
 			gc.gridx ++;
 			gc.gridy = 0;
 			gc.gridwidth = GridBagConstraints.REMAINDER;
 			gc.gridheight = GridBagConstraints.REMAINDER;
-			String type = entreprise.getAfficheListeRessource();
+			int type = entreprise.getAfficheListeRessource();
 			ArrayList<Ressource> l = entreprise.getListeRessourceEntrepriseParType(type);
 			this.add(creerList(l), gc);
 		}
@@ -78,11 +78,11 @@ public class PanelRessource extends JPanel {
 
 	
 	private JLabel creerImageRessource(int type) {
-		String resSelection = entreprise.getAfficheListeRessource();
+		int ressourceSelectionner = entreprise.getAfficheListeRessource();
 		ImageIcon ico = new ImageIcon();
 		switch (type) {
 		case Ressource.PERSONNE:
-			if (resSelection.equals(Ressource.PERSONNE)) {
+			if (ressourceSelectionner == Ressource.PERSONNE) {
 				ico = new ImageIcon("images/user_grey_grand.png");
 			}
 			else {
@@ -90,43 +90,24 @@ public class PanelRessource extends JPanel {
 			}		
 			break;
 		case Ressource.SALLE:
-			if (resSelection.equals(Ressource.CALCULATEUR)) {
-				ico = new ImageIcon("images/user_grey_grand.png");
-			}
-			else {
-				ico = new ImageIcon("images/user_white.png");
-			}		
-			break;
-		case Ressource.CALCULATEUR:
-			if (resSelection.equals(Ressource.CALCULATEUR)) {
-				ico = new ImageIcon("images/user_grey_grand.png");
-			}
-			else {
-				ico = new ImageIcon("images/user_white.png");
-			}		
-			break;
-
-		default:
-			break;
-		}
-
-		if (type.equals(Ressource.PERSONNE)) {
-		}
-		if (type.equals(Ressource.SALLE)) {
-			if (resSelection.equals(Ressource.SALLE)) {
+			if (ressourceSelectionner == Ressource.SALLE) {
 				ico = new ImageIcon("images/door_grey_grand.png");
 			}
 			else {
 				ico = new ImageIcon("images/door_white.png");
 			}
-		}
-		if (type.equals(Ressource.CALCULATEUR)) {
-			if (resSelection.equals(Ressource.CALCULATEUR)) {
+			break;
+		case Ressource.CALCULATEUR:
+			if (ressourceSelectionner == Ressource.CALCULATEUR) {
 				ico = new ImageIcon("images/computer_grey_grand.png");
 			}
 			else {
 				ico = new ImageIcon("images/computer_white.png");
 			}
+			break;
+
+		default:
+			break;
 		}
 		
 		
@@ -174,7 +155,7 @@ public class PanelRessource extends JPanel {
 	}
 
 	public void afficheRessource(Ressource r) {
-			entreprise.afficheInfoRessource(r);
+			entreprise.afficheInfoRessource(r, r.getId());
 	}
 
 	private JPanel afficherRechercher() {

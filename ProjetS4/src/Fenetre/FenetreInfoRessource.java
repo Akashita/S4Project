@@ -28,7 +28,7 @@ public class FenetreInfoRessource extends JDialog{
 	private Entreprise entreprise;
 	private Ressource ressource;
 
-	public FenetreInfoRessource(Entreprise entreprise, Ressource ressource) {
+	public FenetreInfoRessource(Entreprise entreprise, Ressource ressource, int typeDeLaRessource) {
 		super(entreprise.getFenetrePrincipale(), "Information de la ressource");
 		this.entreprise = entreprise;
 		this.ressource = ressource;

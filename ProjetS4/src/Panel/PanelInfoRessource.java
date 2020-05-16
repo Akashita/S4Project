@@ -161,7 +161,7 @@ public class PanelInfoRessource extends JPanel{
 		}
 		
 		gc.gridy ++;
-		this.add(labelInfo("Type : " + ressource.getType()), gc);
+		this.add(labelInfo("Type : " + getStringByIntOfType(ressource.getType())), gc);
 		
 		gc.gridy ++;
 		this.add(panelBouton(), gc);		
@@ -288,8 +288,8 @@ public class PanelInfoRessource extends JPanel{
 		
 		this.add(labelTitreColonne("ACTIVITÉS"),gc);
 
-		ArrayList<Activite> listeAct = entreprise.g(ressource);
-		ArrayList<Projet> listeProj = entreprise.getProjetPRes(ressource);
+		ArrayList<Activite> listeAct = entreprise.getListeActivitetdeRessourceParId(ressource.getType(), ressource.getId());
+		ArrayList<Projet> listeProj = entreprise.getListeProjetdeRessourceParId(ressource.getType(), ressource.getId());
 		ArrayList<String> act = new ArrayList<String>();
 		ArrayList<String> projet = new ArrayList<String>();
 		for (int i=0; i<listeAct.size(); i++) {
@@ -500,8 +500,8 @@ public class PanelInfoRessource extends JPanel{
 		String texte = "<html> êtes-vous sur de vouloir supprimer cette ressource ? <br> La suppression de cette ressource supprimera tout son contenu. </html>";
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
-			if (entreprise.ressourceEstLibre(ressource)) {
-				entreprise.suppRessource(ressource);
+			if (entreprise.ressourceTravailleDansUneActiviteParId(ressource.getType(), ressource.getId())) {
+				entreprise.suppRessource(ressource.getType(), ressource);
 				fir.dispose();				
 			}
 			else {
@@ -524,7 +524,24 @@ public class PanelInfoRessource extends JPanel{
 		return ressource.getId();
 	}
 
-	
+	private String getStringByIntOfType(int type) {
+		String s = "";
+		switch (type) {
+		case Ressource.PERSONNE:
+			s = "Personne";
+			break;
+		case Ressource.SALLE:
+			s = "Salle";
+			break;
+		case Ressource.CALCULATEUR:
+			s = "Calculateur";
+			break;
+
+		default:
+			break;
+		}
+		return s;
+	}
 	
 	private boolean estUnEntier(String chaine) {
 		try {

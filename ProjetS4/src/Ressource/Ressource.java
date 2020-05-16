@@ -26,6 +26,7 @@ public class Ressource implements Comparable<Ressource>{
 	//public static final String PERSONNE = "Personne", SALLE = "Salle", CALCULATEUR = "Calculateur";
 	public static final int RIEN = -1, PERSONNE = 0, SALLE = 1, CALCULATEUR = 2;
 	protected int id;
+	protected int type;
 	
 	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> jours; 
 	//Contient l'ensemble des jours qui possedent un creneau horaire, la cle est une LocalDate du jour choisi
@@ -33,15 +34,16 @@ public class Ressource implements Comparable<Ressource>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Ressource(int id, String nom) {
+	public Ressource(int id, String nom, int type) {
 		this.id = id;
 		this.nom = nom;
+		this.type = type;
 		this.jours = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>(); 
 	}
 	
-	public Ressource(int id) {
-		this(id, null);
-	}
+	/*public Ressource(int id) {
+		this(id, null, );
+	}*/
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
@@ -57,7 +59,9 @@ public class Ressource implements Comparable<Ressource>{
 		return this.id;
 	}
 
-	
+	public int getType() {
+		return type;
+	}
 	
 	//--------------------------------------------------------------------------------->>>>>>> Setteur 
 	

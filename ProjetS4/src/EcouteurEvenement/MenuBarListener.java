@@ -107,7 +107,7 @@ public class MenuBarListener implements ActionListener{
 		
 		
 		if (choix == FenetrePrincipale.InformationCompte) {
-			new FenetreInfoRessource(entreprise, entreprise.getUser());
+			new FenetreInfoRessource(entreprise, entreprise.getUser(), Ressource.PERSONNE);
 		}
 		if (choix == FenetrePrincipale.Deconnexion) {
 			String texte = "<html>Êtes vous sur de vouloir vous deconnecter ?</html>";

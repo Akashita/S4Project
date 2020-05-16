@@ -31,7 +31,6 @@ import Ressource.Domaine;
 import Ressource.Materiel;
 import Ressource.Personne;
 import Ressource.Ressource;
-import Ressource.RessourceAutre;
 import Ressource.Salle;
 import SQL.JavaSQL;
 import SQL.JavaSQLActivite;
@@ -218,7 +217,7 @@ public class Entreprise extends Observable{
 
 		LocalDate jourCourant = verifierJour(act.getDebut());
 		int heureCourante = HEURE_DEBUT_MATIN;
-		ArrayList<Ressource> res = act.getListeRessourceType("Personne");
+		ArrayList<Ressource> res = this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, act.getId());
 
 		while (chargeAloue < charge) {
 			for (int i = 0; i < res.size(); i++) {
@@ -253,8 +252,8 @@ public class Entreprise extends Observable{
 		int heureCourante = HEURE_DEBUT_MATIN;
 
 		while (chargeAloue < charge) {
-				if(act.creneauDispo("Salle", jourCourant, heureCourante)) {
-					act.ajouterCreneau("Salle", new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
+				if(act.creneauDispo(Ressource.SALLE, jourCourant, heureCourante)) {
+					act.ajouterCreneau(Ressource.SALLE, new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
 					chargeAloue++;
 			}
 
@@ -492,6 +491,57 @@ public class Entreprise extends Observable{
 	
 	
 	/**
+	 * Cherche tout les ressource contenut par l'activite par son id
+	 * @param type de la ressource
+	 * @param id de l'activite
+	 * @return la liste de ressource de l'activite
+	 */	
+	public ArrayList<Ressource> getListeRessourcedeActiviteParId(int type, int id){
+		ArrayList<Ressource> l = new ArrayList<Ressource>();
+		switch (type) {
+		case Ressource.PERSONNE:
+			l = getListePersonnedeActiviteParId(id);
+			break;
+		case Ressource.SALLE:
+			l = getListeSalledeActiviteParId(id);
+			break;
+		case Ressource.CALCULATEUR:
+			l = getListeCalculateurdeActiviteParId(id);
+			break;
+		default:
+			break;
+		}
+		return l;
+	}
+	
+	/**
+	 * Cherche tout les personnes contenut par l'activite par son id
+	 * @param id de l'activite
+	 * @return la liste de personnes de l'activite
+	 */	
+	public ArrayList<Ressource> getListePersonnedeActiviteParId(int id){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les salle contenut par l'activite par son id
+	 * @param id de l'activite
+	 * @return la liste de salle de l'activite
+	 */	
+	public ArrayList<Ressource> getListeSalledeActiviteParId(int id){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les calculateurs contenut par l'activite par son id
+	 * @param id de l'activite
+	 * @return la liste de calculateur de l'activite
+	 */	
+	public ArrayList<Ressource> getListeCalculateurdeActiviteParId(int id){
+		return null;
+	}
+
+	/**
 	 * Cherche tout les projets concerné de la ressource par son login
 	 * @param type de la ressource
 	 * @param login de la ressource
@@ -590,6 +640,108 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDeCalculateurParLogin(String login){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les projets concerné de la ressource par son id
+	 * @param type de la ressource
+	 * @param id de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Projet> getListeProjetdeRessourceParId(int type, int id){
+		ArrayList<Projet> l = new ArrayList<Projet>();
+		switch (type) {
+		case Ressource.PERSONNE:
+			l = getListeProjetDePersonneParId(id);
+			break;
+		case Ressource.SALLE:
+			l = getListeProjetDeSalleParId(id);
+			break;
+		case Ressource.CALCULATEUR:
+			l = getListeProjetDeCalculateurParId(id);
+			break;
+		default:
+			break;
+		}
+		return l;
+	}
+	
+	/**
+	 * Cherche tout les projets concerné de la personne par son id
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Projet> getListeProjetDePersonneParId(int id){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les projets concerné de la salle par son id
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Projet> getListeProjetDeSalleParId(int id){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les projets concerné de la calculateur par son od
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Projet> getListeProjetDeCalculateurParId(int id){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les activites concerné de la ressource par son id
+	 * @param type de la ressource
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Activite> getListeActivitetdeRessourceParId(int type, int id){
+		ArrayList<Activite> l = new ArrayList<Activite>();
+		switch (type) {
+		case Ressource.PERSONNE:
+			l = getListeActiviteDePersonneParId(id);
+			break;
+		case Ressource.SALLE:
+			l = getListeActiviteDeSalleParId(id);
+			break;
+		case Ressource.CALCULATEUR:
+			l = getListeActiviteDeCalculateurParId(id);
+			break;
+		default:
+			break;
+		}
+		return l;
+	}
+	
+	/**
+	 * Cherche tout les activites concerné de la personne par son id
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Activite> getListeActiviteDePersonneParId(int id){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les activites concerné de la salle par son id
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Activite> getListeActiviteDeSalleParId(int id){
+		return null;
+	}
+
+	/**
+	 * Cherche tout les activites concerné de la calculateur par son id
+	 * @param login de la ressource
+	 * @return la liste de projet de la ressource
+	 */	
+	public ArrayList<Activite> getListeActiviteDeCalculateurParId(int id){
 		return null;
 	}
 
@@ -731,6 +883,57 @@ public class Entreprise extends Observable{
 		return false;
 	}
 	
+	/**
+	 * cherche dans la bdd si la ressource est dans une activite
+	 * @param id de la ressource
+	 * @return vrai si la ressource travaille dans une activité
+	 */	
+	public boolean ressourceTravailleDansUneActiviteParId(int type, int id) {
+		boolean b = false;
+		switch (type) {
+		case Ressource.PERSONNE:
+			b = personneTravailleDansUneActiviteParId(id);
+			break;
+		case Ressource.SALLE:
+			b = salleTravailleDansUneActiviteParId(id);
+			break;
+		case Ressource.CALCULATEUR:
+			b = calculateurTravailleDansUneActiviteParId(id);
+			break;
+
+		default:
+			break;
+		}
+		return b;
+	}
+
+	/**
+	 * cherche dans la bdd si la personne est dans une activite
+	 * @param d domaine tester
+	 * @return vrai si la personne travaille dans une activité
+	 */	
+	public boolean personneTravailleDansUneActiviteParId(int id) {
+		return true;
+	}
+
+	/**
+	 * cherche dans la bdd si la salle est dans une activite
+	 * @param id de la ressource
+	 * @return vrai si la salle travaille dans une activité
+	 */	
+	public boolean salleTravailleDansUneActiviteParId(int id) {
+		return true;
+	}
+
+	/**
+	 * cherche dans la bdd si la calculateur est dans une activite
+	 * @param id de la ressource
+	 * @return vrai si la calculateur travaille dans une activité
+	 */	
+	public boolean calculateurTravailleDansUneActiviteParId(int id) {
+		return true;
+	}
+
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion projet
 
 	public void creerProjet(Personne chefDeProjet, String nom, int priorite, LocalDate deadline) {//cr��e un projet si son nom n'est pas d��j�� utilis��
@@ -894,7 +1097,7 @@ public class Entreprise extends Observable{
 	
 	public void ajouterRessourceActivite(int type, Ressource res, Activite a) {
 		Activite act = getActiviteSelectionner();
-		act.ajouterRessource(res);
+		//act.ajouterRessource(res);
 		switch (type) {
 		case Ressource.PERSONNE:
 			try {
@@ -928,7 +1131,7 @@ public class Entreprise extends Observable{
 
 	public void enleverRessourceActivite(Ressource res) {
 		Activite act = getActiviteSelectionner();
-		act.enleverRessource(res.getId());
+		//act.enleverRessource(res.getId());
 		majEDT();
 		update();
 	}
@@ -1019,7 +1222,7 @@ public class Entreprise extends Observable{
 		s.setNom(nom);
 		s.setCapacite(capacite);
 		try {
-			JavaSQLSalle.modifie(s.getId(), s.getId(), nom, capacite);
+			JavaSQLSalle.modifie(s.getId(), nom, capacite);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1037,9 +1240,6 @@ public class Entreprise extends Observable{
 	}
 
 
-	public boolean ressourceEstLibre(Ressource r) { //v���rifier qu'une ressource est attacher �� aucune act ou projet
-		return true;
-	}
 
 	public void suppRessource(int type, Ressource r) {
 		switch (type) {
@@ -1233,7 +1433,7 @@ public class Entreprise extends Observable{
 		return fenetrePrincipale;
 	}
 
-	public void afficheInfoRessource(Ressource res) {
+	public void afficheInfoRessource(Ressource res, int typeDeLaRessource) {
 		int exist = -1;
 		for (int i=0; i<listeFenetreInfoRessource.size(); i++) {
 			if (res.getId() == listeFenetreInfoRessource.get(i).getIdRessource()) {
@@ -1244,7 +1444,7 @@ public class Entreprise extends Observable{
 			listeFenetreInfoRessource.get(exist).dispose();
 			listeFenetreInfoRessource.remove(exist);
 		}
-		listeFenetreInfoRessource.add(new FenetreInfoRessource(this, res));
+		listeFenetreInfoRessource.add(new FenetreInfoRessource(this, res, typeDeLaRessource));
 	}
 
 	public void afficheEDTActivite(Activite activite) {
