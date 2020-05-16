@@ -8,6 +8,12 @@ import Fenetre.FermerFenetre;
 import Panel.PanelPrincipal;
 import SQL.JavaSQL;
 
+
+/**
+ * Fenetre ou l'utilisateur va se connecter à son compte
+ * @author Damien
+ *
+ */
 public class FenetreConnexion extends JFrame{
 
 	

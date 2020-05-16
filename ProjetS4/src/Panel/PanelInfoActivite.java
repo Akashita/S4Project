@@ -12,13 +12,19 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import EcouteurEvenement.KeyActiviteListener;
 import EcouteurEvenement.SourisRessourceListener;
 import Model.Activite;
 import Model.Entreprise;
 import Ressource.Personne;
 import Ressource.Ressource;
 
+
+/**
+ * Affiche ses information et sa liste de ressource.
+ * recliquer dessus permet de voir son emploi du temps 
+ * @author Damien
+ *
+ */
 public class PanelInfoActivite extends JPanel{
 
 	/**
@@ -28,7 +34,6 @@ public class PanelInfoActivite extends JPanel{
 	private Entreprise entreprise;
 	private Activite activite;
 	private Color couleurFond;
-	private int typeDeLaRessource;
 	
 
 	public PanelInfoActivite (Entreprise entreprise, Activite activite) {

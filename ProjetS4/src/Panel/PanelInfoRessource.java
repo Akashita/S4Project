@@ -27,8 +27,20 @@ import Ressource.Personne;
 import Ressource.Ressource;
 import Ressource.Salle;
 
+
+
+/**
+ * Affiche les information de la ressource en fonction de l'user pour la fenetre affiche info ressource
+ * (seul les admins peuvent voir les mdp)
+ * @author Damien
+ *
+ */
 public class PanelInfoRessource extends JPanel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FenetreInfoRessource fir;
 	private Entreprise entreprise;
 	private Ressource ressource;
@@ -178,15 +190,11 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridy = 0;
 		String nom;
 		String prenom = null;
-		String role = "Collaborateur";
 		String capacite = "0";
 		String login = null;
 		String mdp = null;
 		if (ressource.getType() == Ressource.PERSONNE) {
 			Personne p = ((Personne) ressource);
-			if (p.estAdmin()) {
-				role = "Administrateur";
-			}
 			prenom = ((Personne) ressource).getPrenom();
 			login = p.getLogin();
 			mdp = p.getMdp();

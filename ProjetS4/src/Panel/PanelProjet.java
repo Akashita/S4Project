@@ -1,23 +1,24 @@
 package Panel;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import EcouteurEvenement.SourisProjetListener;
 import Model.Entreprise;
 import Model.Projet;
 
+
+/**
+ * Affiche les projets concerné par l'user
+ * @author Damien
+ *
+ */
 public class PanelProjet extends JPanel{
 	/**
 	 * 

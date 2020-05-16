@@ -27,6 +27,12 @@ import GestionTicket.Ticket;
 import Model.Entreprise;
 import SQL.JavaSQLTicket;
 
+/**
+ * Affiche la liste des tache (ticket et optimisation)
+ * Et affiche la liste des ticket ou la liste de propostion d'optimisation
+ * @author Damien
+ *
+ */
 public class PanelTache extends JPanel {
 
 	/**
@@ -194,7 +200,8 @@ public class PanelTache extends JPanel {
 		jlt.setForeground(PanelPrincipal.BLANC);
 		jlt.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
-		        JList<Ticket> jlt = (JList<Ticket>)evt.getSource();
+		        @SuppressWarnings("unchecked")
+				JList<Ticket> jlt = (JList<Ticket>)evt.getSource();
 		        if (evt.getClickCount() == 2) {
 		            //int index = jlt.locationToIndex(evt.getPoint());
 		            afficheTicket(jlt.getSelectedValue());

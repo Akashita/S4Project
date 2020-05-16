@@ -17,6 +17,14 @@ import Panel_Fenetre.PanelNouveauTicket;
 import Panel_Fenetre.PanelNouvelleActivite;
 import Panel_Fenetre.PanelNouvelleRessource;
 
+
+/**
+ * Genere une classe modal qui empeche l'utilisateur d'effectuer d'autre action tant que la fenetre est ouverte
+ * 
+ * 
+ * @author Damien
+ *
+ */
 public class FenetreModal extends JDialog{
 
 	/**

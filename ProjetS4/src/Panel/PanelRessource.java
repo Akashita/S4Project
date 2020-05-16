@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,6 +20,12 @@ import javax.swing.JTextField;
 import Model.Entreprise;
 import Ressource.Ressource;
 
+/**
+ * Affiche personne, salle, calculateur, et recherche
+ * Affiche la liste concerné
+ * @author Damien
+ *
+ */
 public class PanelRessource extends JPanel {
 	/**
 	 * 
@@ -141,7 +146,8 @@ public class PanelRessource extends JPanel {
 		jlt.setForeground(PanelPrincipal.BLANC);
 		jlt.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
-		        JList<Ressource> jlt = (JList<Ressource>)evt.getSource();
+		        @SuppressWarnings("unchecked")
+				JList<Ressource> jlt = (JList<Ressource>)evt.getSource();
 		        if (evt.getClickCount() == 2) {
 		        	afficheRessource(jlt.getSelectedValue());
 		        }
@@ -158,10 +164,7 @@ public class PanelRessource extends JPanel {
 			entreprise.afficheInfoRessource(r, r.getId());
 	}
 
-	private JPanel afficherRechercher() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(3,3));
-		panel.setBackground(PanelPrincipal.BLEU2);
+	private void afficherRechercher() {
     	rechercher = new JTextField("rechercher");
     	rechercher.getFont().deriveFont(Font.ITALIC);
     	rechercher.setForeground(PanelPrincipal.GRIS2);
@@ -182,11 +185,7 @@ public class PanelRessource extends JPanel {
 			public void mouseEntered(MouseEvent e) {}
 			@Override
 			public void mouseExited(MouseEvent e) {}
-    	});
-    	panel.add(new JLabel(" "));
-    	panel.add(rechercher);
-    	panel.add(new JLabel(" "));
-		return panel;
+    	});	
 	}	
 
 }

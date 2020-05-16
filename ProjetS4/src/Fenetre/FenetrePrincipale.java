@@ -13,14 +13,10 @@ import javax.swing.KeyStroke;
 import EcouteurEvenement.MenuBarListener;
 import Model.Entreprise;
 import Panel.*;
-import Ressource.Personne;
 
 
 /**
- * Fenetre principal qui contient les trois panels principaux:
- * - le panel principal
- * - le panel ressource 
- * - le panel projet
+ * Fenetre principal qui contient le panel principal
  * 
  * il contient egalement la barre du menu
  * 

@@ -3,9 +3,17 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-import EcouteurEvenement.KeyActiviteListener;
 import Model.Entreprise;
 
+/**
+ * Gere les 4 panels principaux:
+ * - panel ressource
+ *  - panel tache
+ *  - panel projet
+ *  - panel information projet
+ * @author Damien
+ *
+ */
 public class PanelPrincipal extends JPanel implements Observer{
 	
 	private static final long serialVersionUID = 1L;
@@ -47,7 +55,6 @@ public class PanelPrincipal extends JPanel implements Observer{
         if (entreprise.getActiviteSelectionner() != null) {
     		this.setFocusable(true);
     		this.requestFocus();
-    		this.addKeyListener(new KeyActiviteListener(entreprise));        	
         }
 		
 		this.revalidate();	

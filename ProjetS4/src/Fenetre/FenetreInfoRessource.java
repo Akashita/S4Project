@@ -1,25 +1,19 @@
 package Fenetre;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import Model.Entreprise;
-import Model.Projet;
 import Panel.PanelEDTRessource;
 import Panel.PanelInfoRessource;
-import Ressource.Competence;
-import Ressource.Personne;
 import Ressource.Ressource;
-import Ressource.Salle;
 
+/**
+ * Cette fenetre affiche toute les informations de la ressource en fonction de l'user et son emploi du temps
+ * @author Damien
+ *
+ */
 public class FenetreInfoRessource extends JDialog{
 	/**
 	 * 

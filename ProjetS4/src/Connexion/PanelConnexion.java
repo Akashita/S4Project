@@ -5,12 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,12 +17,20 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Model.Entreprise;
-import Panel.PanelPrincipal;
 import Ressource.Personne;
-import SQL.JavaSQLPersonne;
 
+
+/**
+ * Affiche le contenu de la fenetre connexion
+ * @author Damien
+ *
+ */
 public class PanelConnexion extends JPanel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FenetreConnexion fc;
     private JTextField textFieldLogin = new JTextField();
     private JPasswordField mdpField = new JPasswordField();
