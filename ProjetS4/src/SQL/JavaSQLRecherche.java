@@ -185,13 +185,16 @@ public final class JavaSQLRecherche extends JavaSQL{
 
 	}
 ///////////////////////////////////////////////////////////////////////////////////PresenceDansActivite////////////////////////////////////////////////////////////////////////////	
+	
+	
+	
 	public static Boolean presenceActivitePersonne(Personne salarie, int idA) {
 		Boolean presence = false;
 		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ salarie.getId() + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
-					 while(res.next()) {
+					 while(res.next() || presence == false) {
 						 if (res.getInt("idA") == idA) {
 						 presence = true;	
 						 }
@@ -206,6 +209,24 @@ public final class JavaSQLRecherche extends JavaSQL{
 	public static Boolean presenceActiviteSalle(Salle salle, int idA) {
 		Boolean presence = false;
 		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ salle.getId() + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next() || presence == false) {
+						 if (res.getInt("idA") == idA) {
+						 presence = true;	
+						 }
+						 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return presence;
+	}
+	
+	public static Boolean presenceActiviteCalculateur(Calculateur calculateur, int idA) {
+		Boolean presence = false;
+		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ calculateur.getId() + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
