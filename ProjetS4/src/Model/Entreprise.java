@@ -1204,7 +1204,7 @@ public class Entreprise extends Observable{
 			e.printStackTrace();
 		}
 		
-		if (!((Personne)p).getMdp().equals(mdp)) {
+		if (!(((Personne)p).getMdp().equals(mdp))) {
 			p = null;
 		}
 		
