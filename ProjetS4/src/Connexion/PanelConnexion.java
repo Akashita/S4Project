@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import Model.Entreprise;
 import Ressource.Personne;
 import Ressource.Ressource;
+import SQL.JavaSQL;
 import SQL.JavaSQLRecherche;
 
 
@@ -157,6 +158,7 @@ public class PanelConnexion extends JPanel{
  
     
     private void actionQuitter(FenetreConnexion fc) {
-    	fc.dispose();
+		JavaSQL.finCo();
+		fc.dispose();
     }
 }
