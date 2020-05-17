@@ -184,7 +184,42 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return liste;
 
 	}
-
+///////////////////////////////////////////////////////////////////////////////////PresenceDansActivite////////////////////////////////////////////////////////////////////////////	
+	public static Boolean presenceActivitePersonne(Personne salarie, int idA) {
+		Boolean presence = false;
+		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ salarie.getId() + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 if (res.getInt("idA") == idA) {
+						 presence = true;	
+						 }
+						 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return presence;
+	}
+	
+	public static Boolean presenceActiviteSalle(Salle salle, int idA) {
+		Boolean presence = false;
+		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ salle.getId() + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 if (res.getInt("idA") == idA) {
+						 presence = true;	
+						 }
+						 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return presence;
+	}
 	
 	
 	
@@ -391,8 +426,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 		return proTab;
 	}
 	
-	
-	
+///////////////////////////////////////////////////////////////////////////////////PresenceDansProjet////////////////////////////////////////////////////////////////////////////	
+
 	
 	
 ///////////////////////////////////////////////////////////////////////////////////TICKET////////////////////////////////////////////////////////////////////////////	

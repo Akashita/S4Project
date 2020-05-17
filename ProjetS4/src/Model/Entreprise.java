@@ -1161,6 +1161,30 @@ public class Entreprise extends Observable{
 	public boolean calculateurTravailleDansUneActiviteParId(int id) {
 		return true;
 	}
+	
+	/**
+     * cherche l'user avec son login et son mdp
+     * @param login du compte	
+     * @param mdp du compte
+     * @return la personne asssoci� sinon null
+     */
+	public Ressource chercheUser(String login, String mdp) {
+    	Ressource p = null;
+		int id = Ressource.recupereIdDepuisLogin(login);
+		try {
+			p = JavaSQLRecherche.recuperePersonneParId(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (((Personne)p).getMdp() != mdp) {
+			p = null;
+		}
+		
+		
+    	return p;
+    }
 
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion projet
 

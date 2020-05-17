@@ -71,6 +71,7 @@ public class Personne extends Ressource{
 	public String getRole() {
 		return this.role;
 	}
+
 	
 	public boolean estAdmin() {
 		boolean b = false;
