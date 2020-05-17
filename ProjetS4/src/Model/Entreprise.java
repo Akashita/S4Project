@@ -1,5 +1,6 @@
 package Model;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.Random;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Connexion.FenetreConnexion;
@@ -36,6 +38,7 @@ import SQL.JavaSQL;
 import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLDomaine;
+import SQL.JavaSQLMateriel;
 import SQL.JavaSQLParticipe;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLProjet;
@@ -306,52 +309,56 @@ public class Entreprise extends Observable{
 	}
 
 	
-	/**
-	 * Cherche toute les ressource du type choisi de l'entreprise de la bdd 
-	 * @param type de la ressource
-	 * @return liste de ressource
-	 */
-	public  ArrayList<Ressource> getListeRessourceEntrepriseParType(int type){
-		ArrayList<Ressource> l = new ArrayList<Ressource>();
-		switch (type) {
-		case Ressource.PERSONNE:
-			l = getListePersonneEntreprise();
-			break;
-		case Ressource.SALLE:
-			l = getListeSalleEntreprise();
-			break;
-		case Ressource.CALCULATEUR:
-			l = getListeCalculateurEntreprise();
-			break;
-		default:
-			break;
-		}
-		return l;
-		
-	}
+
 	
 	/**
 	 * Cherche toute les personnes de l'entreprise de la bdd
 	 * @return la liste des personnes de l'entreprise
 	 */
-	public ArrayList<Ressource> getListePersonneEntreprise(){
-		return null;
+	public ArrayList<Personne> getListePersonneEntreprise(){
+		ArrayList<Personne> personneTab = new ArrayList<Personne>();
+		try {
+			personneTab = JavaSQLPersonne.affiche();
+
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return personneTab ;
 	}
 
 	/**
 	 * Cherche toute les salles de l'entreprise de la bdd
 	 * @return la liste des salles de l'entreprise
 	 */
-	public ArrayList<Ressource> getListeSalleEntreprise(){
-		return null;
+	public ArrayList<Salle> getListeSalleEntreprise(){
+		ArrayList<Salle> salleTab = new ArrayList<Salle>();
+		try {
+			salleTab = JavaSQLSalle.affiche();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return salleTab;
 	}
 
 	/**
 	 * Cherche toute les calculateurs de l'entreprise de la bdd
 	 * @return la liste des calculateurs de l'entreprise
 	 */
-	public ArrayList<Ressource> getListeCalculateurEntreprise(){
-		return null;
+	public ArrayList<Calculateur> getListeCalculateurEntreprise(){
+		
+		ArrayList<Calculateur> calculateurTab = new ArrayList<Calculateur>();
+        try {
+        	calculateurTab = JavaSQLCalculateur.affiche();
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    
+		return calculateurTab;
 	}
 
 	/**
@@ -359,7 +366,15 @@ public class Entreprise extends Observable{
 	 * @return la liste des domaines de l'entreprise
 	 */
 	public ArrayList<String> getListeDomaineEntreprise(){
-		return null;
+		ArrayList<String> tagTab = new ArrayList<String>();
+		try {
+			tagTab = JavaSQLDomaine.affiche();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return tagTab;
 	}
 
 	/**
@@ -367,7 +382,15 @@ public class Entreprise extends Observable{
 	 * @return la liste des materiels de l'entreprise
 	 */
 	public ArrayList<Materiel> getListeMaterielEntreprise(){
-		return null;
+		 ArrayList<Materiel> materielTab = new ArrayList<Materiel>();
+         try {
+         	materielTab = JavaSQLMateriel.affiche();
+             
+         } catch (SQLException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+         }
+		return materielTab;
 	}
 
 	/**
@@ -377,6 +400,7 @@ public class Entreprise extends Observable{
 	 */	
 	public ArrayList<Projet> getListeProjetDeUser(){
 		return null;
+		
 	}
 
 	/**
@@ -385,8 +409,16 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet
 	 */	
 	public ArrayList<Projet> getListeProjetDeEntreprise(){
-		return null;
-	}
+		 ArrayList<Projet> projetTab = new ArrayList<Projet>();
+         try {
+         	projetTab = JavaSQLProjet.affiche();
+            
+         } catch (SQLException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+         }
+		return projetTab;	
+		}
 
 	/**
 	 * Cherche tout les tickets envoyé par l'user
