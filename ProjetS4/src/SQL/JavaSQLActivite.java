@@ -99,8 +99,6 @@ public final class JavaSQLActivite extends JavaSQL{
 				 stmt.executeUpdate(sql);
 				 sql = "DELETE FROM ParticipeSalle WHERE idA =" + idA;
 				 stmt.executeUpdate(sql);
-				 sql = "DELETE FROM Creneaux WHERE idA =" + idA;
-				 stmt.executeUpdate(sql);
 				 sql = "DELETE FROM Activite WHERE idA =" + idA;
 				 stmt.executeUpdate(sql);
 			} catch(SQLException e){

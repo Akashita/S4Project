@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import Fenetre.FermerFenetre;
 import Model.Entreprise;
 
-public class FenetreDebugParticipeSalarie  extends JFrame{
+public class FenetreDebugListeDomaine extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
@@ -16,11 +16,11 @@ public class FenetreDebugParticipeSalarie  extends JFrame{
 	private int type;
 	public static final int AFFICHE = 0, AJOUT = 1, SUPPRIME = 2;
 	
-	public FenetreDebugParticipeSalarie(Entreprise entreprise,int type){	
+	public FenetreDebugListeDomaine(Entreprise entreprise,int type){	
 		this.entreprise = entreprise;
 		this.type = type;
 		
-		this.setTitle("gestionBDD personne");
+		this.setTitle("gestionBDD domaine");
 		this.setSize(LARGEUR,HAUTEUR);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.addWindowListener(new FermerFenetre(this));
@@ -38,32 +38,32 @@ public class FenetreDebugParticipeSalarie  extends JFrame{
         c.weightx = 0.0;                //reset to the default
         c.weighty = 1.0;               
 
-		PanelDebugActionBarre panelAction = new PanelDebugActionBarre(entreprise, this, PanelDebugActionBarre.PARTICIPESALARIE);
+		PanelDebugActionBarre panelAction = new PanelDebugActionBarre(entreprise, this, PanelDebugActionBarre.LISTEDOMAINE);
 		this.add(panelAction,c);
 
         c.gridwidth = GridBagConstraints.REMAINDER; //end row
 		
 
 		
-		if (type == AFFICHE) {
-	        c.weighty = 2.0;               
+        if (type == this.AFFICHE) {
 
-		PanelDebugAffichage panelAffichage = new PanelDebugAffichage(entreprise,PanelDebugAffichage.PARTICIPESALARIE);
-		this.add(panelAffichage,c);
-		}
-		else if (type == AJOUT) {
-	        c.weighty = 0.0;               
+    		PanelDebugAffichage panelAffichage = new PanelDebugAffichage(entreprise,PanelDebugAffichage.LISTEDOMAINE);
+    		this.add(panelAffichage,c);
+    		}
+    		
+    		else if (type == this.AJOUT) {
+    	        c.weighty = 0.0;               
 
-			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAjout.PARTICIPESALARIE);
-			this.add(panelAjout,c);
-		}
-		
-		else if (type == SUPPRIME) {
-	        c.weighty = 0.0;               
+    			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAjout.LISTEDOMAINE);
+    			this.add(panelAjout,c);
+    		}
+    		
+    		else if (type == this.SUPPRIME) {
+    	        c.weighty = 0.0;               
 
-			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugSupprime.PARTICIPESALARIE);
-			this.add(panelSupprime,c);
-		}
+    			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugSupprime.LISTEDOMAINE);
+    			this.add(panelSupprime,c);
+    		}
 		
 		this.setVisible(true);	
 }

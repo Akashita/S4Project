@@ -9,6 +9,7 @@ import java.awt.Window;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import GestionTicket.Ticket;
@@ -22,7 +23,10 @@ import Ressource.Personne;
 import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
+import SQL.JavaSQLDomaine;
+import SQL.JavaSQLListeDomaine;
 import SQL.JavaSQLMateriel;
+import SQL.JavaSQLParticipe;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLProjet;
 import SQL.JavaSQLTicket;
@@ -32,7 +36,8 @@ public class PanelDebugSupprime extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7, ACTIVITE = 8;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7, ACTIVITE = 8,
+			PARTICIPESALARIE = 9, PARTICIPESALLE = 10, PARTICIPECALCUL = 11, LISTEDOMAINE = 12;
 	private int type;
 	private Window w;
 	public PanelDebugSupprime(Entreprise entreprise,Window w, int type) {
@@ -70,7 +75,7 @@ public class PanelDebugSupprime extends JPanel{
 
 			
 		}
-		else if (type == this.DOMAINE) {
+		else if (type == DOMAINE) {
 			this.setLayout(new GridLayout(2,2));
 			Label nomLabel = new Label("nom du domaine a supprimer : ");
 			TextField nom= new TextField(20);
@@ -274,6 +279,140 @@ public class PanelDebugSupprime extends JPanel{
 			Label okLabel = new Label("ok : ");
 			Button ok = new Button("ok");
 			ok.addActionListener(new ActionDebugSupprime(w,activiteChoix,ActionDebugSupprime.ACTIVITE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+			
+		}
+		
+		else if (type == PARTICIPESALARIE) {
+			this.setLayout(new GridLayout(2,2));
+			
+			Label idLabel = new Label("participeSalarie a supprime : ");
+			final Choice  idChoix = new Choice();
+			
+			ArrayList<int[]> idParticipe = new ArrayList<int[]>();
+            try {
+            	idParticipe = JavaSQLParticipe.afficheParticipeSalarie();
+
+                for (int i = 0; i < idParticipe.size(); i++) {
+                	idChoix.add("" + idParticipe.get(i)[0] + idParticipe.get(i)[1]);
+                	  
+
+
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+			
+
+									
+			this.add(idLabel);
+			this.add(idChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,idChoix,ActionDebugSupprime.ACTIVITE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+			
+		}
+		
+		else if (type == PARTICIPESALLE) {
+			this.setLayout(new GridLayout(2,2));
+			
+			Label idLabel = new Label("participeSalle a supprime : ");
+			final Choice  idChoix = new Choice();
+			
+			ArrayList<int[]> idParticipe = new ArrayList<int[]>();
+            try {
+            	idParticipe = JavaSQLParticipe.afficheParticipeSalle();
+
+                for (int i = 0; i < idParticipe.size(); i++) {
+                	idChoix.add("" + idParticipe.get(i)[0] + idParticipe.get(i)[1]);
+
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+			
+
+									
+			this.add(idLabel);
+			this.add(idChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,idChoix,ActionDebugSupprime.ACTIVITE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+			
+		}
+		
+		else if (type == PARTICIPECALCUL) {
+			this.setLayout(new GridLayout(2,2));
+			
+			Label idLabel = new Label("participeCalcul a supprime : ");
+			final Choice  idChoix = new Choice();
+			
+			ArrayList<int[]> idParticipe = new ArrayList<int[]>();
+            try {
+            	idParticipe = JavaSQLParticipe.afficheParticipeCalcul();
+
+                for (int i = 0; i < idParticipe.size(); i++) {
+                	idChoix.add("" + idParticipe.get(i)[0] + idParticipe.get(i)[1]);
+
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+			
+
+									
+			this.add(idLabel);
+			this.add(idChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,idChoix,ActionDebugSupprime.ACTIVITE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+			
+		}
+		
+		else if (type == LISTEDOMAINE) {
+			this.setLayout(new GridLayout(2,2));
+			
+
+			Label tagLabel = new Label("tag a supprimer: ");
+			final Choice  tagChoix = new Choice();
+			
+			ArrayList<String[]> tagTab = new ArrayList<String[]>();
+			try {
+				tagTab = JavaSQLListeDomaine.recupere();
+
+				for (int i = 0; i < tagTab.size(); i++) {
+					tagChoix.addItem("" + tagTab.get(i)[0] + tagTab.get(i)[1]);
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(tagLabel);
+			this.add(tagChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugSupprime(w,tagChoix,ActionDebugSupprime.LISTEDOMAINE,entreprise));
 			this.add(okLabel);
 			this.add(ok);
 			

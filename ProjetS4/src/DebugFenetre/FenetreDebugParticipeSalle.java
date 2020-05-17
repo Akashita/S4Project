@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import Fenetre.FermerFenetre;
 import Model.Entreprise;
 
-public class FenetreDebugParticipeSalarie  extends JFrame{
+public class FenetreDebugParticipeSalle extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
@@ -16,7 +16,7 @@ public class FenetreDebugParticipeSalarie  extends JFrame{
 	private int type;
 	public static final int AFFICHE = 0, AJOUT = 1, SUPPRIME = 2;
 	
-	public FenetreDebugParticipeSalarie(Entreprise entreprise,int type){	
+	public FenetreDebugParticipeSalle(Entreprise entreprise,int type){	
 		this.entreprise = entreprise;
 		this.type = type;
 		
@@ -38,7 +38,7 @@ public class FenetreDebugParticipeSalarie  extends JFrame{
         c.weightx = 0.0;                //reset to the default
         c.weighty = 1.0;               
 
-		PanelDebugActionBarre panelAction = new PanelDebugActionBarre(entreprise, this, PanelDebugActionBarre.PARTICIPESALARIE);
+		PanelDebugActionBarre panelAction = new PanelDebugActionBarre(entreprise, this, PanelDebugActionBarre.PARTICIPESALLE);
 		this.add(panelAction,c);
 
         c.gridwidth = GridBagConstraints.REMAINDER; //end row
@@ -48,20 +48,20 @@ public class FenetreDebugParticipeSalarie  extends JFrame{
 		if (type == AFFICHE) {
 	        c.weighty = 2.0;               
 
-		PanelDebugAffichage panelAffichage = new PanelDebugAffichage(entreprise,PanelDebugAffichage.PARTICIPESALARIE);
+		PanelDebugAffichage panelAffichage = new PanelDebugAffichage(entreprise,PanelDebugAffichage.PARTICIPESALLE);
 		this.add(panelAffichage,c);
 		}
 		else if (type == AJOUT) {
 	        c.weighty = 0.0;               
 
-			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAjout.PARTICIPESALARIE);
+			PanelDebugAjout panelAjout = new PanelDebugAjout(entreprise,this,PanelDebugAjout.PARTICIPESALLE);
 			this.add(panelAjout,c);
 		}
 		
 		else if (type == SUPPRIME) {
 	        c.weighty = 0.0;               
 
-			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugSupprime.PARTICIPESALARIE);
+			PanelDebugSupprime panelSupprime = new PanelDebugSupprime(entreprise,this,PanelDebugSupprime.PARTICIPESALLE);
 			this.add(panelSupprime,c);
 		}
 		

@@ -11,8 +11,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import GestionTicket.Ticket;
+import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
+import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Domaine;
 import Ressource.Personne;
@@ -21,7 +23,9 @@ import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
+import SQL.JavaSQLListeDomaine;
 import SQL.JavaSQLMateriel;
+import SQL.JavaSQLParticipe;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLProjet;
 import SQL.JavaSQLSalle;
@@ -66,14 +70,18 @@ public class ActionDebugAjout implements ActionListener{
 	private Choice projetChoix;
 	private TextField ordre;
 
-
+	private Choice activiteChoix;
+	private Choice ressourceRelationChoix;
+	
+	private Choice tagChoix;
 
 	
 	
 	
 	private TextField capacite;
 	
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7, ACTIVITE = 8 ;
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7,
+			ACTIVITE = 8, PARTICIPESALARIE = 9, PARTICIPESALLE = 10, PARTICIPECALCUL = 11, LISTEDOMAINE = 12 ;
 
 	
 	public ActionDebugAjout (Window w,TextField nom,int typeVerif, Entreprise entreprise) {
@@ -120,7 +128,7 @@ public class ActionDebugAjout implements ActionListener{
 		}
 		else if (typeVerif == SALLE) {
 			this.nom = texteUn;
-			this.place = texteUn;
+			this.place = texteDeux;
 		}
 			
 		
@@ -174,8 +182,31 @@ public class ActionDebugAjout implements ActionListener{
 
 
 		}
-
 	}
+		public ActionDebugAjout (Window w,Choice choix1 ,Choice choix2,int typeVerif, Entreprise entreprise) {
+			this.w = w;
+			this.typeVerif = typeVerif;
+			 if (typeVerif == PARTICIPESALARIE) {
+					 this.activiteChoix = choix1;
+					 this.ressourceRelationChoix= choix2;		
+					 }
+			 else if (typeVerif == PARTICIPESALLE) {
+				 this.activiteChoix = choix1;
+				 this.ressourceRelationChoix= choix2;		
+				 }
+			 else if (typeVerif == PARTICIPECALCUL) {
+				 this.activiteChoix = choix1;
+				 this.ressourceRelationChoix= choix2;		
+				 }
+			 else if (typeVerif == LISTEDOMAINE) {
+				 this.activiteChoix = choix1;
+				 this.tagChoix= choix2;		
+				 }
+			
+
+		}
+
+	
 	
 	
 	
@@ -435,6 +466,192 @@ public class ActionDebugAjout implements ActionListener{
 				try {
 					JavaSQLActivite.insertion(titre.getText(),debut, Float.parseFloat(charge.getText()), Integer.parseInt(ordre.getText()),Integer.parseInt(couleur.getText()), projetId,null);
 					new FenetreDebugProjet(entreprise,FenetreDebugProjet.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		
+		
+			else if (typeVerif == PARTICIPESALARIE) {
+				int numSalarie = -1;
+				int idA = -1;
+				ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+				try {
+					activiteTab = JavaSQLActivite.affiche();
+
+					for (int i = 0; i < activiteTab.size(); i++) {
+						if (activiteChoix.getItem(activiteChoix.getSelectedIndex()).equals(activiteTab.get(i).creeAffiche())) {
+							idA = activiteTab.get(i).getId();
+
+						}
+				}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				ArrayList<Personne> personneTab = new ArrayList<Personne>();
+
+				try {
+					personneTab = JavaSQLPersonne.affiche();
+
+					for (int i = 0; i < personneTab.size(); i++) {
+						if (ressourceRelationChoix.getItem(ressourceRelationChoix.getSelectedIndex()).equals(personneTab.get(i).creeAffiche())) {
+							numSalarie = personneTab.get(i).getId();
+
+						}
+									}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					JavaSQLParticipe.insertionSalarie(numSalarie, idA);
+					new FenetreDebugParticipeSalarie(entreprise,FenetreDebugParticipeSalarie.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		
+		
+			else if (typeVerif == PARTICIPECALCUL) {
+				int code = -1;
+				int idA = -1;
+				ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+				try {
+					activiteTab = JavaSQLActivite.affiche();
+
+					for (int i = 0; i < activiteTab.size(); i++) {
+						if (activiteChoix.getItem(activiteChoix.getSelectedIndex()).equals(activiteTab.get(i).creeAffiche())) {
+							idA = activiteTab.get(i).getId();
+
+						}
+				}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				ArrayList<Calculateur> calculateurTab = new ArrayList<Calculateur>();
+
+				try {
+					calculateurTab = JavaSQLCalculateur.affiche();
+
+					for (int i = 0; i < calculateurTab.size(); i++) {
+						if (ressourceRelationChoix.getItem(ressourceRelationChoix.getSelectedIndex()).equals(calculateurTab.get(i).creeAffiche())) {
+							code = calculateurTab.get(i).getId();
+
+						}
+									}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					JavaSQLParticipe.insertionCalcul(code, idA);
+					new FenetreDebugParticipeCalcul(entreprise,FenetreDebugParticipeCalcul.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		
+		
+			else if (typeVerif == PARTICIPESALLE) {
+				int numero = -1;
+				int idA = -1;
+				ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+				try {
+					activiteTab = JavaSQLActivite.affiche();
+
+					for (int i = 0; i < activiteTab.size(); i++) {
+						if (activiteChoix.getItem(activiteChoix.getSelectedIndex()).equals(activiteTab.get(i).creeAffiche())) {
+							idA = activiteTab.get(i).getId();
+
+						}
+				}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				ArrayList<Salle> salleTab = new ArrayList<Salle>();
+
+				try {
+					salleTab = JavaSQLSalle.affiche();
+
+					for (int i = 0; i < salleTab.size(); i++) {
+						if (ressourceRelationChoix.getItem(ressourceRelationChoix.getSelectedIndex()).equals(salleTab.get(i).creeAffiche())) {
+							numero = salleTab.get(i).getId();
+
+						}
+									}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					JavaSQLParticipe.insertionSalle(numero, idA);
+					new FenetreDebugParticipeSalle(entreprise,FenetreDebugParticipeSalle.AFFICHE);
+					w.dispose();
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		
+			else if (typeVerif == LISTEDOMAINE) {
+				String tag = "123";
+				int idA = -1;
+				ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+				try {
+					activiteTab = JavaSQLActivite.affiche();
+
+					for (int i = 0; i < activiteTab.size(); i++) {
+						if (activiteChoix.getItem(activiteChoix.getSelectedIndex()).equals(activiteTab.get(i).creeAffiche())) {
+							idA = activiteTab.get(i).getId();
+
+						}
+				}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				ArrayList<String> tagTab = new ArrayList<String>();
+				try {
+					tagTab = JavaSQLDomaine.affiche();
+
+					for (int i = 0; i < tagTab.size(); i++) {
+						if (tagChoix.getItem(tagChoix.getSelectedIndex()).equals(tagTab.get(i))) {
+							tag = tagTab.get(i);
+				}
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					JavaSQLListeDomaine.insertion(tag, idA);
+					new FenetreDebugListeDomaine(entreprise,FenetreDebugListeDomaine.AFFICHE);
 					w.dispose();
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block

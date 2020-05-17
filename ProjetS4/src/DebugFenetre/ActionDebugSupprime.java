@@ -20,7 +20,9 @@ import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
+import SQL.JavaSQLListeDomaine;
 import SQL.JavaSQLMateriel;
+import SQL.JavaSQLParticipe;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLProjet;
 import SQL.JavaSQLSalle;
@@ -43,13 +45,20 @@ public class ActionDebugSupprime implements ActionListener{
 	private Choice projetASupprime;
 	
 	private Choice activiteASupprime;
+	
+	private Choice idParticipeASupprime;
+	
+	private Choice listeDomaineASupprime;
+
+
 
 
 
 	
 	private int typeVerif;
 	private Entreprise entreprise;
-	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7, ACTIVITE = 8  ;
+	public static int SALLE = 0, DOMAINE = 1,PERSONNE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7, ACTIVITE = 8, 
+			PARTICIPESALARIE = 9, PARTICIPESALLE = 10, PARTICIPECALCUL = 11, LISTEDOMAINE = 12  ;
 
 	public ActionDebugSupprime (Window w,TextField numero, int typeVerif, Entreprise entreprise) {
 		this.w = w;
@@ -79,6 +88,18 @@ public class ActionDebugSupprime implements ActionListener{
 		}
 		else if (typeVerif == ACTIVITE) {
 			this.activiteASupprime = choix;
+		}
+		else if (typeVerif == PARTICIPESALARIE) {
+			this.idParticipeASupprime = choix;
+		}
+		else if (typeVerif == PARTICIPESALLE) {
+			this.idParticipeASupprime = choix;
+		}
+		else if (typeVerif == PARTICIPECALCUL) {
+			this.idParticipeASupprime = choix;
+		}
+		else if (typeVerif == LISTEDOMAINE) {
+			this.listeDomaineASupprime = choix;
 		}
 		}
 	
@@ -332,6 +353,139 @@ else if (typeVerif == CALCULATEUR) {
 			}
 		}
 		
+		else if (typeVerif == PARTICIPESALARIE) {
+			int idActivite = -1;
+			int idSalarie = -1;
+			ArrayList<int[]> idParticipe = new ArrayList<int[]>();
+            try {
+            	idParticipe = JavaSQLParticipe.afficheParticipeSalarie();
+
+                for (int i = 0; i < idParticipe.size(); i++) {
+					if (this.idParticipeASupprime.getItem(idParticipeASupprime.getSelectedIndex()).equals("" + idParticipe.get(i)[0] + idParticipe.get(i)[1])) {
+						idSalarie = idParticipe.get(i)[0];
+						idActivite = idParticipe.get(i)[1];
+
+					}
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+			
+			
+			try {
+					JavaSQLParticipe.supprimeParticipeSalarie(idSalarie, idActivite);
+				new FenetreDebugParticipeSalarie(entreprise,FenetreDebugParticipeSalarie.AFFICHE);
+				w.dispose();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		else if (typeVerif == PARTICIPESALLE) {
+			int idActivite = -1;
+			int idSalle = -1;
+			ArrayList<int[]> idParticipe = new ArrayList<int[]>();
+            try {
+            	idParticipe = JavaSQLParticipe.afficheParticipeSalle();
+
+                for (int i = 0; i < idParticipe.size(); i++) {
+					if (this.idParticipeASupprime.getItem(idParticipeASupprime.getSelectedIndex()).equals("" + idParticipe.get(i)[0] + idParticipe.get(i)[1])) {
+						idSalle = idParticipe.get(i)[0];
+						idActivite = idParticipe.get(i)[1];
+
+					}
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+			
+			
+			try {
+					JavaSQLParticipe.supprimeParticipeSalle(idSalle, idActivite);
+				new FenetreDebugParticipeSalle(entreprise,FenetreDebugParticipeSalle.AFFICHE);
+				w.dispose();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		else if (typeVerif == PARTICIPECALCUL) {
+			int idActivite = -1;
+			int idCalcul = -1;
+			ArrayList<int[]> idParticipe = new ArrayList<int[]>();
+            try {
+            	idParticipe = JavaSQLParticipe.afficheParticipeSalle();
+
+                for (int i = 0; i < idParticipe.size(); i++) {
+					if (this.idParticipeASupprime.getItem(idParticipeASupprime.getSelectedIndex()).equals("" + idParticipe.get(i)[0] + idParticipe.get(i)[1])) {
+						idCalcul = idParticipe.get(i)[0];
+						idActivite = idParticipe.get(i)[1];
+
+					}
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+			
+			
+			try {
+					JavaSQLParticipe.supprimeParticipeCalcul(idCalcul, idActivite);
+				new FenetreDebugParticipeCalcul(entreprise,FenetreDebugParticipeCalcul.AFFICHE);
+				w.dispose();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		else if (typeVerif == LISTEDOMAINE) {
+			int idActivite = -1;
+			String tag= "123";
+			ArrayList<String[]> tagTab = new ArrayList<String[]>();
+			try {
+				tagTab = JavaSQLListeDomaine.recupere();
+
+				for (int i = 0; i < tagTab.size(); i++) {
+					if (this.listeDomaineASupprime.getItem(listeDomaineASupprime.getSelectedIndex()).equals("" + tagTab.get(i)[0] + tagTab.get(i)[1])) {
+						idActivite = Integer.parseInt(tagTab.get(i)[0]);
+						tag= tagTab.get(i)[1];
+					
+					}
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			try {
+				JavaSQLListeDomaine.supprime(idActivite, tag);
+				new FenetreDebugListeDomaine(entreprise,FenetreDebugListeDomaine.AFFICHE);
+				w.dispose();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

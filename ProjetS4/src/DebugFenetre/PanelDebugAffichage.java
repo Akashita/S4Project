@@ -22,7 +22,9 @@ import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
+import SQL.JavaSQLListeDomaine;
 import SQL.JavaSQLMateriel;
+import SQL.JavaSQLParticipe;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLProjet;
 import SQL.JavaSQLSalle;
@@ -33,7 +35,8 @@ public class PanelDebugAffichage extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6,PROJET = 7, ACTIVITE = 8;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6,PROJET = 7, ACTIVITE = 8, PARTICIPESALARIE = 9,
+			PARTICIPESALLE = 10, PARTICIPECALCUL = 11, LISTEDOMAINE = 12;
 	private int type;
 	public PanelDebugAffichage(Entreprise entreprise, int type) {
 		this.entreprise = entreprise;
@@ -191,7 +194,89 @@ public class PanelDebugAffichage extends JPanel{
                 e.printStackTrace();
             }
         }
+		
+		else if (type == PARTICIPESALARIE) {
+            ArrayList<int[]> idParticipe = new ArrayList<int[]>();
+            try {
+            	idParticipe = JavaSQLParticipe.afficheParticipeSalarie();
+                setLayout(new GridLayout(idParticipe.size(),2));
 
+                for (int i = 0; i < idParticipe.size(); i++) {
+                    JLabel idLabel = new JLabel("" + idParticipe.get(i)[0]);
+                    this.add(idLabel);
+
+                    JLabel projetLabel = new JLabel("" + idParticipe.get(i)[1]);
+                    this.add(projetLabel);
+
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+		
+		else if (type == PARTICIPESALLE) {
+            ArrayList<int[]> idParticipe = new ArrayList<int[]>();
+            try {
+            	idParticipe = JavaSQLParticipe.afficheParticipeSalle();
+                setLayout(new GridLayout(idParticipe.size(),2));
+
+                for (int i = 0; i < idParticipe.size(); i++) {
+                	  JLabel idLabel = new JLabel("" + idParticipe.get(i)[0]);
+                      this.add(idLabel);
+
+                      JLabel projetLabel = new JLabel("" + idParticipe.get(i)[1]);
+                      this.add(projetLabel);
+
+
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+		
+		else if (type == PARTICIPECALCUL) {
+            ArrayList<int[]> idParticipe = new ArrayList<int[]>();
+            try {
+            	idParticipe = JavaSQLParticipe.afficheParticipeCalcul();
+                setLayout(new GridLayout(idParticipe.size(),2));
+
+                for (int i = 0; i < idParticipe.size(); i++) {
+                	  JLabel idLabel = new JLabel("" + idParticipe.get(i)[0]);
+                      this.add(idLabel);
+
+                      JLabel projetLabel = new JLabel("" + idParticipe.get(i)[1]);
+                      this.add(projetLabel);
+
+
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+		
+		else if (type == LISTEDOMAINE) {
+			ArrayList<String[]> liste = new ArrayList<String[]>();
+			try {
+            	liste = JavaSQLListeDomaine.recupere();
+                setLayout(new GridLayout(liste.size(),1));
+
+                for (int i = 0; i < liste.size(); i++) {
+
+                      JLabel projetLabel = new JLabel(" activité : " + liste.get(i)[0] + "tag : " + liste.get(i)[1]);
+                      this.add(projetLabel);
+
+
+            }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+		}
 
     }
 

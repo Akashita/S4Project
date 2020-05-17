@@ -63,6 +63,46 @@ public static  ArrayList<int[]> afficheParticipeSalarie() throws SQLException{
 			return liste;
 
 	}
+
+
+public static  ArrayList<int[]> afficheParticipeSalle() throws SQLException{
+	
+	ArrayList<int[]> liste = new ArrayList<int[]>();
+	String sql = "SELECT * FROM ParticipeSalle;";
+		try{
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 int [] tab= {res.getInt("numero"), res.getInt("idA") };
+					 liste.add( tab);
+				 }
+			 }
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return liste;
+
+}
+
+
+public static  ArrayList<int[]> afficheParticipeCalcul() throws SQLException{
+	
+	ArrayList<int[]> liste = new ArrayList<int[]>();
+	String sql = "SELECT * FROM ParticipeCalcul;";
+		try{
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 int [] tab= {res.getInt("code"), res.getInt("idA") };
+					 liste.add( tab);
+				 }
+			 }
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return liste;
+
+}
 	
 	
 	
@@ -78,7 +118,7 @@ public static  ArrayList<int[]> afficheParticipeSalarie() throws SQLException{
 	}
 	
 	public static void insertionSalle(int numero, int idA) throws SQLException{
-		String sql = "INSERT INTO ParticipeSalle(numSalarie, code, numero, idA) VALUE('"+numero+"' ,  '"+idA+"');";
+		String sql = "INSERT INTO ParticipeSalle(numero, idA) VALUE('"+numero+"' ,  '"+idA+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
@@ -89,7 +129,7 @@ public static  ArrayList<int[]> afficheParticipeSalarie() throws SQLException{
 	}
 	
 	public static void insertionCalcul(int code, int idA) throws SQLException{
-		String sql = "INSERT INTO ParticipeCalcul(numSalarie, code, numero, idA) VALUE('"+code+"' , '"+idA+"');";
+		String sql = "INSERT INTO ParticipeCalcul(code,idA) VALUE('"+code+"' , '"+idA+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);

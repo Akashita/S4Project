@@ -3,6 +3,7 @@ package SQL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public final class JavaSQLListeDomaine extends JavaSQL{
 //	private String tag;
@@ -24,28 +25,43 @@ public final class JavaSQLListeDomaine extends JavaSQL{
 	public static void affiche() throws SQLException{
 		String sql = "SELECT * FROM ListeDomaine;";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 System.out.println("idA = " + res.getString("idA") + ", tag = " + res.getString("tag"));
 					 }
 				 }
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 
 	}
+	
+	public static  ArrayList<String[]> recupere() throws SQLException{
+		
+		ArrayList<String[]> liste = new ArrayList<String[]>();
+		String sql = "SELECT * FROM ListeDomaine;";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 String [] tab= {res.getString("idA"), res.getString("tag") };
+						 liste.add( tab);
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return liste;
+
+	}
 
 	public static void insertion(String tag, int idA) throws SQLException{
-		String sql = "INSERT INTO Activite(idA, tag) VALUE('" + idA+ "' ,  '"+tag+"');";
+		String sql = "INSERT INTO ListeDomaine(idA, tag) VALUE('" + idA+ "' ,  '"+tag+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -53,11 +69,9 @@ public final class JavaSQLListeDomaine extends JavaSQL{
 	
 	public static void supprime(int idA, String tag) throws SQLException{
 		try{
-			 connection();
-			 String sql = "DELETE FROM ListeDomaine WHERE idA =" + idA + " AND tag = " + tag;
+			 String sql = "DELETE FROM ListeDomaine WHERE idA ='" + idA + "' AND tag ='" + tag + "';" ;
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
-			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}

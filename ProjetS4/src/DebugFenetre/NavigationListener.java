@@ -15,7 +15,9 @@ public class NavigationListener  implements ActionListener{
 	public static int PERSONNE = 0, MENU = 1, SALLE = 2, SALLEAJOUT = 3, SALLESUPPRIME = 4,DOMAINE = 5, DOMAINEAJOUT = 6, DOMAINESUPPRIME = 7, PERSONNEAJOUT = 8, PERSONNESUPPRIME = 9,
 			TICKET = 10, TICKETAJOUT = 11, TICKETSUPPRIME = 12, COMPETENCE = 13, COMPETENCEAJOUT = 14, COMPETENCESUPPRIME = 15, CALCULATEUR = 16, CALCULATEURAJOUT = 17,
 			CALCULATEURSUPPRIME = 18,MATERIEL = 19, MATERIELAJOUT = 20, MATERIELSUPPRIME = 21,PROJET = 22, PROJETAJOUT = 23, PROJETSUPPRIME = 24,
-			ACTIVITE = 25, ACTIVITEAJOUT = 26, ACTIVITESUPPRIME = 27;
+			ACTIVITE = 25, ACTIVITEAJOUT = 26, ACTIVITESUPPRIME = 27, PARTICIPESALARIE = 28, PARTICIPESALARIEAJOUT = 29, PARTICIPESALARIESUPPRIME = 30,
+			PARTICIPECALCUL = 31, PARTICIPECALCULAJOUT = 32, PARTICIPECALCULSUPPRIME = 33, PARTICIPESALLE = 34, PARTICIPESALLEAJOUT = 35, PARTICIPESALLESUPPRIME = 36,
+			LISTEDOMAINE = 37, LISTEDOMAINEAJOUT = 38, LISTEDOMAINESUPPRIME = 39;
 	public NavigationListener(Window w,Entreprise entreprise, int direction) {
 		this.w = w;
 		this.direction = direction;
@@ -112,6 +114,42 @@ public class NavigationListener  implements ActionListener{
 		}
 		else if (direction == ACTIVITESUPPRIME) {
 			new FenetreDebugActivite(entreprise,FenetreDebugActivite.SUPPRIME);
+		}
+		else if (direction == PARTICIPESALARIE) {
+			new FenetreDebugParticipeSalarie(entreprise,FenetreDebugParticipeSalarie.AFFICHE);
+		}
+		else if (direction == PARTICIPESALARIEAJOUT) {
+			new FenetreDebugParticipeSalarie(entreprise,FenetreDebugParticipeSalarie.AJOUT);
+		}
+		else if (direction == PARTICIPESALARIESUPPRIME) {
+			new FenetreDebugParticipeSalarie(entreprise,FenetreDebugParticipeSalarie.SUPPRIME);
+		}
+		else if (direction == PARTICIPECALCUL) {
+			new FenetreDebugParticipeCalcul(entreprise,FenetreDebugParticipeCalcul.AFFICHE);
+		}
+		else if (direction == PARTICIPECALCULAJOUT) {
+			new FenetreDebugParticipeCalcul(entreprise,FenetreDebugParticipeCalcul.AJOUT);
+		}
+		else if (direction == PARTICIPECALCULSUPPRIME) {
+			new FenetreDebugParticipeCalcul(entreprise,FenetreDebugParticipeCalcul.SUPPRIME);
+		}
+		else if (direction == PARTICIPESALLE) {
+			new FenetreDebugParticipeSalle(entreprise,FenetreDebugParticipeSalle.AFFICHE);
+		}
+		else if (direction == PARTICIPESALLEAJOUT) {
+			new FenetreDebugParticipeSalle(entreprise,FenetreDebugParticipeSalle.AJOUT);
+		}
+		else if (direction == PARTICIPESALLESUPPRIME) {
+			new FenetreDebugParticipeSalle(entreprise,FenetreDebugParticipeSalle.SUPPRIME);
+		}
+		else if (direction == LISTEDOMAINE) {
+			new FenetreDebugListeDomaine(entreprise,FenetreDebugListeDomaine.AFFICHE);
+		}
+		else if (direction == LISTEDOMAINEAJOUT) {
+			new FenetreDebugListeDomaine(entreprise,FenetreDebugListeDomaine.AJOUT);
+		}
+		else if (direction == LISTEDOMAINESUPPRIME) {
+			new FenetreDebugListeDomaine(entreprise,FenetreDebugListeDomaine.SUPPRIME);
 		}
 		w.dispose();
 

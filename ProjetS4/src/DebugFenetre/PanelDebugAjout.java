@@ -14,12 +14,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import GestionTicket.Ticket;
+import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
+import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Domaine;
 import Ressource.Personne;
 import Ressource.Salle;
+import SQL.JavaSQLActivite;
+import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLProjet;
@@ -30,7 +34,8 @@ public class PanelDebugAjout extends JPanel{
 	public static final int HAUTEUR = 400,
 			LARGEUR = 500;
 	private Entreprise entreprise;
-	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7, ACTIVITE = 8;
+	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7,
+			ACTIVITE = 8, PARTICIPESALARIE = 9, PARTICIPESALLE = 10, PARTICIPECALCUL = 11, LISTEDOMAINE = 12 ;
 	private int type;
 	private Window w;
 	public PanelDebugAjout(Entreprise entreprise,Window w, int type) {
@@ -446,6 +451,211 @@ public class PanelDebugAjout extends JPanel{
 			this.add(ok);
 
 			
+		}
+		
+		else if (type == PARTICIPESALARIE) {
+			
+			this.setLayout(new GridLayout(3,2));
+			
+			Label activiteLabel = new Label("activite a mettre en relation : ");
+			final Choice  activiteChoix = new Choice();
+			
+			ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+			try {
+				activiteTab = JavaSQLActivite.affiche();
+
+				for (int i = 0; i < activiteTab.size(); i++) {
+					activiteChoix.addItem(activiteTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			this.add(activiteLabel);
+			this.add(activiteChoix);
+			
+			Label PersonneLabel = new Label("personne a mettre en relation : ");
+			final Choice  personneChoix = new Choice();
+			
+			ArrayList<Personne> personneTab = new ArrayList<Personne>();
+			try {
+				personneTab = JavaSQLPersonne.affiche();
+
+				for (int i = 0; i < personneTab.size(); i++) {
+					personneChoix.addItem(personneTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(PersonneLabel);
+			this.add(personneChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugAjout(w,activiteChoix,personneChoix,ActionDebugAjout.PARTICIPESALARIE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+		}
+		
+		
+		else if (type == PARTICIPESALLE) {
+			
+			this.setLayout(new GridLayout(3,2));
+			
+			Label activiteLabel = new Label("activite a mettre en relation : ");
+			final Choice  activiteChoix = new Choice();
+			
+			ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+			try {
+				activiteTab = JavaSQLActivite.affiche();
+
+				for (int i = 0; i < activiteTab.size(); i++) {
+					activiteChoix.addItem(activiteTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			this.add(activiteLabel);
+			this.add(activiteChoix);
+			
+			
+			Label salleLabel = new Label("salle a mettre en relation: ");
+			final Choice  salleChoix = new Choice();
+			
+			ArrayList<Salle> salleTab = new ArrayList<Salle>();
+			try {
+				salleTab = JavaSQLSalle.affiche();
+
+				for (int i = 0; i < salleTab.size(); i++) {
+					salleChoix.addItem(salleTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(salleLabel);
+			this.add(salleChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugAjout(w,activiteChoix,salleChoix,ActionDebugAjout.PARTICIPESALLE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+		}
+		
+		
+		else if (type == PARTICIPECALCUL) {
+			
+			this.setLayout(new GridLayout(3,2));
+			
+			Label activiteLabel = new Label("activite a mettre en relation : ");
+			final Choice  activiteChoix = new Choice();
+			
+			ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+			try {
+				activiteTab = JavaSQLActivite.affiche();
+
+				for (int i = 0; i < activiteTab.size(); i++) {
+					activiteChoix.addItem(activiteTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			this.add(activiteLabel);
+			this.add(activiteChoix);
+			
+			
+			Label calculateurLabel = new Label("calculateur a supprime : ");
+			final Choice  calculateurChoix = new Choice();
+			
+			ArrayList<Calculateur> calculateurTab = new ArrayList<Calculateur>();
+			try {
+				calculateurTab = JavaSQLCalculateur.affiche();
+
+				for (int i = 0; i < calculateurTab.size(); i++) {
+					calculateurChoix.addItem(calculateurTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(calculateurLabel);
+			this.add(calculateurChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugAjout(w,activiteChoix,calculateurChoix,ActionDebugAjout.PARTICIPECALCUL,entreprise));
+			this.add(okLabel);
+			this.add(ok);
+		}
+		
+else if (type == LISTEDOMAINE) {
+			
+			this.setLayout(new GridLayout(3,2));
+			
+			Label activiteLabel = new Label("activite a mettre en relation : ");
+			final Choice  activiteChoix = new Choice();
+			
+			ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+			try {
+				activiteTab = JavaSQLActivite.affiche();
+
+				for (int i = 0; i < activiteTab.size(); i++) {
+					activiteChoix.addItem(activiteTab.get(i).creeAffiche());
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			this.add(activiteLabel);
+			this.add(activiteChoix);
+			
+			
+			Label tagLabel = new Label("tag a mettre en relation : ");
+			final Choice  tagChoix = new Choice();
+			
+			ArrayList<String> tagTab = new ArrayList<String>();
+			try {
+				tagTab = JavaSQLDomaine.affiche();
+
+				for (int i = 0; i < tagTab.size(); i++) {
+					tagChoix.addItem(tagTab.get(i));
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+									
+			this.add(tagLabel);
+			this.add(tagChoix);
+			
+			
+			Label okLabel = new Label("ok : ");
+			Button ok = new Button("ok");
+			ok.addActionListener(new ActionDebugAjout(w,activiteChoix,tagChoix,ActionDebugAjout.LISTEDOMAINE,entreprise));
+			this.add(okLabel);
+			this.add(ok);
 		}
 	}
 	

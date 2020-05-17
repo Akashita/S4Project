@@ -29,12 +29,11 @@ public class PanelDebugMenuBarre extends JPanel{
 		Button materiel = new Button("materiel");
 		Button projet = new Button("projet");
 		Button activite = new Button("activite");
+		Button participeSalarie = new Button("participeSalarie");
+		Button participeCalcul = new Button("participeCalcul");
+		Button ParticipeSalle = new Button("ParticipeSalle");
+		Button listeDomaine = new Button("listeDomaine");
 
-
-
-
-
-		
 
 		menu.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MENU));
 		personne.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PERSONNE));
@@ -46,9 +45,10 @@ public class PanelDebugMenuBarre extends JPanel{
 		materiel.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MATERIEL));
 		projet.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PROJET));
 		activite.addActionListener(new NavigationListener(w,entreprise,NavigationListener.ACTIVITE));
-
-
-
+		participeSalarie.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPESALARIE));
+		participeCalcul.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPECALCUL));
+		ParticipeSalle.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPESALLE));
+		listeDomaine.addActionListener(new NavigationListener(w,entreprise,NavigationListener.LISTEDOMAINE));
 
 		
 		this.add(menu);		
@@ -61,8 +61,10 @@ public class PanelDebugMenuBarre extends JPanel{
 		this.add(materiel);
 		this.add(projet);
 		this.add(activite);
-
-
+		this.add(participeSalarie);
+		this.add(participeCalcul);
+		this.add(ParticipeSalle);
+		this.add(listeDomaine);
 
 
 		
