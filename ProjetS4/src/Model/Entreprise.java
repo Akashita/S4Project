@@ -89,7 +89,7 @@ public class Entreprise extends Observable{
 	//===============================
 	
 
-	public final String SEPARATEUR = "#";
+	public static final String SEPARATEUR = "#";
 
 	private Personne user; //Personne qui utilise le programme
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -581,22 +581,21 @@ public class Entreprise extends Observable{
 	 * @return personne concerné, sinon null
 	 */
 	public Ressource getPersonneParLogin(String login) {
-		Ressource personne= null;
-
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
         
-		return personne;
+		return getPersonneParId(id);
 	}
-
 	/**
 	 * cherche  dans la bdd la Salle avec le login correspondant
 	 * @param login de la ressource
 	 * @return Salle concernée, sinon null
 	 */
-	public Salle getSalleParLogin(String login) {
-		Salle salle= null;
-
-    
-		return salle;
+	public Ressource getSalleParLogin(String login) {
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
+        
+		return getSalleParId(id);
 	}
 
 	/**
@@ -604,12 +603,11 @@ public class Entreprise extends Observable{
 	 * @param login de la ressource
 	 * @return Calculateur concerné, sinon null
 	 */
-	public Calculateur getCalculateurParLogin(String login) {
-		Calculateur calcul = null;
-
-       
-    
-		return calcul;
+	public Ressource getCalculateurParLogin(String login) {
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
+        
+		return getCalculateurParId(id);
 	}
 	
 	
@@ -643,6 +641,12 @@ public class Entreprise extends Observable{
 	 * @return la liste de personnes de l'activite
 	 */	
 	public ArrayList<Ressource> getListePersonnedeActiviteParId(int id){
+		try {
+			return JavaSQLRecherche.recuperePersonneDansActiviteParId(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -652,15 +656,26 @@ public class Entreprise extends Observable{
 	 * @return la liste de salle de l'activite
 	 */	
 	public ArrayList<Ressource> getListeSalledeActiviteParId(int id){
+		try {
+			return JavaSQLRecherche.recupereSalleDansActiviteParId(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
-
 	/**
 	 * Cherche tous les calculateurs contenut par l'activite par son id
 	 * @param id de l'activite
 	 * @return la liste de calculateur de l'activite
 	 */	
 	public ArrayList<Ressource> getListeCalculateurdeActiviteParId(int id){
+		try {
+			return JavaSQLRecherche.recupereCalculateurDansActiviteParId(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
