@@ -321,6 +321,16 @@ public class Ressource implements Comparable<Ressource>{
 		}
 		return heure;
 	}
+	
+	public static String creeLogin(int id, String nom) {
+		return nom + Entreprise.SEPARATEUR + id;
+	}
+	
+	public static int recupereIdDepuisLogin(String login) {
+		String[] regex = login.split(Entreprise.SEPARATEUR, 2); 
+		String apresSeparateur = regex[1];
+		return Integer.parseInt(apresSeparateur);
+	}
 
 }
 

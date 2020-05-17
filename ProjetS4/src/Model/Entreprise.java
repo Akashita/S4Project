@@ -89,7 +89,7 @@ public class Entreprise extends Observable{
 	//===============================
 	
 
-	public final String SEPARATEUR = "#";
+	public static final String SEPARATEUR = "#";
 
 	private Personne user; //Personne qui utilise le programme
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -502,7 +502,7 @@ public class Entreprise extends Observable{
 		Ressource personne= null;
 
         try {
-        	personne = JavaSQLRecherche.recuperPersonneParId(id);
+        	personne = JavaSQLRecherche.recuperePersonneParId(id);
         
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -521,7 +521,7 @@ public class Entreprise extends Observable{
 		Ressource salle= null;
 
         try {
-        	salle = JavaSQLRecherche.recuperSalleParId(id);
+        	salle = JavaSQLRecherche.recupereSalleParId(id);
         
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -540,7 +540,7 @@ public class Entreprise extends Observable{
 		Ressource calcul = null;
 
         try {
-        	calcul = JavaSQLRecherche.recuperCalculateurParId(id);
+        	calcul = JavaSQLRecherche.recupereCalculateurParId(id);
         
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -581,22 +581,21 @@ public class Entreprise extends Observable{
 	 * @return personne concerné, sinon null
 	 */
 	public Ressource getPersonneParLogin(String login) {
-		Ressource personne= null;
-
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
         
-		return personne;
+		return getPersonneParId(id);
 	}
-
 	/**
 	 * cherche  dans la bdd la Salle avec le login correspondant
 	 * @param login de la ressource
 	 * @return Salle concernée, sinon null
 	 */
-	public Salle getSalleParLogin(String login) {
-		Salle salle= null;
-
-    
-		return salle;
+	public Ressource getSalleParLogin(String login) {
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
+        
+		return getSalleParId(id);
 	}
 
 	/**
@@ -604,12 +603,11 @@ public class Entreprise extends Observable{
 	 * @param login de la ressource
 	 * @return Calculateur concerné, sinon null
 	 */
-	public Calculateur getCalculateurParLogin(String login) {
-		Calculateur calcul = null;
-
-       
-    
-		return calcul;
+	public Ressource getCalculateurParLogin(String login) {
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
+        
+		return getCalculateurParId(id);
 	}
 	
 	
@@ -638,34 +636,51 @@ public class Entreprise extends Observable{
 	}
 	
 	/**
-	 * Cherche tout les personnes contenue par l'activite par son id
+	 * Cherche toutes les personnes contenue par l'activite par son id
 	 * @param id de l'activite
 	 * @return la liste de personnes de l'activite
 	 */	
 	public ArrayList<Ressource> getListePersonnedeActiviteParId(int id){
+		try {
+			return JavaSQLRecherche.recuperePersonneDansActiviteParId(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	/**
-	 * Cherche tout les salle contenut par l'activite par son id
+	 * Cherche toutes les salle contenut par l'activite par son id
 	 * @param id de l'activite
 	 * @return la liste de salle de l'activite
 	 */	
 	public ArrayList<Ressource> getListeSalledeActiviteParId(int id){
+		try {
+			return JavaSQLRecherche.recupereSalleDansActiviteParId(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
-
 	/**
-	 * Cherche tout les calculateurs contenut par l'activite par son id
+	 * Cherche tous les calculateurs contenut par l'activite par son id
 	 * @param id de l'activite
 	 * @return la liste de calculateur de l'activite
 	 */	
 	public ArrayList<Ressource> getListeCalculateurdeActiviteParId(int id){
+		try {
+			return JavaSQLRecherche.recupereCalculateurDansActiviteParId(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	/**
-	 * Cherche tout les projets concerné de la ressource par son login
+	 * Cherche tous les projets concerné de la ressource par son login
 	 * @param type de la ressource
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
@@ -694,15 +709,20 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDePersonneParLogin(String login){
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
+        
 		return null;
 	}
-
+	
 	/**
 	 * Cherche tous les projets concerné de la salle par son login
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDeSalleParLogin(String login){
+		int id = Ressource.recupereIdDepuisLogin(login);
+
 		return null;
 	}
 
@@ -712,6 +732,8 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDeCalculateurParLogin(String login){
+		int id = Ressource.recupereIdDepuisLogin(login);
+
 		return null;
 	}
 
