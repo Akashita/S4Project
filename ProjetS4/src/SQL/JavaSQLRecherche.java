@@ -190,12 +190,30 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	public static Boolean presenceActivitePersonne(Personne salarie, int idA) throws SQLException{
 		Boolean presence = false;
-		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ salarie.getId() + "';";
+		String sql = "SELECT idA FROM ParticipeSalarie WHERE numero = '"+ salarie.getId() + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next() || presence == false) {
 						 if (res.getInt("idA") == idA) {
+						 presence = true;	
+						 }
+						 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return presence;
+	}
+	
+	public static Boolean presenceDansUneActivitePersonne(int numSalarie) throws SQLException{
+		Boolean presence = false;
+		String sql = "SELECT * FROM ParticipeSalarie WHERE numSalarie = '"+ numSalarie + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 if (res.getInt("numSalarie") == numSalarie) {
 						 presence = true;	
 						 }
 						 }
@@ -224,9 +242,27 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return presence;
 	}
 	
+	public static Boolean presenceDansUneActiviteSalle(int numero) throws SQLException{
+		Boolean presence = false;
+		String sql = "SELECT * FROM ParticipeSalle WHERE numero = '"+ numero + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next() ) {
+						 if (res.getInt("numero") == numero) {
+						 presence = true;	
+						 }
+						 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return presence;
+	}
+	
 	public static Boolean presenceActiviteCalculateur(Calculateur calculateur, int idA) throws SQLException {
 		Boolean presence = false;
-		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ calculateur.getId() + "';";
+		String sql = "SELECT idA FROM ParticipeCalcul WHERE numero = '"+ calculateur.getId() + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
@@ -242,6 +278,23 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return presence;
 	}
 	
+	public static Boolean presenceDansUneActiviteCalculateur(int code) throws SQLException{
+		Boolean presence = false;
+		String sql = "SELECT * FROM ParticipeCalcul WHERE code = '"+ code + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next() ) {
+						 if (res.getInt("code") == code) {
+						 presence = true;	
+						 }
+						 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return presence;
+	}
 	
 	
 	
@@ -791,5 +844,45 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return liste;
 
 	}
+///////////////////////////////////////////////////////////////////////////////////LISTEDOMAINE////////////////////////////////////////////////////////////////////////////	
+	public static  Boolean presenceDomaineDansListeDomaine(String domaine) throws SQLException{
+		Boolean presence = false;
+		String sql = "SELECT * FROM ListeDomaine WHERE tag = '"+ domaine + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 if (domaine.equals(res.getString("tag"))){
+						 presence = true;
+						 }
+						 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return presence;
+
+	}
+///////////////////////////////////////////////////////////////////////////////////COMPETENCE////////////////////////////////////////////////////////////////////////////	
+	public static  Boolean presenceDomaineDansCompetence(String domaine) throws SQLException{
+		Boolean presence = false;
+		String sql = "SELECT * FROM Competence WHERE tag = '"+ domaine + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 if (domaine.equals(res.getString("tag"))){
+						 presence = true;
+						 }
+						 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return presence;
+
+	}
+	
+	
 	
 }

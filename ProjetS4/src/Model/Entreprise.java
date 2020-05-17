@@ -1187,7 +1187,16 @@ public class Entreprise extends Observable{
 	 * @return vrai si une personne ou une activite à ce domaine, sinon faux
 	 */
 	public boolean PersonneOuActiviteACeDomaine(String d) {
-		return false;
+		Boolean b = null;
+		try {
+			if (JavaSQLRecherche.presenceDomaineDansCompetence(d)|| JavaSQLRecherche.presenceDomaineDansListeDomaine(d)) {
+			b = true;		
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 	
 	/**
@@ -1220,7 +1229,16 @@ public class Entreprise extends Observable{
 	 * @return vrai si la personne travaille dans une activité
 	 */	
 	public boolean personneTravailleDansUneActiviteParId(int id) {
-		return true;
+		Boolean b = null;
+		try {
+			if (JavaSQLRecherche.presenceDansUneActivitePersonne(id)) {
+			b = true;		
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 
 	/**
@@ -1229,7 +1247,16 @@ public class Entreprise extends Observable{
 	 * @return vrai si la salle travaille dans une activité
 	 */	
 	public boolean salleTravailleDansUneActiviteParId(int id) {
-		return true;
+		Boolean b = null;
+		try {
+			if (JavaSQLRecherche.presenceDansUneActiviteSalle(id)) {
+			b = true;		
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 
 	/**
@@ -1238,7 +1265,16 @@ public class Entreprise extends Observable{
 	 * @return vrai si la calculateur travaille dans une activité
 	 */	
 	public boolean calculateurTravailleDansUneActiviteParId(int id) {
-		return true;
+		Boolean b = null;
+		try {
+			if (JavaSQLRecherche.presenceDansUneActiviteCalculateur(id)) {
+			b = true;		
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 	
 	/**
