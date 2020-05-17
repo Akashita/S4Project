@@ -785,6 +785,15 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDePersonneParLogin(String login){
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
+        
+		try {
+			return JavaSQLRecherche.recupereActiviteParIdPersonne(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -794,6 +803,15 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDeSalleParLogin(String login){
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
+        
+		try {
+			return JavaSQLRecherche.recupereActiviteParIdSalle(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -803,6 +821,15 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDeCalculateurParLogin(String login){
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
+        
+		try {
+			return JavaSQLRecherche.recupereActiviteParIdCalculateur(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -836,6 +863,12 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDePersonneParId(int id){
+		try {
+			return JavaSQLRecherche.recupereProjetParIdPersonne(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -845,6 +878,12 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDeSalleParId(int id){
+		try {
+			return JavaSQLRecherche.recupereProjetParIdSalle(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -854,6 +893,12 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDeCalculateurParId(int id){
+		try {
+			return JavaSQLRecherche.recupereProjetParIdCalculateur(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -887,8 +932,14 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDePersonneParId(int id){
+		try {
+			return JavaSQLRecherche.recupereActiviteParIdPersonne(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
-	}
+		}
 
 	/**
 	 * Cherche tout les activites concerné de la salle par son id
@@ -896,8 +947,14 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDeSalleParId(int id){
+		try {
+			return JavaSQLRecherche.recupereActiviteParIdSalle(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
-	}
+		}
 
 	/**
 	 * Cherche tout les activites concerné de la calculateur par son id
@@ -905,8 +962,14 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDeCalculateurParId(int id){
-		return null;
-	}
+		try {
+			return JavaSQLRecherche.recupereActiviteParIdCalculateur(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;	
+		}
 
 	/**
 	 * Cherche dans la bdd tout les chefs de projets qui gere la ressource tester
@@ -915,6 +978,8 @@ public class Entreprise extends Observable{
 	 * @return la liste de personne
 	 */
 	public ArrayList<Personne> getListeDesChefDeProjetPossedantLaRessourceParLogin(int type, String login){
+		int id = Ressource.recupereIdDepuisLogin(login);
+			
 		return null;
 	}
 	//------------------------------>>>>> Verifie condition dans la bdd
