@@ -712,6 +712,12 @@ public class Entreprise extends Observable{
 		int id = Ressource.recupereIdDepuisLogin(login);
 		
         
+		try {
+			return JavaSQLRecherche.recupereProjetParIdPersonne(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
@@ -723,6 +729,12 @@ public class Entreprise extends Observable{
 	public ArrayList<Projet> getListeProjetDeSalleParLogin(String login){
 		int id = Ressource.recupereIdDepuisLogin(login);
 
+		try {
+			return JavaSQLRecherche.recupereProjetParIdSalle(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -733,7 +745,13 @@ public class Entreprise extends Observable{
 	 */	
 	public ArrayList<Projet> getListeProjetDeCalculateurParLogin(String login){
 		int id = Ressource.recupereIdDepuisLogin(login);
-
+		
+		try {
+			return JavaSQLRecherche.recupereProjetParIdCalculateur(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 

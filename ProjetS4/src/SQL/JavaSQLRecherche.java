@@ -95,20 +95,20 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 	
 	
-	public static  int recupereIdActiviteParIdPersonne(int numSalarie) throws SQLException{
-		int idA = -1;
+	public static  ArrayList<Integer> recupereIdActiviteParIdPersonne(int numSalarie) throws SQLException{
+		ArrayList<Integer> liste = new ArrayList<Integer>();
 		String sql = "SELECT idA FROM ParticipeSalarie WHERE numSalarie = '"+ numSalarie + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 idA = res.getInt("idA");
+						 liste.add(res.getInt("idA"));
 					 }
 				 }
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
-			return idA;
+			return liste;
 
 	}
 	
@@ -131,20 +131,20 @@ public final class JavaSQLRecherche extends JavaSQL{
 
 	}
 	
-	public static  int recupereIdActiviteParIdSalle(int numero) throws SQLException{
-		int idA = -1;
+	public static  ArrayList<Integer> recupereIdActiviteParIdSalle(int numero) throws SQLException{
+		ArrayList<Integer> liste = new ArrayList<Integer>();
 		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ numero + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 idA = res.getInt("idA");
+						 liste.add(res.getInt("idA"));
 					 }
 				 }
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
-			return idA;
+			return liste;
 
 	}
 	
@@ -168,20 +168,20 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 
 
-	public static  int recupereIdActiviteParIdCalculateur(int code) throws SQLException{
-		int idA = -1;
+	public static  ArrayList<Integer>  recupereIdActiviteParIdCalculateur(int code) throws SQLException{
+		ArrayList<Integer> liste = new ArrayList<Integer>();
 		String sql = "SELECT idA FROM ParticipeCalcul WHERE code = '"+ code + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 idA = res.getInt("idA");
+						 liste.add(res.getInt("idA"));
 					 }
 				 }
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
-			return idA;
+			return liste;
 
 	}
 
@@ -332,50 +332,63 @@ public final class JavaSQLRecherche extends JavaSQL{
 		return projet;
 	}
 	
-	public static Projet recupereProjetParIdSalle(int numero) throws SQLException{
-		Projet projet = null;
+	public static ArrayList<Projet> recupereProjetParIdSalle(int numero) throws SQLException{
+		ArrayList<Projet> proTab = new ArrayList<Projet>();
 		int idProjet = -1;
-		String sql = "SELECT idP FROM Activite WHERE idA = '"  + recupereIdActiviteParIdSalle(numero) +"';";
+		ArrayList<Integer> idActiviteTab = recupereIdActiviteParIdSalle(numero);
+		for (int i = 0; i < idActiviteTab.size(); i++) {
+			
+		
+		String sql = "SELECT idP FROM Activite WHERE idA = '"  + idActiviteTab.get(i) +"';";
 		Statement stmt = getCon().createStatement();
 		 try (ResultSet res = stmt.executeQuery(sql)){
 			 while(res.next()) {
 				 idProjet = res.getInt("idP");
 			 }
 		 }
-		 projet =  recupereProjetParId(idProjet);
-		
-		return projet;
+		 proTab.add(recupereProjetParId(idProjet));
+		}
+		return proTab;
 	}
 	
-	public static Projet recupereProjetParIdPersonne(int numSalarie) throws SQLException{
-		Projet projet = null;
+	public static ArrayList<Projet> recupereProjetParIdPersonne(int numSalarie) throws SQLException{
+		ArrayList<Projet> proTab = new ArrayList<Projet>();
 		int idProjet = -1;
-		String sql = "SELECT idP FROM Activite WHERE idA = '"  + recupereIdActiviteParIdPersonne(numSalarie) +"';";
+		ArrayList<Integer> idActiviteTab = recupereIdActiviteParIdPersonne(numSalarie);
+		for (int i = 0; i < idActiviteTab.size(); i++) {
+			
+		
+		String sql = "SELECT idP FROM Activite WHERE idA = '"  + idActiviteTab.get(i) +"';";
 		Statement stmt = getCon().createStatement();
 		 try (ResultSet res = stmt.executeQuery(sql)){
 			 while(res.next()) {
 				 idProjet = res.getInt("idP");
 			 }
 		 }
-		 projet =  recupereProjetParId(idProjet);
-		
-		return projet;
+		 proTab.add(recupereProjetParId(idProjet));
+		}
+		return proTab;
 	}
 	
 	
-	public static Projet recupereProjetParIdCalculateur(int code) throws SQLException{
-		Projet projet = null;
+	public static ArrayList<Projet> recupereProjetParIdCalculateur(int code) throws SQLException{
+		
+		ArrayList<Projet> proTab = new ArrayList<Projet>();
 		int idProjet = -1;
-		String sql = "SELECT idP FROM Activite WHERE idA = '"  + recupereIdActiviteParIdCalculateur(code) +"';";
+		ArrayList<Integer> idActiviteTab = recupereIdActiviteParIdCalculateur(code);
+		for (int i = 0; i < idActiviteTab.size(); i++) {
+			
+		
+		String sql = "SELECT idP FROM Activite WHERE idA = '"  + idActiviteTab.get(i) +"';";
 		Statement stmt = getCon().createStatement();
 		 try (ResultSet res = stmt.executeQuery(sql)){
 			 while(res.next()) {
 				 idProjet = res.getInt("idP");
 			 }
 		 }
-		 projet =  recupereProjetParId(idProjet);
-		
-		return projet;
+		 proTab.add(recupereProjetParId(idProjet));
+		}
+		return proTab;
 	}
 	
 	
