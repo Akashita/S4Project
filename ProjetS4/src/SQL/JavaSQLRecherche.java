@@ -18,8 +18,137 @@ import Ressource.Salle;
 
 public final class JavaSQLRecherche extends JavaSQL{
 ///////////////////////////////////////////////////////////////////////////////////ACTIVITE////////////////////////////////////////////////////////////////////////////	
-	
+	public static ArrayList<Activite> recupereActivite() throws SQLException{
+		ArrayList<Activite> actTab = new ArrayList<Activite>();
+		ArrayList<String> listeDom = new ArrayList<String>();
+		String sql = "SELECT * FROM Activite;";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 LocalDate debut = res.getDate("debut").toLocalDate();
+						 String sql2 = "SELECT tag FROM ListeDomaine WHERE idA = " + res.getInt("idA") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+							 while(res2.next()) {
+								 listeDom.add(res2.getString("tag"));
+							 }
+						 }
+						 actTab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getFloat("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom));
 
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return actTab;
+
+	}
+	public static Activite recupereActiviteParId(int idA) throws SQLException{
+		ArrayList<String> listeDom = new ArrayList<String>();
+		Activite activite = null;
+		String sql = "SELECT * FROM Activite WHERE idA = '"+ idA + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 LocalDate debut = res.getDate("debut").toLocalDate();
+						 String sql2 = "SELECT tag FROM ListeDomaine WHERE idA = " + res.getInt("idA") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+							 while(res2.next()) {
+								 listeDom.add(res2.getString("tag"));
+							 }
+						 }
+						 	activite = new Activite(res.getInt("idA"), res.getString("titre"), res.getFloat("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom);
+
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return activite;
+
+	}
+	
+	
+	
+	
+	
+	public static  ArrayList<Activite> recupereActiviteParIdPersonne(int idP) throws SQLException{
+		
+		ArrayList<Activite> liste = new ArrayList<Activite>();
+		String sql = "SELECT idA FROM ParticipeSalarie WHERE numSalarie = '"+ idP + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 Activite activite= recupereActiviteParId(res.getInt("idA"));
+						 liste.add( activite);
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return liste;
+
+	}
+	
+	
+	public static  int recupereIdActiviteParIdPersonne(int idP) throws SQLException{
+		int idA = -1;
+		String sql = "SELECT idA FROM ParticipeSalarie WHERE numSalarie = '"+ idP + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 idA = res.getInt("idA");
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return idA;
+
+	}
+	
+	public static  ArrayList<Activite> recupereActiviteParIdSalle(int numero) throws SQLException{
+		
+		ArrayList<Activite> liste = new ArrayList<Activite>();
+		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ numero + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 Activite activite= recupereActiviteParId(res.getInt("idA"));
+						 liste.add( activite);
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return liste;
+
+	}
+	
+	public static  ArrayList<Activite> recupereActiviteParIdCalcul(int code) throws SQLException{
+		
+		ArrayList<Activite> liste = new ArrayList<Activite>();
+		String sql = "SELECT idA FROM ParticipeCalcul WHERE code = '"+ code + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 Activite activite= recupereActiviteParId(res.getInt("idA"));
+						 liste.add( activite);
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return liste;
+
+	}
 
 
 
@@ -33,7 +162,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	
 ///////////////////////////////////////////////////////////////////////////////////PROJET////////////////////////////////////////////////////////////////////////////	
-	public static ArrayList<Projet> recupereProjetUser(int idUser) throws SQLException{
+	public static ArrayList<Projet> recupereProjetParIdChef(int idUser) throws SQLException{
 		ArrayList<Projet> protab = new ArrayList<Projet>();
 		ArrayList<String> listeDom = new ArrayList<String>();
 		String sql = "SELECT * FROM Projet WHERE numSalarie = '" + idUser + "';";
@@ -83,8 +212,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 						 protab.add(new Projet(acttab,personne, res.getString("nom"), res.getFloat("priorite"), deadl, res.getInt("idP"), 
 								 new Color(res.getInt("couleur"))));
 						 
-						 System.out.println("idP = " + res.getString("idP") +"nom = " + res.getString("nom") + ", priorite = " + res.getString("priorite") + ", deadline = " + res.getString("deadline") +
-								 ", couleur = " + res.getString("couleur") + ", numSalarie = " + res.getString("numSalarie"));
+						
 					 }
 				 }
 			} catch(SQLException e){
@@ -93,6 +221,84 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return protab;
 
 	}
+	
+	
+	public static Projet recupereProjetParId(int idP) throws SQLException{
+		Projet projet = null;
+		ArrayList<String> listeDom = new ArrayList<String>();
+		String sql = "SELECT * FROM Projet WHERE idP = '" + idP + "';";
+		Personne personne;
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 String sql2 = "SELECT * FROM Personne WHERE numSalarie = " + res.getString("numSalarie") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+							 ArrayList<Competence> tagtab = new ArrayList<Competence>();
+							 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
+							 Statement stmt3 = getCon().createStatement();
+							 try (ResultSet res3 = stmt3.executeQuery(sqltag)){
+								 while(res3.next()) {
+									 tagtab.add(new Competence(res3.getString("tag"), res3.getInt("niveau")));
+								 }
+							 } 
+							 res2.next();
+							 personne  = new Personne(res2.getString("nom"), res2.getString("prenom"), res2.getString("role"), res2.getInt("numSalarie"), res2.getString("motDePasse"), tagtab);
+						 }
+						 
+						 
+						 ArrayList<Activite> acttab = new ArrayList<Activite>();
+						 String sql5 = "SELECT * FROM Activite WHERE idP = "  + res.getInt("idP") +";";
+								try{
+									 Statement stmt5 = getCon().createStatement();
+									 try (ResultSet res5 = stmt5.executeQuery(sql5)){
+										 while(res5.next()) {
+											 String sql6 = "SELECT tag FROM ListeDomaine WHERE idA = " + res5.getInt("idA") + ";";
+											 Statement stmt6 = getCon().createStatement();
+											 try (ResultSet res6 = stmt6.executeQuery(sql6)){
+												 while(res6.next()) {
+													 listeDom.add(res6.getString("tag"));
+												 }
+											 }
+											 LocalDate debut = res5.getDate("debut").toLocalDate();
+											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getFloat("charge"), debut, 
+													 new Color(res5.getInt("couleur")), res5.getInt("ordre"),listeDom));
+										 }
+									 }
+								} catch(SQLException e){
+									e.printStackTrace();
+								}
+						 LocalDate deadl = res.getDate("deadline").toLocalDate();
+						 projet = new Projet(acttab,personne, res.getString("nom"), res.getFloat("priorite"), deadl, res.getInt("idP"), 
+								 new Color(res.getInt("couleur")));
+						 
+						 
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return projet;
+
+	}
+	
+	public static Projet recupereProjetParIdActivité(int idA) throws SQLException{
+		Projet projet = null;
+		int idProjet = -1;
+		String sql = "SELECT idP FROM Activite WHERE idA = '"  + idA +"';";
+		Statement stmt6 = getCon().createStatement();
+		 try (ResultSet res6 = stmt6.executeQuery(sql)){
+			 while(res.next()) {
+				 idProjet = res.getInt("idP");
+			 }
+		 }
+		 projet =  recupereProjetParId(idProjet);
+		
+		return projet;
+	}
+	
+	
 ///////////////////////////////////////////////////////////////////////////////////TICKET////////////////////////////////////////////////////////////////////////////	
 
 	public static ArrayList<Ticket> recupereTicketEnvUser(int idUser) throws SQLException{

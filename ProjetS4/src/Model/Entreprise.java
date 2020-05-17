@@ -431,7 +431,7 @@ public class Entreprise extends Observable{
 	public ArrayList<Projet> getListeProjetDeUser(int idUser){
 		ArrayList<Projet> projetTab = new ArrayList<Projet>();
         try {
-        	projetTab = JavaSQLRecherche.recupereProjetUser(idUser);
+        	projetTab = JavaSQLRecherche.recupereProjetParIdChef(idUser);
            
         } catch (SQLException e) {
             // TODO Auto-generated catch block
