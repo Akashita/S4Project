@@ -373,7 +373,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 
 	}
 	
-	public static Projet recupereProjetParIdActivité(int idA) throws SQLException{
+	public static Projet recupereProjetParIdActivite(int idA) throws SQLException{
 		Projet projet = null;
 		int idProjet = -1;
 		String sql = "SELECT idP FROM Activite WHERE idA = '"  + idA +"';";
@@ -449,7 +449,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 ///////////////////////////////////////////////////////////////////////////////////PresenceDansProjet////////////////////////////////////////////////////////////////////////////	
 
-	public static Boolean presenceProjetParIdActivité(int idA, int idP) throws SQLException{
+	public static Boolean presenceProjetParIdActivite(int idA, int idP) throws SQLException{
 		Boolean presence = false;
 		int idProjet;
 		String sql = "SELECT idP FROM Activite WHERE idA = '"  + idA +"';";
