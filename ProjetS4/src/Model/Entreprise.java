@@ -42,6 +42,7 @@ import SQL.JavaSQLMateriel;
 import SQL.JavaSQLParticipe;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLProjet;
+import SQL.JavaSQLRecherche;
 import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
 import SQL.RecupInfoBDD;
@@ -298,27 +299,56 @@ public class Entreprise extends Observable{
 	//-------------------------------------------------------------------------------------------------------------->>>>>>>>>>> Recherche dans la bdd
 
 	//------------------------------>>>>> Retourne element de la bdd
-	
+
+	/**
+	 * Cherche toute les ressource du type choisi de l'entreprise de la bdd 
+	 * @param type de la ressource
+	 * @return liste de ressource
+	 */
+	public  ArrayList<Ressource> getListeRessourceEntrepriseParType(int type){
+		ArrayList<Ressource> l = new ArrayList<Ressource>();
+		switch (type) {
+		case Ressource.PERSONNE:
+			l = getListePersonneEntreprise();
+			break;
+		case Ressource.SALLE:
+			l = getListeSalleEntreprise();
+			break;
+		case Ressource.CALCULATEUR:
+			l = getListeCalculateurEntreprise();
+			break;
+		default:
+			break;
+		}
+		return l;
+		
+	}
 	
 	/**
-	 * Cherche toute les ressource de l'entreprise de la bdd
-	 * @return la liste des ressource de l'entreprise
+	 * Cherche toutes les ressource de l'entreprise de la bdd
+	 * @return la liste des ressources de l'entreprise
 	 */
 	public ArrayList<Ressource> getListeRessourceEntreprise(){
-		return null;
+		ArrayList<Ressource> ressourceTab = new ArrayList<Ressource>();
+		ressourceTab.addAll(getListePersonneEntreprise());
+		ressourceTab.addAll(getListeSalleEntreprise());
+		ressourceTab.addAll(getListeCalculateurEntreprise());
+
+		
+		return ressourceTab;
 	}
 
 	
 
 	
 	/**
-	 * Cherche toute les personnes de l'entreprise de la bdd
+	 * Cherche toutes les personnes de l'entreprise de la bdd
 	 * @return la liste des personnes de l'entreprise
 	 */
-	public ArrayList<Personne> getListePersonneEntreprise(){
-		ArrayList<Personne> personneTab = new ArrayList<Personne>();
+	public ArrayList<Ressource> getListePersonneEntreprise(){
+		ArrayList<Ressource> personneTab = new ArrayList<Ressource>();
 		try {
-			personneTab = JavaSQLPersonne.affiche();
+			personneTab = JavaSQLRecherche.recuperePersonne();
 
 		
 		} catch (SQLException e) {
@@ -332,10 +362,10 @@ public class Entreprise extends Observable{
 	 * Cherche toute les salles de l'entreprise de la bdd
 	 * @return la liste des salles de l'entreprise
 	 */
-	public ArrayList<Salle> getListeSalleEntreprise(){
-		ArrayList<Salle> salleTab = new ArrayList<Salle>();
+	public ArrayList<Ressource> getListeSalleEntreprise(){
+		ArrayList<Ressource> salleTab = new ArrayList<Ressource>();
 		try {
-			salleTab = JavaSQLSalle.affiche();
+			salleTab = JavaSQLRecherche.recupereSalle();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -347,11 +377,11 @@ public class Entreprise extends Observable{
 	 * Cherche toute les calculateurs de l'entreprise de la bdd
 	 * @return la liste des calculateurs de l'entreprise
 	 */
-	public ArrayList<Calculateur> getListeCalculateurEntreprise(){
+	public ArrayList<Ressource> getListeCalculateurEntreprise(){
 		
-		ArrayList<Calculateur> calculateurTab = new ArrayList<Calculateur>();
+		ArrayList<Ressource> calculateurTab = new ArrayList<Ressource>();
         try {
-        	calculateurTab = JavaSQLCalculateur.affiche();
+        	calculateurTab = JavaSQLRecherche.recupereCalculateur();
         
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -398,11 +428,17 @@ public class Entreprise extends Observable{
 	 * @param id de l'user
 	 * @return la liste de projet
 	 */	
-	public ArrayList<Projet> getListeProjetDeUser(){
-		return null;
-		
-	}
-
+	public ArrayList<Projet> getListeProjetDeUser(int idUser){
+		ArrayList<Projet> projetTab = new ArrayList<Projet>();
+        try {
+        	projetTab = JavaSQLRecherche.recupereProjetUser(idUser);
+           
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+		return projetTab;	
+		}
 	/**
 	 * Cherche tout les projets de l'entreprise
 	 * @param id de l'user
@@ -421,22 +457,37 @@ public class Entreprise extends Observable{
 		}
 
 	/**
-	 * Cherche tout les tickets envoyé par l'user
+	 * Cherche tous les tickets envoyé par l'user
 	 * @param id de l'user
 	 * @return la liste de ticket envoyé
 	 */	
-	public ArrayList<Ticket> getListeTicketEnvoyeDeUser(){
-		return null;
-	}
-
+	public ArrayList<Ticket> getListeTicketEnvoyeDeUser(int idUser){
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+        try {
+        	ticketTab = JavaSQLRecherche.recupereTicketEnvUser(idUser);
+           
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+		return ticketTab;	
+		}
 	/**
 	 * Cherche tout les tickets recu par l'user
 	 * @param id de l'user
 	 * @return la liste de ticket recu
 	 */	
-	public ArrayList<Ticket> getListeTicketRecuDeUser(){
-		return null;
-	}
+	public ArrayList<Ticket> getListeTicketRecuDeUser(int idUser){
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+        try {
+        	ticketTab = JavaSQLRecherche.recupereTicketRecUser(idUser);
+           
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+		return ticketTab;	
+		}
 
 	
 	
@@ -447,8 +498,18 @@ public class Entreprise extends Observable{
 	 * @param id de la ressource
 	 * @return personne concerné, sinon null
 	 */
-	public Personne getPersonneParId(int id) {
-		return null;
+	public Ressource getPersonneParId(int id) {
+		Ressource personne= null;
+
+        try {
+        	personne = JavaSQLRecherche.recuperPersonneParId(id);
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    
+		return personne;
 	}
 
 	/**
@@ -456,8 +517,18 @@ public class Entreprise extends Observable{
 	 * @param id de la ressource
 	 * @return Salle concerné, sinon null
 	 */
-	public Salle getSalleParId(int id) {
-		return null;
+	public Ressource getSalleParId(int id) {
+		Ressource salle= null;
+
+        try {
+        	salle = JavaSQLRecherche.recuperSalleParId(id);
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    
+		return salle;
 	}
 
 	/**
@@ -465,9 +536,19 @@ public class Entreprise extends Observable{
 	 * @param id de la ressource
 	 * @return Calculateur concerné, sinon null
 	 */
-	public Calculateur getCalculateurParId(int id) {
-		return null;
-	}	
+	public Ressource getCalculateurParId(int id) {
+		Ressource calcul = null;
+
+        try {
+        	calcul = JavaSQLRecherche.recuperCalculateurParId(id);
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    
+		return calcul;
+	}
 	
 	
 	/**
@@ -499,17 +580,23 @@ public class Entreprise extends Observable{
 	 * @param login de la ressource
 	 * @return personne concerné, sinon null
 	 */
-	public Personne getPersonneParLogin(String login) {
-		return null;
+	public Ressource getPersonneParLogin(String login) {
+		Ressource personne= null;
+
+        
+		return personne;
 	}
 
 	/**
 	 * cherche  dans la bdd la Salle avec le login correspondant
 	 * @param login de la ressource
-	 * @return Salle concerné, sinon null
+	 * @return Salle concernée, sinon null
 	 */
 	public Salle getSalleParLogin(String login) {
-		return null;
+		Salle salle= null;
+
+    
+		return salle;
 	}
 
 	/**
@@ -518,7 +605,11 @@ public class Entreprise extends Observable{
 	 * @return Calculateur concerné, sinon null
 	 */
 	public Calculateur getCalculateurParLogin(String login) {
-		return null;
+		Calculateur calcul = null;
+
+       
+    
+		return calcul;
 	}
 	
 	
@@ -547,7 +638,7 @@ public class Entreprise extends Observable{
 	}
 	
 	/**
-	 * Cherche tout les personnes contenut par l'activite par son id
+	 * Cherche tout les personnes contenue par l'activite par son id
 	 * @param id de l'activite
 	 * @return la liste de personnes de l'activite
 	 */	
@@ -598,7 +689,7 @@ public class Entreprise extends Observable{
 	}
 	
 	/**
-	 * Cherche tout les projets concerné de la personne par son login
+	 * Cherche tous les projets concerné de la personne par son login
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
 	 */	
@@ -607,7 +698,7 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche tout les projets concerné de la salle par son login
+	 * Cherche tous les projets concerné de la salle par son login
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
 	 */	
@@ -616,7 +707,7 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche tout les projets concerné de la calculateur par son login
+	 * Cherche tous les projets concerné de la calculateur par son login
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
 	 */	
@@ -625,7 +716,7 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche tout les activites concerné de la ressource par son login
+	 * Cherche tous les activites concerné de la ressource par son login
 	 * @param type de la ressource
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
@@ -649,7 +740,7 @@ public class Entreprise extends Observable{
 	}
 	
 	/**
-	 * Cherche tout les activites concerné de la personne par son login
+	 * Cherche tous les activites concerné de la personne par son login
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
 	 */	
@@ -658,7 +749,7 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche tout les activites concerné de la salle par son login
+	 * Cherche tous les activites concerné de la salle par son login
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
 	 */	
@@ -667,7 +758,7 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche tout les activites concerné de la calculateur par son login
+	 * Cherche tous les activites concerné de la calculateur par son login
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
 	 */	
@@ -676,7 +767,7 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche tout les projets concerné de la ressource par son id
+	 * Cherche tous les projets concerné de la ressource par son id
 	 * @param type de la ressource
 	 * @param id de la ressource
 	 * @return la liste de projet de la ressource
