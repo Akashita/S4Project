@@ -1,11 +1,16 @@
 package DebugFenetre;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -17,6 +22,7 @@ import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Materiel;
 import Ressource.Personne;
+import Ressource.Ressource;
 import Ressource.Salle;
 import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
@@ -38,10 +44,17 @@ public class PanelDebugAffichage extends JPanel{
 	public static final int PERSONNE = 0, SALLE = 1, DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6,PROJET = 7, ACTIVITE = 8, PARTICIPESALARIE = 9,
 			PARTICIPESALLE = 10, PARTICIPECALCUL = 11, LISTEDOMAINE = 12;
 	private int type;
+	private boolean afficheRecherche = false;
+	private JButton boutonAfficheRecherche;
+	
 	public PanelDebugAffichage(Entreprise entreprise, int type) {
 		this.entreprise = entreprise;
 		this.type = type;
-		
+		this.setLayout(new BorderLayout());
+		this.creerInterface();
+    }
+	
+	private void creerInterface() {
 		if (type == PERSONNE) {
 			ArrayList<Personne> personneTab = new ArrayList<Personne>();
 			try {
@@ -49,15 +62,15 @@ public class PanelDebugAffichage extends JPanel{
 				setLayout(new GridLayout(personneTab.size(),1));
 
 				for (int i = 0; i < personneTab.size(); i++) {
-					JLabel personne = new JLabel(personneTab.get(i).creeAffiche());
-					this.add(personne);
+					JLabel personne = new JLabel(personneTab.get(i).toString());
+					this.add(personne, BorderLayout.WEST);
 
 			}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			afficheListeRecherche(entreprise.getListePersonneEntreprise());	
 		}
 		else if (type == SALLE) {
 			ArrayList<Salle> personneSalle = new ArrayList<Salle>();
@@ -74,6 +87,7 @@ public class PanelDebugAffichage extends JPanel{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			afficheListeRecherche(entreprise.getListeSalleEntreprise());	
 
 		}
 		else if (type == DOMAINE) {
@@ -91,6 +105,7 @@ public class PanelDebugAffichage extends JPanel{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
 		}
 		
 		else if (type == TICKET) {
@@ -142,7 +157,8 @@ public class PanelDebugAffichage extends JPanel{
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
+			afficheListeRecherche(entreprise.getListeCalculateurEntreprise());	
+		}
 		
 		else if (type == MATERIEL) {
             ArrayList<Materiel> materielTab = new ArrayList<Materiel>();
@@ -277,7 +293,41 @@ public class PanelDebugAffichage extends JPanel{
             }
 
 		}
+	}
+	
+	private void afficheListeRecherche(ArrayList<Ressource> l) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		boutonAfficheRecherche = new JButton("Affiche recherche");
+		boutonAfficheRecherche.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	if (afficheRecherche) {
+	        		afficheRecherche = false;
+	        	}
+	        	else {
+	        		afficheRecherche = true;
+	        	}
+	        	majGraphe();
+	        }
+	    });			
+		if (afficheRecherche) {
+			ArrayList<Ressource> resRecherche = new ArrayList<Ressource>();
+			resRecherche = l;
+			for (int i=0; i<resRecherche.size();i++) {
+				JLabel label = new JLabel(resRecherche.get(i).toString());
+				panel.add(label);
+			}
+		}
+		this.add(panel, BorderLayout.EAST);				
+		
+	}
+	
+	private void majGraphe() {
+		this.removeAll();
+		this.creerInterface();
+		this.revalidate();
+		this.repaint();		
 
-    }
+	}
 
 }
