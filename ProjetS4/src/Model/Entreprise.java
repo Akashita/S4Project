@@ -709,15 +709,20 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDePersonneParLogin(String login){
+		int id = Ressource.recupereIdDepuisLogin(login);
+		
+        
 		return null;
 	}
-
+	
 	/**
 	 * Cherche tous les projets concerné de la salle par son login
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDeSalleParLogin(String login){
+		int id = Ressource.recupereIdDepuisLogin(login);
+
 		return null;
 	}
 
@@ -727,6 +732,8 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDeCalculateurParLogin(String login){
+		int id = Ressource.recupereIdDepuisLogin(login);
+
 		return null;
 	}
 

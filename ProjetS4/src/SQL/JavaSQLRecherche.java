@@ -18,64 +18,12 @@ import Ressource.Salle;
 
 public final class JavaSQLRecherche extends JavaSQL{
 ///////////////////////////////////////////////////////////////////////////////////ACTIVITE////////////////////////////////////////////////////////////////////////////	
-	public static  ArrayList<Ressource> recuperePersonneDansActiviteParId(int idA) throws SQLException{
-		
-		ArrayList<Ressource> liste = new ArrayList<Ressource>();
-		String sql = "SELECT * FROM ParticipeSalarie WHERE idA = '"+ idA + "';";
-			try{
-				 Statement stmt = getCon().createStatement();
-				 try (ResultSet res = stmt.executeQuery(sql)){
-					 while(res.next()) {
-						 Ressource ressource= recupereSalleParId(res.getInt("numSalarie"));
-						 liste.add( ressource);
-					 }
-				 }
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-			return liste;
-
-	}
-
-
-public static  ArrayList<Ressource> recupereSalleDansActiviteParId(int idA) throws SQLException{
 	
-	ArrayList<Ressource> liste = new ArrayList<Ressource>();
-	String sql = "SELECT * FROM ParticipeSalle WHERE idA = '"+ idA + "';";
-		try{
-			 Statement stmt = getCon().createStatement();
-			 try (ResultSet res = stmt.executeQuery(sql)){
-				 while(res.next()) {
-					 Ressource ressource= recupereSalleParId(res.getInt("numero"));
-					 liste.add( ressource);
-				 }
-			 }
-		} catch(SQLException e){
-			e.printStackTrace();
-		}
-		return liste;
-
-}
 
 
-public static  ArrayList<Ressource> recupereCalculateurDansActiviteParId(int idA) throws SQLException{
-	
-	ArrayList<Ressource> liste = new ArrayList<Ressource>();
-	String sql = "SELECT * FROM ParticipeCalcul WHERE idA = '"+ idA + "';";
-		try{
-			 Statement stmt = getCon().createStatement();
-			 try (ResultSet res = stmt.executeQuery(sql)){
-				 while(res.next()) {
-					 Ressource ressource= recupereSalleParId(res.getInt("code"));
-					 liste.add( ressource);
-				 }
-			 }
-		} catch(SQLException e){
-			e.printStackTrace();
-		}
-		return liste;
 
-}
+
+
 	
 	
 	
@@ -249,7 +197,25 @@ public static  ArrayList<Ressource> recupereCalculateurDansActiviteParId(int idA
 
 	}
 	
-	
+public static  ArrayList<Ressource> recuperePersonneDansActiviteParId(int idA) throws SQLException{
+		
+		ArrayList<Ressource> liste = new ArrayList<Ressource>();
+		String sql = "SELECT * FROM ParticipeSalarie WHERE idA = '"+ idA + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 Ressource ressource= recupereSalleParId(res.getInt("numSalarie"));
+						 liste.add( ressource);
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return liste;
+
+	}
+
 ///////////////////////////////////////////////////////////////////////////////////SALLE////////////////////////////////////////////////////////////////////////////	
 
 	
@@ -288,7 +254,24 @@ public static  ArrayList<Ressource> recupereCalculateurDansActiviteParId(int idA
 
 	}
 	
-	
+	public static  ArrayList<Ressource> recupereSalleDansActiviteParId(int idA) throws SQLException{
+		
+		ArrayList<Ressource> liste = new ArrayList<Ressource>();
+		String sql = "SELECT * FROM ParticipeSalle WHERE idA = '"+ idA + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 Ressource ressource= recupereSalleParId(res.getInt("numero"));
+						 liste.add( ressource);
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return liste;
+
+	}
 	
 ///////////////////////////////////////////////////////////////////////////////////CALCULATEUR////////////////////////////////////////////////////////////////////////////	
 
@@ -328,6 +311,23 @@ public static  ArrayList<Ressource> recupereCalculateurDansActiviteParId(int idA
 
 	}
 	
+	public static  ArrayList<Ressource> recupereCalculateurDansActiviteParId(int idA) throws SQLException{
+		
+		ArrayList<Ressource> liste = new ArrayList<Ressource>();
+		String sql = "SELECT * FROM ParticipeCalcul WHERE idA = '"+ idA + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 Ressource ressource= recupereSalleParId(res.getInt("code"));
+						 liste.add( ressource);
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return liste;
 
+	}
 	
 }
