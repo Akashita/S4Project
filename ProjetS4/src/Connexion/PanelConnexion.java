@@ -40,7 +40,6 @@ public class PanelConnexion extends JPanel{
     private JPasswordField mdpField = new JPasswordField();
     private JButton boutonConnexion, boutonQuitter;
     private Color couleurFond;
-    private Personne user = null;
     
     
     public PanelConnexion(FenetreConnexion fc) {
@@ -138,6 +137,7 @@ public class PanelConnexion extends JPanel{
     	String mdp = mdpField.getText();
 		if (!login.isEmpty()) {
 			if (!mdp.isEmpty()) {
+				Personne user = (Personne) Entreprise.chercheUser(login, mdp);
 				if (Entreprise.chercheUser(login, mdp) != null) {
 					new Entreprise(user);
 					fc.dispose();
