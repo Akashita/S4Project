@@ -75,10 +75,10 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	
 	
-	public static  ArrayList<Activite> recupereActiviteParIdPersonne(int idP) throws SQLException{
+	public static  ArrayList<Activite> recupereActiviteParIdPersonne(int numSalarie) throws SQLException{
 		
 		ArrayList<Activite> liste = new ArrayList<Activite>();
-		String sql = "SELECT idA FROM ParticipeSalarie WHERE numSalarie = '"+ idP + "';";
+		String sql = "SELECT idA FROM ParticipeSalarie WHERE numSalarie = '"+ numSalarie + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
@@ -95,9 +95,9 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 	
 	
-	public static  int recupereIdActiviteParIdPersonne(int idP) throws SQLException{
+	public static  int recupereIdActiviteParIdPersonne(int numSalarie) throws SQLException{
 		int idA = -1;
-		String sql = "SELECT idA FROM ParticipeSalarie WHERE numSalarie = '"+ idP + "';";
+		String sql = "SELECT idA FROM ParticipeSalarie WHERE numSalarie = '"+ numSalarie + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
@@ -131,7 +131,24 @@ public final class JavaSQLRecherche extends JavaSQL{
 
 	}
 	
-	public static  ArrayList<Activite> recupereActiviteParIdCalcul(int code) throws SQLException{
+	public static  int recupereIdActiviteParIdSalle(int numero) throws SQLException{
+		int idA = -1;
+		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ numero + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 idA = res.getInt("idA");
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return idA;
+
+	}
+	
+	public static  ArrayList<Activite> recupereActiviteParIdCalculateur(int code) throws SQLException{
 		
 		ArrayList<Activite> liste = new ArrayList<Activite>();
 		String sql = "SELECT idA FROM ParticipeCalcul WHERE code = '"+ code + "';";
@@ -151,8 +168,25 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 
 
+	public static  int recupereIdActiviteParIdCalculateur(int code) throws SQLException{
+		int idA = -1;
+		String sql = "SELECT idA FROM ParticipeCalcul WHERE code = '"+ code + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 idA = res.getInt("idA");
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return idA;
 
+	}
 
+	
+	
 	
 	
 	
@@ -287,8 +321,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 		Projet projet = null;
 		int idProjet = -1;
 		String sql = "SELECT idP FROM Activite WHERE idA = '"  + idA +"';";
-		Statement stmt6 = getCon().createStatement();
-		 try (ResultSet res6 = stmt6.executeQuery(sql)){
+		Statement stmt = getCon().createStatement();
+		 try (ResultSet res = stmt.executeQuery(sql)){
 			 while(res.next()) {
 				 idProjet = res.getInt("idP");
 			 }
@@ -297,6 +331,55 @@ public final class JavaSQLRecherche extends JavaSQL{
 		
 		return projet;
 	}
+	
+	public static Projet recupereProjetParIdSalle(int numero) throws SQLException{
+		Projet projet = null;
+		int idProjet = -1;
+		String sql = "SELECT idP FROM Activite WHERE idA = '"  + recupereIdActiviteParIdSalle(numero) +"';";
+		Statement stmt = getCon().createStatement();
+		 try (ResultSet res = stmt.executeQuery(sql)){
+			 while(res.next()) {
+				 idProjet = res.getInt("idP");
+			 }
+		 }
+		 projet =  recupereProjetParId(idProjet);
+		
+		return projet;
+	}
+	
+	public static Projet recupereProjetParIdPersonne(int numSalarie) throws SQLException{
+		Projet projet = null;
+		int idProjet = -1;
+		String sql = "SELECT idP FROM Activite WHERE idA = '"  + recupereIdActiviteParIdPersonne(numSalarie) +"';";
+		Statement stmt = getCon().createStatement();
+		 try (ResultSet res = stmt.executeQuery(sql)){
+			 while(res.next()) {
+				 idProjet = res.getInt("idP");
+			 }
+		 }
+		 projet =  recupereProjetParId(idProjet);
+		
+		return projet;
+	}
+	
+	
+	public static Projet recupereProjetParIdCalculateur(int code) throws SQLException{
+		Projet projet = null;
+		int idProjet = -1;
+		String sql = "SELECT idP FROM Activite WHERE idA = '"  + recupereIdActiviteParIdCalculateur(code) +"';";
+		Statement stmt = getCon().createStatement();
+		 try (ResultSet res = stmt.executeQuery(sql)){
+			 while(res.next()) {
+				 idProjet = res.getInt("idP");
+			 }
+		 }
+		 projet =  recupereProjetParId(idProjet);
+		
+		return projet;
+	}
+	
+	
+	
 	
 	
 ///////////////////////////////////////////////////////////////////////////////////TICKET////////////////////////////////////////////////////////////////////////////	
