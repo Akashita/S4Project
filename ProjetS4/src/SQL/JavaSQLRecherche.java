@@ -449,7 +449,22 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 ///////////////////////////////////////////////////////////////////////////////////PresenceDansProjet////////////////////////////////////////////////////////////////////////////	
 
-	
+	public static Boolean presenceProjetParIdActivité(int idA, int idP) throws SQLException{
+		Boolean presence = false;
+		int idProjet;
+		String sql = "SELECT idP FROM Activite WHERE idA = '"  + idA +"';";
+		Statement stmt = getCon().createStatement();
+		 try (ResultSet res = stmt.executeQuery(sql)){
+			 while(res.next()) {
+				 idProjet = res.getInt("idP");
+				 if  (idP == idProjet) {
+						presence = true;
+					}
+			 }
+		 }
+		
+		return presence;
+	}
 	
 ///////////////////////////////////////////////////////////////////////////////////TICKET////////////////////////////////////////////////////////////////////////////	
 

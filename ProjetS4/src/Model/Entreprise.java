@@ -979,7 +979,33 @@ public class Entreprise extends Observable{
 	 */
 	public ArrayList<Personne> getListeDesChefDeProjetPossedantLaRessourceParLogin(int type, String login){
 		int id = Ressource.recupereIdDepuisLogin(login);
+		ArrayList<Personne> l = new ArrayList<Personne>();
+		switch (type) {
+		case Ressource.PERSONNE:
+			l = getListeDesChefDeProjetPossedantLaPersonneParId(id);
+			break;
+		case Ressource.SALLE:
+			l = getListeDesChefDeProjetPossedantLaSalleParId(id);
+			break;
+		case Ressource.CALCULATEUR:
+			l = getListeDesChefDeProjetPossedantLeCalculateurParId(id);
+			break;
+		default:
+			break;
+		}
+		return l;
 			
+	}
+	private ArrayList<Personne> getListeDesChefDeProjetPossedantLeCalculateurParId(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	private ArrayList<Personne> getListeDesChefDeProjetPossedantLaSalleParId(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	private ArrayList<Personne> getListeDesChefDeProjetPossedantLaPersonneParId(int id) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	//------------------------------>>>>> Verifie condition dans la bdd
