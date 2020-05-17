@@ -17,9 +17,74 @@ import Ressource.Ressource;
 import Ressource.Salle;
 
 public final class JavaSQLRecherche extends JavaSQL{
+///////////////////////////////////////////////////////////////////////////////////ACTIVITE////////////////////////////////////////////////////////////////////////////	
+	public static  ArrayList<Ressource> recuperePersonneDansActiviteParId(int idA) throws SQLException{
+		
+		ArrayList<Ressource> liste = new ArrayList<Ressource>();
+		String sql = "SELECT * FROM ParticipeSalarie WHERE idA = '"+ idA + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 Ressource ressource= recupereSalleParId(res.getInt("numSalarie"));
+						 liste.add( ressource);
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return liste;
+
+	}
+
+
+public static  ArrayList<Ressource> recupereSalleDansActiviteParId(int idA) throws SQLException{
+	
+	ArrayList<Ressource> liste = new ArrayList<Ressource>();
+	String sql = "SELECT * FROM ParticipeSalle WHERE idA = '"+ idA + "';";
+		try{
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 Ressource ressource= recupereSalleParId(res.getInt("numero"));
+					 liste.add( ressource);
+				 }
+			 }
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return liste;
+
+}
+
+
+public static  ArrayList<Ressource> recupereCalculateurDansActiviteParId(int idA) throws SQLException{
+	
+	ArrayList<Ressource> liste = new ArrayList<Ressource>();
+	String sql = "SELECT * FROM ParticipeCalcul WHERE idA = '"+ idA + "';";
+		try{
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 Ressource ressource= recupereSalleParId(res.getInt("code"));
+					 liste.add( ressource);
+				 }
+			 }
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return liste;
+
+}
 	
 	
 	
+	
+	
+	
+	
+	
+///////////////////////////////////////////////////////////////////////////////////PROJET////////////////////////////////////////////////////////////////////////////	
 	public static ArrayList<Projet> recupereProjetUser(int idUser) throws SQLException{
 		ArrayList<Projet> protab = new ArrayList<Projet>();
 		ArrayList<String> listeDom = new ArrayList<String>();
@@ -80,7 +145,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return protab;
 
 	}
-	
+///////////////////////////////////////////////////////////////////////////////////TICKET////////////////////////////////////////////////////////////////////////////	
+
 	public static ArrayList<Ticket> recupereTicketEnvUser(int idUser) throws SQLException{
 		String sql = "SELECT * FROM Ticket WHERE numSalarieEnv = '" + idUser + "';";
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
@@ -123,7 +189,11 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return ticketTab;
 	}
 	
-	public static Ressource recuperPersonneParId(int idUser) throws SQLException{
+	
+	
+///////////////////////////////////////////////////////////////////////////////////PERSONNE////////////////////////////////////////////////////////////////////////////	
+
+	public static Ressource recuperePersonneParId(int idUser) throws SQLException{
 		String sql = "SELECT * FROM Personne WHERE numSalarie = '" + idUser + "';";
 		Ressource personne = null;
 			try{
@@ -179,7 +249,11 @@ public final class JavaSQLRecherche extends JavaSQL{
 
 	}
 	
-	public static Ressource recuperSalleParId(int idSalle) throws SQLException{
+	
+///////////////////////////////////////////////////////////////////////////////////SALLE////////////////////////////////////////////////////////////////////////////	
+
+	
+	public static Ressource recupereSalleParId(int idSalle) throws SQLException{
 		Ressource salle = null;
 			String sql = "SELECT * FROM Salle WHERE numero = '" + idSalle + "';";
 			try{
@@ -214,7 +288,11 @@ public final class JavaSQLRecherche extends JavaSQL{
 
 	}
 	
-	public static Ressource recuperCalculateurParId(int idCalculateur	) throws SQLException{
+	
+	
+///////////////////////////////////////////////////////////////////////////////////CALCULATEUR////////////////////////////////////////////////////////////////////////////	
+
+	public static Ressource recupereCalculateurParId(int idCalculateur	) throws SQLException{
 		String sql = "SELECT * FROM Calculateur WHERE code = '" + idCalculateur + "';";
 		Ressource calcul = null;
 

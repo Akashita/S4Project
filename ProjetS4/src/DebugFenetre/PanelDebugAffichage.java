@@ -49,7 +49,7 @@ public class PanelDebugAffichage extends JPanel{
 				setLayout(new GridLayout(personneTab.size(),1));
 
 				for (int i = 0; i < personneTab.size(); i++) {
-					JLabel personne = new JLabel(personneTab.get(i).toString());
+					JLabel personne = new JLabel(personneTab.get(i).creeAffiche());
 					this.add(personne);
 
 			}

@@ -502,7 +502,7 @@ public class Entreprise extends Observable{
 		Ressource personne= null;
 
         try {
-        	personne = JavaSQLRecherche.recuperPersonneParId(id);
+        	personne = JavaSQLRecherche.recuperePersonneParId(id);
         
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -521,7 +521,7 @@ public class Entreprise extends Observable{
 		Ressource salle= null;
 
         try {
-        	salle = JavaSQLRecherche.recuperSalleParId(id);
+        	salle = JavaSQLRecherche.recupereSalleParId(id);
         
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -540,7 +540,7 @@ public class Entreprise extends Observable{
 		Ressource calcul = null;
 
         try {
-        	calcul = JavaSQLRecherche.recuperCalculateurParId(id);
+        	calcul = JavaSQLRecherche.recupereCalculateurParId(id);
         
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -638,7 +638,7 @@ public class Entreprise extends Observable{
 	}
 	
 	/**
-	 * Cherche tout les personnes contenue par l'activite par son id
+	 * Cherche toutes les personnes contenue par l'activite par son id
 	 * @param id de l'activite
 	 * @return la liste de personnes de l'activite
 	 */	
@@ -647,7 +647,7 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche tout les salle contenut par l'activite par son id
+	 * Cherche toutes les salle contenut par l'activite par son id
 	 * @param id de l'activite
 	 * @return la liste de salle de l'activite
 	 */	
@@ -656,7 +656,7 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche tout les calculateurs contenut par l'activite par son id
+	 * Cherche tous les calculateurs contenut par l'activite par son id
 	 * @param id de l'activite
 	 * @return la liste de calculateur de l'activite
 	 */	
@@ -665,7 +665,7 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche tout les projets concerné de la ressource par son login
+	 * Cherche tous les projets concerné de la ressource par son login
 	 * @param type de la ressource
 	 * @param login de la ressource
 	 * @return la liste de projet de la ressource
