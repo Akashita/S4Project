@@ -22,7 +22,6 @@ public class PanelProjet extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
-	private JTextField rechercher;
 	private Font font = new Font("Arial", Font.PLAIN, 30);
 	
 	public PanelProjet(Entreprise entreprise) {
@@ -30,7 +29,6 @@ public class PanelProjet extends JPanel{
 		this.setBackground(PanelPrincipal.BLEU2);
 		this.setLayout(new BorderLayout());
 		this.add(afficherProjet(), BorderLayout.WEST);
-		this.add(afficherRechercher(), BorderLayout.EAST);
 		this.setPreferredSize(new Dimension(this.getWidth(),100));
 
 	}
@@ -82,34 +80,4 @@ public class PanelProjet extends JPanel{
 	}
 	
 	
-	private JPanel afficherRechercher() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(3,3));
-		panel.setBackground(PanelPrincipal.BLEU2);
-    	rechercher = new JTextField("rechercher                             ");
-    	rechercher.getFont().deriveFont(Font.ITALIC);
-    	rechercher.setForeground(PanelPrincipal.GRIS2);
-    	rechercher.addMouseListener(new MouseListener() {           
-			@Override
-			public void mouseClicked(MouseEvent e) {
-    	        JTextField texteField = ((JTextField)e.getSource());
-    	        texteField.setText("");
-    	        texteField.getFont().deriveFont(Font.PLAIN);
-    	        texteField.setForeground(PanelPrincipal.NOIR);
-    	        texteField.removeMouseListener(this);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-    	});
-    	panel.add(new JLabel(" "));
-    	panel.add(rechercher);
-    	panel.add(new JLabel(" "));
-		return panel;
-	}	
 }
