@@ -188,7 +188,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	
 	
-	public static Boolean presenceActivitePersonne(Personne salarie, int idA) {
+	public static Boolean presenceActivitePersonne(Personne salarie, int idA) throws SQLException{
 		Boolean presence = false;
 		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ salarie.getId() + "';";
 			try{
@@ -206,7 +206,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return presence;
 	}
 	
-	public static Boolean presenceActiviteSalle(Salle salle, int idA) {
+	public static Boolean presenceActiviteSalle(Salle salle, int idA) throws SQLException{
 		Boolean presence = false;
 		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ salle.getId() + "';";
 			try{
@@ -224,7 +224,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return presence;
 	}
 	
-	public static Boolean presenceActiviteCalculateur(Calculateur calculateur, int idA) {
+	public static Boolean presenceActiviteCalculateur(Calculateur calculateur, int idA) throws SQLException {
 		Boolean presence = false;
 		String sql = "SELECT idA FROM ParticipeSalle WHERE numero = '"+ calculateur.getId() + "';";
 			try{
@@ -462,7 +462,37 @@ public final class JavaSQLRecherche extends JavaSQL{
 					}
 			 }
 		 }
-		
+		return presence;
+	}
+	
+	
+	public static Boolean presenceProjetParIdPersonne(int numSalarie, int idP) throws SQLException{
+		Boolean presence = false;
+		int i = 0;
+		ArrayList<Activite> idA = recupereActiviteParIdPersonne(numSalarie);
+		while (i < idA.size() || presence == true ) {
+			presence = presenceProjetParIdActivite(idA.get(i).getId(),idP);
+		}
+		return presence;
+	}
+	
+	public static Boolean presenceProjetParIdSalle(int numero, int idP) throws SQLException{
+		Boolean presence = false;
+		int i = 0;
+		ArrayList<Activite> idA = recupereActiviteParIdSalle(numero);
+		while (i < idA.size() || presence == true ) {
+			presence = presenceProjetParIdActivite(idA.get(i).getId(),idP);
+		}
+		return presence;
+	}
+	
+	public static Boolean presenceProjetParIdCalculateur(int code, int idP) throws SQLException{
+		Boolean presence = false;
+		int i = 0;
+		ArrayList<Activite> idA = recupereActiviteParIdCalculateur(code);
+		while (i < idA.size() || presence == true ) {
+			presence = presenceProjetParIdActivite(idA.get(i).getId(),idP);
+		}
 		return presence;
 	}
 	
@@ -572,7 +602,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 
 	}
 	
-public static  ArrayList<Ressource> recuperePersonneDansActiviteParId(int idA) throws SQLException{
+	public static  ArrayList<Ressource> recuperePersonneDansActiviteParId(int idA) throws SQLException{
 		
 		ArrayList<Ressource> liste = new ArrayList<Ressource>();
 		String sql = "SELECT * FROM ParticipeSalarie WHERE idA = '"+ idA + "';";
@@ -590,6 +620,63 @@ public static  ArrayList<Ressource> recuperePersonneDansActiviteParId(int idA) t
 			return liste;
 
 	}
+	
+	public static  Ressource recupereChefDeProjetParIdProjet(int idP) throws SQLException{
+		Ressource chef = null;
+		String sql = "SELECT numSalarie FROM Projet WHERE idP = '"+ idP + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 chef= recuperePersonneParId(res.getInt("numSalarie"));
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return chef;
+
+	}
+	
+	public static  Ressource recupereChefDeProjetParIdActivite(int idA) throws SQLException{
+		Ressource chef = null;
+		Projet projet = recupereProjetParIdActivite(idA);
+		chef = recupereChefDeProjetParIdProjet(projet.getId()); 
+		return chef;
+
+	}
+	
+	public static  ArrayList<Ressource> recupereChefDeProjetParIdPersonne(int numSalarie) throws SQLException{
+		ArrayList<Ressource> chefListe = new ArrayList<Ressource>();
+		ArrayList<Activite> activiteDeLaPersonne = new ArrayList<Activite>();
+		activiteDeLaPersonne = recupereActiviteParIdPersonne(numSalarie);
+		for (int i = 0; i < activiteDeLaPersonne.size(); i++) {
+			chefListe.add(recupereChefDeProjetParIdActivite(activiteDeLaPersonne.get(i).getId()));
+		}
+		return chefListe;
+	}
+	
+	public static  ArrayList<Ressource> recupereChefDeProjetParIdSalle(int numero) throws SQLException{
+		ArrayList<Ressource> chefListe = new ArrayList<Ressource>();
+		ArrayList<Activite> activiteDeLaSalle = new ArrayList<Activite>();
+		activiteDeLaSalle = recupereActiviteParIdSalle(numero);
+		for (int i = 0; i < activiteDeLaSalle.size(); i++) {
+			chefListe.add(recupereChefDeProjetParIdActivite(activiteDeLaSalle.get(i).getId()));
+		}
+		return chefListe;
+	}
+	
+	public static  ArrayList<Ressource> recupereChefDeProjetParIdCalculateur(int code) throws SQLException{
+		ArrayList<Ressource> chefListe = new ArrayList<Ressource>();
+		ArrayList<Activite> activiteDuCalculateur = new ArrayList<Activite>();
+		activiteDuCalculateur = recupereActiviteParIdCalculateur(code);
+		for (int i = 0; i < activiteDuCalculateur.size(); i++) {
+			chefListe.add(recupereChefDeProjetParIdActivite(activiteDuCalculateur.get(i).getId()));
+		}
+		return chefListe;
+	}
+	
+	
 
 ///////////////////////////////////////////////////////////////////////////////////SALLE////////////////////////////////////////////////////////////////////////////	
 

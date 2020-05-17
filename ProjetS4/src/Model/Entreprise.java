@@ -977,9 +977,9 @@ public class Entreprise extends Observable{
 	 * @param login de la ressource 
 	 * @return la liste de personne
 	 */
-	public ArrayList<Personne> getListeDesChefDeProjetPossedantLaRessourceParLogin(int type, String login){
+	public ArrayList<Ressource> getListeDesChefDeProjetPossedantLaRessourceParLogin(int type, String login){
 		int id = Ressource.recupereIdDepuisLogin(login);
-		ArrayList<Personne> l = new ArrayList<Personne>();
+		ArrayList<Ressource> l = new ArrayList<Ressource>();
 		switch (type) {
 		case Ressource.PERSONNE:
 			l = getListeDesChefDeProjetPossedantLaPersonneParId(id);
@@ -996,17 +996,35 @@ public class Entreprise extends Observable{
 		return l;
 			
 	}
-	private ArrayList<Personne> getListeDesChefDeProjetPossedantLeCalculateurParId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	private ArrayList<Ressource> getListeDesChefDeProjetPossedantLeCalculateurParId(int id) {
+		ArrayList<Ressource> chefListe = new ArrayList<Ressource>();
+		try {
+			chefListe = JavaSQLRecherche.recupereChefDeProjetParIdCalculateur(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return chefListe;
 	}
-	private ArrayList<Personne> getListeDesChefDeProjetPossedantLaSalleParId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	private ArrayList<Ressource> getListeDesChefDeProjetPossedantLaSalleParId(int id) {
+		ArrayList<Ressource> chefListe = new ArrayList<Ressource>();
+		try {
+			chefListe = JavaSQLRecherche.recupereChefDeProjetParIdSalle(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return chefListe;
 	}
-	private ArrayList<Personne> getListeDesChefDeProjetPossedantLaPersonneParId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	private ArrayList<Ressource> getListeDesChefDeProjetPossedantLaPersonneParId(int id) {
+		ArrayList<Ressource> chefListe = new ArrayList<Ressource>();
+		try {
+			chefListe = JavaSQLRecherche.recupereChefDeProjetParIdPersonne(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return chefListe;
 	}
 	//------------------------------>>>>> Verifie condition dans la bdd
 
@@ -1045,7 +1063,14 @@ public class Entreprise extends Observable{
 	 * @return vrai si la personne est presente sinon faux
 	 */
 	public boolean personnePresenteDansProjet(Personne r, Projet p) {
-		return false;
+		Boolean b = null;
+		try {
+			b = JavaSQLRecherche.presenceProjetParIdPersonne(r.getId(),p.getId());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 
 	/**
@@ -1056,7 +1081,14 @@ public class Entreprise extends Observable{
 	 * @return vrai si la salle est presente sinon faux
 	 */
 	public boolean sallePresenteDansProjet(Salle r, Projet p) {
-		return false;
+		Boolean b = null;
+		try {
+			b = JavaSQLRecherche.presenceProjetParIdSalle(r.getId(),p.getId());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 
 	/**
@@ -1067,7 +1099,14 @@ public class Entreprise extends Observable{
 	 * @return vrai si la calculateur est presente sinon faux
 	 */
 	public boolean calculateurPresenteDansProjet(Calculateur r, Projet p) {
-		return false;
+		Boolean b = null;
+		try {
+			b = JavaSQLRecherche.presenceProjetParIdCalculateur(r.getId(),p.getId());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 
 	/**
@@ -1103,7 +1142,14 @@ public class Entreprise extends Observable{
 	 * @return vrai si la personne est presente sinon faux
 	 */
 	public boolean personnePresenteDansActivite(Personne r, Activite a) {
-		return false;
+		Boolean b = null;
+		try {
+			b = JavaSQLRecherche.presenceActivitePersonne(r,a.getId());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 	
 	/**
@@ -1114,7 +1160,14 @@ public class Entreprise extends Observable{
 	 * @return vrai si la salle est presente sinon faux
 	 */
 	public boolean sallePresenteDansActivite(Salle r, Activite a) {
-		return false;
+		Boolean b = null;
+		try {
+			b = JavaSQLRecherche.presenceActiviteSalle(r,a.getId());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 
 	/**
@@ -1125,7 +1178,14 @@ public class Entreprise extends Observable{
 	 * @return vrai si la calculateur est presente sinon faux
 	 */
 	public boolean calculateurPresenteDansActivite(Calculateur r, Activite a) {
-		return false;
+		Boolean b = null;
+		try {
+			b = JavaSQLRecherche.presenceActiviteCalculateur(r,a.getId());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
 	}
 
 	/**
