@@ -348,7 +348,7 @@ public class Entreprise extends Observable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return personneTab ;
+			return personneTab ;
 	}
 
 	/**
@@ -1254,10 +1254,10 @@ public class Entreprise extends Observable{
 
 		projet.getChefDeProjet().enleverProjet(projet);  // on enleve au chef de projet le projet supprimer
 
-
-		for (int i=0; i<getListeProjet().size(); i++) { // on enleve le projet de l'entreprise
-			if (projet.getId() == getListeProjet().get(i).getId()) {
-				getListeProjet().remove(i);
+		ArrayList<Projet> lp = getListeProjetDeUser(user.getId());
+		for (int i=0; i<lp.size(); i++) { // on enleve le projet de l'entreprise
+			if (projet.getId() == lp.get(i).getId()) {
+				lp.remove(i);
 				break;
 			}
 		}
@@ -1582,6 +1582,19 @@ public class Entreprise extends Observable{
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion tache
 
+	public void setTacheAffiche(int type) {
+		if (type == afficheListeRessource) {
+			tacheAffiche = Ressource.RIEN;
+		}
+		else {
+			afficheListeRessource = type;
+		}
+		update();
+	}
+
+	public int getTacheAffiche() {
+		return afficheListeRessource;
+	}
 
 
 	//================ Partie Graphique ==========//
@@ -1635,15 +1648,6 @@ public class Entreprise extends Observable{
 	}
 
 
-	public ArrayList<Projet> getListeProjet(){
-		try {
-			return	JavaSQLProjet.affiche();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 
 	/*public void selectionnerListeRessource(String type) {

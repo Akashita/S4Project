@@ -8,13 +8,17 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import Fenetre.FenetreInfoRessource;
@@ -252,7 +256,12 @@ public class PanelInfoRessource extends JPanel{
 		this.add(labelTitreColonne("Chef des projets"), gc);
 
 		ArrayList<Projet> projets = ((Personne) ressource).getListeDeProjet();
-		ArrayList<String> listeProjet = new ArrayList<String>();
+		gc.gridy++;
+		gc.gridheight = GridBagConstraints.REMAINDER;
+		this.add(creerScrollPane(listProjet(projets)), gc);
+
+		
+		/*ArrayList<String> listeProjet = new ArrayList<String>();
 		for (int i=0; i<projets.size(); i++) {
 			listeProjet.add(projets.get(i).getNom());
 		}	
@@ -260,12 +269,11 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridheight = GridBagConstraints.REMAINDER;
 		if (projets.size()>0) {
 			this.add(panelContenuColonne(listeProjet), gc);		
-		}
+		}*/
 	}
 	
 	private void colCompetence(GridBagConstraints gc) {
 		gc.fill = GridBagConstraints.CENTER;
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.gridx ++;
 		gc.gridy = 0;
@@ -274,7 +282,10 @@ public class PanelInfoRessource extends JPanel{
 		//this.add(panelTitreInfoColonne("COMPETENCES", "domaine", "niveau"), gc);
 
 		ArrayList<Competence> competences = ((Personne) ressource).getListeDeCompetence();
-		ArrayList<String> listeDomaine = new ArrayList<String>();
+		gc.gridy++;
+		gc.gridheight = GridBagConstraints.REMAINDER;
+		this.add(creerScrollPane(listCompetence(competences)), gc);
+		/*ArrayList<String> listeDomaine = new ArrayList<String>();
 		ArrayList<String> listeNiveau = new ArrayList<String>();
 		for (int i=0; i<competences.size(); i++) {
 			listeDomaine.add(competences.get(i).getNom());
@@ -284,12 +295,11 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridheight = GridBagConstraints.REMAINDER;
 		if (competences.size()>0) {
 			this.add(panelContenuColonne("Domaine", "Niveau", listeDomaine, listeNiveau), gc);
-		}
+		}*/
 	}
 			
 	private void colActivite(GridBagConstraints gc) {
 		gc.fill = GridBagConstraints.CENTER;
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.gridx ++;
 		gc.gridy = 0;
@@ -297,7 +307,10 @@ public class PanelInfoRessource extends JPanel{
 		this.add(labelTitreColonne("ACTIVITÉS"),gc);
 
 		ArrayList<Activite> listeAct = entreprise.getListeActivitetdeRessourceParId(ressource.getType(), ressource.getId());
-		ArrayList<Projet> listeProj = entreprise.getListeProjetdeRessourceParId(ressource.getType(), ressource.getId());
+		gc.gridy++;
+		gc.gridheight = GridBagConstraints.REMAINDER;
+		this.add(creerScrollPane(listActivite(listeAct)), gc);
+		/*ArrayList<Projet> listeProj = entreprise.getListeProjetdeRessourceParId(ressource.getType(), ressource.getId());
 		ArrayList<String> act = new ArrayList<String>();
 		ArrayList<String> projet = new ArrayList<String>();
 		for (int i=0; i<listeAct.size(); i++) {
@@ -308,7 +321,7 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridheight = GridBagConstraints.REMAINDER;
 		if (listeAct.size()>0) {
 			this.add(panelContenuColonne("Activité", "Projet", act, projet), gc);
-		}
+		}*/
 		
 	}
 	
@@ -447,6 +460,63 @@ public class PanelInfoRessource extends JPanel{
 		}
 		return panel;
 	}
+	
+	
+	private JList<Projet> listProjet(ArrayList<Projet> l){
+		Projet [] tr = new Projet [l.size()];
+		for (int i=0; i<tr.length; i++) {
+			tr[i] = l.get(i);
+		}
+		JList<Projet> jlt = new JList<Projet>(tr);
+		jlt.setBackground(couleurFond);
+		
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.setForeground(PanelPrincipal.BLANC);
+		return jlt;
+	}
+
+	private JList<Competence> listCompetence(ArrayList<Competence> l){
+		Competence [] tr = new Competence [l.size()];
+		for (int i=0; i<tr.length; i++) {
+			tr[i] = l.get(i);
+		}
+		JList<Competence> jlt = new JList<Competence>(tr);
+		jlt.setBackground(couleurFond);
+		
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.setForeground(PanelPrincipal.BLANC);
+		return jlt;
+	}
+
+	private JList<Activite> listActivite(ArrayList<Activite> l){
+		Activite [] tr = new Activite [l.size()];
+		for (int i=0; i<tr.length; i++) {
+			tr[i] = l.get(i);
+		}
+		JList<Activite> jlt = new JList<Activite>(tr);
+		jlt.setBackground(couleurFond);
+		
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.setForeground(PanelPrincipal.BLANC);
+		return jlt;
+	}
+
+	
+	private JScrollPane creerScrollPane(JList l) {
+		JScrollPane scrollPane = new JScrollPane(l);
+		scrollPane.setViewportView(l);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return scrollPane;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//------------------------------------------------------------------------------->>>>> Action des boutons
 	private void actionBoutonModifier() {

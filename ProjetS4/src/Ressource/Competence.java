@@ -29,6 +29,9 @@ public class Competence {
 	public int getNumSalarie() {
 		return numSalarie;
 	}
+	public String toString() {
+		return nom+" - "+getStringNiveau();
+	}
 	
 	public String getStringNiveau() {
 		String niveau = "";

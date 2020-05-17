@@ -49,7 +49,7 @@ public class FenetreModal extends JDialog{
 		this.setTitle(titre);
 		this.setSize(largeur, hauteur);
 		this.setLocationRelativeTo(null);
-		this.addWindowListener(new FermerFenetre(this));
+		this.addWindowListener(new FermerFenetreModal(this));
 		this.setBackground(couleurFond);
 		this.setLayout(new BorderLayout());
 		panelInterface.setBackground(couleurFond);

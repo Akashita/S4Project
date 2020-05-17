@@ -43,19 +43,34 @@ public class PanelInfoProjet extends JPanel{
 		couleurFond = PanelPrincipal.BLANC;
 		this.projet = entreprise.getProjetSelectionner();
 		if (projet != null) {
-			this.setBackground(couleurFond);
 			this.setLayout(new BorderLayout());
+			this.setBackground(couleurFond);
 			afficheInterface();
 		}
 	}
 	
 	public void afficheInterface() {
-		this.setBackground(couleurFond);
-		this.setLayout(new GridBagLayout());		
+		//affiche information du projet
+		this.add(panelInfoProjet(), BorderLayout.NORTH);
+		
+		//affiche les activité
+		/*gc.fill = GridBagConstraints.BOTH;			
+		gc.gridx = 0;
+		gc.gridy ++;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.gridheight = GridBagConstraints.REMAINDER;*/
+		this.add(panelActivite(), BorderLayout.CENTER);
+
+	}
+	
+	private JPanel panelInfoProjet() {
+		JPanel p = new JPanel(); 
+		p.setBackground(couleurFond);
+		p.setLayout(new GridBagLayout());		
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		gc.fill = GridBagConstraints.BOTH;
-		gc.insets = new Insets(5, 5, 5, 5);
+		gc.fill = GridBagConstraints.CENTER;
+		gc.insets = new Insets(20, 5, 5, 5);
 		
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
@@ -66,16 +81,17 @@ public class PanelInfoProjet extends JPanel{
 		
 		gc.gridx = 0;
 		gc.gridy = 0;
+		gc.gridheight = 1;
 		String nom = projet.getChefDeProjet().getPrenom() + " " + projet.getChefDeProjet().getNom();
-		this.add(creerLabel("Chef de projet: "+ nom), gc);
+		p.add(creerLabel("Chef de projet: "+ nom), gc);
 		gc.gridx = 1;
-		this.add(creerLabel("Priorite: "+(int)projet.getPriorite()), gc);
+		p.add(creerLabel("Priorite: "+(int)projet.getPriorite()), gc);
 		gc.gridx = 2;
 		
 		LocalDate deadline = projet.getDeadline();
 		String date = deadline.getDayOfMonth() + "/" + deadline.getMonthValue() + "/" + deadline.getYear();			
 
-		this.add(creerLabel("DeadLine: "+date), gc);
+		p.add(creerLabel("DeadLine: "+date), gc);
 
 		for (int i=0; i<3; i++) {
 			int type = Ressource.RIEN;
@@ -87,78 +103,59 @@ public class PanelInfoProjet extends JPanel{
 			case 2: type = Ressource.CALCULATEUR;
 			break;
 			}
-				gc.gridx = i+3;
-				gc.gridy = 0;
-				this.add(creerLabelInterfaceRessource(type), gc);
-		}
-		
-		//affiche les activité
-			
-		gc.gridx = 0;
-		gc.gridy ++;
-		gc.gridwidth = GridBagConstraints.REMAINDER;
-		gc.gridheight = GridBagConstraints.REMAINDER;
-		this.add(panelActivite(), gc);
-
+			gc.gridx = i+3;
+			gc.gridy = 0;
+			p.add(creerLabelInterfaceRessource(type), gc);
+		}	
+		return p;
 	}
 		
-		private JPanel creerLabelInterfaceRessource(int type) {
-			JPanel panel = new JPanel();
-			panel.setBackground(PanelPrincipal.BLANC);		
-		    panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-			JLabel labelTxt = new JLabel();
-			JLabel labelIco = new JLabel();
-			switch (type) {
-			case Ressource.PERSONNE:
-				labelIco = new JLabel(new ImageIcon("images/user_grey.png"));
-				labelTxt = creerLabel("  "+Ressource.PERSONNE+"s", true);			
-				break;
-			case Ressource.SALLE:
-				labelIco = new JLabel(new ImageIcon("images/door_grey.png"));
-				labelTxt = creerLabel("  "+Ressource.SALLE+"s", true);					
-				break;
-			case Ressource.CALCULATEUR:
-				labelIco = new JLabel(new ImageIcon("images/computer_grey.png"));	
-				labelTxt = creerLabel("  "+Ressource.CALCULATEUR+"s", true);	
-				break;
-
-			default:
-				break;
-			}
-			panel.add(labelIco);
-			panel.add(labelTxt);
-			return panel;
+	private JPanel creerLabelInterfaceRessource(int type) {
+		JPanel panel = new JPanel();
+		panel.setBackground(PanelPrincipal.BLANC);		
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		JLabel labelIco = new JLabel();
+		switch (type) {
+		case Ressource.PERSONNE:
+			labelIco = new JLabel(new ImageIcon("images/user_grey.png"));
+			break;
+		case Ressource.SALLE:
+			labelIco = new JLabel(new ImageIcon("images/door_grey.png"));
+			break;
+		case Ressource.CALCULATEUR:
+			labelIco = new JLabel(new ImageIcon("images/computer_grey.png"));	
+			break;
+		default:
+			break;
 		}
+		panel.add(labelIco);
+		return panel;
+	}
 
-		private JLabel creerLabel(String nom, boolean estGras) {
-			JLabel label = new JLabel(nom);
-			if(estGras) {
-				label.setFont(new Font("Arial", Font.BOLD, 15));
-			}
-			else {
-				label.setFont(new Font("Arial", Font.PLAIN, 15));
-			}
-			return label;
-		}
 	
 		
-		private JScrollPane panelActivite() {
-			JPanel p = new JPanel();
-			p.setBackground(couleurFond);
-			ArrayList<Activite> listeActivite = projet.getListe();
-			p.setLayout(new GridLayout(listeActivite.size(),1,10,10));
-
-			for (int i=0; i<listeActivite.size(); i++) {
-				Activite activite = listeActivite.get(i);							
-				PanelInfoActivite pia = new PanelInfoActivite(entreprise, activite);
-				pia.addMouseListener(new SourisActiviteListener(entreprise, activite));	
-				p.add(pia);								
-			}
-			JScrollPane jsp = new JScrollPane(p);
-			jsp.setViewportView(p);
-			jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-			return jsp;
+	private JScrollPane panelActivite() {
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.setBackground(couleurFond);
+		ArrayList<Activite> listeActivite = projet.getListe();
+		int taille = 5 - listeActivite.size();
+		if (taille<0) {
+			taille = 0;
 		}
+		p.setLayout(new GridLayout(listeActivite.size()+taille,1,10,10));
+
+		for (int i=0; i<listeActivite.size(); i++) {
+			Activite activite = listeActivite.get(i);							
+			PanelInfoActivite pia = new PanelInfoActivite(entreprise, activite);
+			pia.addMouseListener(new SourisActiviteListener(entreprise, activite));	
+			p.add(pia);								
+		}
+		JScrollPane jsp = new JScrollPane(p);
+		jsp.setViewportView(p);
+		jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return jsp;
+	}
 		
 //	==================METHODE GENERAL============================================	
 	

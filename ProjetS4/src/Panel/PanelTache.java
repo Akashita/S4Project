@@ -25,6 +25,7 @@ import Fenetre.FenetreModal;
 import Fenetre.FenetrePrincipale;
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Ressource.Ressource;
 import SQL.JavaSQLTicket;
 
 /**
@@ -93,7 +94,50 @@ public class PanelTache extends JPanel {
 		this.add(creerLabelIco(new ImageIcon("images/mail_white.png"), TICKET), gc);
 	}
 	
-	
+	private JLabel creerImageRessource() {
+		int tacheSelectionner = entreprise.getAfficheListeRessource();
+		ImageIcon ico = new ImageIcon();
+		switch (afficheTache) {
+		case TICKET:
+			if (tacheSelectionner == Ressource.PERSONNE) {
+				ico = new ImageIcon("images/user_grey_grand.png");
+			}
+			else {
+				ico = new ImageIcon("images/user_white.png");
+			}		
+			break;
+		case OPTIMISATION:
+			if (tacheSelectionner == Ressource.SALLE) {
+				ico = new ImageIcon("images/door_grey_grand.png");
+			}
+			else {
+				ico = new ImageIcon("images/door_white.png");
+			}
+			break;
+
+		default:
+			break;
+		}
+		
+		
+		JLabel label = new JLabel(ico);
+		label.addMouseListener(new MouseListener() {           
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				entreprise.setAfficheListeRessource(type);
+ 			}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+    	});
+		return label;
+	}
+
 
 	private void afficheTicket(GridBagConstraints gc) {
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
