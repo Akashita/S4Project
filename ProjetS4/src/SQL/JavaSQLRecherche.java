@@ -209,7 +209,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
-					 while(res.next()) {
+					 while(res.next() || presence == false) {
 						 if (res.getInt("idA") == idA) {
 						 presence = true;	
 						 }

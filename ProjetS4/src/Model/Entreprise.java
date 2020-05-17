@@ -1168,7 +1168,7 @@ public class Entreprise extends Observable{
      * @param mdp du compte
      * @return la personne asssoci� sinon null
      */
-	public Ressource chercheUser(String login, String mdp) {
+	public static Ressource chercheUser(String login, String mdp) {
     	Ressource p = null;
 		int id = Ressource.recupereIdDepuisLogin(login);
 		try {

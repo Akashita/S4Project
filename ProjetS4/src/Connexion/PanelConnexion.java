@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,6 +19,8 @@ import javax.swing.JTextField;
 
 import Model.Entreprise;
 import Ressource.Personne;
+import Ressource.Ressource;
+import SQL.JavaSQLRecherche;
 
 
 /**
@@ -134,7 +137,7 @@ public class PanelConnexion extends JPanel{
     	String mdp = mdpField.getText();
 		if (!login.isEmpty()) {
 			if (!mdp.isEmpty()) {
-				if (chercheUser(login, mdp) != null) {
+				if (Entreprise.chercheUser(login, mdp) != null) {
 					new Entreprise(user);
 					fc.dispose();
 				}
@@ -151,16 +154,7 @@ public class PanelConnexion extends JPanel{
 		}	
     }
     
-    /**
-     * cherche l'user avec son login et son mdp
-     * @param login du compte	
-     * @param mdp du compte
-     * @return la personne asssocié sinon null
-     */
-	private Personne chercheUser(String login, String mdp) {
-    	Personne p = null;
-    	return p;
-    }
+ 
     
     private void actionQuitter(FenetreConnexion fc) {
     	fc.dispose();
