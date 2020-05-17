@@ -43,7 +43,6 @@ public class PanelTache extends JPanel {
 	private Entreprise entreprise;
 	private Color couleurFond;
 	public final static int RIEN = -1, TICKET = 0, OPTIMISATION = 1;
-	private int afficheTache;
 
 	private JButton boutonNouveauTicket;
 	
@@ -51,7 +50,6 @@ public class PanelTache extends JPanel {
 	public PanelTache(Entreprise entreprise) {
 		this.entreprise = entreprise;
 		couleurFond = PanelPrincipal.BLEU1;
-		afficheTache = entreprise.getAfficheTache();
 		boutonNouveauTicket = new JButton("Nouveau ticket");
 		boutonNouveauTicket.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -75,43 +73,48 @@ public class PanelTache extends JPanel {
 		
 		gc.weighty = 7;
 
-		switch (afficheTache) {
+		switch (entreprise.getAfficheTache()) {
 		case TICKET: afficheTicket(gc);
-			break;
+		break;
+		case OPTIMISATION: afficheOptimisation(gc);
+		break;
 
 		default:
 			break;
 		}
 		
 		
-		gc.fill = GridBagConstraints.VERTICAL;
+		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.insets = new Insets(0, 15, 0, 15);
 		gc.gridx = 2;
-		gc.gridy = 0;
-		gc.gridwidth = GridBagConstraints.REMAINDER;
-		gc.gridheight= GridBagConstraints.REMAINDER;
-		this.add(creerLabelIco(new ImageIcon("images/mail_white.png"), TICKET), gc);
-	}
+		gc.gridy = 3;
+		gc.gridwidth = 1;
+		gc.gridheight= 1;
+		this.add(creerImageTache(TICKET), gc);
+
+		gc.gridy ++;
+		this.add(creerImageTache(OPTIMISATION), gc);
+}
 	
-	private JLabel creerImageRessource() {
-		int tacheSelectionner = entreprise.getAfficheListeRessource();
+	private JLabel creerImageTache(int tache) {
+		int tacheSelectionner = entreprise.getAfficheTache();
 		ImageIcon ico = new ImageIcon();
-		switch (afficheTache) {
+		switch (tache) {
 		case TICKET:
-			if (tacheSelectionner == Ressource.PERSONNE) {
-				ico = new ImageIcon("images/user_grey_grand.png");
+			if (tacheSelectionner == TICKET) {
+				ico = new ImageIcon("images/mail_grey.png");
 			}
 			else {
-				ico = new ImageIcon("images/user_white.png");
+				ico = new ImageIcon("images/mail_white.png");
 			}		
 			break;
 		case OPTIMISATION:
-			if (tacheSelectionner == Ressource.SALLE) {
-				ico = new ImageIcon("images/door_grey_grand.png");
+			if (tacheSelectionner == OPTIMISATION) {
+				ico = new ImageIcon("images/gear_grey.png");
 			}
 			else {
-				ico = new ImageIcon("images/door_white.png");
+				ico = new ImageIcon("images/gear_white.png");
 			}
 			break;
 
@@ -124,7 +127,7 @@ public class PanelTache extends JPanel {
 		label.addMouseListener(new MouseListener() {           
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				entreprise.setAfficheListeRessource(type);
+				entreprise.setAfficheTache(tache);
  			}
 			@Override
 			public void mousePressed(MouseEvent e) {}
@@ -200,6 +203,27 @@ public class PanelTache extends JPanel {
 		
 	}
 
+	private void afficheOptimisation (GridBagConstraints gc) {
+		gc.fill = GridBagConstraints.CENTER;
+		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		gc.insets = new Insets(0, 10, 0, 10);
+		gc.gridx = 0;
+		gc.gridy = 0;
+		
+		//tickets recu
+		gc.gridheight = 1;
+		this.add(creerLabel("Proposition du systeme", true), gc);
+
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		gc.fill = GridBagConstraints.BOTH;
+		gc.gridy=1;
+		gc.gridheight = 2;
+		//this.add(creerList(ticketRecuTab), gc);
+		
+		
+	}
+	
 	private JLabel creerLabel(String nom, boolean estGras) {
 		JLabel label = new JLabel(nom);
 		if(estGras) {

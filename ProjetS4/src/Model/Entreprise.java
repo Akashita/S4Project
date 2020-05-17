@@ -1678,18 +1678,18 @@ public class Entreprise extends Observable{
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion tache
 
-	public void setAfficheTache(int type) {
-		if (type == afficheListeRessource) {
+	public void setAfficheTache(int tache) {
+		if (tache == afficheTache) {
 			afficheTache = PanelTache.RIEN;
 		}
 		else {
-			afficheListeRessource = type;
+			afficheTache = tache;
 		}
 		update();
 	}
 
 	public int getAfficheTache() {
-		return afficheListeRessource;
+		return afficheTache;
 	}
 
 
