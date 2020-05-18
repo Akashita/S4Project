@@ -622,9 +622,19 @@ public class Entreprise extends Observable{
 	 * @param id de l'activite
 	 * @return le projet associer
 	 */
-	public Projet getProjetDeActiviteParId(int id) {
-		return null;
+	public Projet getProjetDeActiviteParId(int idA) {
+		Projet projCour = null;
+		
+		try {
+			projCour = JavaSQLRecherche.recupereProjetParIdActivite(idA);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return projCour;
 	}
+
 	
 	/**
 	 * Cherche tout les ressource contenut par l'activite par son id
@@ -1078,7 +1088,7 @@ public class Entreprise extends Observable{
 	 * @return vrai si la personne est presente sinon faux
 	 */
 	public boolean personnePresenteDansProjet(Personne r, Projet p) {
-		Boolean b = null;
+		Boolean b = false;
 		try {
 			b = JavaSQLRecherche.presenceProjetParIdPersonne(r.getId(),p.getId());
 		} catch (SQLException e) {
@@ -1096,7 +1106,7 @@ public class Entreprise extends Observable{
 	 * @return vrai si la salle est presente sinon faux
 	 */
 	public boolean sallePresenteDansProjet(Salle r, Projet p) {
-		Boolean b = null;
+		Boolean b = false;
 		try {
 			b = JavaSQLRecherche.presenceProjetParIdSalle(r.getId(),p.getId());
 		} catch (SQLException e) {
@@ -1114,7 +1124,7 @@ public class Entreprise extends Observable{
 	 * @return vrai si la calculateur est presente sinon faux
 	 */
 	public boolean calculateurPresenteDansProjet(Calculateur r, Projet p) {
-		Boolean b = null;
+		Boolean b = false;
 		try {
 			b = JavaSQLRecherche.presenceProjetParIdCalculateur(r.getId(),p.getId());
 		} catch (SQLException e) {
@@ -1157,7 +1167,7 @@ public class Entreprise extends Observable{
 	 * @return vrai si la personne est presente sinon faux
 	 */
 	public boolean personnePresenteDansActivite(Personne r, Activite a) {
-		Boolean b = null;
+		Boolean b = false;
 		try {
 			b = JavaSQLRecherche.presenceActivitePersonne(r,a.getId());
 		} catch (SQLException e) {
@@ -1175,7 +1185,7 @@ public class Entreprise extends Observable{
 	 * @return vrai si la salle est presente sinon faux
 	 */
 	public boolean sallePresenteDansActivite(Salle r, Activite a) {
-		Boolean b = null;
+		Boolean b = false;
 		try {
 			b = JavaSQLRecherche.presenceActiviteSalle(r,a.getId());
 		} catch (SQLException e) {
@@ -1193,7 +1203,7 @@ public class Entreprise extends Observable{
 	 * @return vrai si la calculateur est presente sinon faux
 	 */
 	public boolean calculateurPresenteDansActivite(Calculateur r, Activite a) {
-		Boolean b = null;
+		Boolean b = false;
 		try {
 			b = JavaSQLRecherche.presenceActiviteCalculateur(r,a.getId());
 		} catch (SQLException e) {
