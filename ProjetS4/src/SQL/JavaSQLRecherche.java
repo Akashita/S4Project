@@ -455,8 +455,11 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 idProjet = res.getInt("idP");
 			 }
 		 }
-		 proTab.add(recupereProjetParId(idProjet));
-		}
+		 Projet projCour = recupereProjetParId(idProjet);
+		 if (!(proTab.contains(projCour))){
+		 proTab.add(projCour);
+		 }
+		 }
 		return proTab;
 	}
 	
@@ -467,15 +470,27 @@ public final class JavaSQLRecherche extends JavaSQL{
 		for (int i = 0; i < idActiviteTab.size(); i++) {
 			
 		
-		String sql = "SELECT idP FROM Activite WHERE idA = '"  + idActiviteTab.get(i) +"';";
-		Statement stmt = getCon().createStatement();
-		 try (ResultSet res = stmt.executeQuery(sql)){
-			 while(res.next()) {
-				 idProjet = res.getInt("idP");
+			String sql = "SELECT idP FROM Activite WHERE idA = '"  + idActiviteTab.get(i) +"';";
+			Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 idProjet = res.getInt("idP");
+				 }
 			 }
-		 }
-		 proTab.add(recupereProjetParId(idProjet));
+			 Projet projCour = recupereProjetParId(idProjet);
+			 if (!(proTab.contains(projCour))){
+			 proTab.add(projCour);
+			 }
 		}
+		ArrayList<Projet> projetChef = new ArrayList<Projet>();
+		projetChef = recupereProjetParIdChef(numSalarie);
+		for (int i = 0; i < projetChef.size(); i++) {
+		Projet projCour = projetChef.get(i);
+		 if (!(proTab.contains(projCour))){
+		 proTab.add(projCour);
+		 }
+		}
+		
 		return proTab;
 	}
 	
@@ -495,8 +510,11 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 idProjet = res.getInt("idP");
 			 }
 		 }
-		 proTab.add(recupereProjetParId(idProjet));
-		}
+		 Projet projCour = recupereProjetParId(idProjet);
+		 if (!(proTab.contains(projCour))){
+		 proTab.add(projCour);
+		 }
+		 }
 		return proTab;
 	}
 	
@@ -618,9 +636,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 							 }
 						 }
 						 personne = (new Personne(res.getString("nom"), res.getString("prenom"), res.getString("role"), res.getInt("numSalarie"), res.getString("motDePasse"), tagtab));
-						 
-						 
-						
+
 					 }
 				 }
 			} catch(SQLException e){
