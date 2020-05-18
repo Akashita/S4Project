@@ -55,7 +55,7 @@ public class PanelInfoRessource extends JPanel{
 	private Checkbox checkBoxestAdmin;
 	private String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
 	private JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
-
+    private Insets insets = new Insets(2, 5, 2, 0);
 	
 	private JTextField textFieldNom = new JTextField(),
     		textFieldPrenom = new JTextField(),
@@ -110,6 +110,7 @@ public class PanelInfoRessource extends JPanel{
 		this.setLayout(new GridBagLayout());
 		
 		GridBagConstraints gc = new GridBagConstraints();
+		gc.insets = insets;
 
 		if (modeModification) {
 			infoModifier(gc);
@@ -131,7 +132,7 @@ public class PanelInfoRessource extends JPanel{
 	}
 	
 	private void info(GridBagConstraints gc) {
-		gc.insets = new Insets(2, 5, 2, 0);
+		Personne user = entreprise.getUser();
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
@@ -175,8 +176,13 @@ public class PanelInfoRessource extends JPanel{
 			gc.gridy ++;
 			this.add(labelInfo("Login : " + login), gc);
 
-			gc.gridy ++;
-			this.add(labelInfo("Mot de passe : " + mdp), gc);
+			if (ressource.getType() == Ressource.PERSONNE) {
+				Personne p = ((Personne) ressource);
+				if (user.estAdmin() || user.getId() == p.getId()) { //seul un admin peut voir les mdp et les users peuvent voir leur mdp
+					gc.gridy ++;
+					this.add(labelInfo("Mot de passe : " + mdp), gc);								
+				}
+			}
 		}
 		
 		if (ressource.getType() == Ressource.SALLE) {
@@ -187,14 +193,15 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridy ++;
 		this.add(labelInfo("Type : " + getStringByIntOfType(ressource.getType())), gc);
 		
-		gc.gridy ++;
-		this.add(panelBouton(), gc);		
+		if (user.estAdmin()) {
+			gc.gridy ++;
+			this.add(panelBouton(), gc);					
+		}
 	}
 	
 	private void infoModifier(GridBagConstraints gc) {
-		gc.insets = new Insets(2, 5, 2, 0);
 		
-		gc.fill = GridBagConstraints.BOTH;
+		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.ipady = gc.anchor = GridBagConstraints.WEST;
 		gc.weightx = 1;
 		gc.weighty = 1;
@@ -452,7 +459,6 @@ public class PanelInfoRessource extends JPanel{
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		gc.insets = new Insets(5, 5, 5, 5);
 		gc.weightx = 3;
 		gc.weighty = 1;
 
@@ -473,35 +479,32 @@ public class PanelInfoRessource extends JPanel{
 	
 	private JPanel panelBouton() {
 		JPanel panel = new JPanel();
-		if (entreprise.getUser().estAdmin()) {
-			panel.setBackground(couleurFond);
-			panel.setLayout(new GridBagLayout());
-			GridBagConstraints gc = new GridBagConstraints();
-			gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
-			gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-			gc.fill = GridBagConstraints.CENTER;
-
-			gc.insets = new Insets(5, 5, 5, 5);
-			gc.weightx = 2;
-			gc.weighty = 1;
+		panel.setBackground(couleurFond);
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.fill = GridBagConstraints.CENTER;
 
 
-			gc.gridx = 0;
-			gc.gridy = 0;
-			gc.gridwidth = 1;
+		gc.weightx = 2;
+		gc.weighty = 1;
 
-			if (modeModification) {
-				panel.add(boutonAnnuler, gc);
-				gc.gridx ++;
-				panel.add(boutonTerminer, gc);
-			}
-			else {
-				panel.add(boutonSupprimer, gc);
-				gc.gridx ++;
-				panel.add(boutonModifier, gc);
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.gridwidth = 1;
 
-			}			
+		if (modeModification) {
+			panel.add(boutonAnnuler, gc);
+			gc.gridx ++;
+			panel.add(boutonTerminer, gc);
 		}
+		else {
+			panel.add(boutonSupprimer, gc);
+			gc.gridx ++;
+			panel.add(boutonModifier, gc);
+
+		}			
 		return panel;
 	}
 	

@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
@@ -24,8 +25,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -123,25 +126,51 @@ public class PanelFenetre extends JPanel{
 	    });			
 	}
 
-	protected Component afficheListeDomaine() {
+	protected Component afficheListeDomaine(FenetreModal fm, PanelFenetre pf) {
 		listeDomaine = entreprise.getListeDomaineEntreprise();
 		String [] domaine = new String [listeDomaine.size()];
 		Collections.sort(listeDomaine); //trie dans l'odre alphabetique
 		for (int i=0; i<listeDomaine.size(); i++) {
 			domaine[i] = listeDomaine.get(i);
 		}
-		jListDomaine = new JList<String>(domaine);
-		jListDomaine.setBackground(couleurFond);
-		scrollPaneJListDomaine = new JScrollPane(jListDomaine);
-		scrollPaneJListDomaine.setViewportView(jListDomaine);
+		JList<String> jlt = new JList<String>(domaine);
+		jlt.setBackground(couleurFond);
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent evt) {
+		        if (evt.getButton() == MouseEvent.BUTTON3) { //clic droit
+		        	jlt.setSelectedIndex(jlt.locationToIndex(evt.getPoint()));
+		        	jlt.setComponentPopupMenu(popupMenuDomaine(pf, jlt.getSelectedValue()));
+		        	;
+		        }
+		    }
+		});
+
+		scrollPaneJListDomaine = new JScrollPane(jlt);
+		scrollPaneJListDomaine.setViewportView(jlt);
 		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		JPanel panel = new JPanel();
+		/*JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
 		panel.setLayout(new BorderLayout());
-		panel.add(scrollPaneJListDomaine, BorderLayout.CENTER);
-		return panel;
+		panel.add(scrollPaneJListDomaine, BorderLayout.CENTER);*/
+		return scrollPaneJListDomaine;
 	}
 
+	public JPopupMenu popupMenuDomaine(PanelFenetre pf, String domaine) {
+		JPopupMenu m = new JPopupMenu("Supprimer");  
+		JMenuItem supp = new JMenuItem("Supprimer");
+		supp.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e) {              
+            	supprimerDomaine(pf, domaine);
+            	}  
+           });  
+
+		m.add(supp);
+		return m;
+		//m.show(fm, x, y);
+		//fm.add(m);
+	}
+	
 	protected void ajoutDomaine (PanelFenetre pf) {
 		if (!textFieldNom.getText().isEmpty()) {
 			String domaine = textFieldNom.getText().toLowerCase();
@@ -163,8 +192,15 @@ public class PanelFenetre extends JPanel{
 
 	}
 	
-	protected void supprimerDomaine(PanelFenetre pf) {
-		if (jListDomaine.getModel().getSize() > 0) {
+	protected void supprimerDomaine(PanelFenetre pf, String domaine) {
+		if (entreprise.PersonneOuActiviteACeDomaine(domaine)) {
+			entreprise.supprimerDomaine(domaine);
+			maj(pf);			
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}			
+		/*if (jListDomaine.getModel().getSize() > 0) {
 			int index = jListDomaine.getSelectedIndex();
 			if (index != -1) {
 				String domaine = listeDomaine.get(index);
@@ -179,7 +215,7 @@ public class PanelFenetre extends JPanel{
 		}
 		else {
 	    	JOptionPane.showMessageDialog(null,"Il y a aucun domaine dans l'entreprise", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}
+		}*/
 	}
 	
 	
