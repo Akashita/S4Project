@@ -273,7 +273,7 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridheight = 1;
 		this.add(labelTitreColonne("Chef des projets"), gc);
 
-		ArrayList<Projet> projets = ((Personne) ressource).getListeDeProjet();
+		ArrayList<Projet> projets = entreprise.getListeProjetparIdChef(ressource.getId());
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy++;
 		gc.gridheight = GridBagConstraints.REMAINDER;

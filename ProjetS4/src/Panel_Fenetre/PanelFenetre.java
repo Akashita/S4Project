@@ -118,12 +118,12 @@ public class PanelFenetre extends JPanel{
 	        	ajoutDomaine(pf);
 	        }
 	    });			
-		boutonSupprimerDomaine = new JButton("Supprimer");
+		/*boutonSupprimerDomaine = new JButton("Supprimer");
 		boutonSupprimerDomaine.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
 	        	supprimerDomaine(pf);
 	        }
-	    });			
+	    });	*/		
 	}
 
 	protected Component afficheListeDomaine(FenetreModal fm, PanelFenetre pf) {
@@ -193,6 +193,7 @@ public class PanelFenetre extends JPanel{
 	}
 	
 	protected void supprimerDomaine(PanelFenetre pf, String domaine) {
+		//String domaine = jListDomaine.getSelectedValue();
 		if (entreprise.PersonneOuActiviteACeDomaine(domaine)) {
 			entreprise.supprimerDomaine(domaine);
 			maj(pf);			
