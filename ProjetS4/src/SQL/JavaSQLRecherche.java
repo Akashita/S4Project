@@ -523,8 +523,9 @@ public final class JavaSQLRecherche extends JavaSQL{
 		Boolean presence = false;
 		int i = 0;
 		ArrayList<Activite> idA = recupereActiviteParIdPersonne(numSalarie);
-		while (i < idA.size() || presence == true ) {
+		while (i < idA.size() && presence == false ) {
 			presence = presenceProjetParIdActivite(idA.get(i).getId(),idP);
+			i++;
 		}
 		return presence;
 	}
@@ -533,8 +534,9 @@ public final class JavaSQLRecherche extends JavaSQL{
 		Boolean presence = false;
 		int i = 0;
 		ArrayList<Activite> idA = recupereActiviteParIdSalle(numero);
-		while (i < idA.size() || presence == true ) {
+		while (i < idA.size() && presence == false ) {
 			presence = presenceProjetParIdActivite(idA.get(i).getId(),idP);
+			i++;
 		}
 		return presence;
 	}
@@ -543,8 +545,9 @@ public final class JavaSQLRecherche extends JavaSQL{
 		Boolean presence = false;
 		int i = 0;
 		ArrayList<Activite> idA = recupereActiviteParIdCalculateur(code);
-		while (i < idA.size() || presence == true ) {
+		while (i < idA.size() && presence == false ) {
 			presence = presenceProjetParIdActivite(idA.get(i).getId(),idP);
+			i++;
 		}
 		return presence;
 	}
@@ -851,10 +854,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
-					 while(res.next()) {
-						 if (domaine.equals(res.getString("tag"))){
+					 while(res.next() && presence == false) {
 						 presence = true;
-						 }
 						 }
 				 }
 			} catch(SQLException e){
@@ -870,10 +871,9 @@ public final class JavaSQLRecherche extends JavaSQL{
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
-					 while(res.next()) {
-						 if (domaine.equals(res.getString("tag"))){
+					 while(res.next() && presence == false) {
 						 presence = true;
-						 }
+						 
 						 }
 				 }
 			} catch(SQLException e){
