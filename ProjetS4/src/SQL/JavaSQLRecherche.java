@@ -602,15 +602,15 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 ///////////////////////////////////////////////////////////////////////////////////PERSONNE////////////////////////////////////////////////////////////////////////////	
 
-	public static Ressource recuperePersonneParId(int idUser) throws SQLException{
-		String sql = "SELECT * FROM Personne WHERE numSalarie = '" + idUser + "';";
+	public static Ressource recuperePersonneParId(int numSalarie) throws SQLException{
+		String sql = "SELECT * FROM Personne WHERE numSalarie = '" + numSalarie + "';";
 		Ressource personne = null;
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 ArrayList<Competence> tagtab = new ArrayList<Competence>();
-						 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
+						 String sqltag = "SELECT * FROM Competence WHERE numSalarie = '" + numSalarie + "';";
 						 Statement stmt2 = getCon().createStatement();
 						 try (ResultSet res2 = stmt2.executeQuery(sqltag)){
 							 while(res2.next()) {
