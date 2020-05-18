@@ -88,12 +88,12 @@ public class PanelTache extends JPanel {
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.insets = new Insets(0, 15, 0, 15);
 		gc.gridx = 2;
-		gc.gridy = 3;
+		gc.gridy = 0;
 		gc.gridwidth = 1;
 		gc.gridheight= 1;
 		this.add(creerImageTache(TICKET), gc);
 
-		gc.gridy ++;
+		gc.gridy = 6;
 		this.add(creerImageTache(OPTIMISATION), gc);
 }
 	

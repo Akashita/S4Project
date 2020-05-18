@@ -63,6 +63,7 @@ public class Ressource implements Comparable<Ressource>{
 		return type;
 	}
 	
+	
 	//--------------------------------------------------------------------------------->>>>>>> Setteur 
 	
 	public void setNom (String s) {

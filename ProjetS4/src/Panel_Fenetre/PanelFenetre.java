@@ -63,7 +63,7 @@ public class PanelFenetre extends JPanel{
     protected JComboBox<String> comboBoxType = new JComboBox<String>(listeType);		
     protected JComboBox<Ressource> comboBoxRessource;		
 
-    String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
+    private String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
     protected JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
     protected ArrayList<Competence> listeCompetenceChoisie;
     protected ArrayList<String> listeDomaineChoisi;
@@ -144,7 +144,7 @@ public class PanelFenetre extends JPanel{
 
 	protected void ajoutDomaine (PanelFenetre pf) {
 		if (!textFieldNom.getText().isEmpty()) {
-			String domaine = textFieldNom.getText().toUpperCase();
+			String domaine = textFieldNom.getText().toLowerCase();
 			boolean estPresent = false;
 			for (int i=0; i<listeDomaine.size(); i++) {
 				if (domaine.equals(listeDomaine.get(i))) {

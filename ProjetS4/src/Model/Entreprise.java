@@ -603,6 +603,14 @@ public class Entreprise extends Observable{
 		return getCalculateurParId(id);
 	}
 	
+	/**
+	 * cherche dans la bdd le projet associer a l'activite
+	 * @param id de l'activite
+	 * @return le projet associer
+	 */
+	public Projet getProjetDeActiviteParId(int id) {
+		return null;
+	}
 	
 	/**
 	 * Cherche tout les ressource contenut par l'activite par son id

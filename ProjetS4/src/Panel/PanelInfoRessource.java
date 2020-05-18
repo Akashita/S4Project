@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -50,8 +51,10 @@ public class PanelInfoRessource extends JPanel{
 	private Ressource ressource;
 	private Color couleurFond;
 	private boolean modeModification;
-	private JButton boutonModifier, boutonTerminer, boutonSupprimer, boutonAnnuler;
+	private JButton boutonModifier, boutonTerminer, boutonSupprimer, boutonAnnuler, boutonAjoutCompetence;
 	private Checkbox checkBoxestAdmin;
+	private String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
+	private JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
 
 	
 	private JTextField textFieldNom = new JTextField(),
@@ -117,7 +120,12 @@ public class PanelInfoRessource extends JPanel{
 		
 		if (ressource.getType() == Ressource.PERSONNE) {
 			colChefDeProjet(gc);
-			colCompetence(gc);
+			if (modeModification) {
+				colCompetenceModifie(gc);
+			}
+			else {
+				colCompetence(gc);
+			}
 		}
 		colActivite(gc);
 	}
@@ -264,16 +272,6 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridheight = GridBagConstraints.REMAINDER;
 		this.add(creerScrollPane(listProjet(projets)), gc);
 
-		
-		/*ArrayList<String> listeProjet = new ArrayList<String>();
-		for (int i=0; i<projets.size(); i++) {
-			listeProjet.add(projets.get(i).getNom());
-		}	
-		gc.gridy ++;
-		gc.gridheight = GridBagConstraints.REMAINDER;
-		if (projets.size()>0) {
-			this.add(panelContenuColonne(listeProjet), gc);		
-		}*/
 	}
 	
 	private void colCompetence(GridBagConstraints gc) {
@@ -283,26 +281,104 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridy = 0;
 		
 		this.add(labelTitreColonne("COMPETENCES"),gc);
-		//this.add(panelTitreInfoColonne("COMPETENCES", "domaine", "niveau"), gc);
 
 		ArrayList<Competence> competences = ((Personne) ressource).getListeDeCompetence();
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy++;
 		gc.gridheight = GridBagConstraints.REMAINDER;
 		this.add(creerScrollPane(listCompetence(competences)), gc);
-		/*ArrayList<String> listeDomaine = new ArrayList<String>();
-		ArrayList<String> listeNiveau = new ArrayList<String>();
-		for (int i=0; i<competences.size(); i++) {
-			listeDomaine.add(competences.get(i).getNom());
-			listeNiveau.add(competences.get(i).getStringNiveau());
-		}	
-		gc.gridy =1;
-		gc.gridheight = GridBagConstraints.REMAINDER;
-		if (competences.size()>0) {
-			this.add(panelContenuColonne("Domaine", "Niveau", listeDomaine, listeNiveau), gc);
-		}*/
 	}
-			
+
+	private void colCompetenceModifie(GridBagConstraints gc) {
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		gc.gridx ++;
+		gc.gridy = 0;
+		
+		this.add(labelTitreColonne("COMPETENCES"),gc);
+
+		ArrayList<Competence> competences = ((Personne) ressource).getListeDeCompetence();
+		gc.fill = GridBagConstraints.BOTH;
+		gc.gridy++;
+		gc.gridheight = GridBagConstraints.RELATIVE;
+		this.add(creerScrollPane(listCompetence(competences)), gc);
+
+		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
+		gc.gridy = 20;
+		gc.gridheight = 1;
+		this.add(actionModificationCompetence(),gc);
+	}
+
+	private JPanel actionModificationCompetence() {
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.fill = GridBagConstraints.CENTER;
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.gridwidth = 1;
+		ArrayList<String> listeDomaine = entreprise.getListeDomaineEntreprise();
+
+		String [] liste = new String [listeDomaine.size()+1];
+		liste[0] = "Competence";
+		for (int i=0; i<liste.length-1; i++) {
+			liste[i+1] = listeDomaine.get(i);
+		}
+		comboBoxDomaine = new JComboBox<String>(liste);
+
+		comboBoxNiveau = new JComboBox<String>(niveau);	
+
+		boutonAjoutCompetence = new JButton("Ajouter");
+		boutonAjoutCompetence.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	ajoutCompetenceChoisie();
+	        }
+	    });			
+		
+		p.add(comboBoxDomaine, gc);
+		gc.gridx ++;
+		p.add(comboBoxNiveau, gc);
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.gridx = 0;
+		gc.gridy ++;
+		p.add(boutonAjoutCompetence, gc);
+		return p;
+	}
+	
+	private void ajoutCompetenceChoisie() {
+		if (comboBoxDomaine.getSelectedIndex()>0) {
+			if (comboBoxNiveau.getSelectedIndex()>0) {
+				boolean estPresent = false;
+				Competence competence = new Competence((String) comboBoxDomaine.getSelectedItem(), comboBoxNiveau.getSelectedIndex());
+				ArrayList<Competence> lc = ((Personne) ressource).getListeDeCompetence();
+				for (int i=0; i<lc.size(); i++) {
+					if (competence.getNom().equals(lc.get(i).getNom())) {
+						estPresent = true;
+					}
+				}
+				if (!estPresent) {
+					
+					lc.add(competence);
+					entreprise.modifPersonne((Personne) ressource, ressource.getNom(), ((Personne) ressource).getPrenom(),
+							((Personne) ressource).getRole(), ((Personne) ressource).getMdp(), lc);
+					maj();
+				}	
+				else {
+			    	JOptionPane.showMessageDialog(null, "Vous l'avez deja  choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}
+			}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Choissisez un niveau", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Choissisez une competence", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
+		
+	}
+	
+	
 	private void colActivite(GridBagConstraints gc) {
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
@@ -316,19 +392,6 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridy++;
 		gc.gridheight = GridBagConstraints.REMAINDER;
 		this.add(creerScrollPane(listActivite(listeAct)), gc);
-		/*ArrayList<Projet> listeProj = entreprise.getListeProjetdeRessourceParId(ressource.getType(), ressource.getId());
-		ArrayList<String> act = new ArrayList<String>();
-		ArrayList<String> projet = new ArrayList<String>();
-		for (int i=0; i<listeAct.size(); i++) {
-			act.add(listeAct.get(i).getTitre());
-			projet.add(listeProj.get(i).getNom());
-		}	
-		gc.gridy =1;
-		gc.gridheight = GridBagConstraints.REMAINDER;
-		if (listeAct.size()>0) {
-			this.add(panelContenuColonne("Activité", "Projet", act, projet), gc);
-		}*/
-		
 	}
 	
 	private JPanel labelInfo(String nom) {
@@ -364,31 +427,6 @@ public class PanelInfoRessource extends JPanel{
 		return label;
 	}
 
-	private JPanel panelContenuColonne(String nomCol1, String nomCol2, ArrayList<String> liste1, ArrayList<String> liste2) {
-		JPanel panel = new JPanel();
-		panel.setBackground(couleurFond);
-		panel.setLayout(new GridBagLayout());
-		GridBagConstraints gc = new GridBagConstraints();
-
-		gc.insets = new Insets(0, 8, 0, 10);
-		gc.fill = GridBagConstraints.CENTER;
-		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-		gc.weightx = 1;
-		gc.weighty = 1;
-		gc.gridx = 0;
-		gc.gridy = 0;
-		panel.add(labelInfoColonne(nomCol1), gc);
-		gc.gridx = 1;
-		panel.add(labelInfoColonne(nomCol2), gc);
-
-		gc.insets = new Insets(0, 8, 0, 5);
-		gc.gridx = 0;
-		gc.gridy = 1;
-		panel.add(panelContenuColonne(liste1), gc);
-		gc.gridx = 1;
-		panel.add(panelContenuColonne(liste2), gc);
-		return panel;
-	}
 	
 	private JPanel panelContenuColonne(ArrayList<String> liste) {
 		JPanel panel = new JPanel();
