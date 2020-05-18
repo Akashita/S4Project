@@ -49,7 +49,7 @@ public class PanelAjouterRessource extends PanelFenetre{
 		
 		
 		gc.gridy = 2;
-		initialiseComboBoxRessource(entreprise.getListeRessourceType(typeChoisi));
+		initialiseComboBoxRessource(entreprise.getListeRessourceEntrepriseParType(typeChoisi));
 		this.add(comboBoxRessource, gc);			
 
 		
@@ -70,10 +70,11 @@ public class PanelAjouterRessource extends PanelFenetre{
 	}
 	
 	protected void actionFin() {
+		int type = comboBoxType.getSelectedIndex();
 		Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
 		Activite a = entreprise.getActiviteSelectionner();
 		if (!a.ressourcePresente(r)) {
-			entreprise.ajouterRessourceActivite(r,a);
+			entreprise.ajouterRessourceActivite(type, r,a);
 			fm.dispose();
 		}
 		else {

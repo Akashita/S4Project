@@ -2,17 +2,14 @@ package Panel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -24,6 +21,11 @@ import Model.CreneauHoraire;
 import Model.Temps;
 import Ressource.Ressource;
 
+/**
+ * Genere l'interface de l'emploi du temps de la ressource
+ * @author Damien
+ *
+ */
 public class PanelEDTRessource extends JPanel{
 
 	/**

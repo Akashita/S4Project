@@ -94,8 +94,19 @@ public class PanelNouveauTicket  extends PanelFenetre{
 	}
 	
 	private void afficheTransfert(GridBagConstraints gc) {
-		gc.fill = GridBagConstraints.WEST;
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.gridx ++;
+		gc.gridy ++;
+		gc.gridwidth = GridBagConstraints.RELATIVE;
+		this.add(creerTitre("Type de la ressource"), gc);
+		
+		gc.gridx ++;
+		initialiseComboBoxType(this); 
+		this.add(comboBoxType, gc);
+		
+		gc.fill = GridBagConstraints.WEST;
 		gc.gridx = 0;
 		gc.gridy ++;
 		gc.gridwidth = 1;
@@ -110,7 +121,18 @@ public class PanelNouveauTicket  extends PanelFenetre{
 	
 	private void afficheLibere(GridBagConstraints gc) {
 		gc.fill = GridBagConstraints.CENTER;
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.gridx ++;
+		gc.gridy ++;
+		gc.gridwidth = GridBagConstraints.RELATIVE;
+		this.add(creerTitre("Type de la ressource"), gc);
+		
+		gc.gridx ++;
+		initialiseComboBoxType(this); 
+		this.add(comboBoxType, gc);
+
+		gc.fill = GridBagConstraints.CENTER;
 		gc.gridx = 0;
 		gc.gridy ++;
 		gc.gridwidth = 1;
@@ -129,7 +151,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(comboBoxProjet, gc);
+		this.add( comboBoxProjet, gc);
 		
 	}
 	
@@ -157,7 +179,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		
 		case Ticket.MESSAGE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				if (entreprise.getRessource(getIdFromLogin()) != null) {
+				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
 					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), getIdFromLogin(), null);	
 				}
 				else {
@@ -171,10 +193,12 @@ public class PanelNouveauTicket  extends PanelFenetre{
 
 		case Ticket.LIBERE:
 			if (!textFieldLogin.getText().isEmpty()) {
-				if (entreprise.getRessource(getIdFromLogin()) != null) {
+				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
 					Projet p =  (Projet) comboBoxProjet.getSelectedItem();
+					int type = comboBoxType.getSelectedIndex();
+					String login = textFieldLogin.getText();
 					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
-							entreprise.getRessource(getIdFromLogin()));				
+							entreprise.getRessourceParLogin(type, login));				
 				}
 				else {
 				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -188,11 +212,14 @@ public class PanelNouveauTicket  extends PanelFenetre{
 
 		case Ticket.TRANSFERT:
 			if (!textFieldLogin.getText().isEmpty()) {
-				if (entreprise.getRessource(getIdFromLogin()) != null) {
-					ArrayList<Personne> lchef = entreprise.getChefDeProjetConcerner(entreprise.getRessource(getIdFromLogin()));
+				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
+					int type = comboBoxType.getSelectedIndex();
+					String login = textFieldLogin.getText();
+					ArrayList<Personne> lchef = entreprise.getListeDesChefDeProjetPossedantLaRessourceParLogin(type, login);
+					
 					for (int i=0; i<lchef.size(); i++) {
 						entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(),
-								lchef.get(i).getId(), entreprise.getRessource(getIdFromLogin()));
+								lchef.get(i).getId(), entreprise.getRessourceParLogin(type, login));
 					}				
 				}
 				else {

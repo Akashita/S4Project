@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.TextArea;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -15,15 +14,23 @@ import GestionTicket.Ticket;
 import Model.Entreprise;
 import Panel.PanelPrincipal;
 
+
+/**
+ * Affiche les informations du ticket
+ * @author Damien
+ *
+ */
 public class FenetreInfoTicket extends JDialog{
 	
-	private Entreprise entreprise;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Ticket ticket;
 	private Color couleurFond;
 	
 	public FenetreInfoTicket(Entreprise entreprise, Ticket ticket) {
 		super(entreprise.getFenetrePrincipale(), "Information du ticket");
-		this.entreprise = entreprise;
 		this.ticket  = ticket;
 		couleurFond = PanelPrincipal.BLEU2;
 		this.setSize(300, 400);

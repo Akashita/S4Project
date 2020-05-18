@@ -13,7 +13,8 @@ public class PanelDebugActionBarre extends JPanel{
 	private Entreprise entreprise;
 	private Window w;
 	private int type;
-	public static final int PERSONNE = 0, SALLE = 1,DOMAINE = 2, TICKET = 3;
+	public static final int PERSONNE = 0, SALLE = 1,DOMAINE = 2, TICKET = 3, COMPETENCE = 4, CALCULATEUR = 5, MATERIEL = 6, PROJET = 7,ACTIVITE = 8, PARTICIPESALARIE = 9,
+	PARTICIPESALLE = 10, PARTICIPECALCUL = 11, LISTEDOMAINE = 12;
 
 	public PanelDebugActionBarre(Entreprise entreprise,Window w,int type) {
 		this.entreprise = entreprise;
@@ -22,7 +23,7 @@ public class PanelDebugActionBarre extends JPanel{
 		setLayout(new FlowLayout());
 
 
-		if (type == this.PERSONNE) {
+		if (type == PERSONNE) {
 			
 		
 		Button affiche = new Button("Affiche Personne");
@@ -42,7 +43,7 @@ public class PanelDebugActionBarre extends JPanel{
 
 		}
 		
-		else if (type == this.SALLE) {
+		else if (type == SALLE) {
 			Button affiche = new Button("Affiche Salle");
 			Button ajout = new Button("Ajout Salle");
 			Button supprime = new Button("Suppression Salle");
@@ -94,6 +95,169 @@ public class PanelDebugActionBarre extends JPanel{
 			this.add(ajout);
 			this.add(supprime);
 
+		}
+		
+		
+		else if (type == COMPETENCE) {
+			Button affiche = new Button("Affiche Competence");
+			Button ajout = new Button("Ajout Competence");
+			Button supprime = new Button("Suppression Competence");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.COMPETENCE));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.COMPETENCEAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.COMPETENCESUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+
+		}
+		else if (type == CALCULATEUR) {
+			Button affiche = new Button("Affiche calculateur");
+			Button ajout = new Button("Ajout calculateur");
+			Button supprime = new Button("Suppression calculateur");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.CALCULATEUR));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.CALCULATEURAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.CALCULATEURSUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+
+		}
+		
+		else if (type == MATERIEL) {
+			Button affiche = new Button("Affiche materiel");
+			Button ajout = new Button("Ajout materiel");
+			Button supprime = new Button("Suppression materiel");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MATERIEL));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MATERIELAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.MATERIELSUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+
+		}
+		
+		else if (type == PROJET) {
+			Button affiche = new Button("Affiche projet");
+			Button ajout = new Button("Ajout projet");
+			Button supprime = new Button("Suppression projet");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PROJET));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PROJETAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PROJETSUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+
+		}
+		
+		else if (type == ACTIVITE) {
+			Button affiche = new Button("Affiche activite");
+			Button ajout = new Button("Ajout activite");
+			Button supprime = new Button("Suppression activite");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.ACTIVITE));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.ACTIVITEAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.ACTIVITESUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+
+		}
+		
+		
+		else if (type ==PARTICIPESALARIE) {
+			Button affiche = new Button("Affiche PARTICIPESALARIE");
+			Button ajout = new Button("Ajout PARTICIPESALARIE");
+			Button supprime = new Button("Suppression PARTICIPESALARIE");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPESALARIE));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPESALARIEAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPESALARIESUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+			
+		}
+		
+		else if (type ==PARTICIPESALLE) {
+			Button affiche = new Button("Affiche PARTICIPESALLE");
+			Button ajout = new Button("Ajout PARTICIPESALLE");
+			Button supprime = new Button("Suppression PARTICIPESALLE");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPESALLE));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPESALLEAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPESALLESUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+			
+		}
+		
+		else if (type ==PARTICIPECALCUL) {
+			Button affiche = new Button("Affiche PARTICIPECALCUL");
+			Button ajout = new Button("Ajout PARTICIPECALCUL");
+			Button supprime = new Button("Suppression PARTICIPECALCUL");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPECALCUL));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPECALCULAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.PARTICIPECALCULSUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+			
+		}
+		
+		else if (type ==LISTEDOMAINE) {
+			Button affiche = new Button("Affiche LISTEDOMAINE");
+			Button ajout = new Button("Ajout LISTEDOMAINE");
+			Button supprime = new Button("Suppression LISTEDOMAINE");
+
+
+			affiche.addActionListener(new NavigationListener(w,entreprise,NavigationListener.LISTEDOMAINE));
+			ajout.addActionListener(new NavigationListener(w,entreprise,NavigationListener.LISTEDOMAINEAJOUT));
+			supprime.addActionListener(new NavigationListener(w,entreprise,NavigationListener.LISTEDOMAINESUPPRIME));
+
+
+			
+			this.add(affiche);		
+			this.add(ajout);
+			this.add(supprime);
+			
 		}
 		this.setVisible(true);	
 	}

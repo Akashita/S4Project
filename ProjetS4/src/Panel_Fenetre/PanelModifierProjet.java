@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
+import Model.Temps;
 import Ressource.Personne;
 import Ressource.Ressource;
 
@@ -30,7 +31,7 @@ public class PanelModifierProjet extends PanelFenetre{
 		textFieldPriorite.setText(Integer.toString(prio));
 
 		
-		initialiseComboBoxRessource(entreprise.getListeRessourceType(Ressource.PERSONNE));
+		initialiseComboBoxRessource(entreprise.getListePersonneEntreprise());
 		adapteComboBoxRessource(projet.getChefDeProjet());
 		
 		//initialseJMA(projet.getDeadline());
@@ -141,7 +142,7 @@ public class PanelModifierProjet extends PanelFenetre{
 					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
 					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
 					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
-					LocalDate date =  creerLaDate(jour, mois, annee);
+					LocalDate date =  Temps.creerLaDate(jour, mois, annee);
 					entreprise.modifierProjet(projet, nom, priorite, chefDeProjet, date);
 					fm.dispose();
 				}

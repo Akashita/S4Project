@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,28 +20,36 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import Fenetre.FenetreModal;
 import Fenetre.FenetrePrincipale;
 import GestionTicket.Ticket;
 import Model.Entreprise;
+import Ressource.Ressource;
 import SQL.JavaSQLTicket;
 
-public class PanelTache extends JPanel{
+/**
+ * Affiche la liste des tache (ticket et optimisation)
+ * Et affiche la liste des ticket ou la liste de propostion d'optimisation
+ * @author Damien
+ *
+ */
+public class PanelTache extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
 	private Color couleurFond;
-	private boolean afficheTicket = false;
-	public final static int TICKET = 0, OPTIMISATION = 1;
+	public final static int RIEN = -1, TICKET = 0, OPTIMISATION = 1;
+
 	private JButton boutonNouveauTicket;
-	private JList<Ticket> ticketRecu, ticketEnvoye;
 	
 	
 	public PanelTache(Entreprise entreprise) {
 		this.entreprise = entreprise;
 		couleurFond = PanelPrincipal.BLEU1;
-		afficheTicket = entreprise.getAfficheTicket();
 		boutonNouveauTicket = new JButton("Nouveau ticket");
 		boutonNouveauTicket.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -66,22 +73,74 @@ public class PanelTache extends JPanel{
 		
 		gc.weighty = 7;
 
-		if (afficheTicket) {
-			afficheTicket(gc);
+		switch (entreprise.getAfficheTache()) {
+		case TICKET: afficheTicket(gc);
+		break;
+		case OPTIMISATION: afficheOptimisation(gc);
+		break;
+
+		default:
+			break;
 		}
 		
 		
-		gc.fill = GridBagConstraints.VERTICAL;
+		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.insets = new Insets(0, 15, 0, 15);
 		gc.gridx = 2;
 		gc.gridy = 0;
-		gc.gridwidth = GridBagConstraints.REMAINDER;
-		gc.gridheight= GridBagConstraints.REMAINDER;
-		this.add(creerLabelIco(new ImageIcon("images/mail_white.png"), TICKET), gc);
+		gc.gridwidth = 1;
+		gc.gridheight= 1;
+		this.add(creerImageTache(TICKET), gc);
+
+		gc.gridy = 6;
+		this.add(creerImageTache(OPTIMISATION), gc);
+}
+	
+	private JLabel creerImageTache(int tache) {
+		int tacheSelectionner = entreprise.getAfficheTache();
+		ImageIcon ico = new ImageIcon();
+		switch (tache) {
+		case TICKET:
+			if (tacheSelectionner == TICKET) {
+				ico = new ImageIcon("images/mail_grey.png");
+			}
+			else {
+				ico = new ImageIcon("images/mail_white.png");
+			}		
+			break;
+		case OPTIMISATION:
+			if (tacheSelectionner == OPTIMISATION) {
+				ico = new ImageIcon("images/gear_grey.png");
+			}
+			else {
+				ico = new ImageIcon("images/gear_white.png");
+			}
+			break;
+
+		default:
+			break;
+		}
+		
+		
+		JLabel label = new JLabel(ico);
+		label.addMouseListener(new MouseListener() {           
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				entreprise.setAfficheTache(tache);
+ 			}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+    	});
+		return label;
 	}
-	
-	
+
 
 	private void afficheTicket(GridBagConstraints gc) {
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
@@ -144,6 +203,27 @@ public class PanelTache extends JPanel{
 		
 	}
 
+	private void afficheOptimisation (GridBagConstraints gc) {
+		gc.fill = GridBagConstraints.CENTER;
+		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		gc.insets = new Insets(0, 10, 0, 10);
+		gc.gridx = 0;
+		gc.gridy = 0;
+		
+		//tickets recu
+		gc.gridheight = 1;
+		this.add(creerLabel("Proposition du systeme", true), gc);
+
+		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		gc.fill = GridBagConstraints.BOTH;
+		gc.gridy=1;
+		gc.gridheight = 2;
+		//this.add(creerList(ticketRecuTab), gc);
+		
+		
+	}
+	
 	private JLabel creerLabel(String nom, boolean estGras) {
 		JLabel label = new JLabel(nom);
 		if(estGras) {
@@ -162,7 +242,7 @@ public class PanelTache extends JPanel{
 		label.addMouseListener(new MouseListener() {           
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				entreprise.selectionnerTache(tache);
+				entreprise.setAfficheTache(tache);
  			}
 			@Override
 			public void mousePressed(MouseEvent e) {}
@@ -188,7 +268,8 @@ public class PanelTache extends JPanel{
 		jlt.setForeground(PanelPrincipal.BLANC);
 		jlt.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent evt) {
-		        JList<Ticket> jlt = (JList<Ticket>)evt.getSource();
+		        @SuppressWarnings("unchecked")
+				JList<Ticket> jlt = (JList<Ticket>)evt.getSource();
 		        if (evt.getClickCount() == 2) {
 		            //int index = jlt.locationToIndex(evt.getPoint());
 		            afficheTicket(jlt.getSelectedValue());

@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -21,6 +20,11 @@ import Model.Temps;
 import Ressource.Personne;
 import Ressource.Ressource;
 
+/**
+ * Affiche l'emploi du temps de l'activité sous forme de diagramme de gantt
+ * @author Damien
+ *
+ */
 public class PanelEDTActivite extends JPanel{
 
 	/**
@@ -31,7 +35,6 @@ public class PanelEDTActivite extends JPanel{
 	private int nbPersonne;
 	private Entreprise entreprise;
 	private Color couleurFond;
-	private LocalDate debut, fin;
 
 	public PanelEDTActivite(Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;

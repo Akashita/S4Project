@@ -9,7 +9,7 @@ public class Calculateur extends Ressource{
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Calculateur(String nom, int numCalculateur) {
-		super(numCalculateur, nom, "Calculateur");
+		super(numCalculateur, nom, Ressource.CALCULATEUR);
 	}
 	
 	public Calculateur(int code, String nom, int capacite) {
@@ -22,5 +22,9 @@ public class Calculateur extends Ressource{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public String toString() {
 		return nom;
+	}
+
+	public String creeAffiche() {
+		return "id : " + this.id + ", nom : " + this.nom + ", capacite calculateur : " + this.capacite;
 	}
 }

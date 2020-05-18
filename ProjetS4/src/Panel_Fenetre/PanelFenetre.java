@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
@@ -24,14 +25,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
 import Fenetre.FenetreModal;
 import Model.Activite;
@@ -49,8 +50,8 @@ public class PanelFenetre extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static String[] listeType = {Ressource.PERSONNE, Ressource.SALLE, Ressource.CALCULATEUR};
-    protected String typeChoisi = listeType[0];
+	private static String[] listeType = {"Personne", "Salle", "Calculateur"};
+    protected int typeChoisi = Ressource.PERSONNE;
 
     protected JTextField textFieldNom = new JTextField(),
     		textFieldPrenom = new JTextField(),
@@ -65,7 +66,7 @@ public class PanelFenetre extends JPanel{
     protected JComboBox<String> comboBoxType = new JComboBox<String>(listeType);		
     protected JComboBox<Ressource> comboBoxRessource;		
 
-    String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
+    private String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
     protected JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
     protected ArrayList<Competence> listeCompetenceChoisie;
     protected ArrayList<String> listeDomaineChoisi;
@@ -110,43 +111,69 @@ public class PanelFenetre extends JPanel{
 	
 	//-------------------------------------------->>>>> gere la liste de domaine 
 	protected void initialiseDomaine (PanelFenetre pf) {
-		listeDomaine = entreprise.getDomaine().getListeDomaine();
+		listeDomaine = entreprise.getListeDomaineEntreprise();
 		boutonAjoutDomaine = new JButton("Ajouter");
 		boutonAjoutDomaine.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
 	        	ajoutDomaine(pf);
 	        }
 	    });			
-		boutonSupprimerDomaine = new JButton("Supprimer");
+		/*boutonSupprimerDomaine = new JButton("Supprimer");
 		boutonSupprimerDomaine.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
 	        	supprimerDomaine(pf);
 	        }
-	    });			
+	    });	*/		
 	}
 
-	protected Component afficheListeDomaine() {
-		listeDomaine = entreprise.getDomaine().getListeDomaine();
+	protected Component afficheListeDomaine(FenetreModal fm, PanelFenetre pf) {
+		listeDomaine = entreprise.getListeDomaineEntreprise();
 		String [] domaine = new String [listeDomaine.size()];
 		Collections.sort(listeDomaine); //trie dans l'odre alphabetique
 		for (int i=0; i<listeDomaine.size(); i++) {
 			domaine[i] = listeDomaine.get(i);
 		}
-		jListDomaine = new JList<String>(domaine);
-		jListDomaine.setBackground(couleurFond);
-		scrollPaneJListDomaine = new JScrollPane(jListDomaine);
-		scrollPaneJListDomaine.setViewportView(jListDomaine);
+		JList<String> jlt = new JList<String>(domaine);
+		jlt.setBackground(couleurFond);
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent evt) {
+		        if (evt.getButton() == MouseEvent.BUTTON3) { //clic droit
+		        	jlt.setSelectedIndex(jlt.locationToIndex(evt.getPoint()));
+		        	jlt.setComponentPopupMenu(popupMenuDomaine(pf, jlt.getSelectedValue()));
+		        	;
+		        }
+		    }
+		});
+
+		scrollPaneJListDomaine = new JScrollPane(jlt);
+		scrollPaneJListDomaine.setViewportView(jlt);
 		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		JPanel panel = new JPanel();
+		/*JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
 		panel.setLayout(new BorderLayout());
-		panel.add(scrollPaneJListDomaine, BorderLayout.CENTER);
-		return panel;
+		panel.add(scrollPaneJListDomaine, BorderLayout.CENTER);*/
+		return scrollPaneJListDomaine;
 	}
 
+	public JPopupMenu popupMenuDomaine(PanelFenetre pf, String domaine) {
+		JPopupMenu m = new JPopupMenu("Supprimer");  
+		JMenuItem supp = new JMenuItem("Supprimer");
+		supp.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e) {              
+            	supprimerDomaine(pf, domaine);
+            	}  
+           });  
+
+		m.add(supp);
+		return m;
+		//m.show(fm, x, y);
+		//fm.add(m);
+	}
+	
 	protected void ajoutDomaine (PanelFenetre pf) {
 		if (!textFieldNom.getText().isEmpty()) {
-			String domaine = textFieldNom.getText().toUpperCase();
+			String domaine = textFieldNom.getText().toLowerCase();
 			boolean estPresent = false;
 			for (int i=0; i<listeDomaine.size(); i++) {
 				if (domaine.equals(listeDomaine.get(i))) {
@@ -165,12 +192,20 @@ public class PanelFenetre extends JPanel{
 
 	}
 	
-	protected void supprimerDomaine(PanelFenetre pf) {
-		if (jListDomaine.getModel().getSize() > 0) {
+	protected void supprimerDomaine(PanelFenetre pf, String domaine) {
+		//String domaine = jListDomaine.getSelectedValue();
+		if (!entreprise.PersonneOuActiviteACeDomaine(domaine)) {
+			entreprise.supprimerDomaine(domaine);
+			maj(pf);			
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}			
+		/*if (jListDomaine.getModel().getSize() > 0) {
 			int index = jListDomaine.getSelectedIndex();
 			if (index != -1) {
 				String domaine = listeDomaine.get(index);
-				if (entreprise.aucuneRessourceACeDomaine(domaine)) {
+				if (entreprise.PersonneOuActiviteACeDomaine(domaine)) {
 					entreprise.supprimerDomaine(domaine);
 					maj(pf);			
 				}
@@ -181,19 +216,19 @@ public class PanelFenetre extends JPanel{
 		}
 		else {
 	    	JOptionPane.showMessageDialog(null,"Il y a aucun domaine dans l'entreprise", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}
+		}*/
 	}
 	
 	
 	//-------------------------------------------->>>>> Competence pour Ressource
 	protected void initialiseCompetence (PanelFenetre pf) {
 		listeCompetenceChoisie = new ArrayList<Competence>();
+		listeDomaine = entreprise.getListeDomaineEntreprise();
 
-		Domaine domaine = entreprise.getDomaine();
-		String [] liste = new String [domaine.getListeDomaine().size()+1];
+		String [] liste = new String [listeDomaine.size()+1];
 		liste[0] = "Competence";
 		for (int i=0; i<liste.length-1; i++) {
-			liste[i+1] = domaine.getListeDomaine().get(i);
+			liste[i+1] = listeDomaine.get(i);
 		}
 		comboBoxDomaine = new JComboBox<String>(liste);
 
@@ -252,11 +287,11 @@ public class PanelFenetre extends JPanel{
 	protected void initialiseDomaineActivite (PanelFenetre pf) {
 		listeDomaineChoisi = new ArrayList<String>();
 
-		Domaine domaine = entreprise.getDomaine();
-		String [] liste = new String [domaine.getListeDomaine().size()+1];
+		listeDomaine = entreprise.getListeDomaineEntreprise();
+		String [] liste = new String [listeDomaine.size()+1];
 		liste[0] = "Competence";
 		for (int i=0; i<liste.length-1; i++) {
-			liste[i+1] = domaine.getListeDomaine().get(i);
+			liste[i+1] = listeDomaine.get(i);
 		}
 		comboBoxDomaine = new JComboBox<String>(liste);
 
@@ -395,19 +430,10 @@ public class PanelFenetre extends JPanel{
 	
 	protected void majComboBoxProjet(PanelFenetre pf) {
 		String login = textFieldCapacite.getText();
-		Ressource r = entreprise.ressourceExiste(login);
-		if (r != null) {
-			ArrayList<Projet> lp = entreprise.getProjetDeLaRessource(r);
-			
-			Projet [] tp = new Projet[lp.size()];
-			for (int i=0; i<tp.length; i++) {
-				tp[i] = lp.get(i);
-			}	
-			comboBoxProjet = new JComboBox<Projet>(tp);			
-		}
-		else {
-			comboBoxProjet = new JComboBox<Projet>();
-		}
+		int type = comboBoxType.getSelectedIndex();
+		ArrayList<Projet> l = entreprise.getListeProjetdeRessourceParLogin(type, login);
+		
+		comboBoxProjet = new JComboBox<Projet>((Projet[]) l.toArray());			
 		maj(pf);
 	}
 	
@@ -431,7 +457,7 @@ public class PanelFenetre extends JPanel{
 	}
 	
 	protected void nouveauChoix(PanelFenetre pf) {
-		typeChoisi = (String) comboBoxType.getSelectedItem();
+		typeChoisi = comboBoxType.getSelectedIndex();
 		maj(pf);
 	}
 
@@ -521,18 +547,7 @@ public class PanelFenetre extends JPanel{
 		return true;
 	}
 
-	protected LocalDate creerLaDate(int jour, int mois, int annee) {
-		LocalDate debut = null;
-		if (Temps.jourValide (jour, mois, annee)) {
-			debut = LocalDate.of(annee, mois, jour);
-		}
-		else {
-	    	JOptionPane.showMessageDialog(null, "Date invalide", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}
-		
-		return debut;
-	}
-
+	
 	protected String dateToString(LocalDate date) {
 		return date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();			
 	}

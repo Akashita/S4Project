@@ -12,13 +12,19 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import EcouteurEvenement.KeyActiviteListener;
 import EcouteurEvenement.SourisRessourceListener;
 import Model.Activite;
 import Model.Entreprise;
 import Ressource.Personne;
 import Ressource.Ressource;
 
+
+/**
+ * Affiche ses information et sa liste de ressource.
+ * recliquer dessus permet de voir son emploi du temps 
+ * @author Damien
+ *
+ */
 public class PanelInfoActivite extends JPanel{
 
 	/**
@@ -115,7 +121,7 @@ public class PanelInfoActivite extends JPanel{
 
 
 			for (int i=2; i<5; i++) {
-				String type = null;
+				int type = Ressource.RIEN;
 				switch (i){
 				case 2: type = Ressource.PERSONNE;
 				break;
@@ -131,7 +137,7 @@ public class PanelInfoActivite extends JPanel{
 
 				ArrayList<Ressource> listeR = activite.getListeRessourceType(type);
 				if (listeR.size() > 0) {
-					panel.add(afficheListe(listeR), gc);				
+					panel.add(afficheListe(type, listeR), gc);				
 				}
 				else {
 					JPanel listeVide = new JPanel();
@@ -144,14 +150,15 @@ public class PanelInfoActivite extends JPanel{
 
 	
 	
-	private JPanel afficheListe(ArrayList<Ressource> listeR) {
+	private JPanel afficheListe(int type, ArrayList<Ressource> listeR) {
 		JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
 		for (int i=0; i<listeR.size(); i++) {
 			String nom;
 			Ressource ressource = listeR.get(i);
-			if (ressource.getType() == Ressource.PERSONNE) {
+			if (type == Ressource.PERSONNE) {
 				nom = (((Personne) ressource).getPrenom()) + " " + ressource.getNom();
 			}
 			else {

@@ -33,7 +33,6 @@ public final class JavaSQLSalle extends JavaSQL{
 		ArrayList<Salle> salletab = new ArrayList<Salle>();
 		String sql = "SELECT * FROM Salle;";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -41,7 +40,6 @@ public final class JavaSQLSalle extends JavaSQL{
 						 System.out.println("numero = " + res.getString("numero") + ", nom = " + res.getString("nom") + ", place = " + res.getString("place"));
 					 }
 				 }
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -49,14 +47,12 @@ public final class JavaSQLSalle extends JavaSQL{
 
 	}
 	
-	public static void insertion(int numero, String nom, int place) throws SQLException{
-		String sql = "INSERT INTO Salle(numero, nom, place) VALUE('" + numero+ "' ,  '"+nom+"' ,  '"+place+"');";
+	public static void insertion( String nom, int place) throws SQLException{
+		String sql = "INSERT INTO Salle( nom, place) VALUE('"+nom+"' ,  '"+place+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -64,7 +60,6 @@ public final class JavaSQLSalle extends JavaSQL{
 	
 	 public static void supprime(int numero) throws SQLException{
 			try{
-				 connection();
 				 String sql = "DELETE FROM Materiel WHERE numero =" + numero;
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
@@ -74,25 +69,16 @@ public final class JavaSQLSalle extends JavaSQL{
 				 stmt.executeUpdate(sql);
 				 sql = "DELETE FROM Salle WHERE numero =" + numero;
 				 stmt.executeUpdate(sql);
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 	 }
 	
-	public static void modifie(int ancienNumero, int nouvNumero, String nom, int place) throws SQLException{
+	public static void modifie(int numero, String nom, int place) throws SQLException{
 		try{
-			 connection();
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Salle SET numero = '" + nouvNumero + "' ,nom  = '" + nom + "' ,place = '" + place + "' WHERE numero = '"+ ancienNumero+"';";
+			 String sql = "UPDATE Salle SET numero = nom  = '" + nom + "' ,place = '" + place + "' WHERE numero = '"+ numero+"';";
 			 stmt.executeUpdate(sql);
-			 sql = "UPDATE Materiel SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
-			 stmt.executeUpdate(sql);
-			 sql = "UPDATE Creneaux SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
-			 stmt.executeUpdate(sql);
-			 sql = "UPDATE ParticipeSalle SET numero = '" + nouvNumero + "' WHERE numero = '"+ ancienNumero+"';";
-			 stmt.executeUpdate(sql);
-			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}

@@ -26,7 +26,6 @@ public class JavaSQLTicket extends JavaSQL{
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
 
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -37,7 +36,6 @@ public class JavaSQLTicket extends JavaSQL{
 						 
 					}	
 				 }
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -49,11 +47,9 @@ public class JavaSQLTicket extends JavaSQL{
 		String modif = ticketCour.getModif();
 		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+Temps.getAujourdhui()+"', '"+ Ticket.ENCOURS +"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -61,11 +57,9 @@ public class JavaSQLTicket extends JavaSQL{
 	
 	 public static void supprime(int idT) throws SQLException{
 			try{
-				 connection();
 				 String sql = "DELETE FROM Ticket WHERE idT =" + idT;
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}

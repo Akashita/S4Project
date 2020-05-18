@@ -3,6 +3,10 @@ package SQL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
+import Ressource.Materiel;
+import Ressource.Personne;
 
 public final class JavaSQLMateriel extends JavaSQL{
 
@@ -24,31 +28,30 @@ public final class JavaSQLMateriel extends JavaSQL{
 	
 	
 	
-	public static void affiche() throws SQLException{
+	public static  ArrayList<Materiel> affiche() throws SQLException{
+		
+        ArrayList<Materiel> materielTab = new ArrayList<Materiel>();
 		String sql = "SELECT * FROM Materiel;";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 System.out.println("numSerie= " + res.getString("numSerie") + ", type= " + res.getString("type") + ", numero= " + res.getString("numero"));
+						 materielTab.add(new Materiel(res.getInt("numSerie"), res.getString("type"), res.getInt("numero")));
 					 }
 				 }
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
+			return materielTab;
 
 	}
 	
-	public static void insertion(int numSerie, int type, int numero) throws SQLException{
-		String sql = "INSERT INTO Materiel(numSerie, type, numero) VALUE('" + numSerie+ "' ,  '"+type+"' ,  '"+numero+"');";
+	public static void insertion(String type, int numero) throws SQLException{
+		String sql = "INSERT INTO Materiel(type, numero) VALUE('"+type+"' ,  '"+numero+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -56,29 +59,25 @@ public final class JavaSQLMateriel extends JavaSQL{
 	
 	 public static void supprime(int numSerie) throws SQLException{
 			try{
-				 connection();
 				 String sql = "DELETE FROM Materiel WHERE numSerie =" + numSerie;
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 	 }
 	 
-	public static void modifie(int numSerie, int nouvNumSerie, int type, int numero) throws SQLException{
+	public static void modifie(int numSerie, String type, int numero) throws SQLException{
 		try{
-			 connection();
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Materiel SET numSerie= '" + nouvNumSerie + "' ,type  = '" + type + "' ,numero = '" + numero + "' WHERE numSerie= '"+ numSerie+"';";
+			 String sql = "UPDATE Materiel SET type  = '" + type + "' ,numero = '" + numero + "' WHERE numSerie= '"+ numSerie+"';";
 			 stmt.executeUpdate(sql);
-			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
 	
-	public static String toString(int numSerie, int type, int numero) {
+	public static String toString(int numSerie, String type, int numero) {
 		return "nom : " + numSerie+type+numero; 
 	}
 

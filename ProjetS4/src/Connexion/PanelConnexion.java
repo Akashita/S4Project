@@ -5,12 +5,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,18 +18,28 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Model.Entreprise;
-import Panel.PanelPrincipal;
 import Ressource.Personne;
-import SQL.JavaSQLPersonne;
+import Ressource.Ressource;
+import SQL.JavaSQL;
+import SQL.JavaSQLRecherche;
 
+
+/**
+ * Affiche le contenu de la fenetre connexion
+ * @author Damien
+ *
+ */
 public class PanelConnexion extends JPanel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FenetreConnexion fc;
     private JTextField textFieldLogin = new JTextField();
     private JPasswordField mdpField = new JPasswordField();
     private JButton boutonConnexion, boutonQuitter;
     private Color couleurFond;
-    private Personne user = null;
     
     
     public PanelConnexion(FenetreConnexion fc) {
@@ -55,7 +63,7 @@ public class PanelConnexion extends JPanel{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Veillez entrer vos coordonn�es"), gc);
+		this.add(creerTitre("Veillez entrer vos coordonnees"), gc);
 		
 		//--------------- zone saisie
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
@@ -120,53 +128,22 @@ public class PanelConnexion extends JPanel{
 	    });			
     }   
 
-    //cr�ation du model
-    private void actionConnexion(FenetreConnexion fc) {
+    //connexion au compte et creation du model
+    @SuppressWarnings("deprecation")
+	private void actionConnexion(FenetreConnexion fc) {
     	//ABSOLUMENT DEGUEU A MODIFIER APRES LE 12 
-    	Boolean compteExiste = false;
-    	Boolean compteAdmin = false;
-    	Personne user = null;
     	
-    	
-    	ArrayList<Personne> personneTab = new ArrayList<Personne>();
-		JavaSQLPersonne sqlPersonne = new JavaSQLPersonne();
-		try {
-			personneTab = sqlPersonne.affiche();
-
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		for (int i = 0; i < personneTab.size(); i++) {
-			String log = textFieldLogin.getText();
-			String mdp = mdpField.getText();		
-			
-			String logI = personneTab.get(i).getLogin();
-			String mdpI = personneTab.get(i).getMdp();
-
-			if ( logI.equals(log)) {
-				if ( mdpI.equals(mdp)) {
-					compteExiste = true;
-					user = personneTab.get(i);
-					if (personneTab.get(i).getRole().equals(Personne.DEBUG)) {
-						compteAdmin = true;
-					}
+    	String login = textFieldLogin.getText();
+    	String mdp = mdpField.getText();
+		if (!login.isEmpty()) {
+			if (!mdp.isEmpty()) {
+				Personne user = (Personne) Entreprise.chercheUser(login, mdp);
+				if (Entreprise.chercheUser(login, mdp) != null) {
+					new Entreprise(user);
+					fc.dispose();
 				}
-			}
-		}
-		
-		
-		
-		if (!textFieldLogin.getText().isEmpty()) {
-			if (!mdpField.getText().isEmpty()) {
-				if (compteExiste) {
-					if (compteAdmin) {
-						new Entreprise("debugBDD");
-					}
-					else {
-						new Entreprise(user);
-						fc.dispose();
-					}
+				else {
+			    	JOptionPane.showMessageDialog(null, "Le login ou le mot de passe sont incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
@@ -178,7 +155,10 @@ public class PanelConnexion extends JPanel{
 		}	
     }
     
+ 
+    
     private void actionQuitter(FenetreConnexion fc) {
-    	fc.dispose();
+		JavaSQL.finCo();
+		fc.dispose();
     }
 }

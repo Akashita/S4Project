@@ -36,7 +36,6 @@ public final class JavaSQLCreneaux extends JavaSQL{
 	public static void affiche() throws SQLException{
 		String sql = "SELECT * FROM Creneaux;";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -44,7 +43,6 @@ public final class JavaSQLCreneaux extends JavaSQL{
 						 + ", fin = " + res.getString("fin")+ ", numSalarie = " + res.getString("numSalarie") + ", code = " + res.getString("code") + ", numero = " + res.getString("numero") + res.getString("idA"));
 					 }
 				 }
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -55,11 +53,9 @@ public final class JavaSQLCreneaux extends JavaSQL{
 		String sql = "INSERT INTO Creneaux(idC, titre, couleur, debut, fin, numsalarie, code, numero, idA) VALUE(NULL, '" + titre + "' ,  '"+couleur+"' ,'"+debut+"' , '"+fin+
 				"' , '"+numSalarie+"' , '"+code+"' , '"+numero+"' , '"+idA+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -67,11 +63,9 @@ public final class JavaSQLCreneaux extends JavaSQL{
 	
 	public static void supprime(int idC) throws SQLException{
 		try{
-			 connection();
 			 String sql = "DELETE FROM Creneaux WHERE idC =" + idC;
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
-			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -79,12 +73,10 @@ public final class JavaSQLCreneaux extends JavaSQL{
 	
 	public static void modifie(int idC, String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) throws SQLException{
 		try{
-			 connection();
 			 Statement stmt = getCon().createStatement();
 			 String sql = "UPDATE Creneaux SET titre= '" + titre+ "' ,couleur  = '" + couleur + "' ,debut  = '" + debut + "' ,fin  = '" + fin + "' ,numSalarie  = '" + numSalarie + "' ,code  = '" + code + "' ,"
 			 		+ "numero  = '" + numero + "' ,idA  = '" + idA + "' WHERE idC= '"+ idC+"';";
 			 stmt.executeUpdate(sql);
-			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}

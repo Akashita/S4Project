@@ -6,7 +6,14 @@ import javax.swing.JFrame;
 
 import Fenetre.FermerFenetre;
 import Panel.PanelPrincipal;
+import SQL.JavaSQL;
 
+
+/**
+ * Fenetre ou l'utilisateur va se connecter à son compte
+ * @author Damien
+ *
+ */
 public class FenetreConnexion extends JFrame{
 
 	
@@ -16,6 +23,8 @@ public class FenetreConnexion extends JFrame{
 	private static final long serialVersionUID = 1L;
 
 	public FenetreConnexion() {
+		JavaSQL.connection();
+
 		this.setTitle("Connexion");
 		this.setSize(350,400);
 		this.setLocationRelativeTo(null);

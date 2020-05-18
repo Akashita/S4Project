@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 import EcouteurEvenement.SourisProjetListener;
 import Model.Entreprise;
 import Model.Projet;
-import Ressource.Personne;
 
 public class PanelProjet extends JPanel{
 	/**
@@ -23,7 +22,6 @@ public class PanelProjet extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
-	private JTextField rechercher;
 	private Font font = new Font("Arial", Font.PLAIN, 30);
 	
 	public PanelProjet(Entreprise entreprise) {
@@ -31,7 +29,6 @@ public class PanelProjet extends JPanel{
 		this.setBackground(PanelPrincipal.BLEU2);
 		this.setLayout(new BorderLayout());
 		this.add(afficherProjet(), BorderLayout.WEST);
-		this.add(afficherRechercher(), BorderLayout.EAST);
 		this.setPreferredSize(new Dimension(this.getWidth(),100));
 
 	}
@@ -40,19 +37,18 @@ public class PanelProjet extends JPanel{
 	public JPanel afficherProjet() {
 		JPanel panel = new JPanel();
 		panel.setBackground(PanelPrincipal.BLEU2);
-		ArrayList<Projet> listeProjet = getProjetUser(entreprise.getUser());
+		ArrayList<Projet> listeProjet = entreprise.getListeProjetDeUser(entreprise.getUser().getId());
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		if (listeProjet.size()>0) { //on vérifie qu'il a des projets dans la liste
+		if (listeProjet.size()>0) {
 			for (int i=0; i<listeProjet.size(); i++) {
-					Projet projet = listeProjet.get(i);
-					boolean selectionner = false;
-					if (entreprise.getProjetSelectionner() != null) {
-						if(projet.getId() == entreprise.getProjetSelectionner().getId()) {
-							selectionner = true;
-						}
-					}
-					panel.add(creerLabel(projet, selectionner));				
-				
+				Projet projet = listeProjet.get(i);
+				boolean selectionner = false;
+				if (entreprise.getProjetSelectionner() != null) {
+					if(projet.getId() == entreprise.getProjetSelectionner().getId()) {
+						selectionner = true;
+					}				
+				}
+				panel.add(creerLabel(projet, selectionner));
 			}			
 		}
 		return panel;
@@ -84,48 +80,4 @@ public class PanelProjet extends JPanel{
 	}
 	
 	
-	private JPanel afficherRechercher() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(3,3));
-		panel.setBackground(PanelPrincipal.BLEU2);
-    	rechercher = new JTextField("rechercher                             ");
-    	rechercher.getFont().deriveFont(Font.ITALIC);
-    	rechercher.setForeground(PanelPrincipal.GRIS2);
-    	rechercher.addMouseListener(new MouseListener() {           
-			@Override
-			public void mouseClicked(MouseEvent e) {
-    	        JTextField texteField = ((JTextField)e.getSource());
-    	        texteField.setText("");
-    	        texteField.getFont().deriveFont(Font.PLAIN);
-    	        texteField.setForeground(PanelPrincipal.NOIR);
-    	        texteField.removeMouseListener(this);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-    	});
-    	panel.add(new JLabel(" "));
-    	panel.add(rechercher);
-    	panel.add(new JLabel(" "));
-		return panel;
-	}	
-	
-	
-	private ArrayList<Projet> getProjetUser(Personne p){
-		ArrayList<Projet> lp = new ArrayList<Projet>();
-		boolean estAdmin = p.estAdmin();
-		if(estAdmin) {// on affiche tout les projets de l'entreprise
-			lp = entreprise.getListeProjet(); 		
-		}
-		else { //si c'est un collaborateur ou chef de projet
-			lp.addAll(p.getListeDeProjet()); //projet qu'il dirige
-			lp.addAll(entreprise.getProjetDeLaRessource(p)); //projet ou il travaille
-		}
-		return lp;
-	}
 }

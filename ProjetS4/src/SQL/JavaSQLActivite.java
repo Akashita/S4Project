@@ -45,7 +45,6 @@ public final class JavaSQLActivite extends JavaSQL{
 		ArrayList<String> listeDom = new ArrayList<String>();
 		String sql = "SELECT * FROM Activite;";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -58,11 +57,9 @@ public final class JavaSQLActivite extends JavaSQL{
 							 }
 						 }
 						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getFloat("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom));
-						 System.out.println("idA = " + res.getString("idA") + ", titre = " + res.getString("titre") + ", debut = " + res.getString("debut") + ", charge = " + res.getString("charge")
-						 + ", ordre = " + res.getString("ordre")+ ", couleur = " + res.getString("couleur") +  ", nom = " + res.getString("nom"));
+
 					 }
 				 }
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -74,19 +71,18 @@ public final class JavaSQLActivite extends JavaSQL{
 		Date debut1 = Date.valueOf(debut);
 		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idP) VALUE(NULL, '" + titre + "' ,  '"+debut1+"' ,'"+charge+"' , '"+ordre+"' , '"+couleur+"' , '"+idP+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
 				 String sql2 = "SELECT MAX(idA) FROM Activite;";
 				 Statement stmt2 = getCon().createStatement();
+				 if (listeDom != null) {
 				 try (ResultSet res2 = stmt2.executeQuery(sql2)){
 					 for(int i = 0; i<listeDom.size(); i++) {
 						 JavaSQLListeDomaine.insertion(listeDom.get(i),res2.getInt("idA"));
 					 }
 				 }
-				 
-				 con.close();
+				 }
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -94,7 +90,6 @@ public final class JavaSQLActivite extends JavaSQL{
 	
 	 public static void supprime(int idA) throws SQLException{
 			try{
-				 connection();
 				 String sql = "DELETE FROM ListeDomaine WHERE idA =" + idA;
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
@@ -104,11 +99,8 @@ public final class JavaSQLActivite extends JavaSQL{
 				 stmt.executeUpdate(sql);
 				 sql = "DELETE FROM ParticipeSalle WHERE idA =" + idA;
 				 stmt.executeUpdate(sql);
-				 sql = "DELETE FROM Creneaux WHERE idA =" + idA;
-				 stmt.executeUpdate(sql);
 				 sql = "DELETE FROM Activite WHERE idA =" + idA;
 				 stmt.executeUpdate(sql);
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -116,7 +108,6 @@ public final class JavaSQLActivite extends JavaSQL{
 	 
 	 public static void modifie(int idA, String titre, LocalDate debut, float charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) throws SQLException{
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 Date debut1 = Date.valueOf(debut);
 				 String sql = "UPDATE Activite SET titre= '" + titre + "' ,debut  = '" + debut1 + "' ,charge = '" + charge + "' ,ordre = '" + ordre + "' ,couleur = '" + couleur + "' ,idP = '" + idP + "' WHERE idA= '"+ idA+"';";
@@ -125,7 +116,6 @@ public final class JavaSQLActivite extends JavaSQL{
 					 sql  = "UPDATE ListeDomaine SET tag = '" + listeDom.get(i) + "' WHERE idA = '"+ idA+"';";
 					 stmt.executeUpdate(sql);
 				 }
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}

@@ -197,7 +197,7 @@ public class Activite implements Comparable<Activite>{
 	 * @param heure  L'heure du creneau
 	 * @return vrai si le creneau est dispo pour toutes les lRessources associees
 	 */
-	public boolean creneauDispo(String type, LocalDate date, int heure){
+	public boolean creneauDispo(int type, LocalDate date, int heure){
 		Boolean dispo = true;
 		for (int i = 0; i < lRessources.size(); i++) {
 			if(lRessources.get(i).getType() == type) {
@@ -216,7 +216,7 @@ public class Activite implements Comparable<Activite>{
 	 * @param cr   	Le creneau a ajouter
 	 * @param jour 	Le jour auquel ajouter le creneau
 	 */
-	public void ajouterCreneau(String type, CreneauHoraire cr, LocalDate jour) {
+	public void ajouterCreneau(int type, CreneauHoraire cr, LocalDate jour) {
 		for (int i = 0; i < lRessources.size(); i++) {
 			if(lRessources.get(i).getType() == type) {
 				lRessources.get(i).ajouterCreneau(cr, jour);
@@ -230,9 +230,9 @@ public class Activite implements Comparable<Activite>{
 	 * @param id  L'ID de la ressource
 	 * @return true si la ressource a ete supprimee
 	 */
-	public boolean enleverRessource(int id) {
+	/*public boolean enleverRessource(int id) {
 		return lRessources.remove(new Ressource(id));
-	}
+	}*/
 
 
 	/**
@@ -240,14 +240,14 @@ public class Activite implements Comparable<Activite>{
 	 * @param ressource  La ressource
 	 * @return true si la ressource a ete ajoutee
 	 */
-	public boolean ajouterRessource(Ressource ressource) {
+	/*public boolean ajouterRessource(Ressource ressource) {
 		if(!lRessources.contains(ressource)) {
 			lRessources.add(ressource);
 			return true;
 		} else {
 			return false;
 		}
-	}
+	}*/
 
 
 	/**
@@ -288,7 +288,7 @@ public class Activite implements Comparable<Activite>{
 	 * @param type  Le type de la ressource
 	 * @return la liste des lRessources selectionnees
 	 */
-	public ArrayList<Ressource> getListeRessourceType(String type){
+	public ArrayList<Ressource> getListeRessourceType(int type){
 		ArrayList<Ressource> nouvelleListe = new ArrayList<Ressource>();
 		for (int i=0; i<lRessources.size(); i++) {
 			Ressource ressource = lRessources.get(i);
@@ -297,6 +297,12 @@ public class Activite implements Comparable<Activite>{
 			}
 		}
 		return nouvelleListe;
+	}
+
+	public String creeAffiche() {
+		// TODO Auto-generated method stub
+		return "titre : " + this.titre + ", id : " + this.id + ", ordre : " + this.ordre + ", charge heure : " + this.chargeHeure + ", charge JHomme : " + this.chargeJHomme 
+			+ ", couleur : " + this.couleur + ", debut : " + this.debut + ", liste de domaine : " + this.listeDomaine + ",liste de ressource : " + this.lRessources;
 	}
 
 }

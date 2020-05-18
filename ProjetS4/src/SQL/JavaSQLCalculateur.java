@@ -34,7 +34,6 @@ public final class JavaSQLCalculateur extends JavaSQL{
 		String sql = "SELECT * FROM Calculateur;";
 		ArrayList<Calculateur> calcultab = new ArrayList<Calculateur>();
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
@@ -42,7 +41,6 @@ public final class JavaSQLCalculateur extends JavaSQL{
 						 System.out.println("code = " + res.getString("code") + ", nom= " + res.getString("nom") + ", capacite= " + res.getString("capacite"));
 					 }
 				 }
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -50,14 +48,12 @@ public final class JavaSQLCalculateur extends JavaSQL{
 
 	}
 	
-	public static void insertion(int code, String nom, int capacite) throws SQLException{
-		String sql = "INSERT INTO Calculateur(code, nom, capacite) VALUE('" + code + "' ,  '"+nom+"' ,  '"+capacite+"');";
+	public static void insertion(String nom, int capacite) throws SQLException{
+		String sql = "INSERT INTO Calculateur( nom, capacite) VALUE('"+nom+"' ,  '"+capacite+"');";
 			try{
-				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
-				 con.close();
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -65,7 +61,6 @@ public final class JavaSQLCalculateur extends JavaSQL{
 	
 	public static void supprime(int code) throws SQLException{
 		try{
-			 connection();
 			 String sql = "DELETE FROM Creneaux WHERE code =" + code;
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
@@ -73,7 +68,6 @@ public final class JavaSQLCalculateur extends JavaSQL{
 			 stmt.executeUpdate(sql);
 			 sql = "DELETE FROM Calculateur WHERE code =" + code;
 			 stmt.executeUpdate(sql);
-			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
@@ -81,11 +75,9 @@ public final class JavaSQLCalculateur extends JavaSQL{
 	
 	public static void modifie(int code, String nom, int capacite) throws SQLException{
 		try{
-			 connection();
 			 Statement stmt = getCon().createStatement();
 			 String sql = "UPDATE Calculateur SET nom= '" + nom + "' ,capacite  = '" + capacite + "' WHERE code= '"+ code+"';";
 			 stmt.executeUpdate(sql);
-			 con.close();
 		} catch(SQLException e){
 			e.printStackTrace();
 		}

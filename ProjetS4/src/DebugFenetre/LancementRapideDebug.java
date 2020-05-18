@@ -12,18 +12,19 @@ import Ressource.Personne;
 import SQL.JavaSQL;
 import SQL.JavaSQLDebug;
 import SQL.JavaSQLPersonne;
+import SQL.JavaSQLRecherche;
 
 public class LancementRapideDebug {
 	public static void main (String[] args) {
-		new Entreprise("debugBDD");
 		
+		JavaSQL.connection();
 //		try {
-//		JavaSQLDebug.drop();
-//			JavaSQL.creation();
+//			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(1));
 //		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
+		new Entreprise("debugBDD");
 
 }
 }

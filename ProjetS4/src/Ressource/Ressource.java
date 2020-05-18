@@ -23,11 +23,10 @@ public class Ressource implements Comparable<Ressource>{
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	protected String nom; 
-	public static final String PERSONNE = "Personne";
-	public static final String SALLE = "Salle";
-	public static final String CALCULATEUR = "Calculateur";
-	protected String type; //Type de la ressource (personne/salle/...)
+	//public static final String PERSONNE = "Personne", SALLE = "Salle", CALCULATEUR = "Calculateur";
+	public static final int RIEN = -1, PERSONNE = 0, SALLE = 1, CALCULATEUR = 2;
 	protected int id;
+	protected int type;
 	
 	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> jours; 
 	//Contient l'ensemble des jours qui possedent un creneau horaire, la cle est une LocalDate du jour choisi
@@ -35,16 +34,16 @@ public class Ressource implements Comparable<Ressource>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Ressource(int id, String nom, String type) {
+	public Ressource(int id, String nom, int type) {
 		this.id = id;
 		this.nom = nom;
 		this.type = type;
 		this.jours = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>(); 
 	}
 	
-	public Ressource(int id) {
-		this(id, null, null);
-	}
+	/*public Ressource(int id) {
+		this(id, null, );
+	}*/
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
@@ -55,14 +54,14 @@ public class Ressource implements Comparable<Ressource>{
 		return this.nom;
 	}
 
-	public String getType() {
-		return this.type;
-	}
 
 	public int getId() {
 		return this.id;
 	}
 
+	public int getType() {
+		return type;
+	}
 	
 	
 	//--------------------------------------------------------------------------------->>>>>>> Setteur 
@@ -322,6 +321,16 @@ public class Ressource implements Comparable<Ressource>{
 			heure = heure + (Entreprise.HEURE_DEBUT_APREM - Entreprise.HEURE_FIN_MATIN);
 		}
 		return heure;
+	}
+	
+	public static String creeLogin(int id, String nom) {
+		return nom + Entreprise.SEPARATEUR + id;
+	}
+	
+	public static int recupereIdDepuisLogin(String login) {
+		String[] regex = login.split(Entreprise.SEPARATEUR, 2); 
+		String apresSeparateur = regex[1];
+		return Integer.parseInt(apresSeparateur);
 	}
 
 }

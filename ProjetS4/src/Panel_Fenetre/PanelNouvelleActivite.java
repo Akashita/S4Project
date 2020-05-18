@@ -137,7 +137,7 @@ public class PanelNouvelleActivite extends PanelFenetre{
 					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
 					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
 					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
-					LocalDate date =  creerLaDate(jour, mois, annee);
+					LocalDate date =  Temps.creerLaDate(jour, mois, annee);
 					entreprise.creerActivite(projet, textFieldNom.getText(), charge, date, listeDomaineChoisi);
 					fm.dispose();
 				}

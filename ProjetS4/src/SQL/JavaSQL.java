@@ -31,9 +31,6 @@ public class JavaSQL {
 		try {
 			String URLdb = "jdbc:mysql://localhost:3306/l2_gr_6";
 	       con = DriverManager.getConnection(URLdb,"l2_gr_6","DMDRjUP2");
-			//-------------------------------------------base tmp----------------------------------------
-	//		String URLdb = "jdbc:mysql://localhost";
-	//	       this.con = DriverManager.getConnection(URLdb,"phpmyadmin","elrouliobdd");
 	   } catch (SQLException e) {
 	       arret("Connection � la base de donn�es impossible");
 	   }
@@ -42,6 +39,15 @@ public class JavaSQL {
 
 	public static Connection getCon(){
 		return con;
+	}
+	
+	public static void finCo() {
+			try {
+				con.close();
+				System.out.println("Connection fini");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	}
 
 	public ResultSet getRes(){
@@ -72,15 +78,15 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Competence faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Calculateur(code INT PRIMARY KEY, nom VARCHAR(30), capacite INT NOT NULL);";
+				 sql = "CREATE TABLE IF NOT EXISTS Calculateur(code INT PRIMARY KEY AUTO_INCREMENT, nom VARCHAR(30), capacite INT NOT NULL);";
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Calculateur faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Salle(numero INT PRIMARY KEY, nom VARCHAR(30), place INT NOT NULL);";
+				 sql = "CREATE TABLE IF NOT EXISTS Salle(numero INT PRIMARY KEY AUTO_INCREMENT, nom VARCHAR(30), place INT NOT NULL);";
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Salle faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Materiel(numSerie INT PRIMARY KEY, type VARCHAR(30), numero INT, "
+				 sql = "CREATE TABLE IF NOT EXISTS Materiel(numSerie INT PRIMARY KEY AUTO_INCREMENT, type VARCHAR(30), numero INT, "
 							+ "CONSTRAINT fk_Materiel_numero FOREIGN KEY(numero) REFERENCES Salle(numero) );";
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Materiel faite");
@@ -95,13 +101,6 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Activite faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Creneaux(idC INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), couleur INT, debut INT, fin INT, numSalarie INT, code INT, numero INT, idA INT,"
-							+ "CONSTRAINT fk_Creneaux_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
-							+ "CONSTRAINT fk_Creneaux_code FOREIGN KEY(code) REFERENCES Calculateur(code),"
-							+ "CONSTRAINT fk_Creneaux_numero FOREIGN KEY(numero) REFERENCES Salle(numero),"
-							+ "CONSTRAINT fk_Creneaux_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
-				 stmt.executeUpdate(sql);
-				 System.out.println("Table Creneaux faite");
 				 
 				 sql = "CREATE TABLE IF NOT EXISTS ParticipeSalarie(numSalarie INT, idA INT,"
 							+ "CONSTRAINT fk_ParticipeSalarie_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
