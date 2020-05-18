@@ -1209,7 +1209,7 @@ public class Entreprise extends Observable{
 	 * @return vrai si une personne ou une activite à ce domaine, sinon faux
 	 */
 	public boolean PersonneOuActiviteACeDomaine(String d) {
-		Boolean b = null;
+		Boolean b = false;
 		try {
 			if (JavaSQLRecherche.presenceDomaineDansCompetence(d)|| JavaSQLRecherche.presenceDomaineDansListeDomaine(d)) {
 			b = true;		

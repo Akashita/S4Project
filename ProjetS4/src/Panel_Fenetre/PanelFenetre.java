@@ -194,7 +194,7 @@ public class PanelFenetre extends JPanel{
 	
 	protected void supprimerDomaine(PanelFenetre pf, String domaine) {
 		//String domaine = jListDomaine.getSelectedValue();
-		if (entreprise.PersonneOuActiviteACeDomaine(domaine)) {
+		if (!entreprise.PersonneOuActiviteACeDomaine(domaine)) {
 			entreprise.supprimerDomaine(domaine);
 			maj(pf);			
 		}

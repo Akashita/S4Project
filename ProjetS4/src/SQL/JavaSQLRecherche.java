@@ -919,6 +919,25 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return presence;
 
 	}
+	public static  Boolean presenceCompetence(String domaine, int numSalarie) throws SQLException{
+		Boolean presence = false;
+		String sql = "SELECT * FROM Competence WHERE tag = '"+ domaine + "' AND numSalarie = '" + numSalarie +  "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next() && presence == false) {
+						 presence = true;
+						 
+						 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return presence;
+
+	}
+	
+	
 	
 	
 	

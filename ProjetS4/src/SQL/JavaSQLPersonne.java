@@ -112,8 +112,15 @@ public final class JavaSQLPersonne extends JavaSQL{
 			 String sql = "UPDATE Personne SET nom = '" + nom + "' ,prenom  = '" + prenom + "' ,role = '" + role + "' ,motDePasse = '" + motDePasse + "' WHERE numSalarie = '"+ numSalarie + "';";
 			 stmt.executeUpdate(sql);
 			 for (int i=0; i<tag.size(); i++){
-				 sql  = "UPDATE Competence SET tag = " + tag.get(i) + " ,niveau  = " + niveau.get(i)+ "  WHERE numSalarie = "+ numSalarie;
+				 if (JavaSQLRecherche.presenceCompetence(tag.get(i), numSalarie)) {
+				 sql  = "UPDATE Competence SET tag = '" + tag.get(i) + "' ,niveau  = '" + niveau.get(i)+ "'  WHERE numSalarie = '"+ numSalarie + "';";
+			 }
+				 else {
+					 sql  = "INSERT INTO Competence(numSalarie, tag, niveau) VALUE('" + numSalarie+ "' ,  '"+tag.get(i)+"' ,  '"+niveau.get(i)+"');";
+
+				 }
 				 stmt.executeUpdate(sql);
+
 			 }
 		} catch(SQLException e){
 			e.printStackTrace();
