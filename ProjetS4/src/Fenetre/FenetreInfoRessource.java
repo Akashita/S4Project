@@ -28,7 +28,7 @@ public class FenetreInfoRessource extends JDialog{
 		this.ressource = ressource;
 		this.setSize(800,770);
 		this.setLocationRelativeTo(null);
-		this.addWindowListener(new FermerFenetre(this));
+		this.addWindowListener(new FermerFenetreModal(this));
 	    this.setResizable(false);
 	    creationInterface();
 		this.setVisible(true);

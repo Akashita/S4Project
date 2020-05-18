@@ -250,12 +250,16 @@ public class PanelInfoRessource extends JPanel{
 	
 	private void colChefDeProjet(GridBagConstraints gc) {
 		gc.fill = GridBagConstraints.CENTER;
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridx ++;
 		gc.gridy = 0;
+		gc.gridwidth = 1;
+		gc.gridheight = 1;
 		this.add(labelTitreColonne("Chef des projets"), gc);
 
 		ArrayList<Projet> projets = ((Personne) ressource).getListeDeProjet();
+		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy++;
 		gc.gridheight = GridBagConstraints.REMAINDER;
 		this.add(creerScrollPane(listProjet(projets)), gc);
@@ -282,6 +286,7 @@ public class PanelInfoRessource extends JPanel{
 		//this.add(panelTitreInfoColonne("COMPETENCES", "domaine", "niveau"), gc);
 
 		ArrayList<Competence> competences = ((Personne) ressource).getListeDeCompetence();
+		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy++;
 		gc.gridheight = GridBagConstraints.REMAINDER;
 		this.add(creerScrollPane(listCompetence(competences)), gc);
@@ -307,6 +312,7 @@ public class PanelInfoRessource extends JPanel{
 		this.add(labelTitreColonne("ACTIVITÉS"),gc);
 
 		ArrayList<Activite> listeAct = entreprise.getListeActivitetdeRessourceParId(ressource.getType(), ressource.getId());
+		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy++;
 		gc.gridheight = GridBagConstraints.REMAINDER;
 		this.add(creerScrollPane(listActivite(listeAct)), gc);
