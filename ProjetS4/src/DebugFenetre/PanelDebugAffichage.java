@@ -70,7 +70,6 @@ public class PanelDebugAffichage extends JPanel{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			afficheListeRecherche(entreprise.getListePersonneEntreprise());	
 		}
 		else if (type == SALLE) {
 			ArrayList<Salle> personneSalle = new ArrayList<Salle>();

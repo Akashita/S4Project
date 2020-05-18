@@ -18,13 +18,13 @@ public class LancementRapideDebug {
 	public static void main (String[] args) {
 		
 		JavaSQL.connection();
-		try {
-			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(1));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//new Entreprise("debugBDD");
+//		try {
+//			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(1));
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		new Entreprise("debugBDD");
 
 }
 }
