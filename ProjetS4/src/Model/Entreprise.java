@@ -415,13 +415,27 @@ public class Entreprise extends Observable{
          }
 		return materielTab;
 	}
-
+	
+	
+	
+	public ArrayList<Projet> getListeProjetDeUser(int idUser){
+		ArrayList<Projet> projetTab = new ArrayList<Projet>();
+        try {
+        	projetTab = JavaSQLRecherche.recupereProjetParIdPersonne(idUser);
+           
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+		return projetTab;	
+		}
+	
 	/**
-	 * Cherche tout les projets concerné par l'user
+	 * Cherche tous les projets dont l'user est le chef
 	 * @param id de l'user
 	 * @return la liste de projet
 	 */	
-	public ArrayList<Projet> getListeProjetDeUser(int idUser){
+	public ArrayList<Projet> getListeProjetparIdChef(int idUser){
 		ArrayList<Projet> projetTab = new ArrayList<Projet>();
         try {
         	projetTab = JavaSQLRecherche.recupereProjetParIdChef(idUser);

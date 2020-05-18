@@ -19,7 +19,7 @@ public class LancementRapideDebug {
 		
 		JavaSQL.connection();
 		try {
-			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(2));
+			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(1));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

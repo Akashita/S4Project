@@ -723,8 +723,22 @@ public final class JavaSQLRecherche extends JavaSQL{
 		ArrayList<Activite> activiteDeLaPersonne = new ArrayList<Activite>();
 		activiteDeLaPersonne = recupereActiviteParIdPersonne(numSalarie);
 		for (int i = 0; i < activiteDeLaPersonne.size(); i++) {
-			chefListe.add(recupereChefDeProjetParIdActivite(activiteDeLaPersonne.get(i).getId()));
+			Ressource chefCourant = recupereChefDeProjetParIdActivite(activiteDeLaPersonne.get(i).getId());
+			 if (!(chefListe.contains(chefCourant))){
+
+			chefListe.add(chefCourant);
+			 }
 		}
+			 ArrayList<Projet> projetTab = recupereProjetParIdChef(numSalarie);
+			 for (int i = 0; i < projetTab.size(); i++) {
+					Ressource chefCourant = projetTab.get(i).getChefDeProjet();
+					 if (!(chefListe.contains(chefCourant))){
+
+					chefListe.add(chefCourant);
+					 }
+			 
+			 } 
+		
 		return chefListe;
 	}
 	
@@ -733,7 +747,11 @@ public final class JavaSQLRecherche extends JavaSQL{
 		ArrayList<Activite> activiteDeLaSalle = new ArrayList<Activite>();
 		activiteDeLaSalle = recupereActiviteParIdSalle(numero);
 		for (int i = 0; i < activiteDeLaSalle.size(); i++) {
-			chefListe.add(recupereChefDeProjetParIdActivite(activiteDeLaSalle.get(i).getId()));
+			Ressource chefCourant = recupereChefDeProjetParIdActivite(activiteDeLaSalle.get(i).getId());
+			 if (!(chefListe.contains(chefCourant))){
+
+			chefListe.add(chefCourant);
+			 }
 		}
 		return chefListe;
 	}
@@ -743,7 +761,10 @@ public final class JavaSQLRecherche extends JavaSQL{
 		ArrayList<Activite> activiteDuCalculateur = new ArrayList<Activite>();
 		activiteDuCalculateur = recupereActiviteParIdCalculateur(code);
 		for (int i = 0; i < activiteDuCalculateur.size(); i++) {
-			chefListe.add(recupereChefDeProjetParIdActivite(activiteDuCalculateur.get(i).getId()));
+			Ressource chefCourant = recupereChefDeProjetParIdActivite(activiteDuCalculateur.get(i).getId());
+			 if (!(chefListe.contains(chefCourant))){
+			chefListe.add(chefCourant);
+			 }
 		}
 		return chefListe;
 	}
