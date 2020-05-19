@@ -1005,7 +1005,7 @@ public class Entreprise extends Observable{
 	public ArrayList<Activite> getListeActiviteDuProjet(int idP){
 		ArrayList<Activite> activiteTab = new ArrayList<Activite>();
 		try {
-			JavaSQLRecherche.recupereListeActiviteParIdProjet(idP);
+			activiteTab = JavaSQLRecherche.recupereListeActiviteParIdProjet(idP);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
