@@ -1262,7 +1262,7 @@ public class Entreprise extends Observable{
 	 * @return vrai si la personne travaille dans une activité
 	 */	
 	public boolean personneTravailleDansUneActiviteParId(int id) {
-		Boolean b = null;
+		Boolean b = false;
 		try {
 			if (JavaSQLRecherche.presenceDansUneActivitePersonne(id)) {
 			b = true;		
@@ -1280,7 +1280,7 @@ public class Entreprise extends Observable{
 	 * @return vrai si la salle travaille dans une activité
 	 */	
 	public boolean salleTravailleDansUneActiviteParId(int id) {
-		Boolean b = null;
+		Boolean b = false;
 		try {
 			if (JavaSQLRecherche.presenceDansUneActiviteSalle(id)) {
 			b = true;		
@@ -1298,7 +1298,7 @@ public class Entreprise extends Observable{
 	 * @return vrai si la calculateur travaille dans une activité
 	 */	
 	public boolean calculateurTravailleDansUneActiviteParId(int id) {
-		Boolean b = null;
+		Boolean b = false;
 		try {
 			if (JavaSQLRecherche.presenceDansUneActiviteCalculateur(id)) {
 			b = true;		
@@ -1333,6 +1333,78 @@ public class Entreprise extends Observable{
 		
     	return p;
     }
+	public boolean ressourceTravailleDansUnProjetParId(int type, int id) {
+		boolean b = false;
+		switch (type) {
+		case Ressource.PERSONNE:
+			b = personneTravailleDansUnProjetParId(id);
+			break;
+		case Ressource.SALLE:
+			b = salleTravailleDansUnProjetParId(id);
+			break;
+		case Ressource.CALCULATEUR:
+			b = calculateurTravailleDansUnProjetParId(id);
+			break;
+
+		default:
+			break;
+		}
+		return b;
+	}
+	/**
+	 * cherche dans la bdd si la personne est dans une activite
+	 * @param d domaine tester
+	 * @return vrai si la personne travaille dans une activité
+	 */	
+	public boolean personneTravailleDansUnProjetParId(int id) {
+		Boolean b = false;
+		try {
+			if (JavaSQLRecherche.presenceDansUnProjetPersonne(id)) {
+			b = true;		
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
+	/**
+	 * cherche dans la bdd si la salle est dans une activite
+	 * @param id de la ressource
+	 * @return vrai si la salle travaille dans une activité
+	 */	
+	public boolean salleTravailleDansUnProjetParId(int id) {
+		Boolean b = false;
+		try {
+			if (JavaSQLRecherche.presenceDansUnProjetSalle(id)) {
+			b = true;		
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+
+	/**
+	 * cherche dans la bdd si la calculateur est dans une activite
+	 * @param id de la ressource
+	 * @return vrai si la calculateur travaille dans une activité
+	 */	
+	public boolean calculateurTravailleDansUnProjetParId(int id) {
+		Boolean b = false;
+		try {
+			if (JavaSQLRecherche.presenceDansUnProjetCalculateur(id)) {
+			b = true;		
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return b;
+	}
+	
 
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion projet
 

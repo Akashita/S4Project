@@ -769,7 +769,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 		return chefListe;
 	}
 /////////////////////////////////////////////////////////////////////////////////////PRESENCE//////////////////////////////////////////////////////////////////////////	
-	public static Boolean estLibrePersonne(int numSalarie) {
+	public static Boolean presenceDansUnProjetPersonne(int numSalarie) throws SQLException {
 		Boolean b = false;
 		ArrayList<Projet> projetRessource;
 		try {
@@ -845,7 +845,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 
 	}
 /////////////////////////////////////////////////////////////////////////////////////PRESENCE//////////////////////////////////////////////////////////////////////////	
-	public static Boolean estLibreSalle(int numero) {
+	public static Boolean presenceDansUnProjetSalle(int numero) throws SQLException {
 		Boolean b = false;
 		ArrayList<Projet> projetRessource;
 		try {
@@ -923,7 +923,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 	
 /////////////////////////////////////////////////////////////////////////////////////PRESENCE//////////////////////////////////////////////////////////////////////////	
-public static Boolean estLibreCalculateur(int code) {
+public static Boolean presenceDansUnProjetCalculateur(int code) throws SQLException {
 	Boolean b = false;
 	ArrayList<Projet> projetRessource;
 	try {
