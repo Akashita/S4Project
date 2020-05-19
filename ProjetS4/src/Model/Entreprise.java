@@ -621,7 +621,7 @@ public class Entreprise extends Observable{
 	/**
 	 * cherche dans la bdd le projet associer a l'activite
 	 * @param id de l'activite
-	 * @return le projet associer
+	 * @return le projet associer 
 	 */
 	public Projet getProjetDeActiviteParId(int idA) {
 		Projet projCour = null;
@@ -667,13 +667,15 @@ public class Entreprise extends Observable{
 	 * @return la liste de personnes de l'activite
 	 */	
 	public ArrayList<Ressource> getListePersonnedeActiviteParId(int id){
+		
+		ArrayList<Ressource> liste= new ArrayList<Ressource>();
 		try {
-			return JavaSQLRecherche.recuperePersonneDansActiviteParId(id);
+			liste =  JavaSQLRecherche.recuperePersonneDansActiviteParId(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return liste;
 	}
 
 	/**
@@ -682,13 +684,15 @@ public class Entreprise extends Observable{
 	 * @return la liste de salle de l'activite
 	 */	
 	public ArrayList<Ressource> getListeSalledeActiviteParId(int id){
+		ArrayList<Ressource> liste= new ArrayList<Ressource>();
+
 		try {
-			return JavaSQLRecherche.recupereSalleDansActiviteParId(id);
+			liste = JavaSQLRecherche.recupereSalleDansActiviteParId(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return liste;
 	}
 	/**
 	 * Cherche tous les calculateurs contenut par l'activite par son id
@@ -696,13 +700,15 @@ public class Entreprise extends Observable{
 	 * @return la liste de calculateur de l'activite
 	 */	
 	public ArrayList<Ressource> getListeCalculateurdeActiviteParId(int id){
+		ArrayList<Ressource> liste= new ArrayList<Ressource>();
+
 		try {
-			return JavaSQLRecherche.recupereCalculateurDansActiviteParId(id);
+			liste =  JavaSQLRecherche.recupereCalculateurDansActiviteParId(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return liste;
 	}
 
 	/**
@@ -736,15 +742,16 @@ public class Entreprise extends Observable{
 	 */	
 	public ArrayList<Projet> getListeProjetDePersonneParLogin(String login){
 		int id = Ressource.recupereIdDepuisLogin(login);
-		
+		ArrayList<Projet> liste= new ArrayList<Projet>();
+
         
 		try {
-			return JavaSQLRecherche.recupereProjetParIdPersonne(id);
+			liste =  JavaSQLRecherche.recupereProjetParIdPersonne(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return liste;
 	}
 	
 	/**
@@ -754,14 +761,15 @@ public class Entreprise extends Observable{
 	 */	
 	public ArrayList<Projet> getListeProjetDeSalleParLogin(String login){
 		int id = Ressource.recupereIdDepuisLogin(login);
+		ArrayList<Projet> liste= new ArrayList<Projet>();
 
 		try {
-			return JavaSQLRecherche.recupereProjetParIdSalle(id);
+			liste =  JavaSQLRecherche.recupereProjetParIdSalle(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return liste;
 	}
 
 	/**
@@ -771,14 +779,16 @@ public class Entreprise extends Observable{
 	 */	
 	public ArrayList<Projet> getListeProjetDeCalculateurParLogin(String login){
 		int id = Ressource.recupereIdDepuisLogin(login);
+		ArrayList<Projet> liste= new ArrayList<Projet>();
+
 		
 		try {
-			return JavaSQLRecherche.recupereProjetParIdCalculateur(id);
+			liste =  JavaSQLRecherche.recupereProjetParIdCalculateur(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return liste;
 	}
 
 	/**
@@ -812,15 +822,16 @@ public class Entreprise extends Observable{
 	 */	
 	public ArrayList<Activite> getListeActiviteDePersonneParLogin(String login){
 		int id = Ressource.recupereIdDepuisLogin(login);
-		
+		ArrayList<Activite> l = new ArrayList<Activite>();
+
         
 		try {
-			return JavaSQLRecherche.recupereActiviteParIdPersonne(id);
+			l =  JavaSQLRecherche.recupereActiviteParIdPersonne(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return l;
 	}
 
 	/**
@@ -830,15 +841,16 @@ public class Entreprise extends Observable{
 	 */	
 	public ArrayList<Activite> getListeActiviteDeSalleParLogin(String login){
 		int id = Ressource.recupereIdDepuisLogin(login);
-		
+		ArrayList<Activite> l = new ArrayList<Activite>();
+
         
 		try {
-			return JavaSQLRecherche.recupereActiviteParIdSalle(id);
+			l =  JavaSQLRecherche.recupereActiviteParIdSalle(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return l;
 	}
 
 	/**
@@ -848,15 +860,16 @@ public class Entreprise extends Observable{
 	 */	
 	public ArrayList<Activite> getListeActiviteDeCalculateurParLogin(String login){
 		int id = Ressource.recupereIdDepuisLogin(login);
-		
+		ArrayList<Activite> l = new ArrayList<Activite>();
+
         
 		try {
-			return JavaSQLRecherche.recupereActiviteParIdCalculateur(id);
+			l =  JavaSQLRecherche.recupereActiviteParIdCalculateur(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return l;
 	}
 
 	/**
@@ -889,13 +902,15 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDePersonneParId(int id){
+		ArrayList<Projet> l = new ArrayList<Projet>();
+
 		try {
-			return JavaSQLRecherche.recupereProjetParIdPersonne(id);
+			l =  JavaSQLRecherche.recupereProjetParIdPersonne(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return l;
 	}
 
 	/**
@@ -904,13 +919,15 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDeSalleParId(int id){
+		ArrayList<Projet> l = new ArrayList<Projet>();
+
 		try {
-			return JavaSQLRecherche.recupereProjetParIdSalle(id);
+			l = JavaSQLRecherche.recupereProjetParIdSalle(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return l;
 	}
 
 	/**
@@ -919,13 +936,15 @@ public class Entreprise extends Observable{
 	 * @return la liste de projet de la ressource
 	 */	
 	public ArrayList<Projet> getListeProjetDeCalculateurParId(int id){
+		ArrayList<Projet> l = new ArrayList<Projet>();
+
 		try {
-			return JavaSQLRecherche.recupereProjetParIdCalculateur(id);
+			l =  JavaSQLRecherche.recupereProjetParIdCalculateur(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return l;
 	}
 
 	/**
@@ -958,13 +977,15 @@ public class Entreprise extends Observable{
 	 * @return la liste d'activite de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDePersonneParId(int id){
+		ArrayList<Activite> l = new ArrayList<Activite>();
+
 		try {
-			return JavaSQLRecherche.recupereActiviteParIdPersonne(id);
+			l =  JavaSQLRecherche.recupereActiviteParIdPersonne(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return l;
 		}
 
 	/**
@@ -973,13 +994,15 @@ public class Entreprise extends Observable{
 	 * @return la liste d'activite de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDeSalleParId(int id){
+		ArrayList<Activite> l = new ArrayList<Activite>();
+
 		try {
-			return JavaSQLRecherche.recupereActiviteParIdSalle(id);
+			l =  JavaSQLRecherche.recupereActiviteParIdSalle(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return l;
 		}
 
 	/**
@@ -988,13 +1011,15 @@ public class Entreprise extends Observable{
 	 * @return la liste d'activite de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDeCalculateurParId(int id){
+		ArrayList<Activite> l = new ArrayList<Activite>();
+
 		try {
-			return JavaSQLRecherche.recupereActiviteParIdCalculateur(id);
+			l =  JavaSQLRecherche.recupereActiviteParIdCalculateur(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;	
+		return l;	
 		}
 
 	/**
