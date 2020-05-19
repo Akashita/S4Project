@@ -1343,6 +1343,14 @@ public class Entreprise extends Observable{
 		
     	return p;
     }
+	
+	
+	/**
+	 * verifie que la ressource travaille dans une activite ou est chef de projet		
+	 * @param type de la ressource	
+	 * @param id de la ressource	
+	 * @return vrai si la ressource travaille ou est chef de projet sinon faux
+	 */
 	public boolean ressourceTravailleDansUnProjetParId(int type, int id) {
 		boolean b = false;
 		switch (type) {

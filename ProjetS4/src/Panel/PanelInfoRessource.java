@@ -656,8 +656,7 @@ public class PanelInfoRessource extends JPanel{
 		String texte = "<html> êtes-vous sur de vouloir supprimer cette ressource ? <br> La suppression de cette ressource supprimera tout son contenu. </html>";
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
-			if (entreprise.ressourceTravailleDansUneActiviteParId(ressource.getType(), ressource.getId())) {
-				if(entreprise.ressourcePresenteDansProjet(type, r, p))
+			if (!entreprise.ressourceTravailleDansUnProjetParId(ressource.getType(), ressource.getId())) {
 				entreprise.suppRessource(ressource.getType(), ressource);
 				fir.dispose();				
 			}
