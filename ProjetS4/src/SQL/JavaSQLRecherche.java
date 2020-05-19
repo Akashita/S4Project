@@ -711,7 +711,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 Ressource ressource= recupereSalleParId(res.getInt("numSalarie"));
+						 Ressource ressource= recuperePersonneParId(res.getInt("numSalarie"));
 						 liste.add( ressource);
 					 }
 				 }
@@ -940,7 +940,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 Ressource ressource= recupereSalleParId(res.getInt("code"));
+						 Ressource ressource= recupereCalculateurParId(res.getInt("code"));
 						 liste.add( ressource);
 					 }
 				 }
