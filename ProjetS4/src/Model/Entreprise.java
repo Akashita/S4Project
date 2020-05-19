@@ -37,6 +37,7 @@ import Ressource.Salle;
 import SQL.JavaSQL;
 import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
+import SQL.JavaSQLCompetence;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLMateriel;
 import SQL.JavaSQLParticipe;
@@ -1611,6 +1612,19 @@ public class Entreprise extends Observable{
 		}
 		update();
 	}
+	
+	
+	public void supprimeCompetence(int numSalarie,String tag ) {
+		try {
+			JavaSQLCompetence.supprime(numSalarie, tag);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		update();
+	}
+	
+	
 
 	public void modifSalle(Salle s, String nom, int capacite) {
 		s.setNom(nom);
