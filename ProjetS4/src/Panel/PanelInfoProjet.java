@@ -138,7 +138,7 @@ public class PanelInfoProjet extends JPanel{
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 		p.setBackground(couleurFond);
-		ArrayList<Activite> listeActivite = projet.getListe();
+		ArrayList<Activite> listeActivite = entreprise.getListeActiviteDuProjet(projet.getId());
 		int taille = 5 - listeActivite.size();
 		if (taille<0) {
 			taille = 0;
