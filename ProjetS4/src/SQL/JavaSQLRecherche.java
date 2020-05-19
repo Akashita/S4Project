@@ -768,8 +768,25 @@ public final class JavaSQLRecherche extends JavaSQL{
 		}
 		return chefListe;
 	}
-	
-	
+/////////////////////////////////////////////////////////////////////////////////////PRESENCE//////////////////////////////////////////////////////////////////////////	
+	public static Boolean estLibrePersonne(int numSalarie) {
+		Boolean b = false;
+		ArrayList<Projet> projetRessource;
+		try {
+			projetRessource = recupereProjetParIdPersonne(numSalarie);if (projetRessource == null) {
+				b = true;
+			}
+			else if (projetRessource.isEmpty()) {
+				b = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return b;
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////SALLE////////////////////////////////////////////////////////////////////////////	
 
@@ -827,7 +844,27 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return liste;
 
 	}
-	
+/////////////////////////////////////////////////////////////////////////////////////PRESENCE//////////////////////////////////////////////////////////////////////////	
+	public static Boolean estLibreSalle(int numero) {
+		Boolean b = false;
+		ArrayList<Projet> projetRessource;
+		try {
+			projetRessource = recupereProjetParIdSalle(numero);
+			if (projetRessource == null) {
+				b = true;
+			}
+			else if (projetRessource.isEmpty()) {
+				b = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return b;
+	}
+
 ///////////////////////////////////////////////////////////////////////////////////CALCULATEUR////////////////////////////////////////////////////////////////////////////	
 
 	public static Ressource recupereCalculateurParId(int idCalculateur	) throws SQLException{
@@ -884,7 +921,32 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return liste;
 
 	}
+	
+/////////////////////////////////////////////////////////////////////////////////////PRESENCE//////////////////////////////////////////////////////////////////////////	
+public static Boolean estLibreCalculateur(int code) {
+	Boolean b = false;
+	ArrayList<Projet> projetRessource;
+	try {
+		projetRessource = recupereProjetParIdCalculateur(code);
+		if (projetRessource == null) {
+			b = true;
+		}
+		else if (projetRessource.isEmpty()) {
+			b = true;
+		}
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	
+	return b;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////LISTEDOMAINE////////////////////////////////////////////////////////////////////////////	
+
+	
+	
 	public static  Boolean presenceDomaineDansListeDomaine(String domaine) throws SQLException{
 		Boolean presence = false;
 		String sql = "SELECT * FROM ListeDomaine WHERE tag = '"+ domaine + "';";
