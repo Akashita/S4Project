@@ -1002,8 +1002,15 @@ public class Entreprise extends Observable{
 	 * @param id du projet
 	 * @return la liste d'activite du projet
 	 */	
-	public ArrayList<Activite> getListeActiviteDuProjet(int id){
-		
+	public ArrayList<Activite> getListeActiviteDuProjet(int idP){
+		ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+		try {
+			JavaSQLRecherche.recupereListeActiviteParIdProjet(idP);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return activiteTab;
 	}
 
 	

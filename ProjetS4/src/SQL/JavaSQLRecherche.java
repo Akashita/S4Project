@@ -18,7 +18,7 @@ import Ressource.Salle;
 
 public final class JavaSQLRecherche extends JavaSQL{
 ///////////////////////////////////////////////////////////////////////////////////ACTIVITE////////////////////////////////////////////////////////////////////////////	
-	public static ArrayList<Activite> recupereActivite() throws SQLException{
+	public static ArrayList<Activite> recupereListeActivite() throws SQLException{
 		ArrayList<Activite> actTab = new ArrayList<Activite>();
 		ArrayList<String> listeDom = new ArrayList<String>();
 		String sql = "SELECT * FROM Activite;";
@@ -61,13 +61,42 @@ public final class JavaSQLRecherche extends JavaSQL{
 							 }
 						 }
 						 	activite = new Activite(res.getInt("idA"), res.getString("titre"), res.getFloat("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom);
-
 					 }
 				 }
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 			return activite;
+
+	}
+	
+	
+	public static ArrayList<Activite> recupereListeActiviteParIdProjet(int idP) throws SQLException{
+		ArrayList<Activite> actTab = new ArrayList<Activite>();
+		ArrayList<String> listeDom = new ArrayList<String>();
+		Activite activite = null;
+		String sql = "SELECT * FROM Activite WHERE idP = '"+ idP + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 LocalDate debut = res.getDate("debut").toLocalDate();
+						 String sql2 = "SELECT tag FROM ListeDomaine WHERE idA = " + res.getInt("idA") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+							 while(res2.next()) {
+								 listeDom.add(res2.getString("tag"));
+							 }
+						 }
+						 	activite = new Activite(res.getInt("idA"), res.getString("titre"), res.getFloat("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom);
+						 	actTab.add(activite);
+
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return actTab;
 
 	}
 	
