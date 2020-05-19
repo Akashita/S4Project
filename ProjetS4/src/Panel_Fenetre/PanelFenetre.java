@@ -126,7 +126,7 @@ public class PanelFenetre extends JPanel{
 	    });	*/		
 	}
 
-	protected Component afficheListeDomaine(FenetreModal fm, PanelFenetre pf) {
+	protected Component afficheListeDomaine(PanelFenetre pf) {
 		listeDomaine = entreprise.getListeDomaineEntreprise();
 		String [] domaine = new String [listeDomaine.size()];
 		Collections.sort(listeDomaine); //trie dans l'odre alphabetique
@@ -149,10 +149,6 @@ public class PanelFenetre extends JPanel{
 		scrollPaneJListDomaine = new JScrollPane(jlt);
 		scrollPaneJListDomaine.setViewportView(jlt);
 		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		/*JPanel panel = new JPanel();
-		panel.setBackground(couleurFond);
-		panel.setLayout(new BorderLayout());
-		panel.add(scrollPaneJListDomaine, BorderLayout.CENTER);*/
 		return scrollPaneJListDomaine;
 	}
 
@@ -167,8 +163,6 @@ public class PanelFenetre extends JPanel{
 
 		m.add(supp);
 		return m;
-		//m.show(fm, x, y);
-		//fm.add(m);
 	}
 	
 	protected void ajoutDomaine (PanelFenetre pf) {
@@ -201,22 +195,6 @@ public class PanelFenetre extends JPanel{
 		else {
 	    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}			
-		/*if (jListDomaine.getModel().getSize() > 0) {
-			int index = jListDomaine.getSelectedIndex();
-			if (index != -1) {
-				String domaine = listeDomaine.get(index);
-				if (entreprise.PersonneOuActiviteACeDomaine(domaine)) {
-					entreprise.supprimerDomaine(domaine);
-					maj(pf);			
-				}
-				else {
-			    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
-				}			
-			}
-		}
-		else {
-	    	JOptionPane.showMessageDialog(null,"Il y a aucun domaine dans l'entreprise", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}*/
 	}
 	
 	

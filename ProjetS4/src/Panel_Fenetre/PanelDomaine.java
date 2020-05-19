@@ -55,19 +55,12 @@ public class PanelDomaine extends PanelFenetre{
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridheight = GridBagConstraints.RELATIVE;
 		gc.gridy ++;
-		this.add(afficheListeDomaine(fm, this), gc);
+		this.add(afficheListeDomaine(this), gc);
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.gridwidth = 1;
 		gc.gridheight = 1;
 		gc.gridy ++;
-		//this.add(boutonSupprimerDomaine, gc);
-
-		/*gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
-		gc.gridwidth =  2;
-		gc.gridx =0;
-		this.add(textFieldNom, gc);*/
 
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
@@ -75,7 +68,7 @@ public class PanelDomaine extends PanelFenetre{
 		gc.gridx = 2;
 		this.add(panelBouton(), gc);
 
-}
+	}
 	
 	private JPanel panelBouton() {
 		JPanel p = new JPanel();

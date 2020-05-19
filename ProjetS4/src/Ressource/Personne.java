@@ -126,6 +126,14 @@ public class Personne extends Ressource{
 		return b;
 	}
 	
+	public ArrayList<Competence> suppCompetence(ArrayList<Competence> lc, String domaine){
+		ArrayList<Competence> l = lc;
+		for(int i=0; i<l.size(); i++) {
+			if (lc)
+		}
+	}
+
+	
 	//--------------------------------------------------------------------------------->>>>>>> Setteur
 	
 	public void setPrenom(String p) {
@@ -144,7 +152,6 @@ public class Personne extends Ressource{
 		this.listeCompetence = l;
 	}
 
-	
 	
 	public void enleverProjet(Projet projet) {
 		for (int i=0; i<listeProjet.size(); i++) {

@@ -1602,11 +1602,6 @@ public class Entreprise extends Observable{
 
 
 	public void modifPersonne(Personne p, String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {
-		p.setNom(nom);
-		p.setPrenom(prenom);
-		p.setRole(role);
-		p.setMdp(mdp);
-		p.setListeCompetence(listeComp);
 		ArrayList<String> tag = CompeToTag(listeComp);
 		ArrayList<Integer> niveau = CompeToNiv(listeComp);
 		try {

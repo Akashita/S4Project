@@ -2,6 +2,7 @@ package Panel;
 
 import java.awt.Checkbox;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,21 +12,26 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import Fenetre.FenetreInfoRessource;
+import Fenetre.FenetreModal;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
+import Panel_Fenetre.PanelFenetre;
 import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Personne;
@@ -56,7 +62,8 @@ public class PanelInfoRessource extends JPanel{
 	private String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
 	private JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
     private Insets insets = new Insets(2, 5, 2, 0);
-	
+	private ArrayList<Competence> competences;
+
 	private JTextField textFieldNom = new JTextField(),
     		textFieldPrenom = new JTextField(),
     	    textFieldMdp = new JTextField(),
@@ -112,6 +119,9 @@ public class PanelInfoRessource extends JPanel{
 		GridBagConstraints gc = new GridBagConstraints();
 		gc.insets = insets;
 
+		if (ressource.getType() == Ressource.PERSONNE) {
+			competences = ((Personne) ressource).getListeDeCompetence();
+		}
 		if (modeModification) {
 			infoModifier(gc);
 		}
@@ -289,7 +299,6 @@ public class PanelInfoRessource extends JPanel{
 		
 		this.add(labelTitreColonne("COMPETENCES"),gc);
 
-		ArrayList<Competence> competences = ((Personne) ressource).getListeDeCompetence();
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy++;
 		gc.gridheight = GridBagConstraints.REMAINDER;
@@ -304,11 +313,10 @@ public class PanelInfoRessource extends JPanel{
 		
 		this.add(labelTitreColonne("COMPETENCES"),gc);
 
-		ArrayList<Competence> competences = ((Personne) ressource).getListeDeCompetence();
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy++;
 		gc.gridheight = GridBagConstraints.RELATIVE;
-		this.add(creerScrollPane(listCompetence(competences)), gc);
+		this.add(afficheListeDomaine(), gc);
 
 		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
 		gc.gridy = 20;
@@ -435,22 +443,6 @@ public class PanelInfoRessource extends JPanel{
 	}
 
 	
-	private JPanel panelContenuColonne(ArrayList<String> liste) {
-		JPanel panel = new JPanel();
-		panel.setBackground(couleurFond);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		for (int i=0; i<liste.size(); i++) {
-			panel.add(labelContenusColonne(liste.get(i)));
-
-		}
-		return panel;
-	}
-
-	private JLabel labelContenusColonne(String nom) {
-		JLabel label = new JLabel(nom);
-		label.setFont(new Font("Arial", Font.PLAIN, 14));
-		return label;
-	}
 
 	private JPanel panelJtextfield(String nom, JTextField tf) {
 		JPanel panel = new JPanel();
@@ -509,45 +501,44 @@ public class PanelInfoRessource extends JPanel{
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	private JList<Projet> listProjet(ArrayList<Projet> l){
 		Projet [] tr = new Projet [l.size()];
 		for (int i=0; i<tr.length; i++) {
 			tr[i] = l.get(i);
 		}
 		JList<Projet> jlt = new JList<Projet>(tr);
-		jlt.setBackground(couleurFond);
-		
-		jlt.setFont(new Font("Arial", Font.BOLD, 15));
-		jlt.setForeground(PanelPrincipal.BLANC);
-		return jlt;
+		return liste(jlt);
 	}
 
+	@SuppressWarnings("unchecked")
 	private JList<Competence> listCompetence(ArrayList<Competence> l){
 		Competence [] tr = new Competence [l.size()];
 		for (int i=0; i<tr.length; i++) {
 			tr[i] = l.get(i);
 		}
 		JList<Competence> jlt = new JList<Competence>(tr);
-		jlt.setBackground(couleurFond);
-		
-		jlt.setFont(new Font("Arial", Font.BOLD, 15));
-		jlt.setForeground(PanelPrincipal.BLANC);
-		return jlt;
+		return liste(jlt);
 	}
 
+	@SuppressWarnings("unchecked")
 	private JList<Activite> listActivite(ArrayList<Activite> l){
 		Activite [] tr = new Activite [l.size()];
 		for (int i=0; i<tr.length; i++) {
 			tr[i] = l.get(i);
 		}
 		JList<Activite> jlt = new JList<Activite>(tr);
-		jlt.setBackground(couleurFond);
-		
-		jlt.setFont(new Font("Arial", Font.BOLD, 15));
-		jlt.setForeground(PanelPrincipal.BLANC);
-		return jlt;
+		return liste(jlt);
 	}
 
+	@SuppressWarnings({ "rawtypes" })
+	private JList liste(JList liste) {
+		JList jlt = liste;
+		jlt.setBackground(couleurFond);		
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		//jlt.setForeground(PanelPrincipal.BLANC);		
+		return jlt;
+	}
 	
 	private JScrollPane creerScrollPane(JList l) {
 		JScrollPane scrollPane = new JScrollPane(l);
@@ -557,9 +548,50 @@ public class PanelInfoRessource extends JPanel{
 	}
 
 	
-	
-	
-	
+	private Component afficheListeDomaine() {
+		Competence [] tc = new Competence [competences.size()];
+		for (int i=0; i<competences.size(); i++) {
+			tc[i] = competences.get(i);
+		}
+		JList<Competence> jlt = new JList<Competence>(tc);
+		jlt.setBackground(couleurFond);
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent evt) {
+		        if (evt.getButton() == MouseEvent.BUTTON3) { //clic droit
+		        	jlt.setSelectedIndex(jlt.locationToIndex(evt.getPoint()));
+		        	jlt.setComponentPopupMenu(popupMenuDomaine(jlt.getSelectedValue()));
+		        	;
+		        }
+		    }
+		});
+
+		JScrollPane scrollPaneJListDomaine = new JScrollPane(jlt);
+		scrollPaneJListDomaine.setViewportView(jlt);
+		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return scrollPaneJListDomaine;
+	}
+
+	public JPopupMenu popupMenuDomaine(Competence c) {
+		JPopupMenu m = new JPopupMenu("Supprimer");  
+		JMenuItem supp = new JMenuItem("Supprimer");
+		supp.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e) {              
+            	supprimerCompetence(c);
+            	}  
+           });  
+
+		m.add(supp);
+		return m;
+	}
+
+	protected void supprimerCompetence(Competence c) {
+		competences.remove(c);
+		Personne p = (Personne)ressource;
+		entreprise.modifPersonne(p, p.getNom(), p.getPrenom(), p.getRole(), p.getMdp(), competences);
+		maj();			
+	}
+
 	
 	
 	
