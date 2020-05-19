@@ -932,7 +932,7 @@ public class Entreprise extends Observable{
 	 * Cherche tout les activites concerné de la ressource par son id
 	 * @param type de la ressource
 	 * @param login de la ressource
-	 * @return la liste de projet de la ressource
+	 * @return la liste d'activite de la ressource
 	 */	
 	public ArrayList<Activite> getListeActivitetdeRessourceParId(int type, int id){
 		ArrayList<Activite> l = new ArrayList<Activite>();
@@ -955,7 +955,7 @@ public class Entreprise extends Observable{
 	/**
 	 * Cherche tout les activites concerné de la personne par son id
 	 * @param login de la ressource
-	 * @return la liste de projet de la ressource
+	 * @return la liste d'activite de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDePersonneParId(int id){
 		try {
@@ -970,7 +970,7 @@ public class Entreprise extends Observable{
 	/**
 	 * Cherche tout les activites concerné de la salle par son id
 	 * @param login de la ressource
-	 * @return la liste de projet de la ressource
+	 * @return la liste d'activite de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDeSalleParId(int id){
 		try {
@@ -985,7 +985,7 @@ public class Entreprise extends Observable{
 	/**
 	 * Cherche tout les activites concerné de la calculateur par son id
 	 * @param login de la ressource
-	 * @return la liste de projet de la ressource
+	 * @return la liste d'activite de la ressource
 	 */	
 	public ArrayList<Activite> getListeActiviteDeCalculateurParId(int id){
 		try {
@@ -997,6 +997,16 @@ public class Entreprise extends Observable{
 		return null;	
 		}
 
+	/**
+	 * Cherche tout les activites du projet
+	 * @param id du projet
+	 * @return la liste d'activite du projet
+	 */	
+	public ArrayList<Activite> getListeActiviteDuProjet(int id){
+		
+	}
+
+	
 	/**
 	 * Cherche dans la bdd tout les chefs de projets qui gere la ressource tester
 	 * @param type de la ressource 

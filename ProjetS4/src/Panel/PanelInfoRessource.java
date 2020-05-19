@@ -587,8 +587,7 @@ public class PanelInfoRessource extends JPanel{
 
 	protected void supprimerCompetence(Competence c) {
 		competences.remove(c);
-		Personne p = (Personne)ressource;
-		entreprise.modifPersonne(p, p.getNom(), p.getPrenom(), p.getRole(), p.getMdp(), competences);
+		entreprise.supprimeCompetence(ressource.getId(),c.getNom());
 		maj();			
 	}
 
@@ -658,6 +657,7 @@ public class PanelInfoRessource extends JPanel{
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
 			if (entreprise.ressourceTravailleDansUneActiviteParId(ressource.getType(), ressource.getId())) {
+				if(entreprise.ressourcePresenteDansProjet(type, r, p))
 				entreprise.suppRessource(ressource.getType(), ressource);
 				fir.dispose();				
 			}

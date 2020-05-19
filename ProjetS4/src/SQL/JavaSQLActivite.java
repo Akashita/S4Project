@@ -69,7 +69,7 @@ public final class JavaSQLActivite extends JavaSQL{
 
 	public static void insertion(String titre, LocalDate debut, float charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) throws SQLException{
 		Date debut1 = Date.valueOf(debut);
-		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idP) VALUE(NULL, '" + titre + "' ,  '"+debut1+"' ,'"+charge+"' , '"+ordre+"' , '"+couleur+"' , '"+idP+"');";
+		String sql = "INSERT INTO Activite(titre, debut, charge, ordre, couleur, idP) VALUE('" + titre + "' ,  '"+debut1+"' ,'"+charge+"' , '"+ordre+"' , '"+couleur+"' , '"+idP+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
