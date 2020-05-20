@@ -1926,9 +1926,9 @@ public class Entreprise extends Observable{
 	
 	private Color couleurAleatoire() {
 		Random rand = new Random();
-		float r = rand.nextFloat();
-		float g = rand.nextFloat();
-		float b = rand.nextFloat();
+		float r = (float) (rand.nextFloat() / 2f + 0.5);
+		float g = (float) (rand.nextFloat() / 2f + 0.5);
+		float b = (float) (rand.nextFloat() / 2f + 0.5);
 		Color couleur = new Color(r, g, b);
 		return couleur;
 	}
