@@ -184,7 +184,7 @@ public class Entreprise extends Observable{
 	}
 
 	//---------------------------------------------------------------------------------------------------->>>>>>>>> EDT
-
+	
 	public void majEDT() {
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite;
@@ -214,14 +214,17 @@ public class Entreprise extends Observable{
 
 		LocalDate jourCourant = verifierJour(act.getDebut());
 		int heureCourante = HEURE_DEBUT_MATIN;
-		ArrayList<Ressource> res = this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, act.getId());
+		
+		ArrayList<Personne> pers = castRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, act.getId()));
 
 		while (chargeAloue < charge) {
-			for (int i = 0; i < res.size(); i++) {
-				if(verifierOrdre(res.get(i), act, jourCourant, heureCourante)) {
-					if(res.get(i).creneauDispo(jourCourant, heureCourante)) {
-						res.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
-						chargeAloue++;
+			for (int i = 0; i < pers.size(); i++) {
+				if(verifierOrdre(pers.get(i), act, jourCourant, heureCourante)) {
+					if(!pers.get(i).enConge(jourCourant)) {
+						if(pers.get(i).creneauDispo(jourCourant, heureCourante)) {
+							pers.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
+							chargeAloue++;
+						}
 					}
 				}
 			}
@@ -232,6 +235,14 @@ public class Entreprise extends Observable{
 			}
 		}
 	}
+
+	 private ArrayList<Personne> castRessourceEnPersonnes(ArrayList<Ressource> src) {
+		 ArrayList<Personne> res = new ArrayList<Personne>();
+		 for (int i = 0; i < src.size(); i++) {
+			res.add((Personne)src.get(i));
+		}
+		return res;
+	 }
 
 	/*Verifie qu'un activit������ d'ordre n+1 soit plac������e apr������s une activite d'ordre n*/
 	private boolean verifierOrdre(Ressource res, Activite act, LocalDate jour, int heure) {

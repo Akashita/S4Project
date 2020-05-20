@@ -19,6 +19,8 @@ public class Personne extends Ressource{
 	public static final String CHEFDEPROJET = "Chef de projet";
 	public static final String ADMINISTRATEUR = "Administrateur";
 	public static final String DEBUG = "Debugger";
+	
+	private ArrayList<LocalDate> listeConges;
 
 	private String role;
 	
@@ -31,6 +33,7 @@ public class Personne extends Ressource{
 	public Personne(String nom, String prenom, String role, int numSalarie){
 		super(numSalarie, nom, Ressource.PERSONNE);
 		
+		this.listeConges = new ArrayList<LocalDate>();
 		this.role = role; //Role dans l'entreprise (voir constante ci-dessus)
 		this.prenom = prenom;
 		
@@ -116,6 +119,11 @@ public class Personne extends Ressource{
 		return this.listeCompetence;
 	}
 	
+	public boolean enConge(LocalDate date) {
+		return listeConges.contains(date);
+	}
+	
+	
 	public boolean aDomaine(String domaine) {
 		boolean b = false;
 		for (int i=0; i<listeCompetence.size(); i++) {
@@ -144,7 +152,27 @@ public class Personne extends Ressource{
 		this.listeCompetence = l;
 	}
 
+	public void ajouterConge(ArrayList<LocalDate> date){
+		for (int i = 0; i < date.size(); i++) {
+			if(!listeConges.contains(date.get(i))) {
+				listeConges.add(date.get(i));
+			}
+		}
+	}
 	
+	public ArrayList<LocalDate> getListeConges() {
+		return listeConges;
+	}
+	
+	public void enleverConge(ArrayList<LocalDate> date){
+		int j;
+		for (int i = 0; i < date.size(); i++) {
+			if(listeConges.contains(date.get(i))) {
+				j = listeConges.indexOf(date.get(i));
+				listeConges.remove(j);
+			}
+		}
+	}
 	
 	public void enleverProjet(Projet projet) {
 		for (int i=0; i<listeProjet.size(); i++) {
