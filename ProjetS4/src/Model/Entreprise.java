@@ -84,6 +84,7 @@ public class Entreprise extends Observable{
 
 	private Projet projetSelectionner;
 	private Activite activiteSelectionner;
+	private boolean afficheEDTActivite = false;
 	private ArrayList<String> ressourceAfficher = new ArrayList<String>();
 	
 	private int afficheListeRessource = Ressource.RIEN, afficheTache = PanelTache.RIEN;
@@ -185,7 +186,9 @@ public class Entreprise extends Observable{
 	}
 
 	//---------------------------------------------------------------------------------------------------->>>>>>>>> EDT
-
+	
+	
+	
 	public void majEDT() {
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite;
@@ -448,8 +451,7 @@ public class Entreprise extends Observable{
 		return projetTab;	
 		}
 	/**
-	 * Cherche tout les projets de l'entreprise
-	 * @param id de l'user
+	 * Cherche tout les projets de l'entreprise dans la bdd
 	 * @return la liste de projet
 	 */	
 	public ArrayList<Projet> getListeProjetDeEntreprise(){
@@ -1618,8 +1620,6 @@ public class Entreprise extends Observable{
 	}*/
 	
 	public void ajouterRessourceActivite(int type, Ressource res, Activite a) {
-		Activite act = getActiviteSelectionner();
-		//act.ajouterRessource(res);
 		switch (type) {
 		case Ressource.PERSONNE:
 			try {
@@ -1651,9 +1651,34 @@ public class Entreprise extends Observable{
 		update();
 	}
 
-	public void enleverRessourceActivite(Ressource res) {
-		Activite act = getActiviteSelectionner();
-		//act.enleverRessource(res.getId());
+	public void enleverRessourceActivite(int type, Ressource res, Activite a) {
+		switch (type) {
+		case Ressource.PERSONNE:
+			try {
+				JavaSQLParticipe.supprimeParticipeSalarie(res.getId(), a.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			break;
+		case Ressource.SALLE:
+			try {
+				JavaSQLParticipe.supprimeParticipeSalle(res.getId(), a.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			break;
+		case Ressource.CALCULATEUR:
+			try {
+				JavaSQLParticipe.supprimeParticipeCalcul(res.getId(), a.getId());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			break;
+
+		default:
+			break;
+		}
+
 		majEDT();
 		update();
 	}
@@ -1870,22 +1895,31 @@ public class Entreprise extends Observable{
 
 	
 	public void selectionnerActivite(Activite activite) {
-		if (activiteSelectionner != null) {
-			if (activite.getId() == activiteSelectionner.getId()) {
-				activite.afficheEDT();
+		if (activiteSelectionner == null) {
+			activiteSelectionner = activite;
+		}
+		else {
+			if (activiteSelectionner.getId() == activite.getId()) {
+				if (afficheEDTActivite) {
+					afficheEDTActivite = false;
+				}
+				else {
+					afficheEDTActivite = true;
+				}
 			}
 			else {
 				activiteSelectionner = activite;
-			}
-		}
-		else {
-			activiteSelectionner = activite;
+			}			
 		}
 		update();
 	}
 
 	public Activite getActiviteSelectionner() {
 		return activiteSelectionner;
+	}
+
+	public boolean getAfficheEDTActivite() {
+		return afficheEDTActivite;
 	}
 
 	
@@ -1974,10 +2008,6 @@ public class Entreprise extends Observable{
 		listeFenetreInfoRessource.add(new FenetreInfoRessource(this, res, typeDeLaRessource));
 	}
 
-	public void afficheEDTActivite(Activite activite) {
-		activite.afficheEDT();
-		update();
-	}
 
 
 	private ArrayList<String> CompeToTag(ArrayList<Competence> lc){

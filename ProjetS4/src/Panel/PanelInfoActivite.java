@@ -5,12 +5,17 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import EcouteurEvenement.SourisRessourceListener;
 import Model.Activite;
@@ -34,7 +39,6 @@ public class PanelInfoActivite extends JPanel{
 	private Entreprise entreprise;
 	private Activite activite;
 	private Color couleurFond;
-	
 
 	public PanelInfoActivite (Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;
@@ -44,9 +48,9 @@ public class PanelInfoActivite extends JPanel{
 			couleurFond = PanelPrincipal.BLEU3;
 			this.setBackground(couleurFond);
 			this.setLayout(new BorderLayout());
+			ArrayList<Ressource> listeR = entreprise.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activite.getId());
 
-			ArrayList<Ressource> listeRes = activite.getListeRessourceType(Ressource.PERSONNE);
-			if (activite.getAfficheEDT() && listeRes.size() > 0) { //on affiche son edt
+			if (entreprise.getAfficheEDTActivite() && listeR.size() > 0) { //on affiche son edt
 				this.add(new PanelEDTActivite(entreprise, activite));
 			}
 			else {
@@ -120,35 +124,92 @@ public class PanelInfoActivite extends JPanel{
 			panel.add(labelInfo("Charge de travail: "+activite.getChargeJHomme()+" jour/homme"), gc);
 
 
-			for (int i=2; i<5; i++) {
-				int type = Ressource.RIEN;
-				switch (i){
-				case 2: type = Ressource.PERSONNE;
-				break;
-				case 3: type = Ressource.SALLE;
-				break;
-				case 4: type = Ressource.CALCULATEUR;
-				break;
-				}
-				gc.gridx = i;
-				gc.gridy = 0;
-				gc.gridheight = 2;
-				//gc.gridy = 2;
-
-				ArrayList<Ressource> listeR = activite.getListeRessourceType(type);
-				if (listeR.size() > 0) {
-					panel.add(afficheListe(type, listeR), gc);				
-				}
-				else {
-					JPanel listeVide = new JPanel();
-					listeVide.setBackground(couleurFond);
-					panel.add(listeVide, gc);				
-				}
-			}			
+		gc.fill = GridBagConstraints.BOTH;
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.gridx ++;
+		gc.gridy = 0;
+		gc.gridwidth = 1;
+		gc.gridheight = GridBagConstraints.REMAINDER;
+		for (int i=2; i<5; i++) {
+			int type = Ressource.RIEN;
+			switch (i){
+			case 2: type = Ressource.PERSONNE;
+			break;
+			case 3: type = Ressource.SALLE;
+			break;
+			case 4: type = Ressource.CALCULATEUR;
+			break;
+			}
+			gc.gridx = i;
+			ArrayList<Ressource> listeR = entreprise.getListeRessourcedeActiviteParId(type, activite.getId());
+			if (listeR.size() > 0) {
+				panel.add(creerList(listeR),gc);
+			}
+			else {
+				JPanel listeVide = new JPanel();
+				listeVide.setBackground(couleurFond);
+				panel.add(listeVide, gc);				
+			}
+		}
 		return panel;
 	}
-
 	
+	private JPanel panelListeRessource() {
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new GridLayout(1,3,5,0));
+		for (int i=2; i<5; i++) {
+			int type = Ressource.RIEN;
+			switch (i){
+			case 2: type = Ressource.PERSONNE;
+			break;
+			case 3: type = Ressource.SALLE;
+			break;
+			case 4: type = Ressource.CALCULATEUR;
+			break;
+			}
+			ArrayList<Ressource> listeR = entreprise.getListeRessourcedeActiviteParId(type, activite.getId());
+			if (listeR.size() > 0) {
+				p.add(creerList(listeR));
+			}
+			else {
+				JPanel listeVide = new JPanel();
+				listeVide.setBackground(couleurFond);
+				p.add(listeVide);				
+			}
+		}
+		return p;
+	}
+
+	private JScrollPane creerList(ArrayList<Ressource> lr) {
+		Ressource [] tr = new Ressource [lr.size()];
+		for (int i=0; i<tr.length; i++) {
+			tr[i] = lr.get(i);
+		}
+		JList<Ressource> jlt = new JList<Ressource>(tr);
+		jlt.setBackground(couleurFond);
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        @SuppressWarnings("unchecked")
+				JList<Ressource> jlt = (JList<Ressource>)evt.getSource();
+		        if (evt.getClickCount() == 2) {
+		        	afficheRessource(jlt.getSelectedValue());
+		        }
+		    }
+		});
+		
+		JScrollPane scrollPane = new JScrollPane(jlt);
+		scrollPane.setViewportView(jlt);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return scrollPane;
+	}
+
+	public void afficheRessource(Ressource r) {
+			entreprise.afficheInfoRessource(r, r.getId());
+	}
+
 	
 	private JPanel afficheListe(int type, ArrayList<Ressource> listeR) {
 		JPanel panel = new JPanel();

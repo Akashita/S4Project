@@ -23,7 +23,7 @@ public class Ticket {
 	private Projet projetArrive;
 
 	
-	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5, ERREUR = 6;
+	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5, ERREUR = 6, VUE = 7;
 	private static final String SEPARATEUR = "|";
 
 	
@@ -154,7 +154,7 @@ public class Ticket {
 	}
 	
 	public String toString() {
-		return this.sujet + " - " + this.getPersonneEnvoyeur().getPrenomNom() + " - " + dateTicket.toString();
+		return this.sujet + " - " + this.getPersonneEnvoyeur().getPrenomNom() + " - " + dateTicket.toString() + " - " + getStringStatut();
  
 		
 		
@@ -162,20 +162,29 @@ public class Ticket {
 
 
 	private String getStringStatut() {
-		if (this.statut == ENCOURS ) {
-		return "EN COURS";
+		String s = "";
+		switch (statut) {
+		case ENCOURS:
+			s = "non lue";
+			break;
+
+		case VUE:
+			s = "lue";
+			break;
+
+		case ACCEPTEE:
+			s = "en cours";
+			break;
+
+		case REFUSE:
+			s = "en cours";
+			break;
+
+		default:
+			s = "erreur";
 		}
-		else if (this.statut == ACCEPTEE) {
-			return "ACCEPTEE";
-		}
-		else if (this.statut == REFUSE) {
-			return "REFUSE";
-		}
-		else {
-			return "ERREUR";
-		}
-	
-		}
+		return s;
+	}
 	
 	public Personne getPersonneEnvoyeur() {
 		ArrayList<Personne> personneTab = new ArrayList<Personne>();

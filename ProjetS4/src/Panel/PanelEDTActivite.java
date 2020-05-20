@@ -35,7 +35,8 @@ public class PanelEDTActivite extends JPanel{
 	private int nbPersonne;
 	private Entreprise entreprise;
 	private Color couleurFond;
-
+	private ArrayList<Ressource> listePersonne;
+	
 	public PanelEDTActivite(Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;
 		this.activite = activite;
@@ -45,7 +46,8 @@ public class PanelEDTActivite extends JPanel{
 				couleurFond = PanelPrincipal.BLEU2;
 			}					
 		}
-		nbPersonne = activite.getListeRessourceType(Ressource.PERSONNE).size();
+		listePersonne = entreprise.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activite.getId());
+		nbPersonne = listePersonne.size();
 		this.setLayout(new BorderLayout());
 		if (nbPersonne > 0) {
 			this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);			
@@ -101,9 +103,8 @@ public class PanelEDTActivite extends JPanel{
 			gc.gridwidth = 1;
 			gc.gridx = 0;
 			gc.gridy ++;
-			ArrayList<Ressource> listeRes = activite.getListeRessourceType(Ressource.PERSONNE);
-			Ressource res = listeRes.get(i);
-			String nom = (((Personne) res).getPrenom()) + " " + res.getNom();
+			Ressource res = listePersonne.get(i);
+			String nom = ((Personne) res).getPrenomNom();
 			panel.add(creerLabel(nom, res), gc);
 			
 			gc.gridwidth = GridBagConstraints.REMAINDER;

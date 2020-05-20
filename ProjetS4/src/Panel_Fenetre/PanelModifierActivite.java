@@ -1,17 +1,23 @@
 package Panel_Fenetre;
 
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
 import Model.Temps;
-import Ressource.Personne;
-import Ressource.Ressource;
+import Ressource.Competence;
+
 
 public class PanelModifierActivite extends PanelFenetre{
 	
@@ -88,13 +94,14 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.gridx = 1;
 		this.add(textFieldCharge, gc);			
 		
+		colCompetenceModifie(gc);		
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridx = 0;
 		gc.gridy = 3;
 		gc.gridwidth = 3;
-		this.add(creerTitre("A partir"), gc);
+		this.add(creerTitre("Debut"), gc);
 		
 		gc.gridx = 0;
 		gc.gridy = 4;
@@ -116,6 +123,47 @@ public class PanelModifierActivite extends PanelFenetre{
 		this.add(creerBoutonFin(this, "Modifier"), gc);
 
 	}
+	
+	private void colCompetenceModifie(GridBagConstraints gc) {
+		gc.fill = GridBagConstraints.BOTH;
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.gridx=0;
+		gc.gridy++;
+		gc.gridwidth = GridBagConstraints.RELATIVE;
+		gc.gridheight = 2;
+		this.add(afficheListeDomaine(), gc);
+
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.gridx ++;
+		gc.gridwidth = 1;
+		this.add(actionModificationCompetence(),gc);
+	}
+
+	private Component afficheListeDomaine() {
+		String [] tc = new String [ac.size()];
+		for (int i=0; i<competences.size(); i++) {
+			tc[i] = competences.get(i);
+		}
+		JList<String> jlt = new JList<String>(tc);
+		jlt.setBackground(couleurFond);
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent evt) {
+		        if (evt.getButton() == MouseEvent.BUTTON3) { //clic droit
+		        	jlt.setSelectedIndex(jlt.locationToIndex(evt.getPoint()));
+		        	jlt.setComponentPopupMenu(popupMenuDomaine(jlt.getSelectedValue()));
+		        	;
+		        }
+		    }
+		});
+
+		JScrollPane scrollPaneJListDomaine = new JScrollPane(jlt);
+		scrollPaneJListDomaine.setViewportView(jlt);
+		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return scrollPaneJListDomaine;
+	}
+
+	
 	
 	protected void actionFin() {
 		if (!textFieldNom.getText().isEmpty()) {

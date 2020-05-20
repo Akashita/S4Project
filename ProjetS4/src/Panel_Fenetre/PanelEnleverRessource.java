@@ -3,6 +3,7 @@ package Panel_Fenetre;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
@@ -55,7 +56,8 @@ public class PanelEnleverRessource extends PanelFenetre{
 		
 		
 		gc.gridy = 2;
-		initialiseComboBoxRessource(entreprise.getActiviteSelectionner().getListeRessourceType(typeChoisi));
+		ArrayList<Ressource> l = entreprise.getListeRessourcedeActiviteParId(typeChoisi, entreprise.getActiviteSelectionner().getId());
+		initialiseComboBoxRessource(l);
 		this.add(comboBoxRessource, gc);			
 
 		
@@ -76,7 +78,7 @@ public class PanelEnleverRessource extends PanelFenetre{
 	}
 	
 	protected void actionFin() {
-		entreprise.enleverRessourceActivite((Ressource) comboBoxRessource.getSelectedItem());
+		entreprise.enleverRessourceActivite(typeChoisi, (Ressource) comboBoxRessource.getSelectedItem(), entreprise.getActiviteSelectionner());
 		fm.dispose();
 	}
 }

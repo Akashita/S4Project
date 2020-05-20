@@ -109,7 +109,7 @@ public class PanelNouvelleActivite extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 7;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Commence Ã  partir du"), gc);
+		this.add(creerTitre("Commence a partir du"), gc);
 		
 		gc.gridx = 0;
 		gc.gridy = 8;
@@ -124,7 +124,7 @@ public class PanelNouvelleActivite extends PanelFenetre{
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "CrÃ©er"), gc);
+		this.add(creerBoutonFin(this, "Créer"), gc);
 
 	}
 	

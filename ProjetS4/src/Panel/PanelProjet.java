@@ -37,7 +37,13 @@ public class PanelProjet extends JPanel{
 	public JPanel afficherProjet() {
 		JPanel panel = new JPanel();
 		panel.setBackground(PanelPrincipal.BLEU2);
-		ArrayList<Projet> listeProjet = entreprise.getListeProjetDeUser(entreprise.getUser().getId());
+		ArrayList<Projet> listeProjet = new ArrayList<Projet>();
+		if (entreprise.getUser().estAdmin()) {
+			listeProjet = entreprise.getListeProjetDeEntreprise();
+		}
+		else {
+			listeProjet = entreprise.getListeProjetDeUser(entreprise.getUser().getId());
+		}
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		if (listeProjet.size()>0) {
 			for (int i=0; i<listeProjet.size(); i++) {

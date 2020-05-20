@@ -25,7 +25,6 @@ import Fenetre.FenetreModal;
 import Fenetre.FenetrePrincipale;
 import GestionTicket.Ticket;
 import Model.Entreprise;
-import Ressource.Ressource;
 import SQL.JavaSQLTicket;
 
 /**

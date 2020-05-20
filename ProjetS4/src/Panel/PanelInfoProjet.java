@@ -72,7 +72,7 @@ public class PanelInfoProjet extends JPanel{
 		gc.fill = GridBagConstraints.CENTER;
 		gc.insets = new Insets(20, 5, 5, 5);
 		
-		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 
 		gc.weightx = 5;
 		
@@ -102,7 +102,9 @@ public class PanelInfoProjet extends JPanel{
 			break;
 			case 2: type = Ressource.CALCULATEUR;
 			break;
-			}
+			}		
+			//gc.insets = new Insets(20, 100, 5, 20);
+			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridx = i+3;
 			gc.gridy = 0;
 			p.add(creerLabelInterfaceRessource(type), gc);

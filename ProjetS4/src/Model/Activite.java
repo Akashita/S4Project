@@ -25,7 +25,6 @@ public class Activite implements Comparable<Activite>{
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	private ArrayList<String> listeDomaine;
 	
-	private boolean afficheEDT = false; //pour le graphique
 	private boolean changeSens = false; //pour le graphique
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
@@ -82,9 +81,6 @@ public class Activite implements Comparable<Activite>{
 		return couleur;
 	}
 
-	public boolean getAfficheEDT() {
-		return afficheEDT;
-	}
 
 	public boolean getChangeSens() {
 		return changeSens;
@@ -129,16 +125,6 @@ public class Activite implements Comparable<Activite>{
 		this.debut = debut;
 	}
 
-	public void afficheEDT() {
-		if (afficheEDT) {
-			afficheEDT = false;
-		}
-		else {
-			if (getListeRessourceType(Ressource.PERSONNE).size()>0) {
-				afficheEDT = true;
-			}
-		}
-	}
 
 	public void setChangeSens(boolean b) {
 		changeSens = b;
