@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Random;
 
@@ -72,6 +73,9 @@ public class Entreprise extends Observable{
 
 	private FenetreDebugBDD fenetreBDD;
 	
+	//=========== EDT
+	private Hashtable<Pair<Integer, Integer>, EDT> listeEDT;
+	
 	
 	
 	
@@ -105,6 +109,7 @@ public class Entreprise extends Observable{
 		//recupInfoBdd();
 
 		fenetrePrincipale = new FenetrePrincipale(this);
+		listeEDT = new Hashtable<Pair<Integer, Integer>, EDT>();
 		this.update();
 	}
 	public Entreprise(String typeDebug) {
@@ -118,12 +123,14 @@ public class Entreprise extends Observable{
 		if (typeDebug == "debugBDD") {
 			fenetreBDD = new FenetreDebugBDD(this);
 		}
+		listeEDT = new Hashtable<Pair<Integer, Integer>, EDT>();
 		this.update();
 	}
 
 	public Entreprise(Personne p) {
 		user = p;
 		fenetrePrincipale = new FenetrePrincipale(this);
+		listeEDT = new Hashtable<Pair<Integer, Integer>, EDT>();
 		this.update();
 	}
 
@@ -194,7 +201,7 @@ public class Entreprise extends Observable{
 			 for (int j = 0; j < lActivite.size(); j++) {
 				 if(lActivite.get(j).hasRessource()) {
 					creerLCreneauxPersonnes(lActivite.get(j));
-					creerLCreneauxSalles(lActivite.get(j));
+					//creerLCreneauxSalles(lActivite.get(j));
 				 }
 			}
 		}
@@ -202,8 +209,18 @@ public class Entreprise extends Observable{
 
 	private void viderRessources() {
 		ArrayList<Ressource> lRessource = getListeRessourceEntreprise();
+		int id_ressource;
+		int type_ressource;
 		for (int i = 0; i < lRessource.size(); i++) {
-			lRessource.get(i).vider();
+			id_ressource = lRessource.get(i).getId();
+			type_ressource = lRessource.get(i).getType();
+			Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id_ressource, type_ressource);
+			Pair<Integer, Integer> ident2 = new Pair<Integer, Integer>(id_ressource, type_ressource);
+			boolean test2 = ident.equals(ident2);
+			boolean test = listeEDT.containsKey(ident);
+			if(listeEDT.containsKey(ident)) {
+				listeEDT.get(ident).vider();
+			}
 		}
 	}
 
@@ -219,10 +236,12 @@ public class Entreprise extends Observable{
 
 		while (chargeAloue < charge) {
 			for (int i = 0; i < pers.size(); i++) {
-				if(verifierOrdre(pers.get(i), act, jourCourant, heureCourante)) {
-					if(!pers.get(i).enConge(jourCourant)) {
-						if(pers.get(i).creneauDispo(jourCourant, heureCourante)) {
-							pers.get(i).ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
+				EDT edtCourant = getEDTRessource(pers.get(i));
+				Personne persCourante = pers.get(i);
+				if(verifierOrdre(edtCourant, act, jourCourant, heureCourante)) {
+					if(!persCourante.enConge(jourCourant)) {
+						if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
+							edtCourant.ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
 							chargeAloue++;
 						}
 					}
@@ -235,6 +254,20 @@ public class Entreprise extends Observable{
 			}
 		}
 	}
+	
+	public EDT getEDTRessource(Ressource res) {
+		int id_ressource = res.getId();
+		int type_ressource = res.getType();
+		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id_ressource, type_ressource);
+		return listeEDT.get(ident);
+	}
+	
+	
+	public EDT getEDTRessource(int type, int id){
+		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id, type);
+		return listeEDT.get(ident);
+	}
+
 
 	 private ArrayList<Personne> castRessourceEnPersonnes(ArrayList<Ressource> src) {
 		 ArrayList<Personne> res = new ArrayList<Personne>();
@@ -245,14 +278,15 @@ public class Entreprise extends Observable{
 	 }
 
 	/*Verifie qu'un activit������ d'ordre n+1 soit plac������e apr������s une activite d'ordre n*/
-	private boolean verifierOrdre(Ressource res, Activite act, LocalDate jour, int heure) {
+	private boolean verifierOrdre(EDT edtCourant, Activite act, LocalDate jour, int heure) {
 		LocalDateTime tmp = LocalDateTime.of(jour, LocalTime.of(heure, 0));
 		int ordre = act.getOrdre();
-		LocalDateTime premierLibre = res.getPremiereCreneauApresAct(ordre);
+		LocalDateTime premierLibre = edtCourant.getPremiereCreneauApresAct(ordre);
 
 		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp));
 	}
-
+	
+	/*
 	private void creerLCreneauxSalles(Activite act) {
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
@@ -271,6 +305,7 @@ public class Entreprise extends Observable{
 			}
 		}
 	}
+	*/
 
 	private LocalDate verifierJour(LocalDate jourCourant) {
 		LocalDate jourVerifie;

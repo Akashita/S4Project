@@ -1,12 +1,9 @@
 package Model;
 import java.awt.Color;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
-
-import javax.swing.JTextArea;
 
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -164,12 +161,6 @@ public class Projet implements Comparable<Projet>{
 			return false;
 		}
 
-	}
-	
-	public void vider() {
-		for (int i = 0; i < lActivite.size(); i++) {
-			lActivite.get(i).vider();
-		}
 	}
 
 
