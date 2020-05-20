@@ -20,11 +20,15 @@ public class Ticket {
 	private int idEnvoyeur;
 	private int idReceveur;
 	private Ressource r;
+	private Projet projetArrive;
 
 	
 	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5, ERREUR = 6;
 	private static final String SEPARATEUR = "|";
 
+	
+	
+	//constructeur BDD
 	public Ticket(int id, String sujet,String message,String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
 		this.id = id;
 		this.sujet = sujet;
@@ -35,7 +39,7 @@ public class Ticket {
 		this.idEnvoyeur = idEnvoyeur;
 		this.idReceveur = idReceveur;
 	}
-	
+	//constructeur message
 	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
 		this.id = id;
 		this.action = action;
@@ -49,10 +53,19 @@ public class Ticket {
 	}
 	
 	
-
+	//constructeur libération
 	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r) {
 		this(id, action, sujet, message, dateTicket, statut, idEnvoyeur, idReceveur);
 		this.r = r;
+		this.modif = creeModif(action);
+		
+	}
+	
+	
+	//constructeur transfert
+	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r, Projet projet) {
+		this(id, action, sujet, message, dateTicket, statut, idEnvoyeur, idReceveur,r);
+		this.projetArrive = projet;
 		this.modif = creeModif(action);
 		
 	}
@@ -61,16 +74,16 @@ public class Ticket {
 	
 	private String creeModif(int action) {
 		if (action == MESSAGE) {
-			return "message|";
+			return "message"+ SEPARATEUR;
 		}
 		else if (action == TRANSFERT) {
-			return "transfert|" + r.getId() ;
+			return "transfert"+ SEPARATEUR + r.getId()+ SEPARATEUR + this.projetArrive.getId() ;
 		}
 		else if (action == LIBERE) {
-			return "libere|" + r.getId();
+			return "libere"+ SEPARATEUR + r.getId();
 		}
 		else {
-			return "erreur|";
+			return "erreur"+ SEPARATEUR;
 		}
 	}
 	
