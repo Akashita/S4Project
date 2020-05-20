@@ -22,6 +22,7 @@ public class Personne extends Ressource{
 
 	private String role;
 	
+	private ArrayList<LocalDate> listeConges;
 	private ArrayList<Competence> listeCompetence = new ArrayList<Competence>();
 	private ArrayList<Projet> listeProjet = new ArrayList<Projet>(); //projet que la ressource dirrige
 	
@@ -30,6 +31,7 @@ public class Personne extends Ressource{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Personne(String nom, String prenom, String role, int numSalarie){
 		super(numSalarie, nom, Ressource.PERSONNE);
+		this.listeConges = new ArrayList<LocalDate>();
 		
 		this.role = role; //Role dans l'entreprise (voir constante ci-dessus)
 		this.prenom = prenom;
@@ -46,7 +48,8 @@ public class Personne extends Ressource{
 		//attributs de la classe mere.
 		super(numSalarie, nom, Ressource.PERSONNE);
 		//attribut de la classe fille.
-		this.prenom = prenom;		
+		this.prenom = prenom;
+		this.listeConges = new ArrayList<LocalDate>();
 	}
 
 	public Personne(String nom, String prenom, String role, int numSalarie, String mdp, ArrayList<Competence> listeCompetence){
@@ -55,6 +58,7 @@ public class Personne extends Ressource{
 		this.role = role; //Role dans l'entreprise (voir constante ci-dessus)
 		this.prenom = prenom;
 		this.listeCompetence = listeCompetence;
+		this.listeConges = new ArrayList<LocalDate>();
 	}
 	
 	//public 
@@ -70,6 +74,14 @@ public class Personne extends Ressource{
 	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public String getRole() {
 		return this.role;
+	}
+	
+	public boolean enConge(LocalDate date) {
+		return listeConges.contains(date);
+	}
+	
+	public ArrayList<LocalDate> getListeConges() {
+		return listeConges;
 	}
 
 	
@@ -159,6 +171,25 @@ public class Personne extends Ressource{
 	public String creeAffiche() {
 		return "prenom : " + prenom+", nom : "+nom + ", id : " + this.id + ", role : " + this.role + ", mdp : " + this.mdp + ", login : " + this.getLogin();
 
+	}
+	
+	public void ajouterConge(ArrayList<LocalDate> date){
+		for (int i = 0; i < date.size(); i++) {
+			if(!listeConges.contains(date.get(i))) {
+				listeConges.add(date.get(i));
+			}
+		}
+	}
+
+	
+	public void enleverConge(ArrayList<LocalDate> date){
+		int j;
+		for (int i = 0; i < date.size(); i++) {
+			if(listeConges.contains(date.get(i))) {
+				j = listeConges.indexOf(date.get(i));
+				listeConges.remove(j);
+			}
+		}
 	}
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override

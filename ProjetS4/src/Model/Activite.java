@@ -177,39 +177,6 @@ public class Activite implements Comparable<Activite>{
 
 	//--------------------------------------------------------------------------------->>>>> Gestion de l'EDT
 
-	/**
-	 * Dit si un creneau est dispo pour toutes lRessources associees
-	 * @param date   La date du creneau
-	 * @param heure  L'heure du creneau
-	 * @return vrai si le creneau est dispo pour toutes les lRessources associees
-	 */
-	public boolean creneauDispo(int type, LocalDate date, int heure){
-		Boolean dispo = true;
-		for (int i = 0; i < lRessources.size(); i++) {
-			if(lRessources.get(i).getType() == type) {
-				if(!lRessources.get(i).creneauDispo(date, heure)) {
-					dispo = false;
-				}
-			}
-			
-		}
-		return dispo;
-	}
-
-
-	/**
-	 * Ajoute un creneau a toutes les lRessources associees
-	 * @param cr   	Le creneau a ajouter
-	 * @param jour 	Le jour auquel ajouter le creneau
-	 */
-	public void ajouterCreneau(int type, CreneauHoraire cr, LocalDate jour) {
-		for (int i = 0; i < lRessources.size(); i++) {
-			if(lRessources.get(i).getType() == type) {
-				lRessources.get(i).ajouterCreneau(cr, jour);
-			}
-		}
-	}
-
 
 	/**
 	 * Supprime une ressource de l'activite
@@ -260,12 +227,6 @@ public class Activite implements Comparable<Activite>{
 		}
 
 		return res;
-	}
-
-	public void vider() {
-		for (int i = 0; i < lRessources.size(); i++) {
-			lRessources.get(i).vider();
-		}
 	}
 
 

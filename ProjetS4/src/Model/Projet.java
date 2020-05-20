@@ -8,7 +8,7 @@ import java.util.Hashtable;
 
 import javax.swing.JTextArea;
 
-import Ressource.Personne;
+import Ressource.Personne; 
 import Ressource.Ressource;
 
 public class Projet implements Comparable<Projet>{
@@ -166,12 +166,6 @@ public class Projet implements Comparable<Projet>{
 
 	}
 	
-	public void vider() {
-		for (int i = 0; i < lActivite.size(); i++) {
-			lActivite.get(i).vider();
-		}
-	}
-
 
 	/**
 	 * Enleve une activite du projet
