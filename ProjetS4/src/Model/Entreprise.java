@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -194,8 +195,10 @@ public class Entreprise extends Observable{
 
 	//---------------------------------------------------------------------------------------------------->>>>>>>>> EDT
 	
-	
-	
+	/**
+	 * Met à jour l'EDT de toutes les ressources en recréant tous les créneaux horaires (en prenant en compte les nouvelles containtes)
+	 * Fonction principale de la gestion des EDT
+	 */
 	public void majEDT() {
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite;
@@ -210,29 +213,29 @@ public class Entreprise extends Observable{
 			}
 		}
 	}
-
+	
+	
+	/**
+	 * Vide les créneaux horaires déjà existants dans les EDT de toutes les ressources
+	 */
 	private void viderRessources() {
-		ArrayList<Ressource> lRessource = getListeRessourceEntreprise();
-		int id_ressource;
-		int type_ressource;
-		for (int i = 0; i < lRessource.size(); i++) {
-			id_ressource = lRessource.get(i).getId();
-			type_ressource = lRessource.get(i).getType();
-			Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id_ressource, type_ressource);
-			if(listeEDT.containsKey(ident)) {
-				listeEDT.get(ident).vider();
-			}
+		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
+		for (Pair<Integer, Integer> key : keys) {
+			listeEDT.get(key).vider();
 		}
 	}
 
-
+	/**
+	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
+	 * @param L'activité courante
+	 */
 	private void creerLCreneauxPersonnes(Activite act) {
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
 
 		LocalDate jourCourant = verifierJour(act.getDebut());
 		int heureCourante = HEURE_DEBUT_MATIN;
-		ArrayList<Personne> pers = castRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, act.getId()));
+		ArrayList<Personne> pers = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, act.getId()));
 		
 		while (chargeAloue < charge) {
 			for (int i = 0; i < pers.size(); i++) {
@@ -255,27 +258,63 @@ public class Entreprise extends Observable{
 		}
 	}
 	
+	
+	/**
+	 * Initialise un EDT (vide) pour une ressource
+	 * @param l'identifiant de la ressource concernée
+	 */
+	public void ajouterEDTRessource(Pair<Integer, Integer> ident) {
+		listeEDT.put(ident, new EDT(ident));
+	}
+	
+	
+	/**
+	 * Renvoie l'EDT de la ressource passée en paramètre
+	 * @param La ressource concernée (de type de Ressource)
+	 * @return l'EDT de la ressource
+	 */
 	public EDT getEDTRessource(Ressource res) {
 		int id_ressource = res.getId();
 		int type_ressource = res.getType();
 		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id_ressource, type_ressource);
+		if(!listeEDT.containsKey(ident)) {
+			ajouterEDTRessource(ident);
+		}
 		return listeEDT.get(ident);
 	}
 	
+	
+	/**
+	 * Renvoie l'EDT de la ressource dont les identifiants ont été passés en paramètre
+	 * @param Identifiants de la ressource
+	 * @return l'EDT de la ressource
+	 */
 	public EDT getEDTRessource(int type, int id){
 		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id, type);
+		if(!listeEDT.containsKey(ident)) {
+			ajouterEDTRessource(ident);
+		}
 		return listeEDT.get(ident);
 	}
 	
-	private ArrayList<Personne> castRessourceEnPersonnes(ArrayList<Ressource> src) {
+	/**
+	 * Transforme une liste de Ressources en liste de Personnes
+	 * @param La liste de Ressources
+	 * @return a liste de Personnes
+	 */
+	private ArrayList<Personne> castListeRessourceEnPersonnes(ArrayList<Ressource> src) {
 		 ArrayList<Personne> res = new ArrayList<Personne>();
 		 for (int i = 0; i < src.size(); i++) {
 			res.add((Personne)src.get(i));
 		}
 		return res;
 	 }
-
-	/*Verifie qu'un activit������ d'ordre n+1 soit plac������e apr������s une activite d'ordre n*/
+	
+	/**
+	 * Vérifie qu'une activité d'ordre n+1 soit placée après une activitée d'ordre n
+	 * @param L'EDT, l'activitée, le jour et l'heure concernés
+	 * @return true si c'est le cas
+	 */
 	private boolean verifierOrdre(EDT edtCourant, Activite act, LocalDate jour, int heure) {
 		LocalDateTime tmp = LocalDateTime.of(jour, LocalTime.of(heure, 0));
 		int ordre = act.getOrdre();
@@ -283,27 +322,13 @@ public class Entreprise extends Observable{
 
 		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp));
 	}
-	/*
-	private void creerLCreneauxSalles(Activite act) {
-		int charge = act.getChargeHeure();
-		int chargeAloue = 0;
-		LocalDate jourCourant = verifierJour(act.getDebut());
-		int heureCourante = HEURE_DEBUT_MATIN;
-
-		while (chargeAloue < charge) {
-				if(act.creneauDispo(Ressource.SALLE, jourCourant, heureCourante)) {
-					act.ajouterCreneau(Ressource.SALLE, new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
-					chargeAloue++;
-			}
-
-			heureCourante = heureSuivante(heureCourante);
-			if(heureCourante == HEURE_DEBUT_MATIN) {
-				jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
-			}
-		}
-	}
-	*/
-
+	
+	
+	/**
+	 * Vérifie que le jour courant est un jour ouvrable, si ce n'est pas le cas il renvoie le jour ouvrable le plus proche
+	 * @param Le jour courant
+	 * @return Le jour vérifié et/ou modifié
+	 */
 	private LocalDate verifierJour(LocalDate jourCourant) {
 		LocalDate jourVerifie;
 		switch (jourCourant.getDayOfWeek()) {
@@ -319,7 +344,12 @@ public class Entreprise extends Observable{
 		}
 		return jourVerifie;
 	}
-
+	
+	/**
+	 * Donne l'heure suivant en tenant compte des horaires de l'entreprise
+	 * @param L'heure courante
+	 * @return L'heure suivante modifiée ou non
+	 */
 	private int heureSuivante(int heureCourante) {
 		int heureSuivante = heureCourante + 1;
 		if(heureSuivante == HEURE_FIN_MATIN) {
