@@ -72,12 +72,14 @@ public class PanelAjouterRessource extends PanelFenetre{
 		int type = comboBoxType.getSelectedIndex();
 		Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
 		Activite a = entreprise.getActiviteSelectionner();
-		if(!entreprise.ressourcePresenteDansActivite(type, r, a)) {
+		entreprise.ajouterRessourceActivite(type, r,a);
+		fm.dispose();
+		/*if(!entreprise.ressourcePresenteDansActivite(type, r, a)) {
 			entreprise.ajouterRessourceActivite(type, r,a);
 			fm.dispose();
 		}
 		else {
 		   	JOptionPane.showMessageDialog(null, "Cette ressource est deja présente dans cette activité", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}
+		}*/
 	}
 }

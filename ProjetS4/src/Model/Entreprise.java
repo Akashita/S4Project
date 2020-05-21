@@ -311,6 +311,7 @@ public class Entreprise extends Observable{
 	 * @return l'EDT de la ressource
 	 */
 	public EDT getEDTRessource(Ressource res) {
+		majEDT();
 		int id_ressource = res.getId();
 		int type_ressource = res.getType();
 		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id_ressource, type_ressource);
