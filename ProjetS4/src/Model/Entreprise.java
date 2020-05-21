@@ -1218,8 +1218,13 @@ public class Entreprise extends Observable{
 		return chefListe;
 	}
 	
-	
-	private ArrayList<String> getListeDomaineParIdActivite(int idA) {
+
+	/**
+	 * Cherche dans la bdd les domaines de l'activite
+	 * @param idA de l'activite
+	 * @return la liste domaine de l'activite
+	 */
+	public ArrayList<String> getListeDomaineParIdActivite(int idA) {
 		ArrayList<String> liste = new ArrayList<String>();
 		try {
 			liste = JavaSQLRecherche.recupereListeDomaineParIdActivite(idA);

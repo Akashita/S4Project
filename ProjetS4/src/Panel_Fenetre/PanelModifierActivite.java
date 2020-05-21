@@ -94,7 +94,7 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.gridx = 1;
 		this.add(textFieldCharge, gc);			
 		
-		colCompetenceModifie(gc);		
+		//colCompetenceModifie(gc);		
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
@@ -131,12 +131,12 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.gridy++;
 		gc.gridwidth = GridBagConstraints.RELATIVE;
 		gc.gridheight = 2;
-		this.add(afficheListeDomaine(), gc);
+		//this.add(afficheListeDomaine(), gc);
 
 		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridx ++;
 		gc.gridwidth = 1;
-		this.add(actionModificationCompetence(),gc);
+		//this.add(actionModificationCompetence(),gc);
 	}
 
 	private Component afficheListeDomaine() {
