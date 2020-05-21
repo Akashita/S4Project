@@ -1614,7 +1614,7 @@ public class Entreprise extends Observable{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		majEDT();
+		//majEDT();
 		update();
 	}
 
@@ -1640,7 +1640,7 @@ public class Entreprise extends Observable{
 			e.printStackTrace();
 		}
 		projetSelectionner = null;// enleve la selection projet
-		majEDT(); // remet ������ jour les emplois du temps
+		//majEDT(); // remet ������ jour les emplois du temps
 		update(); // remet ������ jour l'interface
 	}
 
@@ -1671,7 +1671,7 @@ public class Entreprise extends Observable{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		majEDT();
+		//majEDT();
 		update();
 	}
 
@@ -1694,7 +1694,7 @@ public class Entreprise extends Observable{
 		activite.supprimerToutesRessources(); //on enleve toute ses ressources
 
 		activiteSelectionner = null; // on le deselectionne
-		majEDT(); // met ������ jour l'emploi du temps
+		//majEDT(); // met ������ jour l'emploi du temps
 		update(); // met ������ jour l'interface
 	}
 
@@ -1767,7 +1767,7 @@ public class Entreprise extends Observable{
 			break;
 		}
 
-		majEDT();
+		//majEDT();
 		update();
 	}
 
@@ -1799,7 +1799,7 @@ public class Entreprise extends Observable{
 			break;
 		}
 
-		majEDT();
+		//majEDT();
 		update();
 	}
 

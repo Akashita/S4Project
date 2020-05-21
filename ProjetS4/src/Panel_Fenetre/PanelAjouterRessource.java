@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import Fenetre.FenetreModal;
 import Model.Activite;
 import Model.Entreprise;
-import Model.Temps;
 import Ressource.Ressource;
 
 public class PanelAjouterRessource extends PanelFenetre{
@@ -73,7 +72,7 @@ public class PanelAjouterRessource extends PanelFenetre{
 		int type = comboBoxType.getSelectedIndex();
 		Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
 		Activite a = entreprise.getActiviteSelectionner();
-		if (!a.ressourcePresente(r)) {
+		if(!entreprise.ressourcePresenteDansActivite(type, r, a)) {
 			entreprise.ajouterRessourceActivite(type, r,a);
 			fm.dispose();
 		}
