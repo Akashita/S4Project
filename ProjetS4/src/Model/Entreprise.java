@@ -1219,8 +1219,13 @@ public class Entreprise extends Observable{
 		return chefListe;
 	}
 	
-	
-	private ArrayList<String> getListeDomaineParIdActivite(int idA) {
+
+	/**
+	 * Cherche dans la bdd les domaines de l'activite
+	 * @param idA de l'activite
+	 * @return la liste domaine de l'activite
+	 */
+	public ArrayList<String> getListeDomaineParIdActivite(int idA) {
 		ArrayList<String> liste = new ArrayList<String>();
 		try {
 			liste = JavaSQLRecherche.recupereListeDomaineParIdActivite(idA);
@@ -2135,7 +2140,7 @@ public class Entreprise extends Observable{
 		return fenetrePrincipale;
 	}
 
-	public void afficheInfoRessource(Ressource res, int typeDeLaRessource) {
+	public void afficheInfoRessource(Ressource res) {
 		int exist = -1;
 		for (int i=0; i<listeFenetreInfoRessource.size(); i++) {
 			if (res.getId() == listeFenetreInfoRessource.get(i).getIdRessource()) {
@@ -2146,7 +2151,7 @@ public class Entreprise extends Observable{
 			listeFenetreInfoRessource.get(exist).dispose();
 			listeFenetreInfoRessource.remove(exist);
 		}
-		listeFenetreInfoRessource.add(new FenetreInfoRessource(this, res, typeDeLaRessource));
+		listeFenetreInfoRessource.add(new FenetreInfoRessource(this));
 	}
 
 

@@ -46,24 +46,24 @@ public class PanelModifierActivite extends PanelFenetre{
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
+		/* Le gridBagConstraints va definir la position et la taille des elements */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert à définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
+		/* le parametre fill sert à definir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
 		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
 		 */
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
+		/* insets definir la marge entre les composant new Insets(margeSuperieure, margeGauche, margeInferieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
+		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalite de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
+		/* weightx definit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx définit le nombre de cases en ordonnée */
+		/* weightx definit le nombre de cases en ordonnee */
 		gc.weighty = 6;
 
 		gc.gridx = 0;
@@ -94,7 +94,7 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.gridx = 1;
 		this.add(textFieldCharge, gc);			
 		
-		colCompetenceModifie(gc);		
+		//colCompetenceModifie(gc);		
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
@@ -131,12 +131,12 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.gridy++;
 		gc.gridwidth = GridBagConstraints.RELATIVE;
 		gc.gridheight = 2;
-		this.add(afficheListeDomaine(), gc);
+		//this.add(afficheListeDomaine(), gc);
 
 		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridx ++;
 		gc.gridwidth = 1;
-		this.add(actionModificationCompetence(),gc);
+		//this.add(actionModificationCompetence(),gc);
 	}
 
 	private Component afficheListeDomaine() {
@@ -183,7 +183,7 @@ public class PanelModifierActivite extends PanelFenetre{
 				}
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Veillez ecrire sa priorité", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veillez ecrire sa priorite", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
@@ -192,7 +192,7 @@ public class PanelModifierActivite extends PanelFenetre{
 	}
 	
 	protected void supprimer() {
-		String texte = "<html> Êtes-vous sur de vouloir supprimer cette activité ? <br> La suppression de cette activité supprimera tout son contenu. </html>";
+		String texte = "<html> Êtes-vous sur de vouloir supprimer cette activite ? <br> La suppression de cette activite supprimera tout son contenu. </html>";
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
 			entreprise.supprimerActiviter(activite);

@@ -81,7 +81,7 @@ public final class JavaSQLDebug extends JavaSQL{
 		}
 	}
 	
-	public void affiche() throws SQLException{
+	public static void affiche() throws SQLException{
 		String sql = "SELECT TABLE_NAME\r\n" +
 				"FROM   INFORMATION_SCHEMA.TABLES\r\n" +
 				"WHERE Table_Type='BASE TABLE'";

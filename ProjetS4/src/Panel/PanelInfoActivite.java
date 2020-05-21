@@ -102,10 +102,11 @@ public class PanelInfoActivite extends JPanel{
 			
 			gc.gridx = 0;
 			gc.gridy = 1;
+			ArrayList<String> ld = entreprise.getListeDomaineParIdActivite(activite.getId());
 			String liste = "";
-			for (int i=0; i<activite.getListeDomaine().size(); i++) {
-				liste += activite.getListeDomaine().get(i);
-				if (i<activite.getListeDomaine().size()-1) {
+			for (int i=0; i<ld.size(); i++) {
+				liste += ld.get(i);
+				if (i<ld.size()-1) {
 					liste += " / ";
 				}
 			}
