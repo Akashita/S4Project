@@ -161,7 +161,7 @@ public class PanelRessource extends JPanel {
 	}
 
 	public void afficheRessource(Ressource r) {
-			entreprise.afficheInfoRessource(r, r.getId());
+			entreprise.afficheInfoRessource(r);
 	}
 
 	private void afficherRechercher() {

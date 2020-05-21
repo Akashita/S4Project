@@ -2139,7 +2139,7 @@ public class Entreprise extends Observable{
 		return fenetrePrincipale;
 	}
 
-	public void afficheInfoRessource(Ressource res, int typeDeLaRessource) {
+	public void afficheInfoRessource(Ressource res) {
 		int exist = -1;
 		for (int i=0; i<listeFenetreInfoRessource.size(); i++) {
 			if (res.getId() == listeFenetreInfoRessource.get(i).getIdRessource()) {
@@ -2150,7 +2150,7 @@ public class Entreprise extends Observable{
 			listeFenetreInfoRessource.get(exist).dispose();
 			listeFenetreInfoRessource.remove(exist);
 		}
-		listeFenetreInfoRessource.add(new FenetreInfoRessource(this, res, typeDeLaRessource));
+		listeFenetreInfoRessource.add(new FenetreInfoRessource(this));
 	}
 
 
