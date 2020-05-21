@@ -1216,6 +1216,23 @@ public class Entreprise extends Observable{
 		}
 		return chefListe;
 	}
+	
+	
+	private ArrayList<String> getListeDomaineParIdActivite(int ida) {
+		ArrayList<String> liste = new ArrayList<String>();
+		try {
+			liste = JavaSQLRecherche.recupereListeDomaineParIdActivite(idA);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return liste;
+	}
+	
+	
+	
+	
+	
 	//------------------------------>>>>> Verifie condition dans la bdd
 
 	
@@ -1334,7 +1351,9 @@ public class Entreprise extends Observable{
 	public boolean personnePresenteDansActivite(Personne r, Activite a) {
 		Boolean b = false;
 		try {
-			b = JavaSQLRecherche.presenceActivitePersonne(r,a.getId());
+			if (JavaSQLRecherche.presenceActivitePersonne(r,a.getId())) {
+				b = true;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
