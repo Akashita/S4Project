@@ -224,9 +224,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next() || presence == false) {
-						 if (res.getInt("idA") == idA) {
 						 presence = true;	
-						 }
+						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -242,9 +241,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 if (res.getInt("numSalarie") == numSalarie) {
 						 presence = true;	
-						 }
+						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -260,9 +258,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next() || presence == false) {
-						 if (res.getInt("idA") == idA) {
 						 presence = true;	
-						 }
+						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -278,9 +275,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next() ) {
-						 if (res.getInt("numero") == numero) {
 						 presence = true;	
-						 }
+						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -296,9 +292,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next() || presence == false) {
-						 if (res.getInt("idA") == idA) {
 						 presence = true;	
-						 }
+						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -314,9 +309,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next() ) {
-						 if (res.getInt("code") == code) {
 						 presence = true;	
-						 }
+						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -973,7 +967,23 @@ public static Boolean presenceDansUnProjetCalculateur(int code) throws SQLExcept
 }
 
 ///////////////////////////////////////////////////////////////////////////////////LISTEDOMAINE////////////////////////////////////////////////////////////////////////////	
+	public static  ArrayList<String> recupereListeDomaineParIdActivite(int idA) throws SQLException{
+		ArrayList<String> liste = new ArrayList<String>();
+		String sql = "SELECT tag FROM ListeDomaine WHERE idA = '"+ idA + "';";
+		try{
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 String newDomaine = res.getString("tag");
+					 liste.add(newDomaine);
+					 }
+			 }
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return liste;
 
+}
 	
 	
 	public static  Boolean presenceDomaineDansListeDomaine(String domaine) throws SQLException{
