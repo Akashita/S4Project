@@ -56,7 +56,7 @@ public class PanelEDTRessource extends JPanel{
 
 
 	private void afficherEmploiDuTemps() {
-		tableauCreneau = ressource.getSemaineEDT(anneeSelectionner, semaineSelectionner);
+		tableauCreneau = edtRessource.getSemaineEDT(anneeSelectionner, semaineSelectionner);
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();

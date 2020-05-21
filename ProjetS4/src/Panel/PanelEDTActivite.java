@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import EcouteurEvenement.SourisRessourceListener;
 import Model.Activite;
 import Model.CreneauHoraire;
+import Model.EDT;
 import Model.Entreprise;
 import Model.Temps;
 import Ressource.Personne;
@@ -154,7 +155,10 @@ public class PanelEDTActivite extends JPanel{
 		for (int i=1; i<52;i++) {
 			JPanel semaine = new JPanel();
 					semaine.setBackground(PanelPrincipal.BLANC);
-					if(travailleSemaine(res.getSemaineEDT(Temps.getAnnee(), i))) {
+					EDT edtR = entreprise.getEDTRessource(res.getType(), res.getId());
+					CreneauHoraire [][] tableauCreneau = edtR.getSemaineEDT(Temps.getAnnee(), i);
+
+					if(travailleSemaine(tableauCreneau)) {
 						semaine.setBackground(PanelPrincipal.BLEU1);
 					}
 					panel.add(semaine);
