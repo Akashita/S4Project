@@ -1218,7 +1218,7 @@ public class Entreprise extends Observable{
 	}
 	
 	
-	private ArrayList<String> getListeDomaineParIdActivite(int ida) {
+	private ArrayList<String> getListeDomaineParIdActivite(int idA) {
 		ArrayList<String> liste = new ArrayList<String>();
 		try {
 			liste = JavaSQLRecherche.recupereListeDomaineParIdActivite(idA);
