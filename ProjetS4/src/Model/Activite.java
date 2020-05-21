@@ -89,10 +89,12 @@ public class Activite implements Comparable<Activite>{
 	public int getOrdre() {
 		return ordre;
 	}
-
+	
+	/*
 	public boolean hasRessource() {
 		return lRessources.size() != 0;
  	}
+ 	*/
 	
 	public ArrayList<String> getListeDomaine(){
 		return listeDomaine;

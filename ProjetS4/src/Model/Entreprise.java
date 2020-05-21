@@ -211,16 +211,17 @@ public class Entreprise extends Observable{
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite;
 		
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = null;
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = null;
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = null;
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = new Hashtable<Pair<Integer, Integer>, EDT>();
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
 		
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = null;
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
 		
 		 for (int i = 0; i < lProjet.size(); i++) {
 			 lActivite = lProjet.get(i).getListe();
 			 for (int j = 0; j < lActivite.size(); j++) {
-				 if(lActivite.get(j).hasRessource()) {
+				 Activite activiteCourante = lActivite.get(j);
+				 if(getListePersonnedeActiviteParId(activiteCourante.getId()).size() > 0) {
 					 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(lActivite.get(j)));
 					 //listeEDTSalles.putAll(creerLCreneauxSalles(lActivite.get(j)));
 					 //listeEDTCalculateurs.putAll(creerLCreneauxCalculateurs(lActivite.get(j)));
@@ -268,7 +269,7 @@ public class Entreprise extends Observable{
 		int heureCourante = HEURE_DEBUT_MATIN;
 		
 		ArrayList<Personne> personnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, act.getId()));
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = null;
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = new Hashtable<Pair<Integer, Integer>, EDT>();
 		
 		while (chargeAloue < charge) {
 			for (int i = 0; i < personnes.size(); i++) {
@@ -310,8 +311,7 @@ public class Entreprise extends Observable{
 	 * @param La ressource concernée (de type de Ressource)
 	 * @return l'EDT de la ressource
 	 */
-	public EDT getEDTRessource(Ressource res) {
-		majEDT();
+	private EDT getEDTRessource(Ressource res) {
 		int id_ressource = res.getId();
 		int type_ressource = res.getType();
 		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id_ressource, type_ressource);
@@ -323,11 +323,12 @@ public class Entreprise extends Observable{
 	
 	
 	/**
-	 * Renvoie l'EDT de la ressource dont les identifiants ont été passés en paramètre
+	 * Renvoie l'EDT de la ressource dont les identifiants ont été passés en paramètre (pour le graphique)
 	 * @param Identifiants de la ressource
 	 * @return l'EDT de la ressource
 	 */
 	public EDT getEDTRessource(int type, int id){
+		majEDT();
 		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id, type);
 		if(!listeEDT.containsKey(ident)) {
 			ajouterEDTRessource(ident);
@@ -341,7 +342,7 @@ public class Entreprise extends Observable{
 	 * @return l'EDT de la ressource
 	 * @return La liste dans laquelle chercher
 	 */
-	public EDT getEDTRessource(int type, int id, Hashtable<Pair<Integer, Integer>, EDT> listeEDT){
+	private EDT getEDTRessource(int type, int id, Hashtable<Pair<Integer, Integer>, EDT> listeEDT){
 		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id, type);
 		if(!listeEDT.containsKey(ident)) {
 			listeEDT.put(ident, new EDT(ident));

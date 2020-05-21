@@ -38,9 +38,6 @@ public class FenetreInfoRessource extends JDialog{
 	}
 	
 
-
-
-
 	private void creationInterface() {
 		this.setLayout(new BorderLayout());
 		this.add(new PanelInfoRessource(this, entreprise, ressource), BorderLayout.NORTH);
