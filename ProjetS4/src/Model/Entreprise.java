@@ -195,23 +195,53 @@ public class Entreprise extends Observable{
 
 	//---------------------------------------------------------------------------------------------------->>>>>>>>> EDT
 	
+	
+	/**
+	 * Renvoie une prédiction de l'EDT de ressources d'une activitée en fonction de l'ajout ou d'une supression d'une ressource dans une activitée
+	 * @param L'opération à effectuer (ajout ou suppresion)
+	 * @param La ressource concernée par la modification
+	 * @param L'activitée concernée par la modification
+	 * @return la liste des EDT prévisionels
+	 */
+	public ArrayList<EDT> getPrevisionEDT(int operation, Ressource res, Activite act) {
+		return null;
+	}
+	
+	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
+		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
+		ArrayList<Activite> lActivite;
+		
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = null;
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = null;
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = null;
+		
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = null;
+		
+		 for (int i = 0; i < lProjet.size(); i++) {
+			 lActivite = lProjet.get(i).getListe();
+			 for (int j = 0; j < lActivite.size(); j++) {
+				 if(lActivite.get(j).hasRessource()) {
+					 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(lActivite.get(j)));
+					 //listeEDTSalles.putAll(creerLCreneauxSalles(lActivite.get(j)));
+					 //listeEDTCalculateurs.putAll(creerLCreneauxCalculateurs(lActivite.get(j)));
+					 
+					 listeEDTComplete.putAll(listeEDTPersonnes);
+					 listeEDTComplete.putAll(listeEDTSalles);
+					 listeEDTComplete.putAll(listeEDTCalculateurs);
+				 }
+			}
+		}
+		 
+		 return listeEDTComplete;
+	}
+	
 	/**
 	 * Met à jour l'EDT de toutes les ressources en recréant tous les créneaux horaires (en prenant en compte les nouvelles containtes)
 	 * Fonction principale de la gestion des EDT
 	 */
 	public void majEDT() {
-		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
-		ArrayList<Activite> lActivite;
 		viderRessources();
-		 for (int i = 0; i < lProjet.size(); i++) {
-			 lActivite = lProjet.get(i).getListe();
-			 for (int j = 0; j < lActivite.size(); j++) {
-				 if(lActivite.get(j).hasRessource()) {
-					creerLCreneauxPersonnes(lActivite.get(j));
-					//creerLCreneauxSalles(lActivite.get(j));
-				 }
-			}
-		}
+		listeEDT = generationEDT();
 	}
 	
 	
@@ -228,19 +258,24 @@ public class Entreprise extends Observable{
 	/**
 	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
 	 * @param L'activité courante
+	 * @return 
 	 */
-	private void creerLCreneauxPersonnes(Activite act) {
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Activite act) {
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
 
 		LocalDate jourCourant = verifierJour(act.getDebut());
 		int heureCourante = HEURE_DEBUT_MATIN;
-		ArrayList<Personne> pers = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, act.getId()));
+		
+		ArrayList<Personne> personnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, act.getId()));
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = null;
 		
 		while (chargeAloue < charge) {
-			for (int i = 0; i < pers.size(); i++) {
-				EDT edtCourant = getEDTRessource(pers.get(i));
-				Personne persCourante = pers.get(i);
+			for (int i = 0; i < personnes.size(); i++) {
+				
+				Personne persCourante = personnes.get(i);
+				EDT edtCourant = getEDTRessource(persCourante.getId(), persCourante.getType(), listeEDTPersonnes);
+				
 				if(verifierOrdre(edtCourant, act, jourCourant, heureCourante)) {
 					if(!persCourante.enConge(jourCourant)) {
 						if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
@@ -256,6 +291,8 @@ public class Entreprise extends Observable{
 				jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
 			}
 		}
+		
+		return listeEDTPersonnes;
 	}
 	
 	
@@ -293,6 +330,20 @@ public class Entreprise extends Observable{
 		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id, type);
 		if(!listeEDT.containsKey(ident)) {
 			ajouterEDTRessource(ident);
+		}
+		return listeEDT.get(ident);
+	}
+	
+	/**
+	 * Renvoie l'EDT de la ressource dont les identifiants ont été passés en paramètre en cherchant dans une liste spécifique
+	 * @param Identifiants de la ressource
+	 * @return l'EDT de la ressource
+	 * @return La liste dans laquelle chercher
+	 */
+	public EDT getEDTRessource(int type, int id, Hashtable<Pair<Integer, Integer>, EDT> listeEDT){
+		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id, type);
+		if(!listeEDT.containsKey(ident)) {
+			listeEDT.put(ident, new EDT(ident));
 		}
 		return listeEDT.get(ident);
 	}

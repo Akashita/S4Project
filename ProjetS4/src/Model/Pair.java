@@ -1,6 +1,10 @@
 package Model;
 
 public class Pair<L,R> {
+	
+	/* Classe qui permet de gérer les duets
+	 * 
+	 * */
 
   private final L left;
   private final R right;
