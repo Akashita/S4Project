@@ -2151,7 +2151,7 @@ public class Entreprise extends Observable{
 			listeFenetreInfoRessource.get(exist).dispose();
 			listeFenetreInfoRessource.remove(exist);
 		}
-		listeFenetreInfoRessource.add(new FenetreInfoRessource(this));
+		listeFenetreInfoRessource.add(new FenetreInfoRessource(this, res));
 	}
 
 
