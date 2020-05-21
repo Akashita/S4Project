@@ -79,7 +79,8 @@ public final class JavaSQLActivite extends JavaSQL{
 				 if (listeDom != null) {
 				 try (ResultSet res2 = stmt2.executeQuery(sql2)){
 					 for(int i = 0; i<listeDom.size(); i++) {
-						 JavaSQLListeDomaine.insertion(listeDom.get(i),res2.getInt("idA"));
+						 System.out.println(res2.getInt(0));
+					 JavaSQLListeDomaine.insertion(listeDom.get(i),res2.getInt("idA"));
 					 }
 				 }
 				 }
