@@ -203,7 +203,7 @@ public class Entreprise extends Observable{
 	 * @param L'activitée concernée par la modification
 	 * @return la liste des EDT prévisionels
 	 */
-	public ArrayList<EDT> getPrevisionEDT(int operation, Ressource res, Activite act) {
+	public Hashtable<Pair<Integer, Integer>, EDT> getPrevisionEDT(int operation, Ressource res, Activite act) {
 		return null;
 	}
 	
