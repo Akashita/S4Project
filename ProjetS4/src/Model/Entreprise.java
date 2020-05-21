@@ -279,7 +279,9 @@ public class Entreprise extends Observable{
 				if(verifierOrdre(edtCourant, act, jourCourant, heureCourante)) {
 					if(!persCourante.enConge(jourCourant)) {
 						if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
-							edtCourant.ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
+							String projet = this.getProjetDeActiviteParId(act.getId()).getNom();
+							String titre  = act.getTitre() + " - "+ projet;
+							edtCourant.ajouterCreneau(new CreneauHoraire(titre, act, heureCourante, act.getCouleur()), jourCourant);
 							chargeAloue++;
 						}
 					}
@@ -1229,7 +1231,6 @@ public class Entreprise extends Observable{
 		try {
 			liste = JavaSQLRecherche.recupereListeDomaineParIdActivite(idA);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return liste;
