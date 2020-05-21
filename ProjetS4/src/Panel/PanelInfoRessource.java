@@ -267,7 +267,10 @@ public class PanelInfoRessource extends JPanel{
 
 
 		gc.gridy ++;
-		this.add(labelInfo("Type : " + ressource.getType()), gc);
+		this.add(labelInfo("Type : " + getStringByIntOfType(ressource.getType())), gc);
+		
+		gc.gridy ++;
+		this.add(labelInfo("Type : " + getStringByIntOfType(ressource.getType())), gc);
 		
 		gc.gridy ++;
 		this.add(panelBouton(), gc);		
@@ -406,7 +409,13 @@ public class PanelInfoRessource extends JPanel{
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy++;
 		gc.gridheight = GridBagConstraints.REMAINDER;
-		this.add(creerScrollPane(listActivite(listeAct)), gc);
+		ArrayList<String> lAetP = new ArrayList<String>();
+		for (int i=0; i<listeAct.size(); i++) {
+			Activite a = listeAct.get(i);
+			String projet = entreprise.getProjetDeActiviteParId(a.getId()).getNom();
+			lAetP.add(a.getTitre()+" - "+projet);
+		}
+		this.add(creerScrollPane(listString(lAetP)), gc);
 	}
 	
 	private JPanel labelInfo(String nom) {
@@ -528,6 +537,16 @@ public class PanelInfoRessource extends JPanel{
 			tr[i] = l.get(i);
 		}
 		JList<Activite> jlt = new JList<Activite>(tr);
+		return liste(jlt);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private JList<String> listString(ArrayList<String> l){
+		String [] tr = new String [l.size()];
+		for (int i=0; i<tr.length; i++) {
+			tr[i] = l.get(i);
+		}
+		JList<String> jlt = new JList<String>(tr);
 		return liste(jlt);
 	}
 

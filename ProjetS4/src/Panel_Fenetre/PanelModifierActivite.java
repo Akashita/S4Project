@@ -94,7 +94,7 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.gridx = 1;
 		this.add(textFieldCharge, gc);			
 		
-		//colCompetenceModifie(gc);		
+		colDomaineModifie(gc);		
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;

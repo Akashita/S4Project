@@ -274,8 +274,7 @@ public class PanelEDTRessource extends JPanel{
             String[] regex = creneau.getTitre().split("%", 2); 
 			label.setText("<html>"+regex[0]+"<br>"+regex[1]+"</html>");
 			*/
-			
-			label.setText("Activité n°"+creneau.getTitre());
+			label.setText(creneau.getTitre());
 			
 			label.setOpaque(true);
 			label.setBackground(creneau.getCouleurActivite());			

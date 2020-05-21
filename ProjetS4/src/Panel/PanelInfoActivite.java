@@ -110,6 +110,9 @@ public class PanelInfoActivite extends JPanel{
 					liste += " / ";
 				}
 			}
+			if (ld.size() == 0) {
+				liste = "aucun";
+			}
 			panel.add(labelInfo("Domaines demandes: "+liste), gc);
 			
 
@@ -208,7 +211,7 @@ public class PanelInfoActivite extends JPanel{
 	}
 
 	public void afficheRessource(Ressource r) {
-			entreprise.afficheInfoRessource(r, r.getId());
+			entreprise.afficheInfoRessource(r);
 	}
 
 	
