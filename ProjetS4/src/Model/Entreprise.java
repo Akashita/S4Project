@@ -222,9 +222,9 @@ public class Entreprise extends Observable{
 			 for (int j = 0; j < lActivite.size(); j++) {
 				 Activite activiteCourante = lActivite.get(j);
 				 if(getListePersonnedeActiviteParId(activiteCourante.getId()).size() > 0) {
-					 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(activiteCourante));
-					 //listeEDTSalles.putAll(creerLCreneauxSalles(lActivite.get(j)));
-					 //listeEDTCalculateurs.putAll(creerLCreneauxCalculateurs(lActivite.get(j)));
+					 listeEDTPersonnes = creerLCreneauxPersonnes(activiteCourante, listeEDTPersonnes);
+					 //listeEDTSalles = creerLCreneauxSalles(lActivite.get(j), listeEDTSalles);
+					 //listeEDTCalculateurs = creerLCreneauxCalculateurs(lActivite.get(j), listeEDTCalculateurs);
 					 
 					 listeEDTComplete.putAll(listeEDTPersonnes);
 					 listeEDTComplete.putAll(listeEDTSalles);
@@ -261,7 +261,7 @@ public class Entreprise extends Observable{
 	 * @param L'activité courante
 	 * @return 
 	 */
-	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Activite act) {
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Activite act, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
 		int charge = act.getChargeHeure();
 		int chargeAloue = 0;
 
@@ -269,7 +269,6 @@ public class Entreprise extends Observable{
 		int heureCourante = HEURE_DEBUT_MATIN;
 		
 		ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, act.getId()));
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = new Hashtable<Pair<Integer, Integer>, EDT>();
 		
 		while (chargeAloue < charge) {
 			for (int i = 0; i < listePersonnes.size(); i++) {
