@@ -219,7 +219,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	public static Boolean presenceActivitePersonne(Personne salarie, int idA) throws SQLException{
 		Boolean presence = false;
-		String sql = "SELECT idA FROM ParticipeSalarie WHERE numero = '"+ salarie.getId() + "';";
+		String sql = "SELECT idA FROM ParticipeSalarie WHERE numSalarie = '"+ salarie.getId() + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
@@ -291,7 +291,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	public static Boolean presenceActiviteCalculateur(Calculateur calculateur, int idA) throws SQLException {
 		Boolean presence = false;
-		String sql = "SELECT idA FROM ParticipeCalcul WHERE numero = '"+ calculateur.getId() + "';";
+		String sql = "SELECT idA FROM ParticipeCalcul WHERE code = '"+ calculateur.getId() + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
