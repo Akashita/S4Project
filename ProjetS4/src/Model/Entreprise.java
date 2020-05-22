@@ -1,23 +1,17 @@
 package Model;
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.sql.SQLException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Set;
 
-import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Connexion.FenetreConnexion;
@@ -26,12 +20,9 @@ import Fenetre.FenetreInfoRessource;
 import Fenetre.FenetreInfoTicket;
 import Fenetre.FenetrePrincipale;
 import GestionTicket.Ticket;
-import Panel.PanelInfoActivite;
-import Panel.PanelInfoProjet;
 import Panel.PanelTache;
 import Ressource.Calculateur;
 import Ressource.Competence;
-import Ressource.Domaine;
 import Ressource.Materiel;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -48,7 +39,6 @@ import SQL.JavaSQLProjet;
 import SQL.JavaSQLRecherche;
 import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
-import SQL.RecupInfoBDD;
 
 
 //model il sert a creer des projets puis leur donne des ressources.
@@ -198,7 +188,7 @@ public class Entreprise extends Observable{
 
 	/**
 	 * Renvoie une prédiction de l'EDT de ressources d'une activitée en fonction de l'ajout ou d'une supression d'une ressource dans une activitée
-	 * @param L'opération à effectuer (ajout ou suppresion)
+	 * @param L'opération à effectuer (ajout ou suppresion), voir l'enum Operation
 	 * @param La ressource concernée par la modification
 	 * @param L'activitée concernée par la modification
 	 * @return la liste des EDT prévisionels
@@ -213,7 +203,8 @@ public class Entreprise extends Observable{
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
 
 		 for (int i = 0; i < lProjet.size(); i++) {
-			 lActivite = lProjet.get(i).getListe();
+			 Projet projetCourant = lProjet.get(i);
+			 lActivite = projetCourant.getListe();
 			 for (int j = 0; j < lActivite.size(); j++) {
 				 Activite activiteCourante = lActivite.get(j);
 
@@ -253,9 +244,9 @@ public class Entreprise extends Observable{
 					}
 				 }
 
-				 listeEDTPersonnes = creerLCreneauxPersonnes(activiteCourante, listePersonnes, listeEDTPersonnes);
-				 //listeEDTSalles = creerLCreneauxSalles(lActivite.get(j), listeEDTSalles);
-				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(lActivite.get(j), listeEDTCalculateurs);
+				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes);
+				 //listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles);
+				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
 
 				 listeEDTComplete.putAll(listeEDTPersonnes);
 				 listeEDTComplete.putAll(listeEDTSalles);
@@ -278,7 +269,8 @@ public class Entreprise extends Observable{
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
 
 		 for (int i = 0; i < lProjet.size(); i++) {
-			 lActivite = lProjet.get(i).getListe();
+			 Projet projetCourant = lProjet.get(i);
+			 lActivite = projetCourant.getListe();
 			 for (int j = 0; j < lActivite.size(); j++) {
 				 Activite activiteCourante = lActivite.get(j);
 
@@ -287,9 +279,9 @@ public class Entreprise extends Observable{
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
 
 
-				 listeEDTPersonnes = creerLCreneauxPersonnes(activiteCourante, listePersonnes, listeEDTPersonnes);
-				 //listeEDTSalles = creerLCreneauxSalles(lActivite.get(j), listeEDTSalles);
-				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(lActivite.get(j), listeEDTCalculateurs);
+				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes);
+				 //listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles);
+				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
 
 				 listeEDTComplete.putAll(listeEDTPersonnes);
 				 listeEDTComplete.putAll(listeEDTSalles);
@@ -327,10 +319,10 @@ public class Entreprise extends Observable{
 	 * @param La liste des EDT
 	 * @return  La liste des EDT
 	 */
-	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Activite act, ArrayList<Personne> listePersonnes, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Projet proj, Activite act, ArrayList<Personne> listePersonnes, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
 		if(listePersonnes.size() > 0) {
 			int charge = act.getChargeHeure();
-			int chargeAloue = 0;
+			int chargeAloue = 0; 
 
 			LocalDate jourCourant = verifierJour(act.getDebut());
 			int heureCourante = HEURE_DEBUT_MATIN;
@@ -344,7 +336,8 @@ public class Entreprise extends Observable{
 					if(verifierOrdre(edtCourant, act, jourCourant, heureCourante)) {
 						if(!persCourante.enConge(jourCourant)) {
 							if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
-								edtCourant.ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
+								String titreCreneau = proj.getNom() + " | " + act.getTitre();
+								edtCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
 								chargeAloue++;
 							}
 						}
