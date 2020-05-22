@@ -2,6 +2,7 @@ package Model;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalField;
@@ -122,6 +123,14 @@ public final class Temps {
 		}
 		
 		return debut;
+	}
+
+	
+	public static int nombreDeMoisEntreDeuxDates(LocalDate debut, LocalDate fin) {
+		int nb = 0;
+		Period diff = Period.between(debut.withDayOfMonth(1),fin.withDayOfMonth(1));
+		nb = diff.getMonths();
+		return nb;
 	}
 
 	

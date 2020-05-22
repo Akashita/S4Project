@@ -70,7 +70,7 @@ public class PanelTache extends JPanel {
 
 		gc.weightx = 3;
 		
-		gc.weighty = 7;
+		gc.weighty = 2;
 
 		switch (entreprise.getAfficheTache()) {
 		case TICKET: afficheTicket(gc);
@@ -90,13 +90,19 @@ public class PanelTache extends JPanel {
 		gc.gridy = 0;
 		gc.gridwidth = 1;
 		gc.gridheight= 1;
-		this.add(creerImageTache(TICKET), gc);
+		this.add(panelIcon(TICKET), gc);
 
-		gc.gridy = 6;
-		this.add(creerImageTache(OPTIMISATION), gc);
+		gc.gridy ++;
+		this.add(panelIcon(OPTIMISATION), gc);
 }
 	
-	private JLabel creerImageTache(int tache) {
+	private JPanel panelIcon(int tache) {
+		JPanel p = new JPanel();
+		
+		return p;
+	}
+	
+	private JLabel creerIcon(int tache) {
 		int tacheSelectionner = entreprise.getAfficheTache();
 		ImageIcon ico = new ImageIcon();
 		switch (tache) {
@@ -141,7 +147,7 @@ public class PanelTache extends JPanel {
 	}
 
 
-	private void afficheTicket(GridBagConstraints gc) {
+	private void afficheTicket(GridBagConstraints gcPrincipale) {
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
 		ArrayList<Ticket> ticketRecuTab = new ArrayList<Ticket>();
 		ArrayList<Ticket> ticketEnvTab = new ArrayList<Ticket>();
@@ -163,6 +169,19 @@ public class PanelTache extends JPanel {
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
+		gcPrincipale.fill = GridBagConstraints.BOTH;
+		gcPrincipale.gridx = 0;
+		gcPrincipale.gridy = 0;	
+		gcPrincipale.gridwidth = GridBagConstraints.RELATIVE;
+		gcPrincipale.gridheight = GridBagConstraints.REMAINDER;
+		
+		
+		JPanel p = new JPanel();
+		
+		this.add(p, gcPrincipale);
+		
+		p.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
 		gc.fill = GridBagConstraints.CENTER;
 		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
@@ -172,13 +191,13 @@ public class PanelTache extends JPanel {
 		
 		//tickets recu
 		gc.gridheight = 1;
-		this.add(creerLabel("Ticket recus", true), gc);
+		p.add(creerLabel("Ticket recus", true), gc);
 
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy=1;
 		gc.gridheight = 2;
-		this.add(creerList(ticketRecuTab), gc);
+		p.add(creerList(ticketRecuTab), gc);
 		
 		
 		//ticket envoyé
@@ -186,23 +205,37 @@ public class PanelTache extends JPanel {
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridheight = 1;
 		gc.gridy = 3;
-		this.add(creerLabel("Ticket envoyé", true), gc);
+		p.add(creerLabel("Ticket envoyé", true), gc);
 
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy = 4;
 		gc.gridheight = 2;
-		this.add(creerList(ticketEnvTab), gc);
+		p.add(creerList(ticketEnvTab), gc);
 		
 		//bouton nouveau ticket
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
 		gc.gridy = 6;
 		gc.gridheight = 1;
-		this.add(boutonNouveauTicket, gc);
+		p.add(boutonNouveauTicket, gc);
 		
 	}
 
-	private void afficheOptimisation (GridBagConstraints gc) {
+	private void afficheOptimisation (GridBagConstraints gcPrincipale) {
+		gcPrincipale.fill = GridBagConstraints.BOTH;
+		gcPrincipale.gridx = 0;
+		gcPrincipale.gridy = 0;	
+		gcPrincipale.gridwidth = GridBagConstraints.RELATIVE;
+		gcPrincipale.gridheight = GridBagConstraints.REMAINDER;
+		
+		
+		JPanel p = new JPanel();
+		
+		this.add(p, gcPrincipale);
+		
+		p.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+
 		gc.fill = GridBagConstraints.CENTER;
 		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
@@ -212,13 +245,13 @@ public class PanelTache extends JPanel {
 		
 		//tickets recu
 		gc.gridheight = 1;
-		this.add(creerLabel("Proposition du systeme", true), gc);
+		p.add(creerLabel("Proposition du systeme", true), gc);
 
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy=1;
 		gc.gridheight = 2;
-		//this.add(creerList(ticketRecuTab), gc);
+		//p.add(creerList(ticketRecuTab), gc);
 		
 		
 	}
