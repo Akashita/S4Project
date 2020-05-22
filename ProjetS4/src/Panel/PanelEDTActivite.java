@@ -38,7 +38,7 @@ public class PanelEDTActivite extends JPanel{
 	private Entreprise entreprise;
 	private Color couleurFond;
 	private ArrayList<Ressource> listePersonne;
-	private ArrayList<EDT> listeEDTpersonne;
+	private ArrayList<EDT> listeEDTpersonne = new ArrayList<EDT>();
 	private LocalDate debut, fin;
 	private int nombreDeMois;
 	private ArrayList<Integer> listeNumeroSemaine;

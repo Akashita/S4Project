@@ -99,6 +99,7 @@ public class PanelTache extends JPanel {
 	
 	private JPanel panelIcon(int tache) {
 		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		p.add(creerIcon(tache));
 		JLabel notif = new JLabel();
