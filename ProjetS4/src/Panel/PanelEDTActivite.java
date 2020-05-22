@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -37,6 +38,9 @@ public class PanelEDTActivite extends JPanel{
 	private Entreprise entreprise;
 	private Color couleurFond;
 	private ArrayList<Ressource> listePersonne;
+	private ArrayList<EDT> listeEDTpersonne;
+	private LocalDate debut, fin;
+	private int nombreDeMois;
 	
 	public PanelEDTActivite(Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;
@@ -51,6 +55,21 @@ public class PanelEDTActivite extends JPanel{
 		nbPersonne = listePersonne.size();
 		this.setLayout(new BorderLayout());
 		if (nbPersonne > 0) {
+			for (int i=0; i<listePersonne.size();i++) {
+				Ressource res = listePersonne.get(i);
+				EDT edt = entreprise.getEDTRessource(res.getType(), res.getId());
+				listeEDTpersonne.add(edt);
+			}
+			debut = Temps.getAujourdhui();
+			fin = entreprise.getProjetDeActiviteParId(activite.getId()).getDeadline();
+			for(int i=0; i<listeEDTpersonne.size();i++) {
+				EDT edt = listeEDTpersonne.get(i);
+				LocalDate tempoFin = edt.getDerniereDateActivite(activite);
+				if (Temps.dateUnEstSuperieurDateDeux(tempoFin, fin)) {
+					fin = tempoFin;
+				}
+			}
+			nombreDeMois = Temps.nombreDeMoisEntreDeuxDates(debut,fin);
 			this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);			
 		}
 	}
@@ -60,28 +79,19 @@ public class PanelEDTActivite extends JPanel{
 		panel.setBackground(couleurFond);
 		panel.setLayout(new GridBagLayout());
 		
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert à définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
-		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
-		 */
 		gc.fill = GridBagConstraints.BOTH;
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
 		int nbMois = 12;
 		gc.weightx = nbMois+1;
 		
-		/* weightx définit le nombre de cases en ordonnée */
 		gc.weighty = nbPersonne+1;
 		
-		/* pour dire qu'on ajoute un composant en position (i, j), on définit gridx=i et gridy=j */
 		gc.gridx = 0;
 		gc.gridy = 0;
 		
@@ -111,12 +121,28 @@ public class PanelEDTActivite extends JPanel{
 			gc.gridwidth = GridBagConstraints.REMAINDER;
 			gc.gridx ++;
 			panel.add(afficheMoisRes(res), gc);
-			//panel.add(afficheMoisRes(res), gc);
 			
 		}
 		return panel;
 	}
 	
+	
+	private JPanel afficheDiagrammeGantt(int index) {
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		EDT edtR = listeEDTpersonne.get(index);
+		for(int i=0; i<nombreDeMois;i++) {
+			p.add(afficheMois(edtR));
+		}
+		
+		return p;
+	}
+	
+	private JPanel afficheMois(EDT edtR) {
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		return p;
+	}
 	/**
 	 * met à jour debut et fin qu'il  faut afficher pour voir toute les ressource de l'act
 	 */
