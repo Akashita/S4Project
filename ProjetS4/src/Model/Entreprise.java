@@ -395,8 +395,8 @@ public class Entreprise extends Observable{
 	 * @param l'acivitée concernée
 	 */
 	public Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(ArrayList<EDT> listeEDT, Activite act) {
-		LocalDateTime debut = listeEDT.get(0).getPremiereDateActivite(act);
-		LocalDateTime fin = debut;
+		LocalDateTime debut = null;
+		LocalDateTime fin = null;
 		
 		LocalDateTime prem = null;
 		LocalDateTime der = null;
@@ -408,12 +408,16 @@ public class Entreprise extends Observable{
 			der = EDTCourant.getDerniereDateActivite(act);
 			
 			if(prem != null) {
-				if(prem.isBefore(debut)) {
+				if(debut == null) {
+					debut = prem;
+				}else if(prem.isBefore(debut)) {
 					debut = prem;
 				}
 			}
 			if (der != null) {
-				if(der.isAfter(fin)) {
+				if(fin == null) {
+					fin = der;
+				}else if(der.isAfter(fin)) {
 					fin = der;
 				}
 			}
