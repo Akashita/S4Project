@@ -425,7 +425,8 @@ public class Entreprise extends Observable{
 	 * @return fin 
 	 */
 	public LocalDate getLocalDateFinDuneActivite(ArrayList<EDT> listeEDT, Activite act) {
-		
+		Pair<LocalDateTime, LocalDateTime> dates = getDebutFinActivite(listeEDT, act);
+		return dates.getRight().toLocalDate();
 	}
 
 	/**
