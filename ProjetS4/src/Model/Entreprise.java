@@ -212,7 +212,7 @@ public class Entreprise extends Observable{
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
 
-				 if(activiteCourante.equals(act)) {
+			 if(activiteCourante.equals(act)) {
 					 switch (res.getType()) {
 					case Ressource.PERSONNE:
 						Personne pers = (Personne)res;
@@ -388,7 +388,7 @@ public class Entreprise extends Observable{
 		return listeEDTSalles;
 	}
 	
-	private Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act) {
+	public Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act) {
 		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
 		LocalDateTime debut = listeEDT.get(keys).getPremiereDateActivite(act);
 		LocalDateTime fin = debut;

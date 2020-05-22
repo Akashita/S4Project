@@ -43,9 +43,10 @@ public class PanelTache extends JPanel {
 	private Entreprise entreprise;
 	private Color couleurFond;
 	public final static int RIEN = -1, TICKET = 0, OPTIMISATION = 1;
-
 	private JButton boutonNouveauTicket;
-	
+	private ArrayList<Ticket> ticketTab, ticketRecuTab, ticketEnvTab = new ArrayList<Ticket>();
+
+
 	
 	public PanelTache(Entreprise entreprise) {
 		this.entreprise = entreprise;
@@ -61,6 +62,25 @@ public class PanelTache extends JPanel {
 	}
 	
 	private void afficheInterface() {
+
+		try {
+			ticketTab = JavaSQLTicket.affiche();
+
+			for (int i = 0; i < ticketTab.size(); i++) {
+					if (entreprise.getUser().getId() == ticketTab.get(i).getIdReceveur()) {
+						ticketRecuTab.add(ticketTab.get(i));
+					}
+					else if (entreprise.getUser().getId() == ticketTab.get(i).getIdEnvoyeur()) {
+						ticketEnvTab.add(ticketTab.get(i));
+
+					}
+		
+		}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
 		GridBagConstraints gc = new GridBagConstraints();
@@ -102,9 +122,27 @@ public class PanelTache extends JPanel {
 		p.setBackground(couleurFond);
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		p.add(creerIcon(tache));
-		JLabel notif = new JLabel();
-		/*notif.setText(text);
-		notif.setBackground(bg);*/
+		int nbNotif = 0;
+		switch (tache) {
+		case TICKET:
+			for (int i=0; i<ticketRecuTab.size(); i++) {
+				if (ticketRecuTab.get(i).getStatut() == Ticket.NONVU) {
+					nbNotif ++;
+				}
+			}
+			break;
+
+		default:
+			break;
+		}
+		if (nbNotif > 0) {
+			JLabel notif = new JLabel();
+			notif.setText(Integer.toString(nbNotif));
+			notif.setForeground(PanelPrincipal.BLANC);
+			notif.setBackground(PanelPrincipal.NOTIFICATION);
+			p.add(notif);
+		}
+
 		return p;
 	}
 	
@@ -154,27 +192,6 @@ public class PanelTache extends JPanel {
 
 
 	private void afficheTicket(GridBagConstraints gcPrincipale) {
-		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
-		ArrayList<Ticket> ticketRecuTab = new ArrayList<Ticket>();
-		ArrayList<Ticket> ticketEnvTab = new ArrayList<Ticket>();
-
-
-		try {
-			ticketTab = JavaSQLTicket.affiche();
-
-			for (int i = 0; i < ticketTab.size(); i++) {
-					if (entreprise.getUser().getId() == ticketTab.get(i).getIdReceveur()) {
-						ticketRecuTab.add(ticketTab.get(i));
-					}
-					else if (entreprise.getUser().getId() == ticketTab.get(i).getIdEnvoyeur()) {
-						ticketEnvTab.add(ticketTab.get(i));
-
-					}
-		
-		}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
 		gcPrincipale.fill = GridBagConstraints.BOTH;
 		gcPrincipale.gridx = 0;
 		gcPrincipale.gridy = 0;	
