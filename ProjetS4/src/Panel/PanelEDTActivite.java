@@ -63,9 +63,13 @@ public class PanelEDTActivite extends JPanel{
 				listeEDTpersonne.add(edt);
 			}
 			debut = Temps.getAujourdhui();
-			fin = entreprise.getProjetDeActiviteParId(activite.getId()).getDeadline();
+			fin = entreprise.getLocalDateFinDuneActivite(listeEDTpersonne, activite);
+			LocalDate finProjet = entreprise.getProjetDeActiviteParId(activite.getId()).getDeadline();
+			if (Temps.dateUnEstSuperieurDateDeux(finProjet, fin)) {
+				fin = finProjet;
+			}
 			
-			LocalDate tempoFin = entreprise.getDebutFinActivite(listeEDTpersonne, activite);
+			//LocalDate tempoFin = entreprise.getDebutFinActivite(listeEDTpersonne, activite).getRight().toLocalDate();
 
 			/*for(int i=0; i<listeEDTpersonne.size();i++) {
 				EDT edt = listeEDTpersonne.get(i);

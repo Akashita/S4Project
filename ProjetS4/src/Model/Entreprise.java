@@ -410,6 +410,15 @@ public class Entreprise extends Observable{
 		return new Pair<LocalDateTime, LocalDateTime>(prem, der);
 	}
 
+	/**
+	 * Retourne la derniere date de travail d'une activite
+	 * @param listeEDT contient toute les info de creneau de l'activite par ressource
+	 * @param act activite concerner
+	 * @return fin 
+	 */
+	public LocalDate getLocalDateFinDuneActivite(ArrayList<EDT> listeEDT, Activite act) {
+		
+	}
 
 	/**
 	 * Initialise un EDT (vide) pour une ressource
