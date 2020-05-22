@@ -280,7 +280,7 @@ public class Entreprise extends Observable{
 
 
 				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes);
-				 //listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles);
+				 //listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes);
 				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
 
 				 listeEDTComplete.putAll(listeEDTPersonnes);
@@ -351,6 +351,48 @@ public class Entreprise extends Observable{
 			}
 		}
 		return listeEDTPersonnes;
+	}
+	
+	
+	/**
+	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
+	 * @param L'activité courante
+	 * @param La liste des personnes qui participent à l'activitée
+	 * @param La liste des EDT
+	 * @return  La liste des EDT
+	 */
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxSalles(Projet proj, Activite act, ArrayList<Salle> listeSalles, Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
+		if(listeSalles.size() > 0) {
+			Pair<LocalDateTime, LocalDateTime> dateDebutFin = getDebutFinActivite(listeEDTPersonnes);
+			LocalDate jourCourant = verifierJour(dateDebutFin.getLeft().toLocalDate());
+			int heureCourante = dateDebutFin.getLeft().toLocalTime().getHour();
+			
+			LocalDate jourFin = dateDebutFin.getRight().toLocalDate();
+			int heureFin = dateDebutFin.getRight().toLocalTime().getHour();
+
+			while (!jourCourant.equals(jourFin) && !(heureCourante == heureFin)) {
+				for (int i = 0; i < listeSalles.size(); i++) {
+					Salle salleCourante = listeSalles.get(i);
+					String titreCreneau = proj.getNom() + " | " + act.getTitre();
+					EDT EDTCourant = getEDTRessource(salleCourante.getType(), salleCourante.getId(), listeEDTSalles);
+					if(EDTCourant.creneauDispo(jourCourant, heureCourante)) {
+						EDTCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
+					}
+				}
+				heureCourante = heureSuivante(heureCourante);
+				if(heureCourante == HEURE_DEBUT_MATIN) {
+					jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
+				}
+			}
+		}
+		return listeEDTSalles;
+	}
+	
+	private Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(Hashtable<Pair<Integer, Integer>, EDT> listeEDT) {
+		
+		//Renvoie les bornes de l'activitée
+		
+		return null;
 	}
 
 

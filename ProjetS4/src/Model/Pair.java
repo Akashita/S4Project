@@ -6,28 +6,28 @@ public class Pair<L,R> {
 	 * 
 	 * */
 
-  private final L type;
-  private final R id;
+  private final L left;
+  private final R right;
 
   public Pair(L left, R right) {
     assert left != null;
     assert right != null;
 
-    this.type = left;
-    this.id = right;
+    this.left = left;
+    this.right = right;
   }
 
-  public L getLeft() { return type; }
-  public R getRight() { return id; }
+  public L getLeft() { return left; }
+  public R getRight() { return right; }
 
   @Override
-  public int hashCode() { return type.hashCode() ^ id.hashCode(); }
+  public int hashCode() { return left.hashCode() ^ right.hashCode(); }
 
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof Pair)) return false;
     Pair pairo = (Pair) o;
-    return this.type.equals(pairo.getLeft()) && this.id.equals(pairo.getRight());
+    return this.left.equals(pairo.getLeft()) && this.right.equals(pairo.getRight());
   }
 
 }
