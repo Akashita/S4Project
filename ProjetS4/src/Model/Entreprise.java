@@ -280,7 +280,7 @@ public class Entreprise extends Observable{
 
 
 				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes);
-				 //listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes);
+				 listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes);
 				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
 
 				 listeEDTComplete.putAll(listeEDTPersonnes);
@@ -364,13 +364,27 @@ public class Entreprise extends Observable{
 	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxSalles(Projet proj, Activite act, ArrayList<Salle> listeSalles, Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
 		if(listeSalles.size() > 0) {
 			Pair<LocalDateTime, LocalDateTime> dateDebutFin = getDebutFinActivite(listeEDTPersonnes, act);
-			LocalDate jourCourant = verifierJour(dateDebutFin.getLeft().toLocalDate());
-			int heureCourante = dateDebutFin.getLeft().toLocalTime().getHour();
-			
-			LocalDate jourFin = dateDebutFin.getRight().toLocalDate();
-			int heureFin = dateDebutFin.getRight().toLocalTime().getHour();
-
-			while (!jourCourant.equals(jourFin) && !(heureCourante == heureFin)) {
+			if(dateDebutFin.getLeft() != null && dateDebutFin.getRight() != null) {
+				LocalDate jourCourant = verifierJour(dateDebutFin.getLeft().toLocalDate());
+				int heureCourante = dateDebutFin.getLeft().toLocalTime().getHour();
+				
+				LocalDate jourFin = verifierJour(dateDebutFin.getRight().toLocalDate());
+				int heureFin = dateDebutFin.getRight().toLocalTime().getHour();
+	
+				while (!(jourCourant.equals(jourFin) && (heureCourante == heureFin))) {
+					for (int i = 0; i < listeSalles.size(); i++) {
+						Salle salleCourante = listeSalles.get(i);
+						String titreCreneau = proj.getNom() + " | " + act.getTitre();
+						EDT EDTCourant = getEDTRessource(salleCourante.getType(), salleCourante.getId(), listeEDTSalles);
+						if(EDTCourant.creneauDispo(jourCourant, heureCourante)) {
+							EDTCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
+						}
+					}
+					heureCourante = heureSuivante(heureCourante);
+					if(heureCourante == HEURE_DEBUT_MATIN) {
+						jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
+					}
+				}
 				for (int i = 0; i < listeSalles.size(); i++) {
 					Salle salleCourante = listeSalles.get(i);
 					String titreCreneau = proj.getNom() + " | " + act.getTitre();
@@ -378,10 +392,6 @@ public class Entreprise extends Observable{
 					if(EDTCourant.creneauDispo(jourCourant, heureCourante)) {
 						EDTCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
 					}
-				}
-				heureCourante = heureSuivante(heureCourante);
-				if(heureCourante == HEURE_DEBUT_MATIN) {
-					jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
 				}
 			}
 		}
@@ -394,6 +404,15 @@ public class Entreprise extends Observable{
 	 * @param La liste d'EDT dans laquelle chercher
 	 * @param l'acivitée concernée
 	 */
+	public Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act) {
+		ArrayList<EDT> res = new ArrayList<EDT>();
+		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
+		for (Pair<Integer, Integer> key : keys) {
+			res.add(listeEDT.get(key));
+		}
+		return getDebutFinActivite(res, act);
+	}
+	
 	public Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(ArrayList<EDT> listeEDT, Activite act) {
 		LocalDateTime debut = null;
 		LocalDateTime fin = null;
