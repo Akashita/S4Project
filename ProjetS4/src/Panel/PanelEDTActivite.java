@@ -151,11 +151,11 @@ public class PanelEDTActivite extends JPanel{
 		JPanel panel = new JPanel();
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		
+		EDT edtR = entreprise.getEDTRessource(res.getType(), res.getId());
+	
 		for (int i=1; i<52;i++) {
 			JPanel semaine = new JPanel();
 					semaine.setBackground(PanelPrincipal.BLANC);
-					EDT edtR = entreprise.getEDTRessource(res.getType(), res.getId());
 					CreneauHoraire [][] tableauCreneau = edtR.getSemaineEDT(Temps.getAnnee(), i);
 
 					if(travailleSemaine(tableauCreneau)) {

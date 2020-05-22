@@ -21,9 +21,9 @@ public class CreneauHoraire {
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	public CreneauHoraire(Activite activite, int debut, Color couleurActivite) { //Par défault un créneau horaire est de type "TRAVAIL"
+	public CreneauHoraire(String titre, Activite activite, int debut, Color couleurActivite) { //Par défault un créneau horaire est de type "TRAVAIL"
 		this.activite = activite;
-		titre = "" + activite.getId(); //TODO A CHANGER (avec le nom du projet et le nom de l'activitÃ©)
+		this.titre = titre;
 		this.debut = debut;
 		fin = debut + 1; //On calcul la fin du creneau
 		this.couleurActivite = couleurActivite;

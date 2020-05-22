@@ -93,9 +93,7 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.gridwidth = 2;
 		gc.gridx = 1;
 		this.add(textFieldCharge, gc);			
-		
-		colDomaineModifie(gc);		
-		
+				
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridx = 0;
@@ -123,46 +121,6 @@ public class PanelModifierActivite extends PanelFenetre{
 		this.add(creerBoutonFin(this, "Modifier"), gc);
 
 	}
-	
-	private void colCompetenceModifie(GridBagConstraints gc) {
-		gc.fill = GridBagConstraints.BOTH;
-		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
-		gc.gridx=0;
-		gc.gridy++;
-		gc.gridwidth = GridBagConstraints.RELATIVE;
-		gc.gridheight = 2;
-		//this.add(afficheListeDomaine(), gc);
-
-		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
-		gc.gridx ++;
-		gc.gridwidth = 1;
-		//this.add(actionModificationCompetence(),gc);
-	}
-
-	private Component afficheListeDomaine() {
-		String [] tc = new String [ac.size()];
-		for (int i=0; i<competences.size(); i++) {
-			tc[i] = competences.get(i);
-		}
-		JList<String> jlt = new JList<String>(tc);
-		jlt.setBackground(couleurFond);
-		jlt.setFont(new Font("Arial", Font.BOLD, 15));
-		jlt.addMouseListener(new MouseAdapter() {
-		    public void mousePressed(MouseEvent evt) {
-		        if (evt.getButton() == MouseEvent.BUTTON3) { //clic droit
-		        	jlt.setSelectedIndex(jlt.locationToIndex(evt.getPoint()));
-		        	jlt.setComponentPopupMenu(popupMenuDomaine(jlt.getSelectedValue()));
-		        	;
-		        }
-		    }
-		});
-
-		JScrollPane scrollPaneJListDomaine = new JScrollPane(jlt);
-		scrollPaneJListDomaine.setViewportView(jlt);
-		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		return scrollPaneJListDomaine;
-	}
-
 	
 	
 	protected void actionFin() {

@@ -414,6 +414,7 @@ public class PanelInfoRessource extends JPanel{
 			Activite a = listeAct.get(i);
 			String projet = entreprise.getProjetDeActiviteParId(a.getId()).getNom();
 			lAetP.add(a.getTitre()+" - "+projet);
+			
 		}
 		this.add(creerScrollPane(listString(lAetP)), gc);
 	}
