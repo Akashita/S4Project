@@ -388,7 +388,7 @@ public class Entreprise extends Observable{
 		return listeEDTSalles;
 	}
 	
-	private Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act) {
+	public Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act) {
 		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
 		LocalDateTime debut = listeEDT.get(keys).getPremiereDateActivite(act);
 		LocalDateTime fin = debut;
