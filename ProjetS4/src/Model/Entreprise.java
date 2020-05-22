@@ -388,24 +388,32 @@ public class Entreprise extends Observable{
 		return listeEDTSalles;
 	}
 	
-	public Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act) {
-		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
-		LocalDateTime debut = listeEDT.get(keys).getPremiereDateActivite(act);
+	
+	/**
+	 * Retrourne les date de debut et de fin d'une activitée
+	 * @param La liste d'EDT dans laquelle chercher
+	 * @param l'acivitée concernée
+	 */
+	public Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(ArrayList<EDT> listeEDT, Activite act) {
+		LocalDateTime debut = listeEDT.get(0).getPremiereDateActivite(act);
 		LocalDateTime fin = debut;
 		
 		LocalDateTime prem = null;
 		LocalDateTime der = null;
 		
-		for (Pair<Integer, Integer> key : keys) {
-			EDT EDTCourant = listeEDT.get(key);
+		for (int i = 0; i < listeEDT.size(); i++) {
+			EDT EDTCourant = listeEDT.get(i);
+			
 			prem = EDTCourant.getPremiereDateActivite(act);
 			der = EDTCourant.getDerniereDateActivite(act);
+			
 			if(prem != null && prem.isBefore(debut)) {
 				debut = prem;
 			} else if (prem != null && der.isAfter(fin)) {
 				fin = der;
 			}
 		}
+
 		
 		return new Pair<LocalDateTime, LocalDateTime>(prem, der);
 	}
