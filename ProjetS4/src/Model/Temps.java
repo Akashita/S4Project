@@ -155,27 +155,17 @@ public final class Temps {
 	public static ArrayList<Integer> getNumSemainesEntreDates(LocalDate debut, LocalDate fin){		
 		TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear(); 
 		
-		LocalDate jourCourant = debut;
-		int semaineDebut = debut.get(woy);
-		int i = 0;
 		ArrayList<Integer> res = new ArrayList<Integer>();
-		res.add(semaineDebut);
+		LocalDate semaineCourante = debut;
+		int i = 0;
 		
-		while(!jourCourant.equals(fin)) {
-			if(res.get(i) != semaineDebut) {
-				i++;
-				res.add(i, semaineDebut);
-			}
-			
-			jourCourant = jourCourant.plusDays(1);
-			semaineDebut = jourCourant.get(woy);
-		}
-		
-		if(res.get(i) != semaineDebut) {
+		while((semaineCourante.getYear() < fin.getYear()) || (semaineCourante.get(woy) < fin.get(woy))) {
+			res.add(i, semaineCourante.get(woy));
+			semaineCourante = semaineCourante.plusWeeks(1);
 			i++;
-			res.add(i, semaineDebut);
 		}
-		
+		res.add(i, semaineCourante.get(woy));
+
 		return res;
 		
 	}
