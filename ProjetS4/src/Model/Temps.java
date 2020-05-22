@@ -6,6 +6,7 @@ import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -149,6 +150,34 @@ public final class Temps {
 
 	public static boolean dateUnEstSuperieurDateDeux(LocalDate d1, LocalDate d2) {
 		return d1.isAfter(d2);
+	}
+	
+	public static ArrayList<Integer> getNumSemainesEntreDates(LocalDate debut, LocalDate fin){		
+		TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear(); 
+		
+		LocalDate jourCourant = debut;
+		int semaineDebut = debut.get(woy);
+		int i = 0;
+		ArrayList<Integer> res = new ArrayList<Integer>();
+		res.add(semaineDebut);
+		
+		while(!jourCourant.equals(fin)) {
+			if(res.get(i) != semaineDebut) {
+				i++;
+				res.add(i, semaineDebut);
+			}
+			
+			jourCourant = jourCourant.plusDays(1);
+			semaineDebut = jourCourant.get(woy);
+		}
+		
+		if(res.get(i) != semaineDebut) {
+			i++;
+			res.add(i, semaineDebut);
+		}
+		
+		return res;
+		
 	}
 	
 }
