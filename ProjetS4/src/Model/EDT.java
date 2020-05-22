@@ -184,17 +184,17 @@ public class EDT {
 	}
 	
 	
-	//TODO RENVOYER UN LOCALDATETIME !!!
 	public LocalDateTime getPremiereDateActivite(Activite act) {
 		List<LocalDate> listKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
-		LocalDate premDate = null;
+		LocalDateTime premDate = null;
 		Collections.sort(listKeys);
 		boolean quitter = false;
 		for (int i = 0; i < listKeys.size(); i++) {
 			ArrayList<CreneauHoraire> jour = listeCreneaux.get(listKeys.get(i));
 			for (int j = 0; j < jour.size(); j++) {
-				if (jour.get(j).getActivite() == act) {
-					premDate = listKeys.get(i);
+				CreneauHoraire crCourant = jour.get(j);
+				if (crCourant.getActivite() == act) {
+					premDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
 					quitter = true;
 					break;
 				}
@@ -208,17 +208,17 @@ public class EDT {
 	}
 	
 	
-	//TODO RENVOYER UN LOCALDATETIME !!!
 	public LocalDateTime getDerniereDateActivite(Activite act) {
 		List<LocalDate> listKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
-		LocalDate derDate = null;
+		LocalDateTime derDate = null;
 		Collections.sort(listKeys);
 		boolean quitter = false;
 		for (int i = listKeys.size()-1; i >= 0; i--) {
 			ArrayList<CreneauHoraire> jour = listeCreneaux.get(listKeys.get(i));
 			for (int j = jour.size()-1; j >= 0 ; j--) {
-				if (jour.get(j).getActivite() == act) {
-					derDate = listKeys.get(i);
+				CreneauHoraire crCourant = jour.get(j);
+				if (crCourant.getActivite() == act) {
+					derDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
 					quitter = true;
 					break;
 				}
