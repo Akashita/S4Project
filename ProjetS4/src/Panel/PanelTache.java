@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -98,7 +99,11 @@ public class PanelTache extends JPanel {
 	
 	private JPanel panelIcon(int tache) {
 		JPanel p = new JPanel();
-		
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		p.add(creerIcon(tache));
+		JLabel notif = new JLabel();
+		/*notif.setText(text);
+		notif.setBackground(bg);*/
 		return p;
 	}
 	

@@ -41,6 +41,8 @@ public class PanelEDTActivite extends JPanel{
 	private ArrayList<EDT> listeEDTpersonne;
 	private LocalDate debut, fin;
 	private int nombreDeMois;
+	private ArrayList<Integer> listeNumeroSemaine;
+	
 	
 	public PanelEDTActivite(Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;
@@ -69,6 +71,7 @@ public class PanelEDTActivite extends JPanel{
 					fin = tempoFin;
 				}
 			}
+			listeNumeroSemaine = Temps.getNumSemainesEntreDates(debut, fin);
 			nombreDeMois = Temps.nombreDeMoisEntreDeuxDates(debut,fin);
 			this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);			
 		}
@@ -120,7 +123,7 @@ public class PanelEDTActivite extends JPanel{
 			
 			gc.gridwidth = GridBagConstraints.REMAINDER;
 			gc.gridx ++;
-			panel.add(afficheMoisRes(res), gc);
+			panel.add(afficheDiagrammeGantt(i), gc);
 			
 		}
 		return panel;
@@ -131,18 +134,27 @@ public class PanelEDTActivite extends JPanel{
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		EDT edtR = listeEDTpersonne.get(index);
-		for(int i=0; i<nombreDeMois;i++) {
-			p.add(afficheMois(edtR));
+		int annee = debut.getYear();
+		
+		for(int i=0; i<listeNumeroSemaine.size();i++) {
+			int numSemaine = listeNumeroSemaine.get(i);
+			if (numSemaine < listeNumeroSemaine.get(i-1) && i>0) { // on vérifie si on a passé une année
+				annee ++;
+			}
+			JPanel semaine = new JPanel();
+			semaine.setBackground(PanelPrincipal.BLANC);
+			CreneauHoraire [][] tableauCreneau = edtR.getSemaineEDT(annee, numSemaine);
+
+			if(travailleSemaine(tableauCreneau)) {
+				semaine.setBackground(PanelPrincipal.BLEU1);
+			}
+
+			p.add(semaine);
 		}
 		
 		return p;
 	}
 	
-	private JPanel afficheMois(EDT edtR) {
-		JPanel p = new JPanel();
-		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-		return p;
-	}
 	/**
 	 * met Ã  jour debut et fin qu'il  faut afficher pour voir toute les ressource de l'act
 	 */
@@ -173,7 +185,7 @@ public class PanelEDTActivite extends JPanel{
 		
 	}*/
 	
-	private JPanel afficheMoisRes(Ressource res) {
+	/*private JPanel afficheMoisRes(Ressource res) {
 		JPanel panel = new JPanel();
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -192,7 +204,7 @@ public class PanelEDTActivite extends JPanel{
 		panel.setBackground(couleurFond);
 		return panel;
 	}
-	
+	*/
 	private boolean travailleSemaine(CreneauHoraire [][] liste) {
 		boolean travaille = false;
 		for (int i=0; i<liste.length; i++) {
