@@ -203,9 +203,69 @@ public class Entreprise extends Observable{
 	 * @param L'activitée concernée par la modification
 	 * @return la liste des EDT prévisionels
 	 */
-	public Hashtable<Pair<Integer, Integer>, EDT> getPrevisionEDT(int operation, Ressource res, Activite act) {
-		return null;
+	private Hashtable<Pair<Integer, Integer>, EDT> generationPrevisionEDT(Operation operation, Ressource res, Activite act) {
+		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
+		ArrayList<Activite> lActivite;
+		
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = new Hashtable<Pair<Integer, Integer>, EDT>();
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
+				
+		 for (int i = 0; i < lProjet.size(); i++) {
+			 lActivite = lProjet.get(i).getListe();
+			 for (int j = 0; j < lActivite.size(); j++) {
+				 Activite activiteCourante = lActivite.get(j);
+				 
+				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId()));
+				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
+				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));				 
+	 
+				 if(activiteCourante.equals(act)) {
+					 switch (res.getType()) {
+					case Ressource.PERSONNE:
+						Personne pers = (Personne)res;
+						if (operation == Operation.ENLEVER) {
+							listePersonnes.remove(pers);
+						} else {
+							listePersonnes.add(pers);
+						}
+						break;
+					case Ressource.SALLE:
+						Salle salle = (Salle)res;
+						if (operation == Operation.ENLEVER) {
+							listeSalles.remove(salle);
+						} else {
+							listeSalles.add(salle);
+						}
+						break;
+					case Ressource.CALCULATEUR:
+						Calculateur calc = (Calculateur)res;
+						if (operation == Operation.ENLEVER) {
+							listeCalculateurs.remove(calc);
+						} else {
+							listeCalculateurs.add(calc);
+						}
+						break;
+
+					default:
+						break;
+					}
+				 }
+				 
+				 listeEDTPersonnes = creerLCreneauxPersonnes(activiteCourante, listePersonnes, listeEDTPersonnes);
+				 //listeEDTSalles = creerLCreneauxSalles(lActivite.get(j), listeEDTSalles);
+				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(lActivite.get(j), listeEDTCalculateurs);
+				 
+				 listeEDTComplete.putAll(listeEDTPersonnes);
+				 listeEDTComplete.putAll(listeEDTSalles);
+				 listeEDTComplete.putAll(listeEDTCalculateurs);
+			}
+		}
+		 
+		return listeEDTComplete;
 	}
+	
 	
 	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
@@ -221,19 +281,23 @@ public class Entreprise extends Observable{
 			 lActivite = lProjet.get(i).getListe();
 			 for (int j = 0; j < lActivite.size(); j++) {
 				 Activite activiteCourante = lActivite.get(j);
-				 if(getListePersonnedeActiviteParId(activiteCourante.getId()).size() > 0) {
-					 listeEDTPersonnes = creerLCreneauxPersonnes(activiteCourante, listeEDTPersonnes);
-					 //listeEDTSalles = creerLCreneauxSalles(lActivite.get(j), listeEDTSalles);
-					 //listeEDTCalculateurs = creerLCreneauxCalculateurs(lActivite.get(j), listeEDTCalculateurs);
-					 
-					 listeEDTComplete.putAll(listeEDTPersonnes);
-					 listeEDTComplete.putAll(listeEDTSalles);
-					 listeEDTComplete.putAll(listeEDTCalculateurs);
-				 }
-			}
+				 
+				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId()));
+				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
+				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));				 
+				 
+				 
+				 listeEDTPersonnes = creerLCreneauxPersonnes(activiteCourante, listePersonnes, listeEDTPersonnes);
+				 //listeEDTSalles = creerLCreneauxSalles(lActivite.get(j), listeEDTSalles);
+				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(lActivite.get(j), listeEDTCalculateurs);
+				 
+				 listeEDTComplete.putAll(listeEDTPersonnes);
+				 listeEDTComplete.putAll(listeEDTSalles);
+				 listeEDTComplete.putAll(listeEDTCalculateurs);
+		}
 		}
 		 
-		 return listeEDTComplete;
+		return listeEDTComplete;
 	}
 	
 	/**
@@ -259,39 +323,40 @@ public class Entreprise extends Observable{
 	/**
 	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
 	 * @param L'activité courante
-	 * @return 
+	 * @param La liste des personnes qui participent à l'activitée
+	 * @param La liste des EDT
+	 * @return  La liste des EDT
 	 */
-	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Activite act, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
-		int charge = act.getChargeHeure();
-		int chargeAloue = 0;
-
-		LocalDate jourCourant = verifierJour(act.getDebut());
-		int heureCourante = HEURE_DEBUT_MATIN;
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Activite act, ArrayList<Personne> listePersonnes, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
+		if(listePersonnes.size() > 0) {
+			int charge = act.getChargeHeure();
+			int chargeAloue = 0;
 		
-		ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, act.getId()));
-		
-		while (chargeAloue < charge) {
-			for (int i = 0; i < listePersonnes.size(); i++) {
-				
-				Personne persCourante = listePersonnes.get(i);
-				EDT edtCourant = getEDTRessource(persCourante.getType(), persCourante.getId(), listeEDTPersonnes);
-				
-				if(verifierOrdre(edtCourant, act, jourCourant, heureCourante)) {
-					if(!persCourante.enConge(jourCourant)) {
-						if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
-							edtCourant.ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
-							chargeAloue++;
+			LocalDate jourCourant = verifierJour(act.getDebut());
+			int heureCourante = HEURE_DEBUT_MATIN;
+					
+			while (chargeAloue < charge) {
+				for (int i = 0; i < listePersonnes.size(); i++) {
+					
+					Personne persCourante = listePersonnes.get(i);
+					EDT edtCourant = getEDTRessource(persCourante.getType(), persCourante.getId(), listeEDTPersonnes);
+					
+					if(verifierOrdre(edtCourant, act, jourCourant, heureCourante)) {
+						if(!persCourante.enConge(jourCourant)) {
+							if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
+								edtCourant.ajouterCreneau(new CreneauHoraire(act, heureCourante, act.getCouleur()), jourCourant);
+								chargeAloue++;
+							}
 						}
 					}
 				}
-			}
-
-			heureCourante = heureSuivante(heureCourante);
-			if(heureCourante == HEURE_DEBUT_MATIN) {
-				jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
+		
+				heureCourante = heureSuivante(heureCourante);
+				if(heureCourante == HEURE_DEBUT_MATIN) {
+					jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
+				}
 			}
 		}
-		
 		return listeEDTPersonnes;
 	}
 	
@@ -360,6 +425,32 @@ public class Entreprise extends Observable{
 			res.add((Personne)src.get(i));
 		}
 		return res;
+	 }
+	
+	/**
+	 * Transforme une liste de Ressources en liste de Salle
+	 * @param La liste de Ressources
+	 * @return a liste de Salle
+	 */
+	private ArrayList<Salle> castListeRessourceEnSalles(ArrayList<Ressource> src) {
+		 ArrayList<Salle> salles = new ArrayList<Salle>();
+		 for (int i = 0; i < src.size(); i++) {
+			 salles.add((Salle)src.get(i));
+		}
+		return salles;
+	 }
+	
+	/**
+	 * Transforme une liste de Ressources en liste de Calculateur
+	 * @param La liste de Ressources
+	 * @return a liste de Calculateur
+	 */
+	private ArrayList<Calculateur> castListeRessourceEnCalculateurs(ArrayList<Ressource> src) {
+		 ArrayList<Calculateur> calc = new ArrayList<Calculateur>();
+		 for (int i = 0; i < src.size(); i++) {
+			calc.add((Calculateur)src.get(i));
+		}
+		return calc;
 	 }
 	
 	/**
