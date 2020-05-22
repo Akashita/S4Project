@@ -44,7 +44,7 @@ public class PanelTache extends JPanel {
 	private Color couleurFond;
 	public final static int RIEN = -1, TICKET = 0, OPTIMISATION = 1;
 	private JButton boutonNouveauTicket;
-	private ArrayList<Ticket> ticketTab, ticketRecuTab, ticketEnvTab = new ArrayList<Ticket>();
+	private ArrayList<Ticket> ticketTab, ticketRecuTab, ticketEnvTab;
 
 
 	
@@ -62,7 +62,7 @@ public class PanelTache extends JPanel {
 	}
 	
 	private void afficheInterface() {
-
+		ticketTab = ticketRecuTab = ticketEnvTab = new ArrayList<Ticket>();
 		try {
 			ticketTab = JavaSQLTicket.affiche();
 
