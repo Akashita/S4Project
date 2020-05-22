@@ -184,8 +184,8 @@ public class EDT {
 	}
 	
 	
-	
-	public LocalDate getPremiereDateActivite(Activite act) {
+	//TODO RENVOYER UN LOCALDATETIME !!!
+	public LocalDateTime getPremiereDateActivite(Activite act) {
 		List<LocalDate> listKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
 		LocalDate premDate = null;
 		Collections.sort(listKeys);
@@ -207,7 +207,9 @@ public class EDT {
 		return premDate;	
 	}
 	
-	public LocalDate getDerniereDateActivite(Activite act) {
+	
+	//TODO RENVOYER UN LOCALDATETIME !!!
+	public LocalDateTime getDerniereDateActivite(Activite act) {
 		List<LocalDate> listKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
 		LocalDate derDate = null;
 		Collections.sort(listKeys);

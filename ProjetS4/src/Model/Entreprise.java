@@ -363,7 +363,7 @@ public class Entreprise extends Observable{
 	 */
 	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxSalles(Projet proj, Activite act, ArrayList<Salle> listeSalles, Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
 		if(listeSalles.size() > 0) {
-			Pair<LocalDateTime, LocalDateTime> dateDebutFin = getDebutFinActivite(listeEDTPersonnes);
+			Pair<LocalDateTime, LocalDateTime> dateDebutFin = getDebutFinActivite(listeEDTPersonnes, act);
 			LocalDate jourCourant = verifierJour(dateDebutFin.getLeft().toLocalDate());
 			int heureCourante = dateDebutFin.getLeft().toLocalTime().getHour();
 			
@@ -388,11 +388,26 @@ public class Entreprise extends Observable{
 		return listeEDTSalles;
 	}
 	
-	private Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(Hashtable<Pair<Integer, Integer>, EDT> listeEDT) {
+	private Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act) {
+		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
+		LocalDateTime debut = listeEDT.get(keys).getPremiereDateActivite(act);
+		LocalDateTime fin = debut;
 		
-		//Renvoie les bornes de l'activitée
+		LocalDateTime prem = null;
+		LocalDateTime der = null;
 		
-		return null;
+		for (Pair<Integer, Integer> key : keys) {
+			EDT EDTCourant = listeEDT.get(key);
+			prem = EDTCourant.getPremiereDateActivite(act);
+			der = EDTCourant.getDerniereDateActivite(act);
+			if(prem != null && prem.isBefore(debut)) {
+				debut = prem;
+			} else if (prem != null && der.isAfter(fin)) {
+				fin = der;
+			}
+		}
+		
+		return new Pair<LocalDateTime, LocalDateTime>(prem, der);
 	}
 
 
