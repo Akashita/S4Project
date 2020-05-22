@@ -63,14 +63,21 @@ public class PanelEDTActivite extends JPanel{
 				listeEDTpersonne.add(edt);
 			}
 			debut = Temps.getAujourdhui();
-			fin = entreprise.getProjetDeActiviteParId(activite.getId()).getDeadline();
-			for(int i=0; i<listeEDTpersonne.size();i++) {
+			fin = entreprise.getLocalDateFinDuneActivite(listeEDTpersonne, activite);
+			LocalDate finProjet = entreprise.getProjetDeActiviteParId(activite.getId()).getDeadline();
+			if (Temps.dateUnEstSuperieurDateDeux(finProjet, fin)) {
+				fin = finProjet;
+			}
+			
+			//LocalDate tempoFin = entreprise.getDebutFinActivite(listeEDTpersonne, activite).getRight().toLocalDate();
+
+			/*for(int i=0; i<listeEDTpersonne.size();i++) {
 				EDT edt = listeEDTpersonne.get(i);
 				LocalDate tempoFin = edt.getDerniereDateActivite(activite);
 				if (Temps.dateUnEstSuperieurDateDeux(tempoFin, fin)) {
 					fin = tempoFin;
 				}
-			}
+			}*/
 			listeNumeroSemaine = Temps.getNumSemainesEntreDates(debut, fin);
 			nombreDeMois = Temps.nombreDeMoisEntreDeuxDates(debut,fin);
 			this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);			

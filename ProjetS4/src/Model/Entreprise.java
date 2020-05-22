@@ -212,7 +212,7 @@ public class Entreprise extends Observable{
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
 
-				 if(activiteCourante.equals(act)) {
+			 if(activiteCourante.equals(act)) {
 					 switch (res.getType()) {
 					case Ressource.PERSONNE:
 						Personne pers = (Personne)res;
@@ -418,6 +418,15 @@ public class Entreprise extends Observable{
 		return new Pair<LocalDateTime, LocalDateTime>(prem, der);
 	}
 
+	/**
+	 * Retourne la derniere date de travail d'une activite
+	 * @param listeEDT contient toute les info de creneau de l'activite par ressource
+	 * @param act activite concerner
+	 * @return fin 
+	 */
+	public LocalDate getLocalDateFinDuneActivite(ArrayList<EDT> listeEDT, Activite act) {
+		
+	}
 
 	/**
 	 * Initialise un EDT (vide) pour une ressource
