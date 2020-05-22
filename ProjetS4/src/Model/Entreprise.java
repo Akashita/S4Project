@@ -407,10 +407,15 @@ public class Entreprise extends Observable{
 			prem = EDTCourant.getPremiereDateActivite(act);
 			der = EDTCourant.getDerniereDateActivite(act);
 			
-			if(prem != null && prem.isBefore(debut)) {
-				debut = prem;
-			} else if (prem != null && der.isAfter(fin)) {
-				fin = der;
+			if(prem != null) {
+				if(prem.isBefore(debut)) {
+					debut = prem;
+				}
+			}
+			if (der != null) {
+				if(der.isAfter(fin)) {
+					fin = der;
+				}
 			}
 		}
 

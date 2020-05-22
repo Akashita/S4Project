@@ -193,7 +193,7 @@ public class EDT {
 			ArrayList<CreneauHoraire> jour = listeCreneaux.get(listKeys.get(i));
 			for (int j = 0; j < jour.size(); j++) {
 				CreneauHoraire crCourant = jour.get(j);
-				if (crCourant.getActivite() == act) {
+				if (crCourant.getActivite().equals(act)) {
 					premDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
 					quitter = true;
 					break;
@@ -217,7 +217,7 @@ public class EDT {
 			ArrayList<CreneauHoraire> jour = listeCreneaux.get(listKeys.get(i));
 			for (int j = jour.size()-1; j >= 0 ; j--) {
 				CreneauHoraire crCourant = jour.get(j);
-				if (crCourant.getActivite() == act) {
+				if (crCourant.getActivite().equals(act)) {
 					derDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
 					quitter = true;
 					break;
