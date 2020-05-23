@@ -15,11 +15,27 @@ import javax.swing.JOptionPane;
 
 public final class Temps {
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public final static int nbAnnnee = 4;
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//	ATTENTION : CONSTRUCTEUR IMPLICITES (class static)
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
+	
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	
 	public static LocalDate getAujourdhui() {
 		return LocalDate.now();
 	}
+	
+	
 	public static int getAnnee() {
 		return getAujourdhui().getYear();
 	}
@@ -31,35 +47,20 @@ public final class Temps {
 	}
 	
 	
-	public static LocalDate[] getJourSemaine(int annee, int semaine) {
-		
-		Calendar cal = Calendar.getInstance();
-		cal.setFirstDayOfWeek(Calendar.MONDAY);
-		int premierJour = cal.getMinimalDaysInFirstWeek();
+	public static int getJourMois(int annee, int mois) {
+		YearMonth anneeMois = YearMonth.of(annee, mois);
+		int nbJour = anneeMois.lengthOfMonth(); //28  		
+		return nbJour;
+	}
 
-		
-		if(semaine == 1 && premierJour > Calendar.MONDAY) {
-			cal.set(Calendar.YEAR, annee-1);
-			cal.set(Calendar.WEEK_OF_YEAR, cal.getActualMaximum(Calendar.WEEK_OF_YEAR) + 1);
-			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-		} else {
-			cal.setWeekDate(annee, semaine, Calendar.MONDAY);
-		}
-		
-		
-		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
-		int numAnne = cal.get(Calendar.YEAR);
-		
-		LocalDate init = LocalDate.ofYearDay(numAnne, numJour);
-		LocalDate[] tab = new LocalDate[5];
-		
-		for (int i = 0; i < 5; i++) {
-			tab[i] = init;
-			init = init.plus(1, ChronoUnit.DAYS);
-		}
+	
+	public static int getIndexMois() {
+		return getAujourdhui().getMonthValue();
+	}
 
-		return tab;
-		
+	
+	public static int getIndexJour() {
+		return getAujourdhui().getDayOfMonth();
 	}
 	
 	
@@ -69,11 +70,12 @@ public final class Temps {
 		return cal.getActualMaximum(Calendar.WEEK_OF_YEAR);
 	}
 	
-	
+
 	public static LocalDate[] getJourSemaine() {
 		Calendar cal = Calendar.getInstance();
 		return getJourSemaine(cal.get(Calendar.YEAR), cal.get(Calendar.WEEK_OF_YEAR));
 	}
+	
 	
 	public static String getLocalDateString(LocalDate date) {
 		String res = "";
@@ -111,6 +113,40 @@ public final class Temps {
 		
 		return res;
 	}
+	
+	//--------------------------------------------------------------------------------->>>>> Getteurs complexes
+
+	
+	public static LocalDate[] getJourSemaine(int annee, int semaine) {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setFirstDayOfWeek(Calendar.MONDAY);
+		int premierJour = cal.getMinimalDaysInFirstWeek();
+
+		
+		if(semaine == 1 && premierJour > Calendar.MONDAY) {
+			cal.set(Calendar.YEAR, annee-1);
+			cal.set(Calendar.WEEK_OF_YEAR, cal.getActualMaximum(Calendar.WEEK_OF_YEAR) + 1);
+			cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		} else {
+			cal.setWeekDate(annee, semaine, Calendar.MONDAY);
+		}
+		
+		
+		int numJour = cal.get(Calendar.DAY_OF_YEAR); 
+		int numAnne = cal.get(Calendar.YEAR);
+		
+		LocalDate init = LocalDate.ofYearDay(numAnne, numJour);
+		LocalDate[] tab = new LocalDate[5];
+		
+		for (int i = 0; i < 5; i++) {
+			tab[i] = init;
+			init = init.plus(1, ChronoUnit.DAYS);
+		}
+
+		return tab;
+		
+	}
 
 
 	public static LocalDate creerLaDate(int jour, int mois, int annee) {
@@ -143,23 +179,11 @@ public final class Temps {
 		return true;
 	}
 
-	public static int getJourMois(int annee, int mois) {
-		YearMonth anneeMois = YearMonth.of(annee, mois);
-		int nbJour = anneeMois.lengthOfMonth(); //28  		
-		return nbJour;
-	}
-
-	public static int getIndexMois() {
-		return getAujourdhui().getMonthValue();
-	}
-
-	public static int getIndexJour() {
-		return getAujourdhui().getDayOfMonth();
-	}
-
+	
 	public static boolean dateUnEstSuperieurDateDeux(LocalDate d1, LocalDate d2) {
 		return d1.isAfter(d2);
 	}
+	
 	
 	public static ArrayList<Integer> getNumSemainesEntreDates(LocalDate debut, LocalDate fin){		
 		TemporalField woy = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear(); 

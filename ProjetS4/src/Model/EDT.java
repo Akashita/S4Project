@@ -13,10 +13,20 @@ import java.util.Set;
 
 
 public class EDT {
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private int id_ressource;
 	private int type_ressource;
+	
 	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> listeCreneaux;
-
+	
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEUR
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
 	public EDT(int id_ressource, int type_ressource) {
 		this.id_ressource = id_ressource;
 		this.type_ressource = type_ressource;
@@ -25,12 +35,14 @@ public class EDT {
 	}
 	
 	public EDT(Pair<?, ?> duet) {
-		this.id_ressource = (int) duet.getLeft();
-		this.type_ressource = (int) duet.getRight();
-		this.listeCreneaux = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
-
+		this((int) duet.getLeft(), (int) duet.getRight());
 	}
-
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
+	
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public int getIdRessource() {
 		return id_ressource;
 	}
@@ -43,10 +55,13 @@ public class EDT {
 		return new Pair<Integer, Integer>(id_ressource, type_ressource);
 	}
 
-
+	//--------------------------------------------------------------------------------->>>>> Setteurs simples
 	public void vider() {
 		listeCreneaux.clear();
 	}
+	
+	
+	//--------------------------------------------------------------------------------->>>>> Méthodes complexes
 
 	/**
 	 * Ajoute un creneau ��� la ressource (si possible)
@@ -138,6 +153,8 @@ public class EDT {
 	}
 	
 	
+	
+	
 	public LocalDateTime getPremiereCreneauApresAct(int ordre) {
 		Set<LocalDate> keys = listeCreneaux.keySet(); //On recupere les cles de la hashtable jours
 		Iterator<LocalDate> itt = keys.iterator();
@@ -182,6 +199,8 @@ public class EDT {
 		}
 		return heure;
 	}
+	
+	
 	
 	
 	public LocalDateTime getPremiereDateActivite(Activite act) {

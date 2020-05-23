@@ -12,24 +12,21 @@ public class CreneauHoraire {
 	
 	private String titre;
 	private int debut;
-	private int fin;
 	private int position;
-	private Color couleurActivite;
+	private Color couleur;
 	private Activite activite;
 	private int type;
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	public CreneauHoraire(String titre, Activite activite, int debut, Color couleurActivite) { //Par défault un créneau horaire est de type "TRAVAIL"
+	public CreneauHoraire(Activite activite, int debut, int type, String titre, Color couleur) { //Par défault un créneau horaire est de type "TRAVAIL"
 		this.activite = activite;
-		this.titre = titre;
 		this.debut = debut;
-		fin = debut + 1; //On calcul la fin du creneau
-		this.couleurActivite = couleurActivite;
-		this.type = CreneauHoraire.TRAVAIL;
-		
-		
+		this.type = type;
+		this.titre = titre;
+		this.couleur = couleur;
+
 		//On cherche la position du creneau dans une journe (les creneaux sont tous les uns apres mes autres)
 		int i = Entreprise.HEURE_DEBUT_MATIN;
 		int pos = 0;
@@ -48,40 +45,19 @@ public class CreneauHoraire {
 		}	
 	}
 	
-	public CreneauHoraire(Activite activite, int debut, int type) {
-		this.activite = activite;
-		titre = "" + activite.getId();
-		this.debut = debut;
-		fin = debut + 1;
-		if (type == CreneauHoraire.CONGE) {
-			this.type = type;
-			this.couleurActivite = Color.RED;
-		} else if(type == CreneauHoraire.REUNION) {
-			this.couleurActivite = Color.GRAY;
-			this.type = type;
-		} else {
-			this.couleurActivite = null;
-			this.type = CreneauHoraire.TRAVAIL;
+	public CreneauHoraire(String titre, Activite activite, int debut, Color couleur) {
+		this(activite, debut, TRAVAIL, titre, couleur);
+	}
+	
+	public CreneauHoraire(Activite activite, int debut, int type, String titre) {
+		this(activite, debut, -1, titre, null);
+		if(type == CONGE) {
+			this.titre = "Conge";
+			this.couleur = Color.RED;
+		} else if(type == REUNION) {
+			this.titre = "Reunion";
+			this.couleur = Color.ORANGE;
 		}
-		
-		
-		
-		//On cherche la position du creneau dans une journe (les creneaux sont tous les uns apres mes autres)
-		int i = Entreprise.HEURE_DEBUT_MATIN;
-		int pos = 0;
-		boolean posTrouve = false;
-		
-		while(i != Entreprise.HEURE_FIN_APREM && !posTrouve) {
-			if (i == Entreprise.HEURE_FIN_MATIN) {
-				i = Entreprise.HEURE_DEBUT_APREM;
-			} 
-			if (i == debut) {
-				this.position = pos;
-				posTrouve = true;
-			}
-			pos++;
-			i++;
-		}	
 	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -105,30 +81,18 @@ public class CreneauHoraire {
 		return debut;
 	}
 	
-	public int getFin() {
-		return fin;
-	}
-	
 	public int getType() {
 		return type;
 	}
 	
 
 	public Color getCouleurActivite() {
-		return couleurActivite;
+		return couleur;
 	}
 
-	//--------------------------------------------------------------------------------->>>>> Comparaison	
-	public boolean estAvant(CreneauHoraire horaire) {
-		return fin <= horaire.debut;
-	}
-	
-	public boolean estApres(CreneauHoraire horaire) {;
-		return debut >= horaire.fin;
-	}
 	
 	@Override
-	public boolean equals(Object obj) { //test si deux CreneauHoraire sont egaux (meme debuts)
+	public boolean equals(Object obj) {
 		if(obj instanceof CreneauHoraire && obj != null) {
 			CreneauHoraire res = (CreneauHoraire)obj;
 			return debut == res.debut;

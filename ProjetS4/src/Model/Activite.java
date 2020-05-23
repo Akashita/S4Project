@@ -1,12 +1,9 @@
 package Model;
 
 import java.awt.Color;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.swing.JTextArea;
 
 import Ressource.Ressource;
 
@@ -25,15 +22,19 @@ public class Activite implements Comparable<Activite>{
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	private ArrayList<String> listeDomaine;
 	
+<<<<<<< HEAD
 	private boolean changeSens = false; //pour le graphique
 	private boolean afficheEDT = false;
+=======
+	private boolean changeSens = false; 
+>>>>>>> c1b77473c57c052ab20e86a6e8ca074bdaf2ff25
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Activite(int id, String titre, float chargeJH, LocalDate debut, Color couleur, int ordre, ArrayList<String> listeDomaine) {
 		this.id = id;
 		this.titre = titre;
-		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
+		this.chargeJHomme = chargeJH;
 		this.chargeHeure = (int)(chargeJH * Entreprise.NB_HEURE_JOUR);
 		this.debut = debut;
 		this.couleur = couleur;
@@ -91,12 +92,6 @@ public class Activite implements Comparable<Activite>{
 	public int getOrdre() {
 		return ordre;
 	}
-	
-	/*
-	public boolean hasRessource() {
-		return lRessources.size() != 0;
- 	}
- 	*/
 	
 	public ArrayList<String> getListeDomaine(){
 		return listeDomaine;
@@ -181,31 +176,6 @@ public class Activite implements Comparable<Activite>{
 
 
 	//--------------------------------------------------------------------------------->>>>> Gestion de l'EDT
-
-
-	/**
-	 * Supprime une ressource de l'activite
-	 * @param id  L'ID de la ressource
-	 * @return true si la ressource a ete supprimee
-	 */
-	/*public boolean enleverRessource(int id) {
-		return lRessources.remove(new Ressource(id));
-	}*/
-
-
-	/**
-	 * Ajouter une ressource a l'activite
-	 * @param ressource  La ressource
-	 * @return true si la ressource a ete ajoutee
-	 */
-	/*public boolean ajouterRessource(Ressource ressource) {
-		if(!lRessources.contains(ressource)) {
-			lRessources.add(ressource);
-			return true;
-		} else {
-			return false;
-		}
-	}*/
 
 
 	/**
