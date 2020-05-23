@@ -258,7 +258,6 @@ public class PanelFenetre extends JPanel{
 			if (!estPresent) {
 				CreneauHoraire ch = new CreneauHoraire(conge);
 				entreprise.nouveauConge(ch.getDate(), idPersonne);
-				textFieldNom = new JTextField();
 				maj(pf);
 				}
 			else {

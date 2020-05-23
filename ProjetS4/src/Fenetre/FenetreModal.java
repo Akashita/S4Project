@@ -41,10 +41,11 @@ public class FenetreModal extends JDialog{
     protected int largeur, hauteur;
     private int id;
 
-	public FenetreModal(Entreprise entreprise, int choix) {
+	public FenetreModal(Entreprise entreprise, int choix, int id) {
 		super(entreprise.getFenetrePrincipale(), true);
 		this.entreprise = entreprise;
-		
+		this.id = id;
+
 		getPanelFenetre(choix);
 		
 		this.setTitle(titre);
@@ -66,9 +67,8 @@ public class FenetreModal extends JDialog{
 	 * @param choix
 	 * @param id d'une personne ou d'une activite en fonction du choix
 	 */
-	public FenetreModal(Entreprise entreprise, int choix, int id) {
-		this(entreprise, choix);
-		this.id = id;
+	public FenetreModal(Entreprise entreprise, int choix) {
+		this(entreprise, choix, -1);
 	}
 	
 	private void getPanelFenetre(int choix) {
