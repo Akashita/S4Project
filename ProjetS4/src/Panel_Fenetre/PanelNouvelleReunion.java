@@ -45,7 +45,7 @@ public class PanelNouvelleReunion extends PanelFenetre{
 		
 		gc.fill = GridBagConstraints.CENTER;
 		
-		gc.insets = new Insets(5, 5, 5, 5);
+		gc.insets = new Insets(1, 5, 1, 5);
 		
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
@@ -56,25 +56,16 @@ public class PanelNouvelleReunion extends PanelFenetre{
 		this.add(creerTitre("Reunions existants"), gc);
 		
 		gc.fill = GridBagConstraints.BOTH;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridheight = GridBagConstraints.RELATIVE;
 		gc.gridy ++;
 		this.add(afficheListeConge(this, idActivite), gc);
-		
-		gc.fill = GridBagConstraints.CENTER;
-		gc.gridwidth = GridBagConstraints.HORIZONTAL;
-		gc.gridheight = 1;
-		gc.gridy ++;
-		this.add(textFieldNom, gc);
-		
-		gc.fill = GridBagConstraints.CENTER;
-		gc.gridwidth = 1;
-		gc.gridheight = 1;
-		gc.gridy ++;
-
+				
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		gc.gridx = 2;
+		gc.gridheight = GridBagConstraints.REMAINDER;
+		gc.gridy ++;
 		this.add(panelBouton(), gc);
 
 	}
@@ -83,7 +74,7 @@ public class PanelNouvelleReunion extends PanelFenetre{
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		p.setBackground(couleurFond);
-		p.add(panelCalendrier(calendrier1));
+		p.add(panelCalendrierAvecHeure(calendrier1));
 		p.add(boutonAjoutConge);
 		p.add(creerBoutonFin(this, "Terminer"));
 		return p;

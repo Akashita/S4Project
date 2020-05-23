@@ -57,7 +57,7 @@ public class JavaSQL {
 	public static void creation() throws SQLException{
 		String sql = "CREATE TABLE IF NOT EXISTS Domaine(tag VARCHAR(30) PRIMARY KEY);";
 			try{
-				 
+				 connection();
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 
@@ -105,7 +105,10 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Activite faite");
 				 
-				 
+				 sql = "CREATE TABLE IF NOT EXISTS Reunion(idR INT PRIMARY KEY AUTO_INCREMENT,debut INT, date DATE, titre VARCHAR(30), idA INT, "
+							+ "CONSTRAINT fk_Creneaux_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
+				 stmt.executeUpdate(sql);
+				 System.out.println("Table Activite faite");
 				 
 				 
 				 

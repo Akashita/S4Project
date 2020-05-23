@@ -56,6 +56,7 @@ public class PanelFenetre extends JPanel{
 
     protected JTextField textFieldNom = new JTextField(),
     		textFieldPrenom = new JTextField(),
+    	    textFieldTitre = new JTextField(),
     	    textFieldMdp = new JTextField(),
     	    textFieldPriorite = new JTextField(),
     	    textFieldCharge = new JTextField(),
@@ -321,8 +322,6 @@ public class PanelFenetre extends JPanel{
 	}
 	
 	protected void ajoutReunion(PanelFenetre pf, int idActivite) {
-		String nom = textFieldNom.getText();
-		if (!nom.isEmpty()) {
 			LocalDate date = calendrier1.getDate();
 			boolean estPresent = false;
 			for (int i=0; i<listeReunion.size(); i++) {
@@ -331,17 +330,14 @@ public class PanelFenetre extends JPanel{
 				}
 			}
 			if (!estPresent) {
-				CreneauHoraire ch = new CreneauHoraire(date, calendrier1.getTemps(), nom);
+				String titre = "Reunion pour l'activite "+entreprise.getActiviteParId(idActivite).getTitre();
+				CreneauHoraire ch = new CreneauHoraire(date, calendrier1.getTemps(), titre);
 				entreprise.nouvelleReunion(ch.getDebut(), ch.getDate(),ch.getTitre(), idActivite);
 				maj(pf);
 				}
 			else {
 		    	JOptionPane.showMessageDialog(null, "Il y a deja une reunion cette date", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}			
-		}
-		else {
-	    	JOptionPane.showMessageDialog(null, "Veuillez ecrire le titre de la reunion", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}			
 	}
 	
 	protected void supprimerReunion(PanelFenetre pf, CreneauHoraire reunion) {
