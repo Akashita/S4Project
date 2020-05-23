@@ -16,14 +16,15 @@ import SQL.JavaSQLRecherche;
 
 public class LancementRapideDebug {
 	public static void main (String[] args) {
-		
+
 		JavaSQL.connection();
 		//try {
 //			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(1));
-		//	JavaSQLDebug.affiche();
-		//} catch (SQLException e) {
-		//	e.printStackTrace();
-		//}
+//			JavaSQLDebug.affiche();
+//			System.out.println(JavaSQLPersonne.affiche());
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 		new Entreprise("debugBDD");
 
 }

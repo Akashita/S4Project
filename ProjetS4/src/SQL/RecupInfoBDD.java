@@ -25,35 +25,35 @@ public final class RecupInfoBDD {
 		}
 	}
 
-	public static void recupBDDRessource(Entreprise e) throws SQLException {
-		ArrayList<Personne> pers = new ArrayList<Personne>();
-		pers = JavaSQLPersonne.affiche();
-		ArrayList<Calculateur> cal = new ArrayList<Calculateur>();
-		cal = JavaSQLCalculateur.affiche();
-		ArrayList<Salle> sal= new ArrayList<Salle>();
-		sal = JavaSQLSalle.affiche();
-		for (int i = 0; i < pers.size(); i++) {
-			e.nouvPersonne(pers.get(i));
-		}
-		for (int i = 0; i < cal.size(); i++) {
-			e.nouvCalculateur(cal.get(i));
-		}
-		for (int i = 0; i < sal.size(); i++) {
-			e.nouvSalle(sal.get(i));
-		}
-		
-	}
+//	public static void recupBDDRessource(Entreprise e) throws SQLException {
+//		ArrayList<Personne> pers = new ArrayList<Personne>();
+//		pers = JavaSQLPersonne.affiche();
+//		ArrayList<Calculateur> cal = new ArrayList<Calculateur>();
+//		cal = JavaSQLCalculateur.affiche();
+//		ArrayList<Salle> sal= new ArrayList<Salle>();
+//		sal = JavaSQLSalle.affiche();
+//		for (int i = 0; i < pers.size(); i++) {
+//			e.nouvPersonne(pers.get(i));
+//		}
+//		for (int i = 0; i < cal.size(); i++) {
+//			e.nouvCalculateur(cal.get(i));
+//		}
+//		for (int i = 0; i < sal.size(); i++) {
+//			e.nouvSalle(sal.get(i));
+//		}
+//		
+//	}
 	
 	public static void recupBDDActivite(Projet p) throws SQLException {		
 		p.setListeActivite(JavaSQLActivite.affiche());
 	}
 	
-	public static void recupBDDProjet(Entreprise e) throws SQLException {
-		ArrayList<Projet> prog = new ArrayList<Projet>();
-		prog = JavaSQLProjet.affiche();
-		for (int i = 0; i < prog.size(); i++) {
-			e.nouvProjet(prog.get(i));
-		}
-		//e.selectionnerProjet(prog.get(0));
-	}
+//	public static void recupBDDProjet(Entreprise e) throws SQLException {
+//		ArrayList<Projet> prog = new ArrayList<Projet>();
+//		prog = JavaSQLProjet.affiche();
+//		for (int i = 0; i < prog.size(); i++) {
+//			e.nouvProjet(prog.get(i));
+//		}
+//		//e.selectionnerProjet(prog.get(0));
+//	}
 }
