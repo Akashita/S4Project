@@ -374,7 +374,7 @@ public class Entreprise extends Observable{
 				while (!(jourCourant.equals(jourFin) && (heureCourante == heureFin))) {
 					for (int i = 0; i < listeSalles.size(); i++) {
 						Salle salleCourante = listeSalles.get(i);
-						String titreCreneau = proj.getNom() + " | " + act.getTitre();
+						String titreCreneau = " " + proj.getNom() + " | " + act.getTitre()+ " ";
 						EDT EDTCourant = getEDTRessource(salleCourante.getType(), salleCourante.getId(), listeEDTSalles);
 						if(EDTCourant.creneauDispo(jourCourant, heureCourante)) {
 							EDTCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
