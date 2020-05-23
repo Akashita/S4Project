@@ -72,7 +72,15 @@ public class CreneauHoraire {
 	 * @param date du conge
 	 */
 	public CreneauHoraire(LocalDate date) {
-		this(null, 8, null, CONGE, "CONGE", PanelPrincipal.CONGE, 0);
+		this(null, 8, date, CONGE, "CONGE", PanelPrincipal.CONGE, 0);
+	}
+	
+	/**
+	 * Genere une reunion pour une personne
+	 * @param date de la reunion
+	 */
+	public CreneauHoraire(LocalDate date, int debut, String titre) {
+		this(null, debut, date, REUNION, titre, PanelPrincipal.REUNION, 0);
 	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -114,7 +122,22 @@ public class CreneauHoraire {
 	public boolean equals(Object obj) {
 		if(obj instanceof CreneauHoraire && obj != null) {
 			CreneauHoraire res = (CreneauHoraire)obj;
-			return debut == res.debut;
+			boolean ret = false;
+			switch (res.getType()) {
+			case CONGE:
+				ret = (date.equals(res.getDate()));
+				break;
+			case REUNION:
+				ret = (debut == res.getDebut()) && (date.equals(res.getDate()));
+				break;
+			case TRAVAIL:
+				ret = debut == res.getDebut();
+				break;
+
+			default:
+				break;
+			}
+			return ret;
 		} else {
 			return false;
 		}
