@@ -31,6 +31,7 @@ import SQL.JavaSQL;
 import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
+import SQL.JavaSQLCreneaux;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLMateriel;
 import SQL.JavaSQLParticipe;
@@ -1451,8 +1452,25 @@ public class Entreprise extends Observable{
 		return liste;
 	}
 
+	/**
+	 * Cherche dans la bdd toute les conges de la personnes
+	 * @param id de la personne
+	 * @return liste de conge de la personne
+	 */
+	public ArrayList<CreneauHoraire> getListeCongeParPersonne(int id) {
+		
+	}
 
+	/**
+	 * Cherche dans la bdd toute les reunion du projet
+	 * @param id du projet
+	 * @return liste des reunions du projet
+	 */
+	public ArrayList<CreneauHoraire> getListeReunion(int idP) {
+		
+	}
 
+	
 
 
 	//------------------------------>>>>> Verifie condition dans la bdd
@@ -2241,7 +2259,26 @@ public class Entreprise extends Observable{
 		return afficheTache;
 	}
 
+	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion Reunion et Conge
+	
+	public void nouveauCreneaux(String titre, int couleur, int debut, LocalDate date, int position, int type, int numSalarie, int idA) {
+		try {
+			JavaSQLCreneaux.insertion(titre, couleur, debut, date, position, type, numSalarie, idA);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void supprimerCreneaux(int idC) {
+		try {
+			JavaSQLCreneaux.supprime(idC);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
+
+	
 	//================ Partie Graphique ==========//
 	public void selectionnerProjet(Projet projet) {
 		projetSelectionner = projet;
