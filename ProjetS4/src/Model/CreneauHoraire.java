@@ -75,6 +75,14 @@ public class CreneauHoraire {
 		this(null, 8, date, CONGE, "CONGE", PanelPrincipal.CONGE, 0);
 	}
 	
+	/**
+	 * Genere une reunion pour une personne
+	 * @param date de la reunion
+	 */
+	public CreneauHoraire(LocalDate date, int debut, String titre) {
+		this(null, debut, date, REUNION, titre, PanelPrincipal.REUNION, 0);
+	}
+	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
