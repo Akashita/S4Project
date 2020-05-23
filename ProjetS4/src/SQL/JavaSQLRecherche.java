@@ -719,6 +719,28 @@ public final class JavaSQLRecherche extends JavaSQL{
 
 	}
 	
+	
+	public static ArrayList<Ressource> recupereListePersonneParTag(String tag) throws SQLException{
+		String sql = "SELECT numSalarie FROM Competence WHERE tag = '" + tag + "';";
+		ArrayList<Ressource> personneTab= new ArrayList<Ressource>();
+
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 personneTab.add(recuperePersonneParId(res.getInt("numSalarie")));
+
+						 //System.out.println("numSalarie = " + res.getString("numSalarie") + ", tag = " + res.getString("tag") + ", niveau = " + res.getString("niveau"));
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return personneTab;
+
+	}
+	
+	
 	public static  Ressource recupereChefDeProjetParIdProjet(int idP) throws SQLException{
 		Ressource chef = null;
 		String sql = "SELECT numSalarie FROM Projet WHERE idP = '"+ idP + "';";

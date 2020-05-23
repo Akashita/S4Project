@@ -830,6 +830,23 @@ public class Entreprise extends Observable{
 		return personne;
 	}
 
+	public ArrayList<Ressource> getPersonneParTag(String tag) {
+		ArrayList<Ressource> personneTab= null;
+
+        try {
+        	personneTab = JavaSQLRecherche.recupereListePersonneParTag(tag);
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+		return personneTab;
+	}
+
+	
+	
+	
 	/**
 	 * cherche  dans la bdd la Salle avec l'id correspondant
 	 * @param id de la ressource
