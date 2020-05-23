@@ -212,6 +212,7 @@ public class PanelEDTActivite extends JPanel{
 	
 	private JPanel afficheDiagrammeGantt(int index) {
 		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		EDT edtR = listeEDTpersonne.get(index);
 		int annee = debut.getYear();
