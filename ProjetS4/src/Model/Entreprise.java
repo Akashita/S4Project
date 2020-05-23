@@ -277,9 +277,9 @@ public class Entreprise extends Observable{
 
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
 
-		 for (int i = 0; i < lProjet.size(); i++) {
+		 for (int i = 0; i < lProjet.size(); i++) { 
 			 Projet projetCourant = lProjet.get(i);
-			 lActivite = projetCourant.getListe();
+			 lActivite = getListeActiviteDuProjet(projetCourant.getId());
 			 for (int j = 0; j < lActivite.size(); j++) {
 				 Activite activiteCourante = lActivite.get(j);
 
