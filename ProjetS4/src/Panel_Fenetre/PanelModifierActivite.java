@@ -129,10 +129,7 @@ public class PanelModifierActivite extends PanelFenetre{
 				if (estUnEntier(textFieldCharge.getText())) {
 					String nom = textFieldNom.getText();
 					int charge = Integer.parseInt(textFieldCharge.getText());
-					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
-					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
-					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
-					LocalDate date =  Temps.creerLaDate(jour, mois, annee);
+					LocalDate date =  calendrier1.getDate();
 					entreprise.modifierActivite(activite, nom, charge, date);
 					fm.dispose();
 				}

@@ -203,4 +203,8 @@ public final class Temps {
 		
 	}
 	
+	public static String dateToString(LocalDate date) {
+		return date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();			
+	}
+
 }

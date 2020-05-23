@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
+import Model.Temps;
 import Ressource.Domaine;
 import Ressource.Ressource;
 
@@ -21,11 +22,13 @@ public class PanelNouveauConge extends PanelFenetre{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-
-	public PanelNouveauConge(Entreprise entreprise, FenetreModal fm) {
+	private int idPersonne;
+	
+	public PanelNouveauConge(Entreprise entreprise, FenetreModal fm, int idPersonne) {
 		super(entreprise, fm);
-		initialiseCalendrier(projet.getDeadline(), this);
+		this.idPersonne = idPersonne;
+		initialiseConge(this, idPersonne);
+		initialiseCalendrier(Temps.getAujourdhui(), this);
 		creerInterface();
 	}
 	
@@ -55,7 +58,7 @@ public class PanelNouveauConge extends PanelFenetre{
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridheight = GridBagConstraints.RELATIVE;
 		gc.gridy ++;
-		this.add(afficheListeConge(this), gc);
+		this.add(afficheListeConge(this, idPersonne), gc);
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.gridwidth = 1;

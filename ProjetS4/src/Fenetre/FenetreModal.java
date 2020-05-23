@@ -39,7 +39,7 @@ public class FenetreModal extends JDialog{
 	private String titre;
     protected Color couleurFond = PanelPrincipal.BLEU2;
     protected int largeur, hauteur;
-
+    private int id;
 
 	public FenetreModal(Entreprise entreprise, int choix) {
 		super(entreprise.getFenetrePrincipale(), true);
@@ -58,6 +58,17 @@ public class FenetreModal extends JDialog{
 		this.setResizable(false);
 		this.setVisible(true);
 
+	}
+	
+	/**
+	 * 
+	 * @param entreprise
+	 * @param choix
+	 * @param id d'une personne ou d'une activite en fonction du choix
+	 */
+	public FenetreModal(Entreprise entreprise, int choix, int id) {
+		this(entreprise, choix);
+		this.id = id;
 	}
 	
 	private void getPanelFenetre(int choix) {
@@ -79,7 +90,7 @@ public class FenetreModal extends JDialog{
 			break;
 		case FenetrePrincipale.NouveauConge:
 			titre = "Ajouter conge";
-			panelInterface = new PanelNouveauConge(entreprise, this);
+			panelInterface = new PanelNouveauConge(entreprise, this, id);
 			break;
 		case FenetrePrincipale.NouveauDomaine:
 			titre = "Creation domaine";

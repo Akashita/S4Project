@@ -36,6 +36,7 @@ import javax.swing.JTextField;
 
 import Fenetre.FenetreModal;
 import Model.Activite;
+import Model.CreneauHoraire;
 import Model.Entreprise;
 import Model.Projet;
 import Model.Temps;
@@ -100,6 +101,10 @@ public class PanelFenetre extends JPanel{
     
     protected Calendrier calendrier1, calendrier2;
     
+    protected ArrayList<CreneauHoraire> listeConge;
+    protected JList<CreneauHoraire> jListeConge;
+    protected JButton boutonAjoutConge, boutonAjoutReunion;
+
 	public PanelFenetre(Entreprise entreprise, FenetreModal fm) {
 		this.entreprise = entreprise;
 		this.fm = fm;
@@ -118,12 +123,6 @@ public class PanelFenetre extends JPanel{
 	        	ajoutDomaine(pf);
 	        }
 	    });			
-		/*boutonSupprimerDomaine = new JButton("Supprimer");
-		boutonSupprimerDomaine.addActionListener(new ActionListener() {  
-	        public void actionPerformed(ActionEvent e) {
-	        	supprimerDomaine(pf);
-	        }
-	    });	*/		
 	}
 
 	protected Component afficheListeDomaine(PanelFenetre pf) {
@@ -183,11 +182,13 @@ public class PanelFenetre extends JPanel{
 		    	JOptionPane.showMessageDialog(null, "Ce domaine existe d�j�", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nom de domaine", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}
 
 	}
 	
 	protected void supprimerDomaine(PanelFenetre pf, String domaine) {
-		//String domaine = jListDomaine.getSelectedValue();
 		if (!entreprise.PersonneOuActiviteACeDomaine(domaine)) {
 			entreprise.supprimerDomaine(domaine);
 			maj(pf);			
@@ -198,37 +199,30 @@ public class PanelFenetre extends JPanel{
 	}
 
 	//-------------------------------------------->>>>> gere la liste de conge
-	protected void initialiseConge (PanelFenetre pf) {
-		listeConge = entreprise.getListeDomaineEntreprise();
+	protected void initialiseConge (PanelFenetre pf, int idPersonne) {
+		listeConge = entreprise.getListeCongeDePersonne(idPersonne);
 		boutonAjoutConge = new JButton("Ajouter");
 		boutonAjoutConge.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
-	        	ajoutDomaine(pf);
+	        	ajoutConge(pf, idPersonne);
 	        }
 	    });			
-		/*boutonSupprimerDomaine = new JButton("Supprimer");
-		boutonSupprimerDomaine.addActionListener(new ActionListener() {  
-	        public void actionPerformed(ActionEvent e) {
-	        	supprimerDomaine(pf);
-	        }
-	    });	*/		
 	}
 
-	protected Component afficheListeConge(PanelFenetre pf) {
-		listeConge = entreprise.getListeDomaineEntreprise();
-		String [] conge = new String [listeConge.size()];
-		Collections.sort(listeConge); //trie dans l'odre alphabetique
+	protected Component afficheListeConge(PanelFenetre pf, int idPersonne) {
+		listeConge = entreprise.getListeCongeDePersonne(idPersonne);
+		CreneauHoraire [] conge = new CreneauHoraire [listeConge.size()];
 		for (int i=0; i<listeConge.size(); i++) {
 			conge[i] = listeConge.get(i);
 		}
-		JList<String> jlt = new JList<String>(conge);
+		JList<CreneauHoraire> jlt = new JList<CreneauHoraire>(conge);
 		jlt.setBackground(couleurFond);
 		jlt.setFont(new Font("Arial", Font.BOLD, 15));
 		jlt.addMouseListener(new MouseAdapter() {
 		    public void mousePressed(MouseEvent evt) {
 		        if (evt.getButton() == MouseEvent.BUTTON3) { //clic droit
 		        	jlt.setSelectedIndex(jlt.locationToIndex(evt.getPoint()));
-		        	jlt.setComponentPopupMenu(popupMenuDomaine(pf, jlt.getSelectedValue()));
+		        	jlt.setComponentPopupMenu(popupMenuConge(pf, jlt.getSelectedValue()));
 		        	;
 		        }
 		    }
@@ -240,12 +234,12 @@ public class PanelFenetre extends JPanel{
 		return scrollPaneJListDomaine;
 	}
 
-	public JPopupMenu popupMenuConge(PanelFenetre pf, String domaine) {
+	public JPopupMenu popupMenuConge(PanelFenetre pf, CreneauHoraire conge) {
 		JPopupMenu m = new JPopupMenu("Supprimer");  
 		JMenuItem supp = new JMenuItem("Supprimer");
 		supp.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e) {              
-            	supprimerDomaine(pf, domaine);
+            	supprimerConge(pf, conge);
             	}  
            });  
 
@@ -253,36 +247,29 @@ public class PanelFenetre extends JPanel{
 		return m;
 	}
 	
-	protected void ajoutConge (PanelFenetre pf) {
-		if (!textFieldNom.getText().isEmpty()) {
-			String domaine = textFieldNom.getText().toLowerCase();
+	protected void ajoutConge (PanelFenetre pf, int idPersonne) {
+			LocalDate conge = calendrier1.getDate();
 			boolean estPresent = false;
-			for (int i=0; i<listeDomaine.size(); i++) {
-				if (domaine.equals(listeDomaine.get(i))) {
+			for (int i=0; i<listeConge.size(); i++) {
+				if (conge.equals(listeConge.get(i).getDate())) {
 					estPresent = true;
 				}
 			}
 			if (!estPresent) {
-				entreprise.ajoutDomaine(domaine);
+				CreneauHoraire ch = new CreneauHoraire(conge);
+				entreprise.nouveauCreneaux(ch.getTitre(), ch.getCouleur().getRGB(), ch.getDebut(),
+						ch.getDate(), ch.getPosition(), ch.getType(), idPersonne, 0);
 				textFieldNom = new JTextField();
 				maj(pf);
 				}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Ce domaine existe d�j�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Il y a deja un conge a cette date", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
-		}
-
 	}
 	
-	protected void supprimerConge(PanelFenetre pf, String domaine) {
-		//String domaine = jListDomaine.getSelectedValue();
-		if (!entreprise.PersonneOuActiviteACeDomaine(domaine)) {
-			entreprise.supprimerDomaine(domaine);
-			maj(pf);			
-		}
-		else {
-	    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
-		}			
+	protected void supprimerConge(PanelFenetre pf, CreneauHoraire conge) {
+		entreprise.supprimerCreneaux(conge.getId());
+		maj(pf);				
 	}
 
 	
@@ -614,7 +601,4 @@ public class PanelFenetre extends JPanel{
 	}
 
 	
-	protected String dateToString(LocalDate date) {
-		return date.getDayOfMonth() + "/" + date.getMonthValue() + "/" + date.getYear();			
-	}
 }

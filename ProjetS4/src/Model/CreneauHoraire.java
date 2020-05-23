@@ -3,6 +3,8 @@ package Model;
 import java.awt.Color;
 import java.time.LocalDate;
 
+import Panel.PanelPrincipal;
+
 public class CreneauHoraire {
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -63,6 +65,14 @@ public class CreneauHoraire {
 		}
 	}
 	
+	/**
+	 * Genere un conge pour une personne
+	 * @param date du conge
+	 */
+	public CreneauHoraire(LocalDate date) {
+		this(null, 8, null, CONGE, "CONGE", PanelPrincipal.CONGE);
+	}
+	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
@@ -93,7 +103,7 @@ public class CreneauHoraire {
 	}
 	
 
-	public Color getCouleurActivite() {
+	public Color getCouleur() {
 		return couleur;
 	}
 
@@ -112,7 +122,7 @@ public class CreneauHoraire {
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override 
 	public String toString() {
-		return "Cr" + debut;
+		return Temps.dateToString(date);
 	}
 
 }
