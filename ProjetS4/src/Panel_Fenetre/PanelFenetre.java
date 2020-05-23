@@ -330,8 +330,8 @@ public class PanelFenetre extends JPanel{
 				}
 			}
 			if (!estPresent) {
-				String titre = "Reunion pour l'activite "+
-				CreneauHoraire ch = new CreneauHoraire(date, calendrier1.getTemps(), );
+				String titre = "Reunion pour l'activite "+entreprise.getActiviteParId(idActivite).getTitre();
+				CreneauHoraire ch = new CreneauHoraire(date, calendrier1.getTemps(), titre);
 				entreprise.nouvelleReunion(ch.getDebut(), ch.getDate(),ch.getTitre(), idActivite);
 				maj(pf);
 				}

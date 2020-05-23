@@ -1017,6 +1017,12 @@ public class Entreprise extends Observable{
 	 * @return l'activite associer
 	 */
 	public Activite getActiviteParId(int idA) {
+		Activite act = null;	
+		try {
+			act = JavaSQLRecherche.recupereActiviteParId(idA);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return act;
 	}
 
