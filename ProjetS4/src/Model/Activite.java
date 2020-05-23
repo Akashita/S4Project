@@ -21,13 +21,8 @@ public class Activite implements Comparable<Activite>{
 	private int ordre;
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	private ArrayList<String> listeDomaine;
-	
-<<<<<<< HEAD
-	private boolean changeSens = false; //pour le graphique
-	private boolean afficheEDT = false;
-=======
+
 	private boolean changeSens = false; 
->>>>>>> c1b77473c57c052ab20e86a6e8ca074bdaf2ff25
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
