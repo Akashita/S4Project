@@ -1,6 +1,7 @@
 package Model;
 
 import java.awt.Color;
+import java.time.LocalDate;
 
 public class CreneauHoraire {
 	
@@ -16,16 +17,18 @@ public class CreneauHoraire {
 	private Color couleur;
 	private Activite activite;
 	private int type;
+	private LocalDate date;
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	public CreneauHoraire(Activite activite, int debut, int type, String titre, Color couleur) { //Par défault un créneau horaire est de type "TRAVAIL"
+	public CreneauHoraire(Activite activite, int debut, LocalDate date, int type, String titre, Color couleur) { //Par dï¿½fault un crï¿½neau horaire est de type "TRAVAIL"
 		this.activite = activite;
 		this.debut = debut;
 		this.type = type;
 		this.titre = titre;
 		this.couleur = couleur;
+		this.date = date;
 
 		//On cherche la position du creneau dans une journe (les creneaux sont tous les uns apres mes autres)
 		int i = Entreprise.HEURE_DEBUT_MATIN;
@@ -46,11 +49,11 @@ public class CreneauHoraire {
 	}
 	
 	public CreneauHoraire(String titre, Activite activite, int debut, Color couleur) {
-		this(activite, debut, TRAVAIL, titre, couleur);
+		this(activite, debut, null, TRAVAIL, titre, couleur);
 	}
 	
-	public CreneauHoraire(Activite activite, int debut, int type, String titre) {
-		this(activite, debut, -1, titre, null);
+	public CreneauHoraire(Activite activite, int debut, LocalDate date, int type, String titre) {
+		this(activite, debut, date, -1, titre, null);
 		if(type == CONGE) {
 			this.titre = "Conge";
 			this.couleur = Color.RED;
@@ -83,6 +86,10 @@ public class CreneauHoraire {
 	
 	public int getType() {
 		return type;
+	}
+	
+	public LocalDate getDate() {
+		return date;
 	}
 	
 

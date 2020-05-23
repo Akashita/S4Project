@@ -14,7 +14,7 @@ public class Projet implements Comparable<Projet>{
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private ArrayList<Activite> lActivite;
-
+ 
 	private String nom;
 	private float priorite;
 	private int id;
