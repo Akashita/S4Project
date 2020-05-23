@@ -57,7 +57,6 @@ public class JavaSQL {
 	public static void creation() throws SQLException{
 		String sql = "CREATE TABLE IF NOT EXISTS Domaine(tag VARCHAR(30) PRIMARY KEY);";
 			try{
-				 connection();
 				 
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);

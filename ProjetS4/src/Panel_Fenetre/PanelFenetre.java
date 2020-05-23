@@ -257,9 +257,7 @@ public class PanelFenetre extends JPanel{
 			}
 			if (!estPresent) {
 				CreneauHoraire ch = new CreneauHoraire(conge);
-				entreprise.nouveauCreneaux(ch.getTitre(), ch.getCouleur().getRGB(), ch.getDebut(),
-						ch.getDate(), ch.getPosition(), ch.getType(), idPersonne, 0);
-				textFieldNom = new JTextField();
+				entreprise.nouveauConge(ch.getDate(), idPersonne);
 				maj(pf);
 				}
 			else {
@@ -268,7 +266,7 @@ public class PanelFenetre extends JPanel{
 	}
 	
 	protected void supprimerConge(PanelFenetre pf, CreneauHoraire conge) {
-		entreprise.supprimerCreneaux(conge.getId());
+		entreprise.supprimerConge(conge.getId());
 		maj(pf);				
 	}
 

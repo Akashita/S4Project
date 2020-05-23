@@ -74,7 +74,15 @@ public class CreneauHoraire {
 	public CreneauHoraire(LocalDate date) {
 		this(null, 8, date, CONGE, "CONGE", PanelPrincipal.CONGE, 0);
 	}
-	
+
+	/**
+	 * Genere un conge pour une personne via la bdd
+	 * @param date du conge
+	 */
+	public CreneauHoraire(LocalDate date, int id) {
+		this(null, 8, date, CONGE, "CONGE", PanelPrincipal.CONGE, id);
+	}
+
 	/**
 	 * Genere une reunion pour une personne
 	 * @param date de la reunion
@@ -82,7 +90,15 @@ public class CreneauHoraire {
 	public CreneauHoraire(LocalDate date, int debut, String titre) {
 		this(null, debut, date, REUNION, titre, PanelPrincipal.REUNION, 0);
 	}
-	
+
+	/**
+	 * Genere une reunion pour une personne
+	 * @param date de la reunion
+	 */
+	public CreneauHoraire(LocalDate date, int debut, String titre, int id) {
+		this(null, debut, date, REUNION, titre, PanelPrincipal.REUNION, id);
+	}
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
@@ -144,7 +160,6 @@ public class CreneauHoraire {
 		} else {
 			return false;
 		}
-		
 	}
 	
 	//--------------------------------------------------------------------------------->>>>> toString

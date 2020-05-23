@@ -1104,7 +1104,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 				try (ResultSet res = stmt.executeQuery(sql)){
 					while(res.next()) {
 							 LocalDate date = res.getDate("date").toLocalDate();
-							 CreneauHoraire creneaux = new CreneauHoraire(date);
+							 CreneauHoraire creneaux = new CreneauHoraire(date, res.getInt("idC"));
 							 conge.add(creneaux);
 						 }
 					 }
@@ -1123,7 +1123,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 							 LocalDate date = res.getDate("date").toLocalDate();
-							 CreneauHoraire creneaux = new CreneauHoraire(date,res.getInt("debut"),res.getString("titre"));
+							 CreneauHoraire creneaux = new CreneauHoraire(date,res.getInt("debut"),res.getString("titre"),res.getInt("idR"));
 							 reunion.add(creneaux);
 						 }
 					 }

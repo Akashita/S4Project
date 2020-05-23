@@ -31,6 +31,7 @@ import SQL.JavaSQL;
 import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
+import SQL.JavaSQLConge;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLMateriel;
 import SQL.JavaSQLParticipe;
@@ -2317,19 +2318,19 @@ public class Entreprise extends Observable{
 		return afficheTache;
 	}
 
-	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion Reunion et Conge
-
-	public void nouveauCreneaux(String titre, int couleur, int debut, LocalDate date, int position, int type, int numSalarie, int idA) {
+	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion Conge
+	
+	public void nouveauConge(LocalDate date, int numSalarie) {
 		try {
-			JavaSQLCreneaux.insertion(titre, couleur, debut, date, position, type, numSalarie, idA);
+			JavaSQLConge.insertion(date, numSalarie);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void supprimerCreneaux(int idC) {
+	public void supprimerConge(int idC) {
 		try {
-			JavaSQLCreneaux.supprime(idC);
+			JavaSQLConge.supprime(idC);;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
