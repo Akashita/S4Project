@@ -8,14 +8,17 @@ public class Calculateur extends Ressource{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Calculateur(String nom, int numCalculateur) {
-		super(numCalculateur, nom, Ressource.CALCULATEUR);
-	}
 	
-	public Calculateur(int code, String nom, int capacite) {
-		this(nom, code);
+	public Calculateur(int numCalculateur, String nom, int capacite) {
+		super(numCalculateur, nom, Ressource.CALCULATEUR);
 		this.capacite = capacite;
 	}
+	
+	public Calculateur(int numCalculateur, String nom) {
+		this(numCalculateur, nom, 0);
+	}
+	
+
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES

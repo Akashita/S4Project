@@ -2,9 +2,7 @@ package Ressource;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
-import Model.CreneauHoraire;
 import Model.Projet;
 
 public class Personne extends Ressource{
@@ -12,64 +10,43 @@ public class Personne extends Ressource{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	private String prenom;
-	private String mdp;
-	//private Hashtable<String, String> competences;
 	public static final String COLLABORATEUR = "Collaborateur";
 	public static final String CHEFDEPROJET = "Chef de projet";
 	public static final String ADMINISTRATEUR = "Administrateur";
 	public static final String DEBUG = "Debugger";
-
-	private String role;
+	
+	private String prenom;
+	private String mdp;
+	private String role; //Role dans l'entreprise (voir constante ci-dessus)
 	
 	private ArrayList<LocalDate> listeConges;
 	private ArrayList<Competence> listeCompetence = new ArrayList<Competence>();
-	private ArrayList<Projet> listeProjet = new ArrayList<Projet>(); //projet que la ressource dirrige
+	private ArrayList<Projet> listeProjet = new ArrayList<Projet>(); //Liste de projet que la ressource dirige
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEURS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Personne(String nom, String prenom, String role, int numSalarie){
-		super(numSalarie, nom, Ressource.PERSONNE);
-		this.listeConges = new ArrayList<LocalDate>();
-		
-		this.role = role; //Role dans l'entreprise (voir constante ci-dessus)
-		this.prenom = prenom;
-		
-	}
-	
-	/*public Personne(String nom, String prenom, String role, int numSalarie, String mdp, Hashtable<String, String> competences){
-		this(nom, prenom, role, numSalarie);
-		this.mdp = mdp;
-		this.competences = competences;		
-	}*/
-	
-	public Personne(String nom, String prenom, int numSalarie){
-		//attributs de la classe mere.
-		super(numSalarie, nom, Ressource.PERSONNE);
-		//attribut de la classe fille.
-		this.prenom = prenom;
-		this.listeConges = new ArrayList<LocalDate>();
-	}
-
 	public Personne(String nom, String prenom, String role, int numSalarie, String mdp, ArrayList<Competence> listeCompetence){
 		super(numSalarie, nom, Ressource.PERSONNE);
 		this.mdp = mdp;
-		this.role = role; //Role dans l'entreprise (voir constante ci-dessus)
+		this.role = role;
 		this.prenom = prenom;
 		this.listeCompetence = listeCompetence;
 		this.listeConges = new ArrayList<LocalDate>();
 	}
 	
-	//public 
+	public Personne(String nom, String prenom, String role, int numSalarie){
+		this(nom, prenom, role, numSalarie, "", null);
+	}
+	
+	public Personne(String nom, String prenom, int numSalarie){
+		this(nom, prenom, "", numSalarie);
+	}
+
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	
-	public void ajouterProjet(Projet projet) {
-		listeProjet.add(projet);
-	}
 	
 	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public String getRole() {
@@ -140,7 +117,7 @@ public class Personne extends Ressource{
 	
 
 	
-	//--------------------------------------------------------------------------------->>>>>>> Setteur
+	//--------------------------------------------------------------------------------->>>>>>> Setteurs
 	
 	public void setPrenom(String p) {
 		this.prenom = p;
@@ -167,6 +144,10 @@ public class Personne extends Ressource{
 			}
 		}
 	}
+	
+	public void ajouterProjet(Projet projet) {
+		listeProjet.add(projet);
+	}
 
 	public String creeAffiche() {
 		return "prenom : " + prenom+", nom : "+nom + ", id : " + this.id + ", role : " + this.role + ", mdp : " + this.mdp + ", login : " + this.getLogin();
@@ -183,15 +164,15 @@ public class Personne extends Ressource{
 
 	
 	public void enleverConge(ArrayList<LocalDate> date){
-		int j;
 		for (int i = 0; i < date.size(); i++) {
 			if(listeConges.contains(date.get(i))) {
-				j = listeConges.indexOf(date.get(i));
-				listeConges.remove(j);
+				listeConges.remove(date.get(i));
 			}
 		}
 	}
+	
 	//--------------------------------------------------------------------------------->>>>> toString
+	
 	@Override
 	public String toString() {
 			return prenom +" "+ nom ;
