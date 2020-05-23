@@ -38,6 +38,7 @@ import SQL.JavaSQLParticipe;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLProjet;
 import SQL.JavaSQLRecherche;
+import SQL.JavaSQLReunion;
 import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
 
@@ -213,39 +214,39 @@ public class Entreprise extends Observable{
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
 
-			 if(activiteCourante.equals(act)) {
-					 switch (res.getType()) {
-					case Ressource.PERSONNE:
-						Personne pers = (Personne)res;
-						if (operation == Operation.ENLEVER) {
-							listePersonnes.remove(pers);
-						} else {
-							listePersonnes.add(pers);
+				 if(activiteCourante.equals(act)) {
+						 switch (res.getType()) {
+						case Ressource.PERSONNE:
+							Personne pers = (Personne)res;
+							if (operation == Operation.ENLEVER) {
+								listePersonnes.remove(pers);
+							} else {
+								listePersonnes.add(pers);
+							}
+							break;
+						case Ressource.SALLE:
+							Salle salle = (Salle)res;
+							if (operation == Operation.ENLEVER) {
+								listeSalles.remove(salle);
+							} else {
+								listeSalles.add(salle);
+							}
+							break;
+						case Ressource.CALCULATEUR:
+							Calculateur calc = (Calculateur)res;
+							if (operation == Operation.ENLEVER) {
+								listeCalculateurs.remove(calc);
+							} else {
+								listeCalculateurs.add(calc);
+							}
+							break;
+	
+						default:
+							break;
 						}
-						break;
-					case Ressource.SALLE:
-						Salle salle = (Salle)res;
-						if (operation == Operation.ENLEVER) {
-							listeSalles.remove(salle);
-						} else {
-							listeSalles.add(salle);
-						}
-						break;
-					case Ressource.CALCULATEUR:
-						Calculateur calc = (Calculateur)res;
-						if (operation == Operation.ENLEVER) {
-							listeCalculateurs.remove(calc);
-						} else {
-							listeCalculateurs.add(calc);
-						}
-						break;
-
-					default:
-						break;
-					}
-				 }
-			 
-			 	Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listePersonnes);
+					 }
+				 
+				 	Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listePersonnes);
 
 
 				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge);
@@ -257,7 +258,6 @@ public class Entreprise extends Observable{
 				 listeEDTComplete.putAll(listeEDTCalculateurs);
 			}
 		}
-
 		return listeEDTComplete;
 	}
 
@@ -265,8 +265,13 @@ public class Entreprise extends Observable{
 	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite;
+		
+		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise());
+		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne);
 
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = new Hashtable<Pair<Integer, Integer>, EDT>();
+		listeEDTPersonnes.putAll(creerLCongePersonnes(listeConge));
+		
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
 
@@ -279,21 +284,23 @@ public class Entreprise extends Observable{
 				 Activite activiteCourante = lActivite.get(j);
 
 				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId()));
-				 Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listePersonnes);
-				 
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
 
+				 
+				 listeConge = creerHTConge(listePersonnes);
+				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge));
 
-				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge);
-				 listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes);
+				 //listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
 				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
 
-				 listeEDTComplete.putAll(listeEDTPersonnes);
-				 listeEDTComplete.putAll(listeEDTSalles);
-				 listeEDTComplete.putAll(listeEDTCalculateurs);
+
+			 }
 		}
-		}
+		 
+		 listeEDTComplete.putAll(listeEDTPersonnes);
+		 listeEDTComplete.putAll(listeEDTSalles);
+		 listeEDTComplete.putAll(listeEDTCalculateurs);
 
 		return listeEDTComplete;
 	}
@@ -326,6 +333,25 @@ public class Entreprise extends Observable{
 			listeEDT.get(key).vider();
 		}
 	}
+	
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLCongePersonnes(Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge){
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDT = new Hashtable<Pair<Integer, Integer>, EDT>();
+		Set<Personne> keys = listeConge.keySet();
+		CreneauHoraire chCourant;
+		for (Personne personne : keys) {
+			Pair<Integer, Integer> ident = new Pair<Integer, Integer>(0, personne.getId());
+			EDT EDTCourant = new EDT(ident);
+			for (int i = 0; i < listeConge.get(personne).size(); i++) {
+				chCourant = listeConge.get(personne).get(i);
+				EDTCourant.ajouterConge(chCourant);
+				
+			}
+			listeEDT.put(ident, EDTCourant);
+		}
+		
+		
+		return listeEDT;
+	}
 
 	/**
 	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
@@ -349,13 +375,13 @@ public class Entreprise extends Observable{
 					EDT edtCourant = getEDTRessource(persCourante.getType(), persCourante.getId(), listeEDTPersonnes);
 
 					if(verifierOrdre(edtCourant, act, jourCourant, heureCourante)) {
-						if(!persCourante.enConge(jourCourant)) {
+						if(!estEnConge(listeConge.get(persCourante), jourCourant)) {
 							if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
 								String titreCreneau = proj.getNom() + " | " + act.getTitre();
 								edtCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
 								chargeAloue++;
 							}
-						}
+						} 
 					}
 				}
 
@@ -366,6 +392,18 @@ public class Entreprise extends Observable{
 			}
 		}
 		return listeEDTPersonnes;
+	}
+	
+	private boolean estEnConge(ArrayList<CreneauHoraire> listeConge, LocalDate jourCourant) {
+		boolean res = false;
+		for (int i = 0; i < listeConge.size(); i++) {
+			CreneauHoraire congeCourant = listeConge.get(i);
+			if(congeCourant.getDate().equals(jourCourant)) {
+				res = true;
+				break;
+			}
+		}
+		return res;
 	}
 
 
@@ -574,7 +612,7 @@ public class Entreprise extends Observable{
 		int ordre = act.getOrdre();
 		LocalDateTime premierLibre = edtCourant.getPremiereCreneauApresAct(ordre);
 
-		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp));
+		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp)) || ordre == 0;
 	}
 
 
@@ -1482,14 +1520,14 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche dans la bdd toute les reunion du projet
+	 * Cherche dans la bdd toute les reunion d'une activite
 	 * @param id du projet
 	 * @return liste des reunions du projet
 	 */
-	public ArrayList<CreneauHoraire> getListeReunionDuProjet(int idP) {
+	public ArrayList<CreneauHoraire> getListeReunionDeActivite(int idA) {
 		ArrayList<CreneauHoraire> l = new ArrayList<CreneauHoraire>();
 		try {
-			l = JavaSQLRecherche.getReunionActivite(idP);
+			l = JavaSQLRecherche.getReunion(idA);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -2298,6 +2336,24 @@ public class Entreprise extends Observable{
 	public void supprimerConge(int idC) {
 		try {
 			JavaSQLConge.supprime(idC);;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion Reunion
+	
+	public void nouvelleReunion(int debut, LocalDate date, String titre, int idA) {
+		try {
+			JavaSQLReunion.insertion(debut, date, titre, idA);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void supprimerReunion(int idR) {
+		try {
+			JavaSQLReunion.supprime(idR);;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

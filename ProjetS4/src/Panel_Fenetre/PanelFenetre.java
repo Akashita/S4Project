@@ -101,7 +101,7 @@ public class PanelFenetre extends JPanel{
     
     protected Calendrier calendrier1, calendrier2;
     
-    protected ArrayList<CreneauHoraire> listeConge;
+    protected ArrayList<CreneauHoraire> listeConge, listeReunion;
     protected JList<CreneauHoraire> jListeConge;
     protected JButton boutonAjoutConge, boutonAjoutReunion;
 
@@ -271,6 +271,85 @@ public class PanelFenetre extends JPanel{
 	}
 
 	
+	//-------------------------------------------->>>>> gere la liste de reunion
+	protected void initialiseReunion (PanelFenetre pf, int idActivite) {
+		listeReunion = entreprise.getListeReunionDeActivite(idActivite);
+		boutonAjoutConge = new JButton("Ajouter");
+		boutonAjoutConge.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	ajoutConge(pf, idActivite);
+	        }
+	    });			
+	}
+
+	protected Component afficheListeReunion(PanelFenetre pf, int idActivite) {
+		listeReunion = entreprise.getListeReunionDeActivite(idActivite);
+		CreneauHoraire [] reunion = new CreneauHoraire [listeConge.size()];
+		for (int i=0; i<listeReunion.size(); i++) {
+			reunion[i] = listeReunion.get(i);
+		}
+		JList<CreneauHoraire> jlt = new JList<CreneauHoraire>(reunion);
+		jlt.setBackground(couleurFond);
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent evt) {
+		        if (evt.getButton() == MouseEvent.BUTTON3) { //clic droit
+		        	jlt.setSelectedIndex(jlt.locationToIndex(evt.getPoint()));
+		        	jlt.setComponentPopupMenu(popupMenuConge(pf, jlt.getSelectedValue()));
+		        	;
+		        }
+		    }
+		});
+
+		scrollPaneJListDomaine = new JScrollPane(jlt);
+		scrollPaneJListDomaine.setViewportView(jlt);
+		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return scrollPaneJListDomaine;
+	}
+
+	public JPopupMenu popupMenuReunion(PanelFenetre pf, CreneauHoraire reunion) {
+		JPopupMenu m = new JPopupMenu("Supprimer");  
+		JMenuItem supp = new JMenuItem("Supprimer");
+		supp.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e) {              
+            	supprimerReunion(pf, reunion);
+            	}  
+           });  
+
+		m.add(supp);
+		return m;
+	}
+	
+	protected void ajoutReunion(PanelFenetre pf, int idActivite) {
+		String nom = textFieldNom.getText();
+		if (!nom.isEmpty()) {
+			LocalDate date = calendrier1.getDate();
+			boolean estPresent = false;
+			for (int i=0; i<listeReunion.size(); i++) {
+				if (date.equals(listeReunion.get(i).getDate())) {
+					estPresent = true;
+				}
+			}
+			if (!estPresent) {
+				CreneauHoraire ch = new CreneauHoraire(date, calendrier1.getTemps(), nom);
+				entreprise.nouvelleReunion(ch.getDebut(), ch.getDate(),ch.getTitre(), idActivite);
+				maj(pf);
+				}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Il y a deja une reunion cette date", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}			
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Veuillez ecrire le titre de la reunion", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}			
+	}
+	
+	protected void supprimerReunion(PanelFenetre pf, CreneauHoraire reunion) {
+		entreprise.supprimerReunion(reunion.getId());
+		maj(pf);				
+	}
+
+	
 	//-------------------------------------------->>>>> Competence pour Ressource
 	protected void initialiseCompetence (PanelFenetre pf) {
 		listeCompetenceChoisie = new ArrayList<Competence>();
@@ -409,6 +488,28 @@ public class PanelFenetre extends JPanel{
 		gc.gridx = 1;
 		panel.add(c.getComboBoxMois(), gc);			
 		gc.gridx = 2;
+		panel.add(c.getComboBoxAnnee(), gc);			
+
+		return panel;
+	}
+
+	protected JPanel panelCalendrierAvecHeure(Calendrier c) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
+		panel.setBackground(couleurFond);
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.weightx = 3;
+		gc.weighty = 0;
+		
+		gc.gridx = 0;
+		panel.add(c.getComboBoxHeure(), gc);			
+		gc.gridx ++;
+		panel.add(c.getComboBoxJour(), gc);			
+		gc.gridx ++;
+		panel.add(c.getComboBoxMois(), gc);			
+		gc.gridx ++;
 		panel.add(c.getComboBoxAnnee(), gc);			
 
 		return panel;

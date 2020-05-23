@@ -89,6 +89,15 @@ public class EDT {
 		}
 		return place;
 	}
+	
+	public void ajouterConge(CreneauHoraire creneau) {
+		LocalDate date = creneau.getDate();
+		ArrayList<CreneauHoraire> listeCr = new ArrayList<CreneauHoraire>();
+		for (int i = 0; i < 8; i++) {
+			listeCr.add(new CreneauHoraire(date));
+		}
+		listeCreneaux.put(date, listeCr);
+	}
 
 	/**
 	 * Cree une journee entierement disponible
@@ -167,10 +176,12 @@ public class EDT {
 			key = itt.next();
 			jourCourant = listeCreneaux.get(key); //On recupere le jour courant
 			for (i = 0; i < jourCourant.size(); i++) {
-				if(jourCourant.get(i).getActivite().getOrdre() >= ordre) {
-					trouve = true;
-					break;
-				}
+				if(jourCourant.get(i).getActivite() != null) {
+					if(jourCourant.get(i).getActivite().getOrdre() >= ordre) {
+						trouve = true;
+						break;
+					}
+				}	
 			}			
 		}
 		if(key == null) {
