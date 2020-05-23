@@ -117,6 +117,9 @@ public class CreneauHoraire {
 		return couleur;
 	}
 
+	public int getId() {
+		return id;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {
