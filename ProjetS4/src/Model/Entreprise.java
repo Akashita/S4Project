@@ -323,7 +323,7 @@ public class Entreprise extends Observable{
 	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Projet proj, Activite act, ArrayList<Personne> listePersonnes, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
 		if(listePersonnes.size() > 0) {
 			int charge = act.getChargeHeure();
-			int chargeAloue = 0; 
+			int chargeAloue = 0;
 
 			LocalDate jourCourant = verifierJour(act.getDebut());
 			int heureCourante = HEURE_DEBUT_MATIN;
@@ -353,8 +353,8 @@ public class Entreprise extends Observable{
 		}
 		return listeEDTPersonnes;
 	}
-	
-	
+
+
 	/**
 	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
 	 * @param L'activité courante
@@ -368,10 +368,10 @@ public class Entreprise extends Observable{
 			if(dateDebutFin.getLeft() != null && dateDebutFin.getRight() != null) {
 				LocalDate jourCourant = verifierJour(dateDebutFin.getLeft().toLocalDate());
 				int heureCourante = dateDebutFin.getLeft().toLocalTime().getHour();
-				
+
 				LocalDate jourFin = verifierJour(dateDebutFin.getRight().toLocalDate());
 				int heureFin = dateDebutFin.getRight().toLocalTime().getHour();
-	
+
 				while (!(jourCourant.equals(jourFin) && (heureCourante == heureFin))) {
 					for (int i = 0; i < listeSalles.size(); i++) {
 						Salle salleCourante = listeSalles.get(i);
@@ -398,8 +398,8 @@ public class Entreprise extends Observable{
 		}
 		return listeEDTSalles;
 	}
-	
-	
+
+
 	/**
 	 * Retrourne les date de debut et de fin d'une activitée
 	 * @param La liste d'EDT dans laquelle chercher
@@ -413,20 +413,20 @@ public class Entreprise extends Observable{
 		}
 		return getDebutFinActivite(res, act);
 	}
-	
+
 	public Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(ArrayList<EDT> listeEDT, Activite act) {
 		LocalDateTime debut = null;
 		LocalDateTime fin = null;
-		
+
 		LocalDateTime prem = null;
 		LocalDateTime der = null;
-		
+
 		for (int i = 0; i < listeEDT.size(); i++) {
 			EDT EDTCourant = listeEDT.get(i);
-			
+
 			prem = EDTCourant.getPremiereDateActivite(act);
 			der = EDTCourant.getDerniereDateActivite(act);
-			
+
 			if(prem != null) {
 				if(debut == null) {
 					debut = prem;
@@ -443,7 +443,7 @@ public class Entreprise extends Observable{
 			}
 		}
 
-		
+
 		return new Pair<LocalDateTime, LocalDateTime>(prem, der);
 	}
 
@@ -451,7 +451,7 @@ public class Entreprise extends Observable{
 	 * Retourne la derniere date de travail d'une activite
 	 * @param listeEDT contient toute les info de creneau de l'activite par ressource
 	 * @param act activite concerner
-	 * @return fin 
+	 * @return fin
 	 */
 	public LocalDate getLocalDateFinDuneActivite(ArrayList<EDT> listeEDT, Activite act) {
 		Pair<LocalDateTime, LocalDateTime> dates = getDebutFinActivite(listeEDT, act);
@@ -844,7 +844,7 @@ public class Entreprise extends Observable{
 
 		return personneTab;
 	}
-	
+
 	public ArrayList<Ressource> getListePersonneTrieAlphabetiquement() {
 		ArrayList<Ressource> personneTab= null;
 
@@ -858,9 +858,9 @@ public class Entreprise extends Observable{
 
 		return personneTab;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * cherche  dans la bdd la Salle avec l'id correspondant
 	 * @param id de la ressource
@@ -1457,8 +1457,14 @@ public class Entreprise extends Observable{
 	 * @param id de la personne
 	 * @return liste de conge de la personne
 	 */
-	public ArrayList<CreneauHoraire> getListeCongeParPersonne(int id) {
-		
+	public ArrayList<CreneauHoraire> getListeCongeParPersonne(int idP) {
+		ArrayList<CreneauHoraire> liste = new ArrayList<CreneauHoraire>();
+		try {
+			liste = JavaSQLRecherche.getConge(idP);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return liste;
 	}
 
 	/**
@@ -1467,10 +1473,16 @@ public class Entreprise extends Observable{
 	 * @return liste des reunions du projet
 	 */
 	public ArrayList<CreneauHoraire> getListeReunion(int idP) {
-		
+		ArrayList<CreneauHoraire> liste = new ArrayList<CreneauHoraire>();
+		try {
+			liste = JavaSQLRecherche.getReunion(idP);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return liste;
 	}
 
-	
+
 
 
 	//------------------------------>>>>> Verifie condition dans la bdd
@@ -2260,7 +2272,7 @@ public class Entreprise extends Observable{
 	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion Reunion et Conge
-	
+
 	public void nouveauCreneaux(String titre, int couleur, int debut, LocalDate date, int position, int type, int numSalarie, int idA) {
 		try {
 			JavaSQLCreneaux.insertion(titre, couleur, debut, date, position, type, numSalarie, idA);
@@ -2268,7 +2280,7 @@ public class Entreprise extends Observable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void supprimerCreneaux(int idC) {
 		try {
 			JavaSQLCreneaux.supprime(idC);
@@ -2278,7 +2290,7 @@ public class Entreprise extends Observable{
 	}
 
 
-	
+
 	//================ Partie Graphique ==========//
 	public void selectionnerProjet(Projet projet) {
 		projetSelectionner = projet;
@@ -2323,10 +2335,10 @@ public class Entreprise extends Observable{
 
 
 	private Color couleurAleatoire() {
-		Color tab [] = {new Color(255,57,51), new Color(0,204,51), 
-				new Color(0,204,255), new Color(204,255,102), 
-				new Color(255,102,255), new Color(143,233,168), 
-				new Color(187,210,255), new Color(177,150,255), 
+		Color tab [] = {new Color(255,57,51), new Color(0,204,51),
+				new Color(0,204,255), new Color(204,255,102),
+				new Color(255,102,255), new Color(143,233,168),
+				new Color(187,210,255), new Color(177,150,255),
 				new Color(243,130,130), new Color(74,255,206)};
 		int r = (int) (Math.random() * tab.length) ;
 		return tab[r];
