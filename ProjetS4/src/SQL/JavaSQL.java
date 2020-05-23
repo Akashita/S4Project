@@ -101,7 +101,7 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Activite faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Creneaux(idC INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), couleur INT, debut INT, date DATE, position INT, type INT, numSalarie INT,, idA"
+				 sql = "CREATE TABLE IF NOT EXISTS Creneaux(idC INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), couleur INT, debut INT, date DATE, position INT, type INT, numSalarie INT, idA INT,"
                          + "CONSTRAINT fk_Creneaux_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
                          + "CONSTRAINT fk_Creneaux_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
 				 stmt.executeUpdate(sql);

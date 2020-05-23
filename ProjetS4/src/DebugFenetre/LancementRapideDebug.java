@@ -18,10 +18,13 @@ public class LancementRapideDebug {
 	public static void main (String[] args) {
 
 		JavaSQL.connection();
-		//try {
-//			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(1));
-//			JavaSQLDebug.affiche();
-//			System.out.println(JavaSQLPersonne.affiche());
+//		try {
+////			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(1));
+////			JavaSQLDebug.affiche();
+////			System.out.println(JavaSQLPersonne.affiche());
+//			
+////			JavaSQLDebug.drop();
+////			JavaSQL.creation();
 //		} catch (SQLException e) {
 //			e.printStackTrace();
 //		}
