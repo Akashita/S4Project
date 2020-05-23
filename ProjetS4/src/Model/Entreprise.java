@@ -1475,7 +1475,7 @@ public class Entreprise extends Observable{
 	public ArrayList<CreneauHoraire> getListeReunionDuProjet(int idP) {
 		ArrayList<CreneauHoraire> l = new ArrayList<CreneauHoraire>();
 		try {
-			l = JavaSQLRecherche.getReunion(idP);
+			l = JavaSQLRecherche.getReunionActivite(idP);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
