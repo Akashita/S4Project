@@ -1457,14 +1457,14 @@ public class Entreprise extends Observable{
 	 * @param id de la personne
 	 * @return liste de conge de la personne
 	 */
-	public ArrayList<CreneauHoraire> getListeCongeParPersonne(int idP) {
-		ArrayList<CreneauHoraire> liste = new ArrayList<CreneauHoraire>();
+	public ArrayList<CreneauHoraire> getListeCongeDePersonne(int id) {
+		ArrayList<CreneauHoraire> l = new ArrayList<CreneauHoraire>();
 		try {
-			liste = JavaSQLRecherche.getConge(idP);
+			l = JavaSQLRecherche.getConge(id);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return liste;
+		return l;
 	}
 
 	/**
@@ -1472,14 +1472,14 @@ public class Entreprise extends Observable{
 	 * @param id du projet
 	 * @return liste des reunions du projet
 	 */
-	public ArrayList<CreneauHoraire> getListeReunion(int idP) {
-		ArrayList<CreneauHoraire> liste = new ArrayList<CreneauHoraire>();
+	public ArrayList<CreneauHoraire> getListeReunionDuProjet(int idP) {
+		ArrayList<CreneauHoraire> l = new ArrayList<CreneauHoraire>();
 		try {
-			liste = JavaSQLRecherche.getReunion(idP);
+			l = JavaSQLRecherche.getReunionActivite(idP);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return liste;
+		return l;
 	}
 
 
