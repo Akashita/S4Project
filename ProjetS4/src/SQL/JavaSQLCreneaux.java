@@ -40,7 +40,7 @@ public final class JavaSQLCreneaux extends JavaSQL{
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 System.out.println("idC = " + res.getString("idC") + ", titre = " + res.getString("titre") + ", couleur = " + res.getString("couleur") + ", debut = " + res.getString("debut") 
-						 + ", fin = " + res.getString("fin")+ ", numSalarie = " + res.getString("numSalarie") + ", code = " + res.getString("code") + ", numero = " + res.getString("numero") + res.getString("idA"));
+						 + ", position = " + res.getString("position")+ ", type = " + res.getString("type")+ ", numSalarie = " + res.getString("numSalarie"));
 					 }
 				 }
 			} catch(SQLException e){
@@ -49,9 +49,9 @@ public final class JavaSQLCreneaux extends JavaSQL{
 
 	}
 	
-	public static void insertion(String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) throws SQLException{
-		String sql = "INSERT INTO Creneaux(idC, titre, couleur, debut, fin, numsalarie, code, numero, idA) VALUE(NULL, '" + titre + "' ,  '"+couleur+"' ,'"+debut+"' , '"+fin+
-				"' , '"+numSalarie+"' , '"+code+"' , '"+numero+"' , '"+idA+"');";
+	public static void insertion(String titre, int couleur, int debut, int position, int type, int numSalarie) throws SQLException{
+		String sql = "INSERT INTO Creneaux(idC, titre, couleur, debut, fin, numsalarie, code, numero, idA) VALUE(NULL, '" + titre + "' ,  '"+couleur+"' ,'"+debut+"' , '"+position+ "' , '"+type+
+				"' , '"+numSalarie+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
@@ -71,19 +71,15 @@ public final class JavaSQLCreneaux extends JavaSQL{
 		}
 	}
 	
-	public static void modifie(int idC, String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) throws SQLException{
+	public static void modifie(int idC, String titre, int couleur, int debut, int position, int type, int numSalarie) throws SQLException{
 		try{
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Creneaux SET titre= '" + titre+ "' ,couleur  = '" + couleur + "' ,debut  = '" + debut + "' ,fin  = '" + fin + "' ,numSalarie  = '" + numSalarie + "' ,code  = '" + code + "' ,"
-			 		+ "numero  = '" + numero + "' ,idA  = '" + idA + "' WHERE idC= '"+ idC+"';";
+			 String sql = "UPDATE Creneaux SET titre= '" + titre+ "' ,couleur  = '" + couleur + "' ,debut  = '" + debut + "' ,position  = '" + position +  "' ,type  = '" + type + "' ,numSalarie  = '" + numSalarie +"';";
 			 stmt.executeUpdate(sql);
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
 	
-	public static String toString(String titre, int couleur, int debut, int fin, int numSalarie, int code, int numero, int idA) {
-		return "nom : " + titre +couleur+debut+fin+numSalarie+code+numero+idA; 
-	}
 
 }

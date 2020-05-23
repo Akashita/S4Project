@@ -21,10 +21,10 @@ public class LancementRapideDebug {
 		//try {
 //			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(1));
 //			JavaSQLDebug.affiche();
-			System.out.println(JavaSQLPersonne.affiche());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+//			System.out.println(JavaSQLPersonne.affiche());
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 		new Entreprise("debugBDD");
 
 }
