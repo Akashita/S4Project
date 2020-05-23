@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import GestionTicket.Ticket;
 import Model.Activite;
+import Model.CreneauHoraire;
 import Model.Projet;
 import Ressource.Calculateur;
 import Ressource.Competence;
@@ -1001,25 +1002,25 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 	
 /////////////////////////////////////////////////////////////////////////////////////PRESENCE//////////////////////////////////////////////////////////////////////////	
-public static Boolean presenceDansUnProjetCalculateur(int code) throws SQLException {
-	Boolean b = false;
-	ArrayList<Projet> projetRessource;
-	try {
-		projetRessource = recupereProjetParIdCalculateur(code);
-		if (projetRessource == null) {
-			b = true;
+	public static Boolean presenceDansUnProjetCalculateur(int code) throws SQLException {
+		Boolean b = false;
+		ArrayList<Projet> projetRessource;
+		try {
+			projetRessource = recupereProjetParIdCalculateur(code);
+			if (projetRessource == null) {
+				b = true;
+			}
+			else if (projetRessource.isEmpty()) {
+				b = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else if (projetRessource.isEmpty()) {
-			b = true;
-		}
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		
+		
+		return b;
 	}
-	
-	
-	return b;
-}
 
 ///////////////////////////////////////////////////////////////////////////////////LISTEDOMAINE////////////////////////////////////////////////////////////////////////////	
 	public static  ArrayList<String> recupereListeDomaineParIdActivite(int idA) throws SQLException{
@@ -1094,7 +1095,68 @@ public static Boolean presenceDansUnProjetCalculateur(int code) throws SQLExcept
 	}
 	
 	
+///////////////////////////////////////////////////////////////////////////////////CRENEAUX////////////////////////////////////////////////////////////////////////////	
+	public static ArrayList<CreneauHoraire> getConge(int numSalarie) throws SQLException{
+		ArrayList<CreneauHoraire> conge = new ArrayList<CreneauHoraire>();
+		ArrayList<String> listeDom = new ArrayList<String>();
+		String sql = "SELECT * FROM Creneaux WHERE numSalarie = '"+numSalarie+"' AND type = 0";
+			try {
+				Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 sql = "SELECT * FROM Activite WHERE idA = '"+res.getInt("idA")+"';";
+						 try (ResultSet res2 = stmt.executeQuery(sql)){
+							 res2.next();
+							 sql = "SELECT tag FROM ListeDomaine WHERE idA = " + res.getInt("idA") + ";";
+							 try (ResultSet res3 = stmt.executeQuery(sql)){
+								 while(res3.next()) {
+									 listeDom.add(res3.getString("tag"));
+								 }
+							 }
+							 LocalDate debut = res2.getDate("debut").toLocalDate();
+							 Activite act = new Activite(res2.getInt("idA"),res2.getString("titre"),res2.getFloat("charge"),debut,new Color(res2.getInt("couleur")),res2.getInt("ordre"),listeDom);
+							 LocalDate date = res.getDate("date").toLocalDate();
+							 CreneauHoraire creneaux = new CreneauHoraire(act,res.getInt("debut"),date,res.getInt("type"),res.getString("titre"),new Color(res.getInt("couleur")));
+							 conge.add(creneaux);
+						 }
+					 }
+				 }
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			return conge;
+	}
 	
-	
+
+	public static ArrayList<CreneauHoraire> getReunion(int numSalarie) throws SQLException{
+		ArrayList<CreneauHoraire> reunion = new ArrayList<CreneauHoraire>();
+		ArrayList<String> listeDom = new ArrayList<String>();
+		String sql = "SELECT * FROM Creneaux WHERE numSalarie = '"+numSalarie+"' AND type = 1";
+			try {
+				Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 sql = "SELECT * FROM Activite WHERE idA = '"+res.getInt("idA")+"';";
+						 try (ResultSet res2 = stmt.executeQuery(sql)){
+							 res2.next();
+							 sql = "SELECT tag FROM ListeDomaine WHERE idA = " + res.getInt("idA") + ";";
+							 try (ResultSet res3 = stmt.executeQuery(sql)){
+								 while(res3.next()) {
+									 listeDom.add(res3.getString("tag"));
+								 }
+							 }
+							 LocalDate debut = res2.getDate("debut").toLocalDate();
+							 Activite act = new Activite(res2.getInt("idA"),res2.getString("titre"),res2.getFloat("charge"),debut,new Color(res2.getInt("couleur")),res2.getInt("ordre"),listeDom);
+							 LocalDate date = res.getDate("date").toLocalDate();
+							 CreneauHoraire creneaux = new CreneauHoraire(act,res.getInt("debut"),date,res.getInt("type"),res.getString("titre"),new Color(res.getInt("couleur")));
+							 reunion.add(creneaux);
+						 }
+					 }
+				 }
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			return reunion;
+	}
 	
 }
