@@ -11,6 +11,7 @@ import Panel_Fenetre.PanelAjouterRessource;
 import Panel_Fenetre.PanelEnleverRessource;
 import Panel_Fenetre.PanelModifierActivite;
 import Panel_Fenetre.PanelModifierProjet;
+import Panel_Fenetre.PanelNouveauConge;
 import Panel_Fenetre.PanelDomaine;
 import Panel_Fenetre.PanelNouveauProjet;
 import Panel_Fenetre.PanelNouveauTicket;
@@ -76,6 +77,10 @@ public class FenetreModal extends JDialog{
 			titre = "Creation ressource";
 			panelInterface = new PanelNouvelleRessource(entreprise, this);
 			break;
+		case FenetrePrincipale.NouveauConge:
+			titre = "Ajouter conge";
+			panelInterface = new PanelNouveauConge(entreprise, this);
+			break;
 		case FenetrePrincipale.NouveauDomaine:
 			titre = "Creation domaine";
 			panelInterface = new PanelDomaine(entreprise, this);
@@ -95,7 +100,7 @@ public class FenetreModal extends JDialog{
 			panelInterface = new PanelModifierProjet(entreprise, this);
 			break;
 		case FenetrePrincipale.ModifierActivite:
-			titre = "Modifier activité";
+			titre = "Modifier activitï¿½";
 			panelInterface = new PanelModifierActivite(entreprise, this);
 			break;
 			

@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -42,9 +43,10 @@ public class PanelTache extends JPanel {
 	private Entreprise entreprise;
 	private Color couleurFond;
 	public final static int RIEN = -1, TICKET = 0, OPTIMISATION = 1;
-
 	private JButton boutonNouveauTicket;
-	
+	private ArrayList<Ticket> ticketTab, ticketRecuTab, ticketEnvTab;
+
+
 	
 	public PanelTache(Entreprise entreprise) {
 		this.entreprise = entreprise;
@@ -60,6 +62,25 @@ public class PanelTache extends JPanel {
 	}
 	
 	private void afficheInterface() {
+		ticketTab = ticketRecuTab = ticketEnvTab = new ArrayList<Ticket>();
+		try {
+			ticketTab = JavaSQLTicket.affiche();
+
+			for (int i = 0; i < ticketTab.size(); i++) {
+					if (entreprise.getUser().getId() == ticketTab.get(i).getIdReceveur()) {
+						ticketRecuTab.add(ticketTab.get(i));
+					}
+					else if (entreprise.getUser().getId() == ticketTab.get(i).getIdEnvoyeur()) {
+						ticketEnvTab.add(ticketTab.get(i));
+
+					}
+		
+		}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
 		GridBagConstraints gc = new GridBagConstraints();
@@ -70,7 +91,7 @@ public class PanelTache extends JPanel {
 
 		gc.weightx = 3;
 		
-		gc.weighty = 7;
+		gc.weighty = 2;
 
 		switch (entreprise.getAfficheTache()) {
 		case TICKET: afficheTicket(gc);
@@ -90,13 +111,42 @@ public class PanelTache extends JPanel {
 		gc.gridy = 0;
 		gc.gridwidth = 1;
 		gc.gridheight= 1;
-		this.add(creerImageTache(TICKET), gc);
+		this.add(panelIcon(TICKET), gc);
 
-		gc.gridy = 6;
-		this.add(creerImageTache(OPTIMISATION), gc);
+		gc.gridy ++;
+		this.add(panelIcon(OPTIMISATION), gc);
 }
 	
-	private JLabel creerImageTache(int tache) {
+	private JPanel panelIcon(int tache) {
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		p.add(creerIcon(tache));
+		int nbNotif = 0;
+		switch (tache) {
+		case TICKET:
+			for (int i=0; i<ticketRecuTab.size(); i++) {
+				if (ticketRecuTab.get(i).getStatut() == Ticket.NONVU) {
+					nbNotif ++;
+				}
+			}
+			break;
+
+		default:
+			break;
+		}
+		if (nbNotif > 0) {
+			JLabel notif = new JLabel();
+			notif.setText(Integer.toString(nbNotif));
+			notif.setForeground(PanelPrincipal.BLANC);
+			notif.setBackground(PanelPrincipal.NOTIFICATION);
+			p.add(notif);
+		}
+
+		return p;
+	}
+	
+	private JLabel creerIcon(int tache) {
 		int tacheSelectionner = entreprise.getAfficheTache();
 		ImageIcon ico = new ImageIcon();
 		switch (tache) {
@@ -141,28 +191,20 @@ public class PanelTache extends JPanel {
 	}
 
 
-	private void afficheTicket(GridBagConstraints gc) {
-		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
-		ArrayList<Ticket> ticketRecuTab = new ArrayList<Ticket>();
-		ArrayList<Ticket> ticketEnvTab = new ArrayList<Ticket>();
-
-
-		try {
-			ticketTab = JavaSQLTicket.affiche();
-
-			for (int i = 0; i < ticketTab.size(); i++) {
-					if (entreprise.getUser().getId() == ticketTab.get(i).getIdReceveur()) {
-						ticketRecuTab.add(ticketTab.get(i));
-					}
-					else if (entreprise.getUser().getId() == ticketTab.get(i).getIdEnvoyeur()) {
-						ticketEnvTab.add(ticketTab.get(i));
-
-					}
+	private void afficheTicket(GridBagConstraints gcPrincipale) {
+		gcPrincipale.fill = GridBagConstraints.BOTH;
+		gcPrincipale.gridx = 0;
+		gcPrincipale.gridy = 0;	
+		gcPrincipale.gridwidth = GridBagConstraints.RELATIVE;
+		gcPrincipale.gridheight = GridBagConstraints.REMAINDER;
 		
-		}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
+		JPanel p = new JPanel();
+		
+		this.add(p, gcPrincipale);
+		
+		p.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
 		gc.fill = GridBagConstraints.CENTER;
 		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
@@ -172,13 +214,13 @@ public class PanelTache extends JPanel {
 		
 		//tickets recu
 		gc.gridheight = 1;
-		this.add(creerLabel("Ticket recus", true), gc);
+		p.add(creerLabel("Ticket recus", true), gc);
 
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy=1;
 		gc.gridheight = 2;
-		this.add(creerList(ticketRecuTab), gc);
+		p.add(creerList(ticketRecuTab), gc);
 		
 		
 		//ticket envoyé
@@ -186,23 +228,37 @@ public class PanelTache extends JPanel {
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridheight = 1;
 		gc.gridy = 3;
-		this.add(creerLabel("Ticket envoyé", true), gc);
+		p.add(creerLabel("Ticket envoyé", true), gc);
 
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy = 4;
 		gc.gridheight = 2;
-		this.add(creerList(ticketEnvTab), gc);
+		p.add(creerList(ticketEnvTab), gc);
 		
 		//bouton nouveau ticket
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
 		gc.gridy = 6;
 		gc.gridheight = 1;
-		this.add(boutonNouveauTicket, gc);
+		p.add(boutonNouveauTicket, gc);
 		
 	}
 
-	private void afficheOptimisation (GridBagConstraints gc) {
+	private void afficheOptimisation (GridBagConstraints gcPrincipale) {
+		gcPrincipale.fill = GridBagConstraints.BOTH;
+		gcPrincipale.gridx = 0;
+		gcPrincipale.gridy = 0;	
+		gcPrincipale.gridwidth = GridBagConstraints.RELATIVE;
+		gcPrincipale.gridheight = GridBagConstraints.REMAINDER;
+		
+		
+		JPanel p = new JPanel();
+		
+		this.add(p, gcPrincipale);
+		
+		p.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+
 		gc.fill = GridBagConstraints.CENTER;
 		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
@@ -212,13 +268,13 @@ public class PanelTache extends JPanel {
 		
 		//tickets recu
 		gc.gridheight = 1;
-		this.add(creerLabel("Proposition du systeme", true), gc);
+		p.add(creerLabel("Proposition du systeme", true), gc);
 
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy=1;
 		gc.gridheight = 2;
-		//this.add(creerList(ticketRecuTab), gc);
+		//p.add(creerList(ticketRecuTab), gc);
 		
 		
 	}

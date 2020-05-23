@@ -4,13 +4,34 @@ import java.util.ArrayList;
 
 public class Domaine {
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private ArrayList<String> listeDomaine;
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEURS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	public Domaine() {
 		listeDomaine = new ArrayList<String>();
 	}
 	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	//--------------------------------------------------------------------------------->>>>> Setteurs simples
+	public void setDomaine(ArrayList<String> listeDomaine) {
+		this.listeDomaine = listeDomaine;
+	}
+	
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
+	public ArrayList<String> getListeDomaine(){
+		return listeDomaine;
+	}
+	
+	//--------------------------------------------------------------------------------->>>>> Autres
 	public boolean estPresent(String domaine) {
 		boolean estPresent = false;
 		for (int i=0;i<listeDomaine.size();i++) {
@@ -36,11 +57,6 @@ public class Domaine {
 		listeDomaine.remove(index);
 	}
 
-	public void setDomaine(ArrayList<String> listeDomaine) {
-		this.listeDomaine = listeDomaine;
-	}
-	
-	public ArrayList<String> getListeDomaine(){
-		return listeDomaine;
-	}
+
+
 }

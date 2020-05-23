@@ -12,19 +12,24 @@ public class Materiel { // = Fourniture de bureau, compose un salle
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	public Materiel(String type, int quantite) {
-		this.type = type;
-		this.quantite = quantite;
-	}
-	public Materiel(int numMatos,String type, int quantite) {
+
+	public Materiel(int numMatos, String type, int quantite) {
 		this.numMatos =numMatos;
 		this.type = type;
 		this.quantite = quantite;
 	}
 	
+	public Materiel(String type, int quantite) {
+		this(-1, type, quantite);
+	}
+	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
+	
+	public int getId() {
+		return this.numMatos;
+	}
 	
 	//--------------------------------------------------------------------------------->>>>> toString
 	public String creeAffiche() {
@@ -35,8 +40,5 @@ public class Materiel { // = Fourniture de bureau, compose un salle
 	public String toString() {
 		return "Materiel : " +  quantite + " " + type;
 	}
-	public int getId() {
-		// TODO Auto-generated method stub
-		return this.numMatos;
-	}
+
 }

@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 
 import Fenetre.FenetreInfoRessource;
 import Fenetre.FenetreModal;
+import Fenetre.FenetrePrincipale;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
@@ -57,7 +58,7 @@ public class PanelInfoRessource extends JPanel{
 	private Ressource ressource;
 	private Color couleurFond;
 	private boolean modeModification;
-	private JButton boutonModifier, boutonTerminer, boutonSupprimer, boutonAnnuler, boutonAjoutCompetence;
+	private JButton boutonModifier, boutonTerminer, boutonConge, boutonSupprimer, boutonAnnuler, boutonAjoutCompetence;
 	private Checkbox checkBoxestAdmin;
 	private String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
 	private JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
@@ -95,7 +96,14 @@ public class PanelInfoRessource extends JPanel{
 	        	actionBoutonTerminer();
 	        }
 	    });			
-		
+
+		boutonConge = new JButton("Conge");
+		boutonConge.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	actionBoutonConge();
+	        }
+	    });			
+
 		boutonAnnuler = new JButton("Annuler");
 		boutonAnnuler.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -197,7 +205,7 @@ public class PanelInfoRessource extends JPanel{
 		
 		if (ressource.getType() == Ressource.SALLE) {
 			gc.gridy ++;
-			this.add(labelInfo("Capacité : " + capacite), gc);			
+			this.add(labelInfo("Capacitï¿½ : " + capacite), gc);			
 		}
 		
 		gc.gridy ++;
@@ -267,8 +275,14 @@ public class PanelInfoRessource extends JPanel{
 
 
 		gc.gridy ++;
-		this.add(labelInfo("Type : " + ressource.getType()), gc);
+		this.add(labelInfo("Type : " + getStringByIntOfType(ressource.getType())), gc);
 		
+		gc.gridy ++;
+		this.add(labelInfo("Type : " + getStringByIntOfType(ressource.getType())), gc);
+
+		gc.gridy ++;
+		this.add(boutonConge, gc);					
+
 		gc.gridy ++;
 		this.add(panelBouton(), gc);		
 	}
@@ -380,7 +394,7 @@ public class PanelInfoRessource extends JPanel{
 					maj();
 				}	
 				else {
-			    	JOptionPane.showMessageDialog(null, "Vous l'avez deja  choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Vous l'avez dejaï¿½ choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
@@ -400,13 +414,20 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridx ++;
 		gc.gridy = 0;
 		
-		this.add(labelTitreColonne("ACTIVITÉS"),gc);
+		this.add(labelTitreColonne("ACTIVITï¿½S"),gc);
 
 		ArrayList<Activite> listeAct = entreprise.getListeActivitetdeRessourceParId(ressource.getType(), ressource.getId());
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy++;
 		gc.gridheight = GridBagConstraints.REMAINDER;
-		this.add(creerScrollPane(listActivite(listeAct)), gc);
+		ArrayList<String> lAetP = new ArrayList<String>();
+		for (int i=0; i<listeAct.size(); i++) {
+			Activite a = listeAct.get(i);
+			String projet = entreprise.getProjetDeActiviteParId(a.getId()).getNom();
+			lAetP.add(a.getTitre()+" - "+projet);
+			
+		}
+		this.add(creerScrollPane(listString(lAetP)), gc);
 	}
 	
 	private JPanel labelInfo(String nom) {
@@ -530,6 +551,16 @@ public class PanelInfoRessource extends JPanel{
 		JList<Activite> jlt = new JList<Activite>(tr);
 		return liste(jlt);
 	}
+	
+	@SuppressWarnings("unchecked")
+	private JList<String> listString(ArrayList<String> l){
+		String [] tr = new String [l.size()];
+		for (int i=0; i<tr.length; i++) {
+			tr[i] = l.get(i);
+		}
+		JList<String> jlt = new JList<String>(tr);
+		return liste(jlt);
+	}
 
 	@SuppressWarnings({ "rawtypes" })
 	private JList liste(JList liste) {
@@ -645,6 +676,10 @@ public class PanelInfoRessource extends JPanel{
 		
 		maj();
 	}
+	
+	private void actionBoutonConge() {
+		new FenetreModal(entreprise, FenetrePrincipale.NouveauConge);
+	}
 
 	private void actionBoutonAnnuler() {
 		modeModification = false;
@@ -653,7 +688,7 @@ public class PanelInfoRessource extends JPanel{
 
 	private void actionBoutonSupprimer() {
 		modeModification = false;
-		String texte = "<html> êtes-vous sur de vouloir supprimer cette ressource ? <br> La suppression de cette ressource supprimera tout son contenu. </html>";
+		String texte = "<html> ï¿½tes-vous sur de vouloir supprimer cette ressource ? <br> La suppression de cette ressource supprimera tout son contenu. </html>";
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
 			if (entreprise.ressourceTravailleDansUnProjetParId(ressource.getType(), ressource.getId())) {
@@ -661,7 +696,7 @@ public class PanelInfoRessource extends JPanel{
 				fir.dispose();				
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Cette ressource est attaché aux act/projets suivant (pas encore implémenté)", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Cette ressource est attachï¿½ aux act/projets suivant (pas encore implï¿½mentï¿½)", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}		
 		maj();

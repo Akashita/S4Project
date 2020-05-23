@@ -29,7 +29,7 @@ import Ressource.Ressource;
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		//pip.afficheInfoRessource(res);
-		entreprise.afficheInfoRessource(res, res.getType());
+		entreprise.afficheInfoRessource(res);
 		//new FenetreInfoRessource(entreprise, res);
 	}
 

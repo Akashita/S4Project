@@ -64,7 +64,17 @@ public class JavaSQLTicket extends JavaSQL{
 				e.printStackTrace();
 			}
 	 }
-	
+	 
+	 
+	 public static void modifieStatut(int idT, int statut) throws SQLException {
+		 try{
+			 Statement stmt = getCon().createStatement();
+			 String sql = "UPDATE Ticket SET statut= '" + statut + "' WHERE idT= '"+ idT+"';";
+			 stmt.executeUpdate(sql);
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 	public static String toString(String sujet ,String message ,String modif ,LocalDate dateTicket, int statut,int numSalarieEnv ,int numSalarieRec) {
 		return "nom : " + sujet+message+modif+dateTicket+statut+numSalarieEnv+numSalarieRec; 
 	}

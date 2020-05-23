@@ -1,17 +1,19 @@
 package Ressource;
 
 public class Competence {
-
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public final static int DEBUTANT = 1, CONFIRME = 2, EXPERT = 3;
 	
-	private int numSalarie;
+	private int numSalarie; //Set to -1 si undefined
 	private String nom;
 	private int niveau;
 	
-	public Competence (String nom, int niveau) {
-		this.nom = nom;
-		this.niveau = niveau;
-	}
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEURS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	public Competence (int numSalarie, String nom, int niveau) {
 		this.nom = nom;
@@ -19,6 +21,15 @@ public class Competence {
 		this.numSalarie = numSalarie;
 	}
 	
+	public Competence (String nom, int niveau) {
+		this(-1, nom, niveau);
+	}
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public String getNom() {
 		return nom;
 	}
@@ -28,9 +39,6 @@ public class Competence {
 	}
 	public int getNumSalarie() {
 		return numSalarie;
-	}
-	public String toString() {
-		return nom+" - "+getStringNiveau();
 	}
 	
 	public String getStringNiveau() {
@@ -46,7 +54,12 @@ public class Competence {
 		}
 		return niveau;
 	}
-
+	
+	//--------------------------------------------------------------------------------->>>>> ToString
+	public String toString() {
+		return nom+" - "+getStringNiveau();
+	}
+	
 	public String creeAffiche() {
 		return "numero de la personne : " + numSalarie + ", niveau : " + getStringNiveau() + ", nom de la compétence : " + nom;
 	}

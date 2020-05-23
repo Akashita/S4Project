@@ -180,7 +180,7 @@ public class PanelFenetre extends JPanel{
 				maj(pf);
 				}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Ce domaine existe déjà ", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Ce domaine existe dï¿½jï¿½", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 
@@ -196,7 +196,95 @@ public class PanelFenetre extends JPanel{
 	    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}			
 	}
+
+	//-------------------------------------------->>>>> gere la liste de conge
+	protected void initialiseConge (PanelFenetre pf) {
+		listeConge = entreprise.getListeDomaineEntreprise();
+		boutonAjoutConge = new JButton("Ajouter");
+		boutonAjoutConge.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	ajoutDomaine(pf);
+	        }
+	    });			
+		/*boutonSupprimerDomaine = new JButton("Supprimer");
+		boutonSupprimerDomaine.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	supprimerDomaine(pf);
+	        }
+	    });	*/		
+	}
+
+	protected Component afficheListeConge(PanelFenetre pf) {
+		listeConge = entreprise.getListeDomaineEntreprise();
+		String [] conge = new String [listeConge.size()];
+		Collections.sort(listeConge); //trie dans l'odre alphabetique
+		for (int i=0; i<listeConge.size(); i++) {
+			conge[i] = listeConge.get(i);
+		}
+		JList<String> jlt = new JList<String>(conge);
+		jlt.setBackground(couleurFond);
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent evt) {
+		        if (evt.getButton() == MouseEvent.BUTTON3) { //clic droit
+		        	jlt.setSelectedIndex(jlt.locationToIndex(evt.getPoint()));
+		        	jlt.setComponentPopupMenu(popupMenuDomaine(pf, jlt.getSelectedValue()));
+		        	;
+		        }
+		    }
+		});
+
+		scrollPaneJListDomaine = new JScrollPane(jlt);
+		scrollPaneJListDomaine.setViewportView(jlt);
+		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return scrollPaneJListDomaine;
+	}
+
+	public JPopupMenu popupMenuConge(PanelFenetre pf, String domaine) {
+		JPopupMenu m = new JPopupMenu("Supprimer");  
+		JMenuItem supp = new JMenuItem("Supprimer");
+		supp.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e) {              
+            	supprimerDomaine(pf, domaine);
+            	}  
+           });  
+
+		m.add(supp);
+		return m;
+	}
 	
+	protected void ajoutConge (PanelFenetre pf) {
+		if (!textFieldNom.getText().isEmpty()) {
+			String domaine = textFieldNom.getText().toLowerCase();
+			boolean estPresent = false;
+			for (int i=0; i<listeDomaine.size(); i++) {
+				if (domaine.equals(listeDomaine.get(i))) {
+					estPresent = true;
+				}
+			}
+			if (!estPresent) {
+				entreprise.ajoutDomaine(domaine);
+				textFieldNom = new JTextField();
+				maj(pf);
+				}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Ce domaine existe dï¿½jï¿½", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+		}
+
+	}
+	
+	protected void supprimerConge(PanelFenetre pf, String domaine) {
+		//String domaine = jListDomaine.getSelectedValue();
+		if (!entreprise.PersonneOuActiviteACeDomaine(domaine)) {
+			entreprise.supprimerDomaine(domaine);
+			maj(pf);			
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}			
+	}
+
 	
 	//-------------------------------------------->>>>> Competence pour Ressource
 	protected void initialiseCompetence (PanelFenetre pf) {
@@ -235,7 +323,7 @@ public class PanelFenetre extends JPanel{
 					maj(pf);
 				}	
 				else {
-			    	JOptionPane.showMessageDialog(null, "Vous l'avez deja  choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Vous l'avez dejaï¿½ choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
@@ -296,7 +384,7 @@ public class PanelFenetre extends JPanel{
 				maj(pf);
 			}	
 			else {
-			    JOptionPane.showMessageDialog(null, "Vous l'avez deja  choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    JOptionPane.showMessageDialog(null, "Vous l'avez dejaï¿½ choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {

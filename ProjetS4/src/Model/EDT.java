@@ -13,10 +13,20 @@ import java.util.Set;
 
 
 public class EDT {
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private int id_ressource;
 	private int type_ressource;
+	
 	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> listeCreneaux;
-
+	
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEUR
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
 	public EDT(int id_ressource, int type_ressource) {
 		this.id_ressource = id_ressource;
 		this.type_ressource = type_ressource;
@@ -25,12 +35,14 @@ public class EDT {
 	}
 	
 	public EDT(Pair<?, ?> duet) {
-		this.id_ressource = (int) duet.getLeft();
-		this.type_ressource = (int) duet.getRight();
-		this.listeCreneaux = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
-
+		this((int) duet.getLeft(), (int) duet.getRight());
 	}
-
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
+	
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public int getIdRessource() {
 		return id_ressource;
 	}
@@ -43,10 +55,13 @@ public class EDT {
 		return new Pair<Integer, Integer>(id_ressource, type_ressource);
 	}
 
-
+	//--------------------------------------------------------------------------------->>>>> Setteurs simples
 	public void vider() {
 		listeCreneaux.clear();
 	}
+	
+	
+	//--------------------------------------------------------------------------------->>>>> Méthodes complexes
 
 	/**
 	 * Ajoute un creneau ��� la ressource (si possible)
@@ -138,6 +153,8 @@ public class EDT {
 	}
 	
 	
+	
+	
 	public LocalDateTime getPremiereCreneauApresAct(int ordre) {
 		Set<LocalDate> keys = listeCreneaux.keySet(); //On recupere les cles de la hashtable jours
 		Iterator<LocalDate> itt = keys.iterator();
@@ -185,16 +202,18 @@ public class EDT {
 	
 	
 	
-	public LocalDate getPremiereDateActivite(Activite act) {
+	
+	public LocalDateTime getPremiereDateActivite(Activite act) {
 		List<LocalDate> listKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
-		LocalDate premDate = null;
+		LocalDateTime premDate = null;
 		Collections.sort(listKeys);
 		boolean quitter = false;
 		for (int i = 0; i < listKeys.size(); i++) {
 			ArrayList<CreneauHoraire> jour = listeCreneaux.get(listKeys.get(i));
 			for (int j = 0; j < jour.size(); j++) {
-				if (jour.get(j).getActivite() == act) {
-					premDate = listKeys.get(i);
+				CreneauHoraire crCourant = jour.get(j);
+				if (crCourant.getActivite().equals(act)) {
+					premDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
 					quitter = true;
 					break;
 				}
@@ -207,16 +226,18 @@ public class EDT {
 		return premDate;	
 	}
 	
-	public LocalDate getDerniereDateActivite(Activite act) {
+	
+	public LocalDateTime getDerniereDateActivite(Activite act) {
 		List<LocalDate> listKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
-		LocalDate derDate = null;
+		LocalDateTime derDate = null;
 		Collections.sort(listKeys);
 		boolean quitter = false;
 		for (int i = listKeys.size()-1; i >= 0; i--) {
 			ArrayList<CreneauHoraire> jour = listeCreneaux.get(listKeys.get(i));
 			for (int j = jour.size()-1; j >= 0 ; j--) {
-				if (jour.get(j).getActivite() == act) {
-					derDate = listKeys.get(i);
+				CreneauHoraire crCourant = jour.get(j);
+				if (crCourant.getActivite().equals(act)) {
+					derDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
 					quitter = true;
 					break;
 				}
