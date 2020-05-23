@@ -1457,7 +1457,7 @@ public class Entreprise extends Observable{
 	 * @param id de la personne
 	 * @return liste de conge de la personne
 	 */
-	public ArrayList<CreneauHoraire> getListeCongeParPersonne(int id) {
+	public ArrayList<CreneauHoraire> getListeCongeDePersonne(int id) {
 		ArrayList<CreneauHoraire> l = new ArrayList<CreneauHoraire>();
 		try {
 			l = JavaSQLRecherche.getConge(id);
@@ -1472,7 +1472,7 @@ public class Entreprise extends Observable{
 	 * @param id du projet
 	 * @return liste des reunions du projet
 	 */
-	public ArrayList<CreneauHoraire> getListeReunion(int idP) {
+	public ArrayList<CreneauHoraire> getListeReunionDuProjet(int idP) {
 		
 	}
 
