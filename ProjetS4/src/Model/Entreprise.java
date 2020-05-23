@@ -830,7 +830,7 @@ public class Entreprise extends Observable{
 		return personne;
 	}
 
-	public ArrayList<Ressource> getPersonneParTag(String tag) {
+	public ArrayList<Ressource> getListePersonneParTag(String tag) {
 		ArrayList<Ressource> personneTab= null;
 
         try {
