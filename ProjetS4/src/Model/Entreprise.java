@@ -1458,7 +1458,13 @@ public class Entreprise extends Observable{
 	 * @return liste de conge de la personne
 	 */
 	public ArrayList<CreneauHoraire> getListeCongeParPersonne(int id) {
-		
+		ArrayList<CreneauHoraire> l = new ArrayList<CreneauHoraire>();
+		try {
+			l = JavaSQLRecherche.getConge(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return l;
 	}
 
 	/**
