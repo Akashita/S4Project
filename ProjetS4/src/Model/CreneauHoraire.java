@@ -34,7 +34,7 @@ public class CreneauHoraire {
 		this.date = date;
 		this.id = id;
 
-		//On cherche la position du creneau dans une journe (les creneaux sont tous les uns apres mes autres)
+		//On cherche la position du creneau dans une journee (les creneaux sont tous les uns apres mes autres)
 		int i = Entreprise.HEURE_DEBUT_MATIN;
 		int pos = 0;
 		boolean posTrouve = false;
@@ -72,7 +72,7 @@ public class CreneauHoraire {
 	 * @param date du conge
 	 */
 	public CreneauHoraire(LocalDate date) {
-		this(null, 8, null, CONGE, "CONGE", PanelPrincipal.CONGE);
+		this(null, 8, null, CONGE, "CONGE", PanelPrincipal.CONGE, 0);
 	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
