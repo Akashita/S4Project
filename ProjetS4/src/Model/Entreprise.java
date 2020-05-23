@@ -283,8 +283,10 @@ public class Entreprise extends Observable{
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
 
-
+				 
+				 listeEDTPersonnes = creerLCongePersonnes(listeConge);
 				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge);
+				 
 				 listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes);
 				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
 
@@ -325,6 +327,25 @@ public class Entreprise extends Observable{
 			listeEDT.get(key).vider();
 		}
 	}
+	
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLCongePersonnes(Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge){
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDT = new Hashtable<Pair<Integer, Integer>, EDT>();
+		Set<Personne> keys = listeConge.keySet();
+		CreneauHoraire chCourant;
+		for (Personne personne : keys) {
+			Pair<Integer, Integer> ident = new Pair<Integer, Integer>(0, personne.getId());
+			EDT EDTCourant = new EDT(ident);
+			for (int i = 0; i < listeConge.get(personne).size(); i++) {
+				chCourant = listeConge.get(personne).get(i);
+				EDTCourant.ajouterConge(chCourant);
+				
+			}
+			listeEDT.put(ident, EDTCourant);
+		}
+		
+		
+		return listeEDT;
+	}
 
 	/**
 	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
@@ -348,13 +369,13 @@ public class Entreprise extends Observable{
 					EDT edtCourant = getEDTRessource(persCourante.getType(), persCourante.getId(), listeEDTPersonnes);
 
 					if(verifierOrdre(edtCourant, act, jourCourant, heureCourante)) {
-						if(!persCourante.enConge(jourCourant)) {
+						if(!estEnConge(listeConge.get(persCourante), jourCourant)) {
 							if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
 								String titreCreneau = proj.getNom() + " | " + act.getTitre();
 								edtCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
 								chargeAloue++;
 							}
-						}
+						} 
 					}
 				}
 
@@ -365,6 +386,18 @@ public class Entreprise extends Observable{
 			}
 		}
 		return listeEDTPersonnes;
+	}
+	
+	private boolean estEnConge(ArrayList<CreneauHoraire> listeConge, LocalDate jourCourant) {
+		boolean res = false;
+		for (int i = 0; i < listeConge.size(); i++) {
+			CreneauHoraire congeCourant = listeConge.get(i);
+			if(congeCourant.getDate().equals(jourCourant)) {
+				res = true;
+				break;
+			}
+		}
+		return res;
 	}
 
 

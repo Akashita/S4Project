@@ -89,6 +89,15 @@ public class EDT {
 		}
 		return place;
 	}
+	
+	public void ajouterConge(CreneauHoraire creneau) {
+		LocalDate date = creneau.getDate();
+		ArrayList<CreneauHoraire> listeCr = new ArrayList<CreneauHoraire>();
+		for (int i = 0; i < 8; i++) {
+			listeCr.add(new CreneauHoraire(date));
+		}
+		listeCreneaux.get(date);
+	}
 
 	/**
 	 * Cree une journee entierement disponible
