@@ -2286,12 +2286,13 @@ public class Entreprise extends Observable{
 
 
 	private Color couleurAleatoire() {
-		Random rand = new Random();
-		float r = (float) (rand.nextFloat() / 2f + 0.5);
-		float g = (float) (rand.nextFloat() / 2f + 0.5);
-		float b = (float) (rand.nextFloat() / 2f + 0.5);
-		Color couleur = new Color(r, g, b);
-		return couleur;
+		Color tab [] = {new Color(255,57,51), new Color(0,204,51), 
+				new Color(0,204,255), new Color(204,255,102), 
+				new Color(255,102,255), new Color(143,233,168), 
+				new Color(187,210,255), new Color(177,150,255), 
+				new Color(243,130,130), new Color(74,255,206)};
+		int r = (int) (Math.random() * tab.length) ;
+		return tab[r];
 	}
 
 
