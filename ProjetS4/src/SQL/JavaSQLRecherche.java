@@ -740,6 +740,36 @@ public final class JavaSQLRecherche extends JavaSQL{
 
 	}
 	
+	public static ArrayList<Ressource> recupereListePersonneParOrdreAlphabetique() throws SQLException{
+		String sql = "SELECT * FROM Personne ORDER BY nom;";
+		ArrayList<Ressource> personnetab = new ArrayList<Ressource>();
+
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 ArrayList<Competence> tagtab = new ArrayList<Competence>();
+						 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sqltag)){
+							 while(res2.next()) {
+								 tagtab.add(new Competence(res2.getString("tag"), res2.getInt("niveau")));
+							 }
+						 }
+						 personnetab.add(new Personne(res.getString("nom"), res.getString("prenom"), res.getString("role"), res.getInt("numSalarie"), res.getString("motDePasse"), tagtab));
+						 
+						 
+						
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return personnetab;
+
+	}
+	
+	
 	
 	public static  Ressource recupereChefDeProjetParIdProjet(int idP) throws SQLException{
 		Ressource chef = null;

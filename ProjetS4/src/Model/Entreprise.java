@@ -843,7 +843,20 @@ public class Entreprise extends Observable{
 
 		return personneTab;
 	}
+	
+	public ArrayList<Ressource> getListePersonneTrieAlphabetiquement() {
+		ArrayList<Ressource> personneTab= null;
 
+        try {
+        	personneTab = JavaSQLRecherche.recupereListePersonneParOrdreAlphabetique();
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+		return personneTab;
+	}
 	
 	
 	
