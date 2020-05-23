@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 
-public final class JavaSQLCreneaux extends JavaSQL{
+public final class JavaSQLConge extends JavaSQL{
 //	private String titre;
 //	private int couleur;
 //	private int debut;
@@ -36,13 +36,12 @@ public final class JavaSQLCreneaux extends JavaSQL{
 	
 	
 	public static void affiche() throws SQLException{
-		String sql = "SELECT * FROM Creneaux;";
+		String sql = "SELECT * FROM Conge;";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 System.out.println("idC = " + res.getString("idC") + ", titre = " + res.getString("titre") + ", couleur = " + res.getString("couleur") + ", debut = " + res.getString("debut") 
-						 + ", date = " + res.getString("date") + ", position = " + res.getString("position")+ ", type = " + res.getString("type")+ ", numSalarie = " + res.getString("numSalarie")+ res.getString("idA"));
+						 System.out.println("idC = " + res.getString("idC") + ", date = " + res.getString("date") + ", numSalarie = " + res.getString("numSalarie"));
 					 }
 				 }
 			} catch(SQLException e){
@@ -51,10 +50,9 @@ public final class JavaSQLCreneaux extends JavaSQL{
 
 	}
 	
-	public static void insertion(String titre, int couleur, int debut, LocalDate date, int position, int type, int numSalarie, int idA) throws SQLException{
+	public static void insertion(LocalDate date, int numSalarie) throws SQLException{
 		Date date1 = Date.valueOf(date);
-		String sql = "INSERT INTO Creneaux(idC, titre, couleur, debut, fin, numsalarie, idA) VALUE(NULL, '" + titre + "' ,  '"+couleur+"' ,'"+debut+"' ,'"+date1+"' , '"+position+ "' , '"+type+
-				"' , '"+numSalarie+"' , '"+idA+"');";
+		String sql = "INSERT INTO Conge(idC, date, numsalarie) VALUE(NULL, '" +date1+"' , '"+numSalarie+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
@@ -66,7 +64,7 @@ public final class JavaSQLCreneaux extends JavaSQL{
 	
 	public static void supprime(int idC) throws SQLException{
 		try{
-			 String sql = "DELETE FROM Creneaux WHERE idC =" + idC;
+			 String sql = "DELETE FROM Conge WHERE idC =" + idC;
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
 		} catch(SQLException e){
@@ -74,11 +72,11 @@ public final class JavaSQLCreneaux extends JavaSQL{
 		}
 	}
 	
-	public static void modifie(int idC, String titre, int couleur, int debut, LocalDate date, int position, int type, int numSalarie, int idA) throws SQLException{
+	public static void modifie(int idC, LocalDate date, int numSalarie) throws SQLException{
 		Date date1 = Date.valueOf(date);
 		try{
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Creneaux SET titre= '" + titre+ "' ,couleur  = '" + couleur + "' ,debut  = '" + debut + "' ,date  = '" + date1 + "' ,position  = '" + position +  "' ,type  = '" + type + "' ,numSalarie  = '" + numSalarie +"' ,idA  = '" + idA +"';";
+			 String sql = "UPDATE Conge SET date = '"+date1+"', numSalarie = '"+numSalarie+"' WHERE idC = '"+idC+"';";
 			 stmt.executeUpdate(sql);
 		} catch(SQLException e){
 			e.printStackTrace();
