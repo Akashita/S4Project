@@ -20,17 +20,19 @@ public class CreneauHoraire {
 	private Activite activite;
 	private int type;
 	private LocalDate date;
+	private int id;
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	public CreneauHoraire(Activite activite, int debut, LocalDate date, int type, String titre, Color couleur) { //Par d�fault un cr�neau horaire est de type "TRAVAIL"
+	public CreneauHoraire(Activite activite, int debut, LocalDate date, int type, String titre, Color couleur, int id) { //Par d�fault un cr�neau horaire est de type "TRAVAIL"
 		this.activite = activite;
 		this.debut = debut;
 		this.type = type;
 		this.titre = titre;
 		this.couleur = couleur;
 		this.date = date;
+		this.id = id;
 
 		//On cherche la position du creneau dans une journe (les creneaux sont tous les uns apres mes autres)
 		int i = Entreprise.HEURE_DEBUT_MATIN;
@@ -51,11 +53,11 @@ public class CreneauHoraire {
 	}
 	
 	public CreneauHoraire(String titre, Activite activite, int debut, Color couleur) {
-		this(activite, debut, null, TRAVAIL, titre, couleur);
+		this(activite, debut, null, TRAVAIL, titre, couleur, 0);
 	}
 	
-	public CreneauHoraire(Activite activite, int debut, LocalDate date, int type, String titre) {
-		this(activite, debut, date, -1, titre, null);
+	public CreneauHoraire(Activite activite, int debut, LocalDate date, int type, String titre, int id) {
+		this(activite, debut, date, -1, titre, null, id);
 		if(type == CONGE) {
 			this.titre = "Conge";
 			this.couleur = Color.RED;
