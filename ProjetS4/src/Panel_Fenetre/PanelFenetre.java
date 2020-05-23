@@ -101,9 +101,10 @@ public class PanelFenetre extends JPanel{
     
     protected Calendrier calendrier1, calendrier2;
     
-    protected ArrayList<CreneauHoraire> listeConge;
+    protected ArrayList<CreneauHoraire> listeConge, listeReunion;
     protected JList<CreneauHoraire> jListeConge;
     protected JButton boutonAjoutConge, boutonAjoutReunion;
+    protected JComboBox<String> comboBoxHeure;		
 
 	public PanelFenetre(Entreprise entreprise, FenetreModal fm) {
 		this.entreprise = entreprise;
@@ -262,6 +263,79 @@ public class PanelFenetre extends JPanel{
 				}
 			else {
 		    	JOptionPane.showMessageDialog(null, "Il y a deja un conge a cette date", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+	}
+	
+	protected void supprimerConge(PanelFenetre pf, CreneauHoraire conge) {
+		entreprise.supprimerConge(conge.getId());
+		maj(pf);				
+	}
+
+	
+	//-------------------------------------------->>>>> gere la liste de reunion
+	protected void initialiseReunion (PanelFenetre pf, int idProjet) {
+		listeReunion = entreprise.getListeReunionDuProjet(idProjet);
+		boutonAjoutConge = new JButton("Ajouter");
+		boutonAjoutConge.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	ajoutConge(pf, idProjet);
+	        }
+	    });			
+	}
+
+	protected Component afficheListeReunion(PanelFenetre pf, int idProjet) {
+		listeReunion = entreprise.getListeReunionDuProjet(idProjet);
+		CreneauHoraire [] reunion = new CreneauHoraire [listeConge.size()];
+		for (int i=0; i<listeReunion.size(); i++) {
+			reunion[i] = listeReunion.get(i);
+		}
+		JList<CreneauHoraire> jlt = new JList<CreneauHoraire>(reunion);
+		jlt.setBackground(couleurFond);
+		jlt.setFont(new Font("Arial", Font.BOLD, 15));
+		jlt.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent evt) {
+		        if (evt.getButton() == MouseEvent.BUTTON3) { //clic droit
+		        	jlt.setSelectedIndex(jlt.locationToIndex(evt.getPoint()));
+		        	jlt.setComponentPopupMenu(popupMenuConge(pf, jlt.getSelectedValue()));
+		        	;
+		        }
+		    }
+		});
+
+		scrollPaneJListDomaine = new JScrollPane(jlt);
+		scrollPaneJListDomaine.setViewportView(jlt);
+		scrollPaneJListDomaine.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		return scrollPaneJListDomaine;
+	}
+
+	public JPopupMenu popupMenuReunion(PanelFenetre pf, CreneauHoraire reunion) {
+		JPopupMenu m = new JPopupMenu("Supprimer");  
+		JMenuItem supp = new JMenuItem("Supprimer");
+		supp.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e) {              
+            	supprimerConge(pf, reunion);
+            	}  
+           });  
+
+		m.add(supp);
+		return m;
+	}
+	
+	protected void ajoutReunion(PanelFenetre pf, int idProjet) {
+			LocalDate conge = calendrier1.getDate();
+			boolean estPresent = false;
+			for (int i=0; i<listeReunion.size(); i++) {
+				if (conge.equals(listeReunion.get(i).getDate())) {
+					estPresent = true;
+				}
+			}
+			if (!estPresent) {
+				CreneauHoraire ch = new CreneauHoraire(conge);
+				entreprise.nouveauConge(ch.getDate(), idProjet);
+				maj(pf);
+				}
+			else {
+		    	JOptionPane.showMessageDialog(null, "Il y a deja une reunion cette date", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 	}
 	

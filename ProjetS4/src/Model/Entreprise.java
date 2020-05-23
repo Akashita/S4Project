@@ -1515,14 +1515,14 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche dans la bdd toute les reunion du projet
+	 * Cherche dans la bdd toute les reunion du activite
 	 * @param id du projet
 	 * @return liste des reunions du projet
 	 */
-	public ArrayList<CreneauHoraire> getListeReunionDuProjet(int idP) {
+	public ArrayList<CreneauHoraire> getListeReunionDuProjet(int idA) {
 		ArrayList<CreneauHoraire> l = new ArrayList<CreneauHoraire>();
 		try {
-			l = JavaSQLRecherche.getReunionActivite(idP);
+			l = JavaSQLRecherche.getReunion(idA);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

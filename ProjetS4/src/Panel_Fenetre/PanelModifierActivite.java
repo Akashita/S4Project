@@ -100,7 +100,14 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.gridy = 3;
 		gc.gridwidth = 3;
 		this.add(creerTitre("Debut"), gc);
-		
+
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.gridx = 0;
+		gc.gridy = 3;
+		gc.gridwidth = 3;
+		this.add(creerTitre("Debut"), gc);
+
 		gc.gridx = 0;
 		gc.gridy = 4;
 		this.add(panelCalendrier(calendrier1), gc);

@@ -13,12 +13,13 @@ public class Calendrier {
 	private PanelFenetre pfp, pfe;
 
 	
-	private JComboBox<String> cba,cbm,cbj = null;
+	private JComboBox<String> cba,cbm,cbj,cbh = null;
 	
 	private String [] jours,
 	mois = {"Janvier", "Fevrier", "Mars", "Avril",
-		"Mai", "Juin", "Juillet", "Aout",
-		"Septembre", "Octobre", "Novembre", "Decembre"},
+			"Mai", "Juin", "Juillet", "Aout",
+			"Septembre", "Octobre", "Novembre", "Decembre"},
+	heure = {"8h", "9h", "10h", "11h", "13h", "14", "15", "16h", "17h"},
 	annees = new String [Temps.nbAnnnee];
 	
 	public Calendrier(PanelFenetre pfp ,PanelFenetre pfe, LocalDate date) {
