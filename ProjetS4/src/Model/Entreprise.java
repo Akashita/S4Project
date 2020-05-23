@@ -1012,6 +1012,15 @@ public class Entreprise extends Observable{
 	}
 
 	/**
+	 * cherche dans la bdd l'activite associer a son id
+	 * @param id de l'activite
+	 * @return l'activite associer
+	 */
+	public Activite getActiviteParId(int idA) {
+		return act;
+	}
+
+	/**
 	 * cherche dans la bdd le projet associer a l'activite
 	 * @param id de l'activite
 	 * @return le projet associer
