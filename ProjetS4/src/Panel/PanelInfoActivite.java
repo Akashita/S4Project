@@ -50,9 +50,7 @@ public class PanelInfoActivite extends JPanel{
 			this.setLayout(new BorderLayout());
 			ArrayList<Ressource> listeR = entreprise.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activite.getId());
 
-			if (entreprise.getAfficheEDTActivite() 
-					&& entreprise.getActiviteSelectionner().getId() == activite.getId()
-					&& listeR.size() > 0) { //on affiche son edt
+			if (entreprise.getAfficheEDTActivite() && listeR.size() > 0) { //on affiche son edt
 				this.add(new PanelEDTActivite(entreprise, activite));
 			}
 			else {

@@ -23,7 +23,7 @@ import Ressource.Personne;
 import Ressource.Ressource;
 
 /**
- * Affiche l'emploi du temps de l'activité sous forme de diagramme de gantt
+ * Affiche l'emploi du temps de l'activitï¿½ sous forme de diagramme de gantt
  * @author Damien
  *
  */
@@ -91,38 +91,52 @@ public class PanelEDTActivite extends JPanel{
 		
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		gc.fill = GridBagConstraints.BOTH;
+		/*gc.fill = GridBagConstraints.CENTER;
 		
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 
 		gc.weightx = 13;
 		
 		gc.weighty = nbPersonne+1;
 		
 		gc.gridx = 0;
-		gc.gridy = 0;
+		gc.gridy = 0;*/
 		
 		
-		panel.add(creerLabel(activite.getTitre(), true), gc);
+		/*panel.add(creerLabel(activite.getTitre(), true), gc);
 		
 		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.gridx = 1;
+		gc.gridy = 0;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
 
-		panel.add(afficheEchelle(),gc);
+		panel.add(afficheEchelle(),gc);*/
 		
 		/*for (int i=0; i<nbMois; i++) {
 			gc.gridx ++;
 			panel.add(labelMois(i), gc);
 		}*/
 		
-		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
-		gc.insets = new Insets(5, 2, 2, 5);
+		gc.fill = GridBagConstraints.BOTH;
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.insets = new Insets(2, 2, 2, 2);
+		gc.weightx = 1;	
+		gc.weighty = nbPersonne+1;
 
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.gridx = 0;
+		gc.gridy = 0;
+		panel.add(afficheTitreEtEchelle(), gc);
+
+		
+		
 		for (int i=0; i<nbPersonne;i++) {
-			gc.gridwidth = 1;
+			gc.gridy ++;
+			panel.add(afficheRessourceEtDiagramme(i), gc);
+			/*gc.gridwidth = 1;
 			gc.gridx = 0;
 			gc.gridy ++;
 			Ressource res = listePersonne.get(i);
@@ -131,12 +145,32 @@ public class PanelEDTActivite extends JPanel{
 			
 			gc.gridwidth = GridBagConstraints.REMAINDER;
 			gc.gridx ++;
-			panel.add(afficheDiagrammeGantt(i), gc);
+			panel.add(afficheDiagrammeGantt(i), gc);*/
 			
 		}
 		return panel;
 	}
 	
+	private JPanel afficheTitreEtEchelle() {
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		p.add(creerLabel(activite.getTitre(), true));
+		p.add(afficheEchelle());
+		return p;
+	}
+
+	private JPanel afficheRessourceEtDiagramme(int index) {
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		Ressource res = listePersonne.get(index);
+		String nom = ((Personne) res).getPrenomNom();
+		p.add(creerLabel(nom, res));
+		p.add(afficheDiagrammeGantt(index));
+		return p;
+	}
+
 	private JPanel afficheEchelle() {
 		int annee = debut.getYear();
 		int nbAnnee=1;
@@ -157,7 +191,7 @@ public class PanelEDTActivite extends JPanel{
 		gc.gridwidth = 1;
 		gc.gridheight = 1;
 		int numeroMois = debut.getMonthValue();
-		for(int i=0; i<nombreDeMois;i++) {
+		for(int i=0; i<=nombreDeMois;i++) {
 			if (numeroMois > 12) {
 				nbAnnee ++;
 				numeroMois = 1;
@@ -168,7 +202,7 @@ public class PanelEDTActivite extends JPanel{
 		}
 		gc.gridx = 0;
 		gc.gridy = 0;
-		gc.gridwidth = (int)(nombreDeMois/nbAnnee);
+		gc.gridwidth = GridBagConstraints.REMAINDER;
 		for(int i=0; i<nbAnnee;i++) {
 			p.add(new JLabel(Integer.toString(annee+i)), gc);
 			gc.gridx ++;	
@@ -184,7 +218,7 @@ public class PanelEDTActivite extends JPanel{
 		
 		for(int i=0; i<listeNumeroSemaine.size();i++) {
 			int numSemaine = listeNumeroSemaine.get(i);
-			if (i>0 &&  numSemaine < listeNumeroSemaine.get(i-1) ) { // on vérifie si on a passé une année
+			if (i>0 &&  numSemaine < listeNumeroSemaine.get(i-1) ) { // on vï¿½rifie si on a passï¿½ une annï¿½e
 				annee ++;
 			}
 			JPanel semaine = new JPanel();
@@ -230,11 +264,18 @@ public class PanelEDTActivite extends JPanel{
 
 	private boolean travailleJour(CreneauHoraire [][] liste, int numeroJour) {
 		boolean travaille = false;
-		int i = 0;
-		while(!travaille || i>=liste[0].length) {
+		/*int i = 0;
+		while(!travaille || i<liste[0].length) {
 			if (liste[numeroJour][i] != null && liste[numeroJour][i].getActivite().getId() == activite.getId()) {
 				travaille = true;
-			}		
+			}	
+			i++;
+		}*/
+		for (int i=0; i<liste[0].length; i++) {
+			if (liste[numeroJour][i] != null && liste[numeroJour][i].getActivite().getId() == activite.getId()) {
+				travaille = true;
+				break;
+			}	
 		}
 		return travaille;
 		
@@ -319,47 +360,47 @@ public class PanelEDTActivite extends JPanel{
 	private JLabel labelMois(int numeroMois) {
 		JLabel label = new JLabel();
 		switch (numeroMois) {
-		case 0:
+		case 1:
 			label.setText("Janvier");
 			break;
-		case 1:
+		case 2:
 			label.setText("Fevrier");
 			break;
-		case 2:
+		case 3:
 			label.setText("Mars");
 			break;
-		case 3:
+		case 4:
 			label.setText("Avril");
 			break;
-		case 4:
+		case 5:
 			label.setText("Mai");
 			break;
-		case 5:
+		case 6:
 			label.setText("Juin");
 			break;
-		case 6:
+		case 7:
 			label.setText("Juillet");
 			break;
-		case 7:
+		case 8:
 			label.setText("Aout");
 			break;
-		case 8:
+		case 9:
 			label.setText("Septembre");
 			break;
-		case 9:
+		case 10:
 			label.setText("Octobre");
 			break;
-		case 10:
+		case 11:
 			label.setText("Novembre");
 			break;
-		case 11:
+		case 12:
 			label.setText("Decembre");
 			break;
 		
 		}
-		JPanel panel = new JPanel();
+		/*JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
-		panel.add(label);
+		panel.add(label);*/
 		return label;
 	}
 	

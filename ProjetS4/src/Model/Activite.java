@@ -26,6 +26,7 @@ public class Activite implements Comparable<Activite>{
 	private ArrayList<String> listeDomaine;
 	
 	private boolean changeSens = false; //pour le graphique
+	private boolean afficheEDT = false;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -86,6 +87,7 @@ public class Activite implements Comparable<Activite>{
 		return changeSens;
 	}
 
+
 	public int getOrdre() {
 		return ordre;
 	}
@@ -131,7 +133,8 @@ public class Activite implements Comparable<Activite>{
 	public void setChangeSens(boolean b) {
 		changeSens = b;
 	}
-	
+
+
 	public void supprimerToutesRessources() {
 		lRessources.clear();
 	}
