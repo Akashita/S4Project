@@ -38,6 +38,7 @@ import SQL.JavaSQLParticipe;
 import SQL.JavaSQLPersonne;
 import SQL.JavaSQLProjet;
 import SQL.JavaSQLRecherche;
+import SQL.JavaSQLReunion;
 import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
 
@@ -1515,11 +1516,11 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Cherche dans la bdd toute les reunion du activite
+	 * Cherche dans la bdd toute les reunion d'une activite
 	 * @param id du projet
 	 * @return liste des reunions du projet
 	 */
-	public ArrayList<CreneauHoraire> getListeReunionDuProjet(int idA) {
+	public ArrayList<CreneauHoraire> getListeReunionDeActivite(int idA) {
 		ArrayList<CreneauHoraire> l = new ArrayList<CreneauHoraire>();
 		try {
 			l = JavaSQLRecherche.getReunion(idA);
@@ -2331,6 +2332,24 @@ public class Entreprise extends Observable{
 	public void supprimerConge(int idC) {
 		try {
 			JavaSQLConge.supprime(idC);;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion Reunion
+	
+	public void nouvelleReunion(int debut, LocalDate date, String titre, int idA) {
+		try {
+			JavaSQLReunion.insertion(debut, date, titre, idA);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void supprimerReunion(int idR) {
+		try {
+			JavaSQLReunion.supprime(idR);;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

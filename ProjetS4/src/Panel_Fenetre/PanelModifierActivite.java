@@ -5,15 +5,19 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import Fenetre.FenetreModal;
+import Fenetre.FenetrePrincipale;
 import Model.Entreprise;
 import Model.Temps;
 import Ressource.Competence;
@@ -25,45 +29,49 @@ public class PanelModifierActivite extends PanelFenetre{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	private JButton boutonReunion;
+
 	
 	public PanelModifierActivite(Entreprise entreprise, FenetreModal fm) {
 		super(entreprise, fm);
 		activite = entreprise.getActiviteSelectionner();
 		initialiseCalendrier(activite.getDebut(), this);
-
 		
 		textFieldNom.setText(activite.getTitre());
 		int charge = (int)activite.getChargeJHomme();
 		textFieldCharge.setText(Integer.toString(charge));
 
-		//initialseJMA(projet.getDeadline());
-
+		initialiseBouton();
 		creerInterface();
 	}
+	
+	private void initialiseBouton() {
+		boutonReunion = new JButton("Voir les reunions");
+		boutonReunion.addActionListener(new ActionListener() {  
+	        public void actionPerformed(ActionEvent e) {
+	        	actionBoutonReunion();
+	        }
+	    });			
+	}
+
+	private void actionBoutonReunion() {
+		new FenetreModal(entreprise, FenetrePrincipale.NouvelleReunion, activite.getId());
+	}
+
 	
 	protected void creerInterface() {
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va definir la position et la taille des elements */
 		GridBagConstraints gc = new GridBagConstraints();
-		
-		/* le parametre fill sert à definir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
-		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
-		 */
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets definir la marge entre les composant new Insets(margeSuperieure, margeGauche, margeInferieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalite de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx definit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx definit le nombre de cases en ordonnee */
 		gc.weighty = 6;
 
 		gc.gridx = 0;
@@ -117,14 +125,19 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridx = 0;
 		gc.gridy = 5;
-		this.add(creerBoutonSupprimer(this), gc);
+		this.add(boutonReunion, gc);
 
 		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
-		gc.gridx = 1;
+		gc.gridx ++;
+		this.add(creerBoutonSupprimer(this), gc);
+
+		this.add(creerBoutonAnnuler(), gc);
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.gridx ++;
 		this.add(creerBoutonAnnuler(), gc);
 
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
-		gc.gridx = 2;
+		gc.gridx ++;
 		this.add(creerBoutonFin(this, "Modifier"), gc);
 
 	}

@@ -104,7 +104,6 @@ public class PanelFenetre extends JPanel{
     protected ArrayList<CreneauHoraire> listeConge, listeReunion;
     protected JList<CreneauHoraire> jListeConge;
     protected JButton boutonAjoutConge, boutonAjoutReunion;
-    protected JComboBox<String> comboBoxHeure;		
 
 	public PanelFenetre(Entreprise entreprise, FenetreModal fm) {
 		this.entreprise = entreprise;
@@ -273,18 +272,18 @@ public class PanelFenetre extends JPanel{
 
 	
 	//-------------------------------------------->>>>> gere la liste de reunion
-	protected void initialiseReunion (PanelFenetre pf, int idProjet) {
-		listeReunion = entreprise.getListeReunionDuProjet(idProjet);
+	protected void initialiseReunion (PanelFenetre pf, int idActivite) {
+		listeReunion = entreprise.getListeReunionDeActivite(idActivite);
 		boutonAjoutConge = new JButton("Ajouter");
 		boutonAjoutConge.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
-	        	ajoutConge(pf, idProjet);
+	        	ajoutConge(pf, idActivite);
 	        }
 	    });			
 	}
 
-	protected Component afficheListeReunion(PanelFenetre pf, int idProjet) {
-		listeReunion = entreprise.getListeReunionDuProjet(idProjet);
+	protected Component afficheListeReunion(PanelFenetre pf, int idActivite) {
+		listeReunion = entreprise.getListeReunionDeActivite(idActivite);
 		CreneauHoraire [] reunion = new CreneauHoraire [listeConge.size()];
 		for (int i=0; i<listeReunion.size(); i++) {
 			reunion[i] = listeReunion.get(i);
@@ -313,7 +312,7 @@ public class PanelFenetre extends JPanel{
 		JMenuItem supp = new JMenuItem("Supprimer");
 		supp.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e) {              
-            	supprimerConge(pf, reunion);
+            	supprimerReunion(pf, reunion);
             	}  
            });  
 
@@ -321,26 +320,32 @@ public class PanelFenetre extends JPanel{
 		return m;
 	}
 	
-	protected void ajoutReunion(PanelFenetre pf, int idProjet) {
-			LocalDate conge = calendrier1.getDate();
+	protected void ajoutReunion(PanelFenetre pf, int idActivite) {
+		String nom = textFieldNom.getText();
+		if (!nom.isEmpty()) {
+			LocalDate date = calendrier1.getDate();
 			boolean estPresent = false;
 			for (int i=0; i<listeReunion.size(); i++) {
-				if (conge.equals(listeReunion.get(i).getDate())) {
+				if (date.equals(listeReunion.get(i).getDate())) {
 					estPresent = true;
 				}
 			}
 			if (!estPresent) {
-				CreneauHoraire ch = new CreneauHoraire(conge);
-				entreprise.nouveauConge(ch.getDate(), idProjet);
+				CreneauHoraire ch = new CreneauHoraire(date, calendrier1.getTemps(), nom);
+				entreprise.nouvelleReunion(ch.getDebut(), ch.getDate(),ch.getTitre(), idActivite);
 				maj(pf);
 				}
 			else {
 		    	JOptionPane.showMessageDialog(null, "Il y a deja une reunion cette date", "Erreur", JOptionPane.ERROR_MESSAGE);			
-			}
+			}			
+		}
+		else {
+	    	JOptionPane.showMessageDialog(null, "Veuillez ecrire le titre de la reunion", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		}			
 	}
 	
-	protected void supprimerConge(PanelFenetre pf, CreneauHoraire conge) {
-		entreprise.supprimerConge(conge.getId());
+	protected void supprimerReunion(PanelFenetre pf, CreneauHoraire reunion) {
+		entreprise.supprimerReunion(reunion.getId());
 		maj(pf);				
 	}
 
@@ -483,6 +488,28 @@ public class PanelFenetre extends JPanel{
 		gc.gridx = 1;
 		panel.add(c.getComboBoxMois(), gc);			
 		gc.gridx = 2;
+		panel.add(c.getComboBoxAnnee(), gc);			
+
+		return panel;
+	}
+
+	protected JPanel panelCalendrierAvecHeure(Calendrier c) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
+		panel.setBackground(couleurFond);
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.fill = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.weightx = 3;
+		gc.weighty = 0;
+		
+		gc.gridx = 0;
+		panel.add(c.getComboBoxHeure(), gc);			
+		gc.gridx ++;
+		panel.add(c.getComboBoxJour(), gc);			
+		gc.gridx ++;
+		panel.add(c.getComboBoxMois(), gc);			
+		gc.gridx ++;
 		panel.add(c.getComboBoxAnnee(), gc);			
 
 		return panel;
