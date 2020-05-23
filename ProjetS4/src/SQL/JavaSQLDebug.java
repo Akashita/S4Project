@@ -18,7 +18,7 @@ public final class JavaSQLDebug extends JavaSQL{
 	public static void drop() throws SQLException{
 		String sql = "DROP TABLE IF EXISTS Competence";
 		try{
-			 connection();
+
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
 			 System.out.println("drop Competence fait");

@@ -1098,29 +1098,16 @@ public final class JavaSQLRecherche extends JavaSQL{
 ///////////////////////////////////////////////////////////////////////////////////CRENEAUX////////////////////////////////////////////////////////////////////////////	
 	public static ArrayList<CreneauHoraire> getConge(int numSalarie) throws SQLException{
 		ArrayList<CreneauHoraire> conge = new ArrayList<CreneauHoraire>();
-		ArrayList<String> listeDom = new ArrayList<String>();
-		String sql = "SELECT * FROM Creneaux WHERE numSalarie = '"+numSalarie+"' AND type = 0";
+		String sql = "SELECT * FROM Conge WHERE numSalarie = '"+numSalarie+"' ;";
 			try {
 				Statement stmt = getCon().createStatement();
-				 try (ResultSet res = stmt.executeQuery(sql)){
-					 while(res.next()) {
-						 sql = "SELECT * FROM Activite WHERE idA = '"+res.getInt("idA")+"';";
-						 try (ResultSet res2 = stmt.executeQuery(sql)){
-							 res2.next();
-							 sql = "SELECT tag FROM ListeDomaine WHERE idA = " + res.getInt("idA") + ";";
-							 try (ResultSet res3 = stmt.executeQuery(sql)){
-								 while(res3.next()) {
-									 listeDom.add(res3.getString("tag"));
-								 }
-							 }
-							 LocalDate debut = res2.getDate("debut").toLocalDate();
-							 Activite act = new Activite(res2.getInt("idA"),res2.getString("titre"),res2.getFloat("charge"),debut,new Color(res2.getInt("couleur")),res2.getInt("ordre"),listeDom);
+				try (ResultSet res = stmt.executeQuery(sql)){
+					while(res.next()) {
 							 LocalDate date = res.getDate("date").toLocalDate();
-							 CreneauHoraire creneaux = new CreneauHoraire(act,res.getInt("debut"),date,res.getInt("type"),res.getString("titre"),new Color(res.getInt("couleur")));
+							 CreneauHoraire creneaux = new CreneauHoraire(date);
 							 conge.add(creneaux);
 						 }
 					 }
-				 }
 			}catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -1128,41 +1115,10 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 	
 
-	public static ArrayList<CreneauHoraire> getReunionPersonne(int numSalarie) throws SQLException{
+	public static ArrayList<CreneauHoraire> getReunion(int idA) throws SQLException{
 		ArrayList<CreneauHoraire> reunion = new ArrayList<CreneauHoraire>();
 		ArrayList<String> listeDom = new ArrayList<String>();
-		String sql = "SELECT * FROM Creneaux WHERE numSalarie = '"+numSalarie+"' AND type = 1";
-			try {
-				Statement stmt = getCon().createStatement();
-				 try (ResultSet res = stmt.executeQuery(sql)){
-					 while(res.next()) {
-						 sql = "SELECT * FROM Activite WHERE idA = '"+res.getInt("idA")+"';";
-						 try (ResultSet res2 = stmt.executeQuery(sql)){
-							 res2.next();
-							 sql = "SELECT tag FROM ListeDomaine WHERE idA = " + res.getInt("idA") + ";";
-							 try (ResultSet res3 = stmt.executeQuery(sql)){
-								 while(res3.next()) {
-									 listeDom.add(res3.getString("tag"));
-								 }
-							 }
-							 LocalDate debut = res2.getDate("debut").toLocalDate();
-							 Activite act = new Activite(res2.getInt("idA"),res2.getString("titre"),res2.getFloat("charge"),debut,new Color(res2.getInt("couleur")),res2.getInt("ordre"),listeDom);
-							 LocalDate date = res.getDate("date").toLocalDate();
-							 CreneauHoraire creneaux = new CreneauHoraire(act,res.getInt("debut"),date,res.getInt("type"),res.getString("titre"),new Color(res.getInt("couleur")));
-							 reunion.add(creneaux);
-						 }
-					 }
-				 }
-			}catch(SQLException e){
-				e.printStackTrace();
-			}
-			return reunion;
-	}
-	
-	public static ArrayList<CreneauHoraire> getReunionActivite(int idA) throws SQLException{
-		ArrayList<CreneauHoraire> reunion = new ArrayList<CreneauHoraire>();
-		ArrayList<String> listeDom = new ArrayList<String>();
-		String sql = "SELECT * FROM Creneaux WHERE idA = '"+idA+"' AND type = 1";
+		String sql = "SELECT * FROM Reunion WHERE idA = '"+idA+"' ";
 			try {
 				Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){

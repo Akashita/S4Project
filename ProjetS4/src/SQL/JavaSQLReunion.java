@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 
-public final class JavaSQLConge extends JavaSQL{
+public class JavaSQLReunion extends JavaSQL{
 	
 	public static void connection() {
 		JavaSQL.connection();
@@ -15,12 +15,12 @@ public final class JavaSQLConge extends JavaSQL{
 	
 	
 	public static void affiche() throws SQLException{
-		String sql = "SELECT * FROM Conge;";
+		String sql = "SELECT * FROM Reunion;";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 System.out.println("idC = " + res.getString("idC") + ", date = " + res.getString("date") + ", numSalarie = " + res.getString("numSalarie"));
+						 System.out.println("idR = " + res.getString("idR") + ", date = " + res.getString("date") + ", debut = " + res.getString("debut") + ", titre = " + res.getString("titre") + ", idA = " + res.getString("idA"));
 					 }
 				 }
 			} catch(SQLException e){
@@ -29,9 +29,9 @@ public final class JavaSQLConge extends JavaSQL{
 
 	}
 	
-	public static void insertion(LocalDate date, int numSalarie) throws SQLException{
+	public static void insertion(int debut, LocalDate date, String titre, int idA) throws SQLException{
 		Date date1 = Date.valueOf(date);
-		String sql = "INSERT INTO Conge(idC, date, numsalarie) VALUE(NULL, '" +date1+"' , '"+numSalarie+"');";
+		String sql = "INSERT INTO Reunion(idR, debut, date, titre, idA) VALUE(NULL, '" +debut+"' , '"+date1+"' , '"+titre+"' , '" +idA+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
@@ -41,9 +41,9 @@ public final class JavaSQLConge extends JavaSQL{
 			}
 	}
 	
-	public static void supprime(int idC) throws SQLException{
+	public static void supprime(int idR) throws SQLException{
 		try{
-			 String sql = "DELETE FROM Conge WHERE idC =" + idC;
+			 String sql = "DELETE FROM Reunion WHERE idR =" + idR;
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
 		} catch(SQLException e){
@@ -51,16 +51,15 @@ public final class JavaSQLConge extends JavaSQL{
 		}
 	}
 	
-	public static void modifie(int idC, LocalDate date, int numSalarie) throws SQLException{
+	public static void modifie(int idR, int debut, LocalDate date, String titre, int idA) throws SQLException{
 		Date date1 = Date.valueOf(date);
 		try{
 			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Conge SET date = '"+date1+"', numSalarie = '"+numSalarie+"' WHERE idC = '"+idC+"';";
+			 String sql = "UPDATE Reunion SET date = '"+date1+"', debut = '"+debut+"', titre = '" + titre+"' WHERE idR = '"+idR+"';";
 			 stmt.executeUpdate(sql);
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
-	
 
 }
