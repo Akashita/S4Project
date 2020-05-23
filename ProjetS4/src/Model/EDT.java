@@ -96,7 +96,7 @@ public class EDT {
 		for (int i = 0; i < 8; i++) {
 			listeCr.add(new CreneauHoraire(date));
 		}
-		listeCreneaux.get(date);
+		listeCreneaux.put(date, listeCr);
 	}
 
 	/**
@@ -176,10 +176,12 @@ public class EDT {
 			key = itt.next();
 			jourCourant = listeCreneaux.get(key); //On recupere le jour courant
 			for (i = 0; i < jourCourant.size(); i++) {
-				if(jourCourant.get(i).getActivite().getOrdre() >= ordre) {
-					trouve = true;
-					break;
-				}
+				if(jourCourant.get(i).getActivite() != null) {
+					if(jourCourant.get(i).getActivite().getOrdre() >= ordre) {
+						trouve = true;
+						break;
+					}
+				}	
 			}			
 		}
 		if(key == null) {

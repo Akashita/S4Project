@@ -213,39 +213,39 @@ public class Entreprise extends Observable{
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
 
-			 if(activiteCourante.equals(act)) {
-					 switch (res.getType()) {
-					case Ressource.PERSONNE:
-						Personne pers = (Personne)res;
-						if (operation == Operation.ENLEVER) {
-							listePersonnes.remove(pers);
-						} else {
-							listePersonnes.add(pers);
+				 if(activiteCourante.equals(act)) {
+						 switch (res.getType()) {
+						case Ressource.PERSONNE:
+							Personne pers = (Personne)res;
+							if (operation == Operation.ENLEVER) {
+								listePersonnes.remove(pers);
+							} else {
+								listePersonnes.add(pers);
+							}
+							break;
+						case Ressource.SALLE:
+							Salle salle = (Salle)res;
+							if (operation == Operation.ENLEVER) {
+								listeSalles.remove(salle);
+							} else {
+								listeSalles.add(salle);
+							}
+							break;
+						case Ressource.CALCULATEUR:
+							Calculateur calc = (Calculateur)res;
+							if (operation == Operation.ENLEVER) {
+								listeCalculateurs.remove(calc);
+							} else {
+								listeCalculateurs.add(calc);
+							}
+							break;
+	
+						default:
+							break;
 						}
-						break;
-					case Ressource.SALLE:
-						Salle salle = (Salle)res;
-						if (operation == Operation.ENLEVER) {
-							listeSalles.remove(salle);
-						} else {
-							listeSalles.add(salle);
-						}
-						break;
-					case Ressource.CALCULATEUR:
-						Calculateur calc = (Calculateur)res;
-						if (operation == Operation.ENLEVER) {
-							listeCalculateurs.remove(calc);
-						} else {
-							listeCalculateurs.add(calc);
-						}
-						break;
-
-					default:
-						break;
-					}
-				 }
-			 
-			 	Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listePersonnes);
+					 }
+				 
+				 	Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listePersonnes);
 
 
 				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge);
@@ -257,7 +257,6 @@ public class Entreprise extends Observable{
 				 listeEDTComplete.putAll(listeEDTCalculateurs);
 			}
 		}
-
 		return listeEDTComplete;
 	}
 
@@ -265,8 +264,13 @@ public class Entreprise extends Observable{
 	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite;
+		
+		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise());
+		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne);
 
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = new Hashtable<Pair<Integer, Integer>, EDT>();
+		listeEDTPersonnes.putAll(creerLCongePersonnes(listeConge));
+		
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
 
@@ -279,23 +283,23 @@ public class Entreprise extends Observable{
 				 Activite activiteCourante = lActivite.get(j);
 
 				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId()));
-				 Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listePersonnes);
-				 
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
 
 				 
-				 listeEDTPersonnes = creerLCongePersonnes(listeConge);
-				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge);
-				 
-				 listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes);
+				 listeConge = creerHTConge(listePersonnes);
+				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge));
+
+				 //listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
 				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
 
-				 listeEDTComplete.putAll(listeEDTPersonnes);
-				 listeEDTComplete.putAll(listeEDTSalles);
-				 listeEDTComplete.putAll(listeEDTCalculateurs);
+
+			 }
 		}
-		}
+		 
+		 listeEDTComplete.putAll(listeEDTPersonnes);
+		 listeEDTComplete.putAll(listeEDTSalles);
+		 listeEDTComplete.putAll(listeEDTCalculateurs);
 
 		return listeEDTComplete;
 	}
@@ -607,7 +611,7 @@ public class Entreprise extends Observable{
 		int ordre = act.getOrdre();
 		LocalDateTime premierLibre = edtCourant.getPremiereCreneauApresAct(ordre);
 
-		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp));
+		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp)) || ordre == 0;
 	}
 
 
