@@ -3,6 +3,7 @@ package Ressource;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Model.CreneauHoraire;
 import Model.Projet;
 
 public class Personne extends Ressource{
@@ -19,7 +20,6 @@ public class Personne extends Ressource{
 	private String mdp;
 	private String role; //Role dans l'entreprise (voir constante ci-dessus)
 	
-	private ArrayList<LocalDate> listeConges;
 	private ArrayList<Competence> listeCompetence = new ArrayList<Competence>();
 	private ArrayList<Projet> listeProjet = new ArrayList<Projet>(); //Liste de projet que la ressource dirige
 	
@@ -32,7 +32,6 @@ public class Personne extends Ressource{
 		this.role = role;
 		this.prenom = prenom;
 		this.listeCompetence = listeCompetence;
-		this.listeConges = new ArrayList<LocalDate>();
 	}
 	
 	public Personne(String nom, String prenom, String role, int numSalarie){
@@ -51,14 +50,6 @@ public class Personne extends Ressource{
 	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public String getRole() {
 		return this.role;
-	}
-	
-	public boolean enConge(LocalDate date) {
-		return listeConges.contains(date);
-	}
-	
-	public ArrayList<LocalDate> getListeConges() {
-		return listeConges;
 	}
 
 	
@@ -152,23 +143,6 @@ public class Personne extends Ressource{
 	public String creeAffiche() {
 		return "prenom : " + prenom+", nom : "+nom + ", id : " + this.id + ", role : " + this.role + ", mdp : " + this.mdp + ", login : " + this.getLogin();
 
-	}
-	
-	public void ajouterConge(ArrayList<LocalDate> date){
-		for (int i = 0; i < date.size(); i++) {
-			if(!listeConges.contains(date.get(i))) {
-				listeConges.add(date.get(i));
-			}
-		}
-	}
-
-	
-	public void enleverConge(ArrayList<LocalDate> date){
-		for (int i = 0; i < date.size(); i++) {
-			if(listeConges.contains(date.get(i))) {
-				listeConges.remove(date.get(i));
-			}
-		}
 	}
 	
 	//--------------------------------------------------------------------------------->>>>> toString

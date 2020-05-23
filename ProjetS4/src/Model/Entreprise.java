@@ -31,7 +31,6 @@ import SQL.JavaSQL;
 import SQL.JavaSQLActivite;
 import SQL.JavaSQLCalculateur;
 import SQL.JavaSQLCompetence;
-import SQL.JavaSQLCreneaux;
 import SQL.JavaSQLDomaine;
 import SQL.JavaSQLMateriel;
 import SQL.JavaSQLParticipe;
@@ -244,8 +243,11 @@ public class Entreprise extends Observable{
 						break;
 					}
 				 }
+			 
+			 	Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listePersonnes);
 
-				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes);
+
+				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge);
 				 //listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles);
 				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
 
@@ -276,11 +278,13 @@ public class Entreprise extends Observable{
 				 Activite activiteCourante = lActivite.get(j);
 
 				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId()));
+				 Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listePersonnes);
+				 
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
 
 
-				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes);
+				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge);
 				 listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes);
 				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
 
@@ -291,6 +295,15 @@ public class Entreprise extends Observable{
 		}
 
 		return listeEDTComplete;
+	}
+	
+	private Hashtable<Personne, ArrayList<CreneauHoraire>> creerHTConge(ArrayList<Personne> listePersonnes){
+		Hashtable<Personne, ArrayList<CreneauHoraire>> res = new Hashtable<Personne, ArrayList<CreneauHoraire>>();
+		for (int i = 0; i < listePersonnes.size(); i++) {
+			Personne persCourante = listePersonnes.get(i);
+			res.put(persCourante, this.getListeCongeDePersonne(persCourante.getId()));
+		}
+		return res;
 	}
 
 	/**
@@ -320,7 +333,7 @@ public class Entreprise extends Observable{
 	 * @param La liste des EDT
 	 * @return  La liste des EDT
 	 */
-	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Projet proj, Activite act, ArrayList<Personne> listePersonnes, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Projet proj, Activite act, ArrayList<Personne> listePersonnes, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes, Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge) {
 		if(listePersonnes.size() > 0) {
 			int charge = act.getChargeHeure();
 			int chargeAloue = 0;
