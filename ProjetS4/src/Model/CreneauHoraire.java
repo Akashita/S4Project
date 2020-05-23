@@ -90,7 +90,15 @@ public class CreneauHoraire {
 	public CreneauHoraire(LocalDate date, int debut, String titre) {
 		this(null, debut, date, REUNION, titre, PanelPrincipal.REUNION, 0);
 	}
-	
+
+	/**
+	 * Genere une reunion pour une personne
+	 * @param date de la reunion
+	 */
+	public CreneauHoraire(LocalDate date, int debut, String titre, int id) {
+		this(null, debut, date, REUNION, titre, PanelPrincipal.REUNION, id);
+	}
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
