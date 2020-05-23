@@ -101,11 +101,23 @@ public class JavaSQL {
 				 stmt.executeUpdate(sql);
 				 System.out.println("Table Activite faite");
 				 
-				 sql = "CREATE TABLE IF NOT EXISTS Creneaux(idC INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), couleur INT, debut INT, date DATE, position INT, type INT, numSalarie INT, idA INT,"
-                         + "CONSTRAINT fk_Creneaux_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
-                         + "CONSTRAINT fk_Creneaux_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
+				 sql = "CREATE TABLE IF NOT EXISTS Conge(idC INT PRIMARY KEY AUTO_INCREMENT, date DATE, numSalarie INT, "
+							+ "CONSTRAINT fk_Creneaux_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie));";
 				 stmt.executeUpdate(sql);
-				 System.out.println("Table Creneaux faite");
+				 System.out.println("Table Activite faite");
+				 
+				 
+				 
+				 
+				 
+//				 sql = "CREATE TABLE IF NOT EXISTS Creneaux(idC INT PRIMARY KEY AUTO_INCREMENT, titre VARCHAR(30), couleur INT, debut INT, date DATE, position INT, type INT, numSalarie INT, idA INT,"
+//                         + "CONSTRAINT fk_Creneaux_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
+//                         + "CONSTRAINT fk_Creneaux_idA FOREIGN KEY(idA) REFERENCES Activite(idA));";
+//				 stmt.executeUpdate(sql);
+//				 System.out.println("Table Creneaux faite");
+				 
+				 
+				 
 				 
 				 sql = "CREATE TABLE IF NOT EXISTS ParticipeSalarie(numSalarie INT, idA INT,"
 							+ "CONSTRAINT fk_ParticipeSalarie_numSalarie FOREIGN KEY(numSalarie) REFERENCES Personne(numSalarie),"
