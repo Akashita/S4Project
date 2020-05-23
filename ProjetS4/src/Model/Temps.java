@@ -192,7 +192,7 @@ public final class Temps {
 		LocalDate semaineCourante = debut;
 		int i = 0;
 		
-		while((semaineCourante.getYear() < fin.getYear()) || (semaineCourante.get(woy) < fin.get(woy))) {
+		while((semaineCourante.getYear() != fin.getYear()) || (semaineCourante.get(woy) != fin.get(woy))) {
 			res.add(i, semaineCourante.get(woy));
 			semaineCourante = semaineCourante.plusWeeks(1);
 			i++;
