@@ -30,30 +30,21 @@ public class PanelNouvelleActivite extends PanelFenetre{
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert à définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
-		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
-		 */
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx définit le nombre de cases en ordonnée */
 		gc.weighty = 7;
 
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = 3;
-		//this.add(creerTitre("Creer un projet"), gc);
 		
 		gc.gridy = 1;
 		this.add(creerTitre("Indiquez ses informations"), gc);
@@ -109,7 +100,7 @@ public class PanelNouvelleActivite extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 7;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Commence a�partir du"), gc);
+		this.add(creerTitre("Commence a�partir du"), gc);
 		
 		gc.gridx = 0;
 		gc.gridy = 8;
@@ -124,7 +115,7 @@ public class PanelNouvelleActivite extends PanelFenetre{
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Cr�er"), gc);
+		this.add(creerBoutonFin(this, "Cr�er"), gc);
 
 	}
 	
@@ -134,10 +125,7 @@ public class PanelNouvelleActivite extends PanelFenetre{
 				if (estUnEntier(textFieldCharge.getText())) {
 					Projet projet = entreprise.getProjetSelectionner();
 					int charge = Integer.parseInt(textFieldCharge.getText());
-					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
-					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
-					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
-					LocalDate date =  Temps.creerLaDate(jour, mois, annee);
+					LocalDate date =  calendrier1.getDate();
 					entreprise.creerActivite(projet, textFieldNom.getText(), charge, date, listeDomaineChoisi);
 					fm.dispose();
 				}

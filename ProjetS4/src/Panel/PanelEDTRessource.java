@@ -277,7 +277,7 @@ public class PanelEDTRessource extends JPanel{
 			label.setText(creneau.getTitre());
 			
 			label.setOpaque(true);
-			label.setBackground(creneau.getCouleurActivite());			
+			label.setBackground(creneau.getCouleur());			
 		}
 		else {
 			label.setText(" ");

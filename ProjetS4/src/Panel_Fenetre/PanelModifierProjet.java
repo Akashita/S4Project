@@ -9,9 +9,7 @@ import javax.swing.JOptionPane;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
-import Model.Temps;
 import Ressource.Personne;
-import Ressource.Ressource;
 
 public class PanelModifierProjet extends PanelFenetre{
 	
@@ -139,10 +137,10 @@ public class PanelModifierProjet extends PanelFenetre{
 					Personne chefDeProjet = (Personne) comboBoxRessource.getSelectedItem();
 					String nom = textFieldNom.getText();
 					int priorite = Integer.parseInt(textFieldPriorite.getText());
-					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
+					/*int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
 					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
-					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
-					LocalDate date =  Temps.creerLaDate(jour, mois, annee);
+					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());*/
+					LocalDate date =  calendrier1.getDate();
 					entreprise.modifierProjet(projet, nom, priorite, chefDeProjet, date);
 					fm.dispose();
 				}

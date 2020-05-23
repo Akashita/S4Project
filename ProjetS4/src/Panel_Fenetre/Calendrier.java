@@ -99,6 +99,13 @@ public class Calendrier {
 		return cbj;
 	}
 	
+	public LocalDate getDate() {
+		int jour = Integer.parseInt((String) getComboBoxJour().getSelectedItem());
+		int mois = getComboBoxMois().getSelectedIndex()+1;
+		int annee = Integer.parseInt((String) getComboBoxAnnee().getSelectedItem());
+
+		 return Temps.creerLaDate(jour, mois, annee);
+	}
 	
 	
 	

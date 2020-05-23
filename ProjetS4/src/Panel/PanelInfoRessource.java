@@ -97,7 +97,7 @@ public class PanelInfoRessource extends JPanel{
 	        }
 	    });			
 
-		boutonConge = new JButton("Conge");
+		boutonConge = new JButton("Voir les conges");
 		boutonConge.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
 	        	actionBoutonConge();
@@ -280,8 +280,10 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridy ++;
 		this.add(labelInfo("Type : " + getStringByIntOfType(ressource.getType())), gc);
 
-		gc.gridy ++;
-		this.add(boutonConge, gc);					
+		if (ressource.getType() == Ressource.PERSONNE) {
+			gc.gridy ++;
+			this.add(boutonConge, gc);								
+		}
 
 		gc.gridy ++;
 		this.add(panelBouton(), gc);		
@@ -678,7 +680,7 @@ public class PanelInfoRessource extends JPanel{
 	}
 	
 	private void actionBoutonConge() {
-		new FenetreModal(entreprise, FenetrePrincipale.NouveauConge);
+		new FenetreModal(entreprise, FenetrePrincipale.NouveauConge, ressource.getId());
 	}
 
 	private void actionBoutonAnnuler() {
