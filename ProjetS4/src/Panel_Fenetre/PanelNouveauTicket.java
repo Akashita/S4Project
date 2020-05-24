@@ -221,7 +221,6 @@ public class PanelNouveauTicket  extends PanelFenetre{
 			break;
 
 		case Ticket.TRANSFERT:
-				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
 	
 					Activite act = (Activite) comboBoxActivite.getSelectedItem();
 					Projet p =  entreprise.getProjetDeActiviteParId(act.getId());
@@ -230,10 +229,6 @@ public class PanelNouveauTicket  extends PanelFenetre{
 					
 					entreprise.nouvTicketTransfert(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(), entreprise.getRessourceParLogin(type, login), act);
 					fm.dispose();
-				}
-				else {
-				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
-				}
 			break;
 
 		default:
