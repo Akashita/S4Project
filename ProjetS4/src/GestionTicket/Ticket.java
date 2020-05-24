@@ -92,7 +92,25 @@ public class Ticket {
 		}
 	}
 	
-	
+	public int getAction() {
+		String[] regex = this.modif.split(SEPARATEUR, 2); 
+		String avantSeparateur = regex[0];
+		if (avantSeparateur == "message") {
+			return MESSAGE;
+		}
+		else if (avantSeparateur == "libere") {
+			return LIBERE;
+
+		}
+		else if (avantSeparateur == "transfert") {
+			return TRANSFERT;
+
+		}
+		else {
+			return ERREUR;
+		}
+			
+		}
 	
 	
 	

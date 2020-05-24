@@ -2300,7 +2300,40 @@ public class Entreprise extends Observable{
 		//majEDT();
 		update();
 	}
+	public Activite getActiviteDepartLiberation(int idT) {
+		String modif;
+		Activite a = null;
+		try {
+			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
+		
+		String[] regex = modif.split(Ticket.SEPARATEUR);
+		int idActiviteDepart = Integer.parseInt(regex[3]);
+		a = this.getActiviteParId(idActiviteDepart);	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return a;
+	}
 
+	
+	
+	
+	public Activite getActiviteArriveTransfert(int idT) {
+		String modif;
+		Activite a = null;
+		try {
+			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
+		
+		String[] regex = modif.split(Ticket.SEPARATEUR);
+		int idActiviteDepart = Integer.parseInt(regex[3]);
+		a = this.getActiviteParId(idActiviteDepart);	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return a;
+	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
@@ -2389,8 +2422,9 @@ public class Entreprise extends Observable{
 		Activite a = this.getActiviteParId(idActiviteDepart);
 		Ressource r = this.getRessourceParId(typeRessource,idRessource);
 		this.enleverRessourceActivite(typeRessource, r,a);
+		
 		if (idTicketTransfert != -1 ) {
-			this.accepteTicketTransfert(idTicketTransfert,typeRessource,r,a);
+			this.accepteTicketTransfert(idTicketTransfert);
 		}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -2398,8 +2432,25 @@ public class Entreprise extends Observable{
 		}
 	}
 	
-	public void accepteTicketTransfert(int idT, int type, Ressource r, Activite a) {
-		this.ajouterRessourceActivite(type, r, a);
+	public void accepteTicketTransfert(int idT) {
+		
+		String modif;
+		try {
+			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
+		
+		String[] regex = modif.split(Ticket.SEPARATEUR); 
+		int typeRessource = Integer.parseInt(regex[1]);
+		int idRessource = Integer.parseInt(regex[2]);
+		int idActiviteDepart = Integer.parseInt(regex[3]);
+		Activite a = this.getActiviteParId(idActiviteDepart);
+		Ressource r = this.getRessourceParId(typeRessource,idRessource);
+		
+		this.ajouterRessourceActivite(typeRessource, r, a);
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
