@@ -890,7 +890,6 @@ public class Entreprise extends Observable{
         	personneTab = JavaSQLRecherche.recupereListePersonneParTag(tag);
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -904,7 +903,6 @@ public class Entreprise extends Observable{
         	personneTab = JavaSQLRecherche.recupereListePersonneParOrdreAlphabetique();
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
