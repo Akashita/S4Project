@@ -111,7 +111,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridy ++;
 		gc.gridwidth = 1;
 		gc.gridheight = 1;
-		this.add(creerTexte("Ressource concerné : "), gc);
+		this.add(creerTexte("Ressource concernï¿½ : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
@@ -137,7 +137,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridy ++;
 		gc.gridwidth = 1;
 		gc.gridheight = 1;
-		this.add(creerTexte("Ressource concerné : "), gc);
+		this.add(creerTexte("Ressource concernï¿½ : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
@@ -147,7 +147,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy ++;
 		gc.gridwidth = 1;
-		this.add(creerTexte("Projet concerné : "), gc);
+		this.add(creerTexte("Projet concernï¿½ : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
@@ -194,6 +194,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		case Ticket.LIBERE:
 			if (!textFieldLogin.getText().isEmpty()) {
 				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
+					Activite act 
 					Projet p =  (Projet) comboBoxProjet.getSelectedItem();
 					int type = comboBoxType.getSelectedIndex();
 					String login = textFieldLogin.getText();

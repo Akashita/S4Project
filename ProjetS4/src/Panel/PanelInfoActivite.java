@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,10 +16,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import EcouteurEvenement.SourisRessourceListener;
 import Model.Activite;
 import Model.Entreprise;
-import Ressource.Personne;
 import Ressource.Ressource;
 
 
@@ -159,33 +156,6 @@ public class PanelInfoActivite extends JPanel{
 		return panel;
 	}
 	
-	private JPanel panelListeRessource() {
-		JPanel p = new JPanel();
-		p.setBackground(couleurFond);
-		p.setLayout(new GridLayout(1,3,5,0));
-		for (int i=2; i<5; i++) {
-			int type = Ressource.RIEN;
-			switch (i){
-			case 2: type = Ressource.PERSONNE;
-			break;
-			case 3: type = Ressource.SALLE;
-			break;
-			case 4: type = Ressource.CALCULATEUR;
-			break;
-			}
-			ArrayList<Ressource> listeR = entreprise.getListeRessourcedeActiviteParId(type, activite.getId());
-			if (listeR.size() > 0) {
-				p.add(creerList(listeR));
-			}
-			else {
-				JPanel listeVide = new JPanel();
-				listeVide.setBackground(couleurFond);
-				p.add(listeVide);				
-			}
-		}
-		return p;
-	}
-
 	private JScrollPane creerList(ArrayList<Ressource> lr) {
 		Ressource [] tr = new Ressource [lr.size()];
 		for (int i=0; i<tr.length; i++) {
@@ -215,30 +185,6 @@ public class PanelInfoActivite extends JPanel{
 	}
 
 	
-	private JPanel afficheListe(int type, ArrayList<Ressource> listeR) {
-		JPanel panel = new JPanel();
-		panel.setBackground(couleurFond);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		
-		for (int i=0; i<listeR.size(); i++) {
-			String nom;
-			Ressource ressource = listeR.get(i);
-			if (type == Ressource.PERSONNE) {
-				nom = (((Personne) ressource).getPrenom()) + " " + ressource.getNom();
-			}
-			else {
-				nom = ressource.getNom();
-			}
-			panel.add(creerLabel(nom, ressource));
-		}
-		return panel;
-	}
-	
-	private JLabel creerLabel(String nom, Ressource ressource) {
-		JLabel label = new JLabel(nom);
-		label.addMouseListener(new SourisRessourceListener(entreprise, ressource));
-		return label;
-	}
 
 	private JLabel creerLabel(String nom, boolean estGras) {
 		JLabel label = new JLabel(nom);
