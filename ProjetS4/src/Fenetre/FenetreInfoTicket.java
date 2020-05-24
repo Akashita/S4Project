@@ -147,7 +147,7 @@ public class FenetreInfoTicket extends JDialog{
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = GridBagConstraints.REMAINDER;
 			gc.gridx ++;
-			Ressource r = ticket.getRessource();
+			Ressource r = entreprise.getRessourceTicket(ticket.getId());
 			this.add(creerTextArea(r.toString()), gc);						
 			
 			if (ticket.getAction() == Ticket.LIBERE && ticketTest == null) {
@@ -160,10 +160,14 @@ public class FenetreInfoTicket extends JDialog{
 				gc.gridwidth = GridBagConstraints.REMAINDER;
 				gc.gridx ++;
 				Activite act = entreprise.getActiviteDepartLiberation(ticket.getId());
+				if (act == null) {
+					this.add(creerTextArea("activité supprimée"), gc);						
+				}
+				else {
 				Projet proj = entreprise.getProjetDeActiviteParId(act.getId());
 				this.add(creerTextArea(act.getTitre()+" - "+proj.getNom()), gc);						
 			}
-			
+			}
 			if (ticket.getAction() == Ticket.TRANSFERT || ticketTest != null ) {
 				
 				Activite activiteArrive= entreprise.getActiviteDepartLiberation(ticketTest.getId());
@@ -178,8 +182,13 @@ public class FenetreInfoTicket extends JDialog{
 				gc.fill = GridBagConstraints.HORIZONTAL;
 				gc.gridwidth = GridBagConstraints.REMAINDER;
 				gc.gridx ++;
+				if (activiteDepart == null) {
+					this.add(creerTextArea("activité supprimée"), gc);						
+
+				}
+				else {
 				this.add(creerTextArea(activiteDepart.toString()), gc);						
-				gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+				}				gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 				gc.gridx = 0;
 				gc.gridy  ++;
 				gc.gridwidth = 1;
@@ -187,7 +196,13 @@ public class FenetreInfoTicket extends JDialog{
 				gc.fill = GridBagConstraints.HORIZONTAL;
 				gc.gridwidth = GridBagConstraints.REMAINDER;
 				gc.gridx ++;
+				if (activiteArrive == null) {
+					this.add(creerTextArea("activité supprimée"), gc);						
+
+				}
+				else {
 				this.add(creerTextArea(activiteArrive.toString()), gc);						
+				}
 			}
 			
 		}
