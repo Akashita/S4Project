@@ -38,7 +38,7 @@ public class FenetreInfoTicket extends JDialog{
 		super(entreprise.getFenetrePrincipale(), "Information du ticket");
 		this.entreprise = entreprise;
 		this.ticket  = ticket;
-		this.entreprise.setStatutTicket(Ticket.ENCOURS, this.ticket);
+		this.entreprise.setStatutTicket(Ticket.VU, this.ticket);
 		couleurFond = PanelPrincipal.BLEU2;
 		this.setSize(300, 400);
 		this.setLocationRelativeTo(null);

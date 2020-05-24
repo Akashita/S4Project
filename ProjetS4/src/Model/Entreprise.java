@@ -2173,8 +2173,8 @@ public class Entreprise extends Observable{
 
 	/**
 	 * Change dans la bdd le statut du ticket
-	 * On passe le statut ENCOURS uniquement si le ticket est NONVU
-	 * On passe le statut ACCEPTER ou REFUSER uniquement si le ticket est ENCOURS
+	 * On passe le statut VU uniquement si le ticket est NONVU
+	 * On passe le statut ACCEPTER ou REFUSER uniquement si le ticket est VU
 	 * @param statut sera le nouveau statut du ticket
 	 * @param ticket
 	 */
@@ -2182,7 +2182,7 @@ public class Entreprise extends Observable{
 		if (ticket.getStatut() == Ticket.NONVU) {
 			
 		}
-		if (ticket.getStatut() == Ticket.ENCOURS) {
+		if (ticket.getStatut() == Ticket.VU) {
 		}
 		asdasd
 	}
