@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,22 +64,9 @@ public class PanelTache extends JPanel {
 	
 	private void afficheInterface() {
 		ticketTab = ticketRecuTab = ticketEnvTab = new ArrayList<Ticket>();
-		try {
-			ticketTab = JavaSQLTicket.affiche();
-
-			for (int i = 0; i < ticketTab.size(); i++) {
-					if (entreprise.getUser().getId() == ticketTab.get(i).getIdReceveur()) {
-						ticketRecuTab.add(ticketTab.get(i));
-					}
-					else if (entreprise.getUser().getId() == ticketTab.get(i).getIdEnvoyeur()) {
-						ticketEnvTab.add(ticketTab.get(i));
-
-					}
 		
-		}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
+		ticketRecuTab = entreprise.getListeTicketRecuDeUser(entreprise.getUser().getId());
+		ticketEnvTab = entreprise.getListeTicketEnvoyeDeUser(entreprise.getUser().getId());
 
 		
 		this.setLayout(new GridBagLayout());
@@ -120,7 +108,7 @@ public class PanelTache extends JPanel {
 	private JPanel panelIcon(int tache) {
 		JPanel p = new JPanel();
 		p.setBackground(couleurFond);
-		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		p.setLayout(new GridLayout(2,1,5,5));
 		p.add(creerIcon(tache));
 		int nbNotif = 0;
 		switch (tache) {
@@ -136,11 +124,14 @@ public class PanelTache extends JPanel {
 			break;
 		}
 		if (nbNotif > 0) {
+			JPanel panelNotif = new JPanel() ;
+			panelNotif.setBackground(PanelPrincipal.NOTIFICATION);
 			JLabel notif = new JLabel();
 			notif.setText(Integer.toString(nbNotif));
 			notif.setForeground(PanelPrincipal.BLANC);
-			notif.setBackground(PanelPrincipal.NOTIFICATION);
-			p.add(notif);
+			notif.setFont(new Font("Arial", Font.BOLD, 15));
+			panelNotif.add(notif);
+			p.add(panelNotif);
 		}
 
 		return p;
@@ -200,7 +191,7 @@ public class PanelTache extends JPanel {
 		
 		
 		JPanel p = new JPanel();
-		
+		p.setBackground(couleurFond);
 		this.add(p, gcPrincipale);
 		
 		p.setLayout(new GridBagLayout());
@@ -214,7 +205,7 @@ public class PanelTache extends JPanel {
 		
 		//tickets recu
 		gc.gridheight = 1;
-		p.add(creerLabel("Ticket recus", true), gc);
+		p.add(creerLabel("Ticket reçus", true), gc);
 
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.fill = GridBagConstraints.BOTH;
@@ -228,7 +219,7 @@ public class PanelTache extends JPanel {
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridheight = 1;
 		gc.gridy = 3;
-		p.add(creerLabel("Ticket envoye", true), gc);
+		p.add(creerLabel("Ticket envoyés", true), gc);
 
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy = 4;

@@ -2247,10 +2247,9 @@ public class Entreprise extends Observable{
 		try {
 			JavaSQLTicket.modifieStatut(ticket.getId(), statut);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+		update();
 	}
 	
 	public void accepteTicket(int idT) {

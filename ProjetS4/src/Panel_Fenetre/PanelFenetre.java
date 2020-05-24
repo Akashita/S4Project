@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -29,7 +30,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
+import javax.swing.border.Border;
 
 import Fenetre.FenetreModal;
 import Model.Activite;
@@ -530,6 +531,9 @@ public class PanelFenetre extends JPanel{
 		calendrier2 = new Calendrier(this, pf, Temps.getAujourdhui());
 		initialiseTextFieldLogin(pf);
 		textArea = new JTextArea();
+		Border border = BorderFactory.createLineBorder(Color.BLACK);
+		textArea.setBorder(BorderFactory.createCompoundBorder(border,
+	            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 	}
 	
 	protected void actualiseTicket(PanelFenetre pf) {

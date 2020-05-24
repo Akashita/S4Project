@@ -8,10 +8,12 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.border.Border;
 
 import GestionTicket.Ticket;
 import Model.Entreprise;
@@ -51,14 +53,14 @@ public class FenetreInfoTicket extends JDialog{
 	}
 	
 	private void initialiseBouton() {
-		boutonAccepter = new JButton("Voir les reunions");
+		boutonAccepter = new JButton("Accepter");
 		boutonAccepter.setBackground(PanelPrincipal.ACCEPTER);
 		boutonAccepter.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
 	        	actionBoutonAccepter();
 	        }
 	    });			
-		boutonRefuser = new JButton("Voir les reunions");
+		boutonRefuser = new JButton("Refuser");
 		boutonRefuser.setBackground(PanelPrincipal.REFUSER);
 		boutonRefuser.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
@@ -133,7 +135,7 @@ public class FenetreInfoTicket extends JDialog{
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
 		gc.gridy  ++;
-		gc.gridwidth = 1;
+		gc.gridwidth = 2;
 		this.add(creerTexte("MESSAGE"), gc);
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
@@ -142,21 +144,27 @@ public class FenetreInfoTicket extends JDialog{
 		this.add(creerTextArea(ticket.getMessage()), gc);			
 		
 		
-		gc.gridwidth = 1;
-		gc.gridheight = 1;
-		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
-		gc.gridx = 1;
-		gc.gridy ++;
-		this.add(boutonRefuser, gc);		
-		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
-		gc.gridx = 2;
-		this.add(boutonAccepter, gc);
+		if (ticket.getStatut() == Ticket.VU) {
+			gc.gridwidth = 1;
+			gc.gridheight = 1;
+			gc.ipadx = gc.anchor = GridBagConstraints.EAST;
+			gc.gridx = 1;
+			gc.gridy ++;
+			this.add(boutonRefuser, gc);		
+			gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+			gc.gridx = 2;
+			this.add(boutonAccepter, gc);
+		}
 	}
 	
 	private JTextArea creerTextArea(String text) {
 		JTextArea jta = new JTextArea();
 		jta.setText(text);
 		jta.setEditable(false);
+		Border border = BorderFactory.createLineBorder(Color.BLACK);
+		jta.setBorder(BorderFactory.createCompoundBorder(border,
+	            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+
 		return jta;
 	}
 	
@@ -168,7 +176,7 @@ public class FenetreInfoTicket extends JDialog{
 	
 	protected JLabel creerTexte(String titre) {
 		JLabel label = new JLabel(titre);
-		label.setFont(new Font("Arial", Font.PLAIN, 15));
+		label.setFont(new Font("Arial", Font.BOLD, 15));
 		label.setBackground(Color.BLUE);
 		return label;
 	}

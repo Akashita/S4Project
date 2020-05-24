@@ -168,11 +168,11 @@ public class Ticket {
 		String s = "";
 		switch (statut) {
 		case NONVU:
-			s = "non lue";
+			s = "non lu";
 			break;
 
 		case VU:
-			s = "lue";
+			s = "lu";
 			break;
 
 		case ACCEPTEE:
