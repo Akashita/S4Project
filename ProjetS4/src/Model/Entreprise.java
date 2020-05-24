@@ -673,6 +673,22 @@ public class Entreprise extends Observable{
 
 	//------------------------------>>>>> Retourne element de la bdd
 
+	
+	public ArrayList<Activite> getListeActivite(){
+		ArrayList<Activite> personneTab = new ArrayList<Activite>();
+		try {
+			personneTab = JavaSQLRecherche.recupereListeActivite();
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			return personneTab ;
+	}
+	
+	
+	
 	/**
 	 * Cherche toute les ressource du type choisi de l'entreprise de la bdd
 	 * @param type de la ressource
