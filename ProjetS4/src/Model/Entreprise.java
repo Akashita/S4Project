@@ -612,7 +612,7 @@ public class Entreprise extends Observable{
 		int ordre = act.getOrdre();
 		LocalDateTime premierLibre = edtCourant.getPremiereCreneauApresAct(ordre);
 
-		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp)) || ordre == 0;
+		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp));
 	}
 
 
