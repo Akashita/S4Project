@@ -113,7 +113,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridy ++;
 		gc.gridwidth = 1;
 		gc.gridheight = 1;
-		this.add(creerTexte("Ressource concern� : "), gc);
+		this.add(creerTexte("Ressource concernée : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
@@ -139,7 +139,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridy ++;
 		gc.gridwidth = 1;
 		gc.gridheight = 1;
-		this.add(creerTexte("Ressource concern� : "), gc);
+		this.add(creerTexte("Ressource concernée : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
@@ -149,7 +149,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy ++;
 		gc.gridwidth = 1;
-		this.add(creerTexte("Projet concern� : "), gc);
+		this.add(creerTexte("Projet concernée : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
@@ -190,7 +190,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 				}
 			}
 			else {
-			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login du destinataire", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			   	JOptionPane.showMessageDialog(null, "Veuillez écrire le login du destinataire", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 			break;
 
@@ -234,7 +234,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 				}
 			}
 			else {
-			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			   	JOptionPane.showMessageDialog(null, "Veuillez écrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 			break;
 
@@ -250,10 +250,10 @@ public class PanelNouveauTicket  extends PanelFenetre{
 			s = "message";
 			break;
 		case Ticket.LIBERE:
-			s = "liberer" ;
+			s = "libérer" ;
 			break;
 		case Ticket.TRANSFERT:
-			s = "transferer";
+			s = "transférer";
 			break;
 
 		default:
