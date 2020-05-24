@@ -518,8 +518,6 @@ public class PanelFenetre extends JPanel{
 	//----------------------------------------------------->>>> Gesion ticket
 
 	protected void initialiseTicket(PanelFenetre pf) {
-		//afficherDateDebut =  afficherDateFin = false;
-		comboBoxActivite = new JComboBox<Activite>();
 		comboBoxActionTicket = new JComboBox<String>(actionTicket);
 		comboBoxActionTicket.addActionListener (new ActionListener () {
 			@Override
@@ -527,73 +525,55 @@ public class PanelFenetre extends JPanel{
 				nouvelleAction(pf);
 			}
 		});	    
-		calendrier1 = new Calendrier(this, pf, Temps.getAujourdhui());
-		calendrier2 = new Calendrier(this, pf, Temps.getAujourdhui());
-		initialiseTextFieldLogin(pf);
+		comboBoxType.addActionListener (new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				majComboBoxRessourceTicket(pf);
+			}
+		});	    
+		comboBoxRessource = new JComboBox<Ressource>();
+		comboBoxRessource.addActionListener (new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				majComboBoxActivite(pf);
+			}
+		});	  
+		comboBoxActivite = new JComboBox<Activite>();
 		textArea = new JTextArea();
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		textArea.setBorder(BorderFactory.createCompoundBorder(border,
 	            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		majComboBoxRessourceTicket(pf);
+
 	}
 	
-	protected void actualiseTicket(PanelFenetre pf) {
-		afficherDateDebut =  afficherDateFin = false;
-		initialiseTextFieldLogin(pf);		
+	
+	protected void majComboBoxRessourceTicket(PanelFenetre pf) {
+		ArrayList<Ressource> listeRessource = entreprise.getListeRessourceEntrepriseParType(typeChoisi);
+		Ressource [] tabRes = new Ressource[listeRessource.size()];
+		for (int i=0; i<tabRes.length; i++) {
+			tabRes[i] = listeRessource.get(i);
+		}	
+		comboBoxRessource = new JComboBox<Ressource>(tabRes);
+		maj(pf);
 	}
 
 	
 	
-	protected void initialiseTextFieldLogin(PanelFenetre pf) {
-    	textFieldLogin = new JTextField("nom#id");
-    	textFieldLogin.getFont().deriveFont(Font.ITALIC);
-    	textFieldLogin.setForeground(PanelPrincipal.GRIS2);
-    	textFieldLogin.addMouseListener(new MouseListener() {           
-			@Override
-			public void mouseClicked(MouseEvent e) {
-    	        JTextField texteField = ((JTextField)e.getSource());
-    	        texteField.setText("");
-    	        texteField.getFont().deriveFont(Font.PLAIN);
-    	        texteField.setForeground(PanelPrincipal.NOIR);
-    	        texteField.removeMouseListener(this);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-    	});
-    	textFieldLogin.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {alreadyPressed = false;}
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (!alreadyPressed) {
-					alreadyPressed = true;
-					if (textFieldCapacite.getText().indexOf(Entreprise.SEPARATEUR)!=-1) {
-						majComboBoxProjet(pf);
-					}
-				}
-			}
-		});
-	}
-	
-	protected void majComboBoxProjet(PanelFenetre pf) {
-		String login = textFieldCapacite.getText();
+	protected void majComboBoxActivite(PanelFenetre pf) {
 		int type = comboBoxType.getSelectedIndex();
-		ArrayList<Activite> l = entreprise.getListeActivitetdeRessourceParLogin(type, login);
-		
-		comboBoxActivite = new JComboBox<Activite>((Activite[]) l.toArray());			
-		maj(pf);
+		Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
+			ArrayList<Activite> l = entreprise.getListeActivitetdeRessourceParId(type, r.getId());
+			Activite [] t = new Activite[l.size()];
+			for (int i=0; i<t.length; i++) {
+				t[i] = l.get(i);
+			}	
+			comboBoxActivite = new JComboBox<Activite>(t);			
+		//maj(pf);
 	}
 	
 	protected void nouvelleAction(PanelFenetre pf) {
 		actionChoisie = comboBoxActionTicket.getSelectedIndex();
-		actualiseTicket(this);
 		maj(pf);
 	}
 

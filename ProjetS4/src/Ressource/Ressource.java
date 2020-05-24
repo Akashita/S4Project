@@ -82,7 +82,20 @@ public class Ressource implements Comparable<Ressource>{
 		String apresSeparateur = regex[1];
 		return Integer.parseInt(apresSeparateur);
 	}
-
+	
+	public static boolean estUnLogin(String s) {
+		boolean b = false;
+	    char ch;
+		if (s.indexOf(Entreprise.SEPARATEUR)!=-1) {			//verifie qu'il y a '#'
+		    for(int i=0;i < s.length();i++) {
+		        ch = s.charAt(i);
+		        if( Character.isDigit(ch)) { // si il y a un nombre
+		            b = true;
+		        }
+		    }
+		}
+		return b;
+	}
 }
 
 

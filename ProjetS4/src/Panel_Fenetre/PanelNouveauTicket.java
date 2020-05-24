@@ -113,7 +113,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridy ++;
 		gc.gridwidth = 1;
 		gc.gridheight = 1;
-		this.add(creerTexte("Ressource concern� : "), gc);
+		this.add(creerTexte("Ressource concerné : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
@@ -125,12 +125,13 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-		gc.gridx ++;
+		gc.gridx=0;
 		gc.gridy ++;
-		gc.gridwidth = GridBagConstraints.RELATIVE;
+		gc.gridwidth = 1;
 		this.add(creerTitre("Type de la ressource"), gc);
 		
 		gc.gridx ++;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
 		initialiseComboBoxType(this); 
 		this.add(comboBoxType, gc);
 
@@ -139,20 +140,22 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridy ++;
 		gc.gridwidth = 1;
 		gc.gridheight = 1;
-		this.add(creerTexte("Ressource concern� : "), gc);
+		this.add(creerTitre("Ressource concerné : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(textFieldLogin, gc);
+		this.add(comboBoxRessource, gc);
 
+		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.gridx = 0;
 		gc.gridy ++;
 		gc.gridwidth = 1;
-		this.add(creerTexte("Projet concern� : "), gc);
+		this.add(creerTitre("Activité concerné : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
+		majComboBoxActivite(this);
 		this.add( comboBoxActivite, gc);
 		
 	}
