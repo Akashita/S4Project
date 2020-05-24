@@ -205,7 +205,7 @@ public class PanelTache extends JPanel {
 		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridheight = 1;
 		gc.gridx = 0;
-		gc.gridy ++;
+		gc.gridy = 0;
 		p.add(afficheTitreEtList("Tickets reçus", ticketRecuTab),gc);
 
 		
@@ -214,7 +214,7 @@ public class PanelTache extends JPanel {
 		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridheight = 1;
 		gc.gridx = 0;
-		gc.gridy = 0;
+		gc.gridy ++;
 		p.add(afficheTitreEtList("Tickets envoyés", ticketEnvTab),gc);
 
 		
