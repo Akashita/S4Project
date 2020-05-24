@@ -57,7 +57,7 @@ public final class JavaSQLActivite extends JavaSQL{
 							 }
 						 }
 						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getFloat("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom));
-
+						 System.out.println("activité = " + res.getInt("idA") + "- "+ res.getString("titre") +"- "+ res.getFloat("charge") +"- "+ debut +"- "+  res.getInt("ordre") +"- "+ listeDom);
 					 }
 				 }
 			} catch(SQLException e){
