@@ -16,7 +16,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 import GestionTicket.Ticket;
+import Model.Activite;
 import Model.Entreprise;
+import Model.Projet;
 import Panel.PanelPrincipal;
 
 
@@ -98,7 +100,7 @@ public class FenetreInfoTicket extends JDialog{
 		GridBagConstraints gc = new GridBagConstraints();
 		
 		gc.weightx = 3;
-		gc.weighty = 6;
+		gc.weighty = 8;
 
 		
 		gc.fill = GridBagConstraints.CENTER;
@@ -133,6 +135,41 @@ public class FenetreInfoTicket extends JDialog{
 		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridx ++;
 		this.add(creerTextArea(ticket.getPersonneReceveur().getPrenomNom()), gc);			
+
+		if (ticket.getAction() == Ticket.LIBERE) {
+			gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+			gc.gridx = 0;
+			gc.gridy  ++;
+			gc.gridwidth = 1;
+			this.add(creerTexte("Activité d'origine : "), gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridwidth = GridBagConstraints.REMAINDER;
+			gc.gridx ++;
+			Activite act = entreprise.getActiviteDepartLiberation(ticket.getId());
+			Projet proj = entreprise.getProjetDeActiviteParId(act.getId());
+			this.add(creerTextArea(act.getTitre()+" - "+proj.getNom()), gc);						
+		}
+		
+		if (ticket.getAction() == Ticket.TRANSFERT) {
+			gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+			gc.gridx = 0;
+			gc.gridy  ++;
+			gc.gridwidth = 1;
+			this.add(creerTexte("Activité d'origine : "), gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridwidth = GridBagConstraints.REMAINDER;
+			gc.gridx ++;
+			this.add(creerTextArea(ticket.get, gc);						
+			gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+			gc.gridx = 0;
+			gc.gridy  ++;
+			gc.gridwidth = 1;
+			this.add(creerTexte("Activité d'arrivé : "), gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridwidth = GridBagConstraints.REMAINDER;
+			gc.gridx ++;
+			this.add(creerTextArea(ticket.get, gc);						
+		}
 
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
