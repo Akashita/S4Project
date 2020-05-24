@@ -54,7 +54,7 @@ public class PanelConge extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(creerTitre("Conges existants"), gc);
+		this.add(creerTitre("Congés existants"), gc);
 		
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridheight = GridBagConstraints.RELATIVE;

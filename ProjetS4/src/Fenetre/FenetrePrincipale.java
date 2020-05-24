@@ -63,7 +63,7 @@ public class FenetrePrincipale extends JFrame{
 		JMenu menuFichier = new JMenu("Fichier");
 		JMenu menuEditer = new JMenu("Editer");
 		JMenu menuModifier = new JMenu("Modifier");
-		JMenu menuPropos = new JMenu("A propos");
+		JMenu menuPropos = new JMenu("à propos");
 		JMenu menuCompte = new JMenu(entreprise.getUser().getPrenomNom());
 		
 
@@ -129,7 +129,7 @@ public class FenetrePrincipale extends JFrame{
 	    itemInfoCompte.setAccelerator(ctrlInfoCompte);
 	    itemInfoCompte.addActionListener(new MenuBarListener(entreprise, InformationCompte));
 
-	    JMenuItem itemDeconnexion = new JMenuItem("Deconnexion", KeyEvent.VK_D);
+	    JMenuItem itemDeconnexion = new JMenuItem("Déconnexion", KeyEvent.VK_D);
 	    KeyStroke ctrlDeconnexion = KeyStroke.getKeyStroke("control D");
 	    itemDeconnexion.setAccelerator(ctrlDeconnexion);
 	    itemDeconnexion.addActionListener(new MenuBarListener(entreprise, Deconnexion));

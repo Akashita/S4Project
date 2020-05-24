@@ -11,6 +11,7 @@ import GestionTicket.Ticket;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
+import Ressource.Ressource;
 
 /**
  *  Affiche les information a saisir pour creer un ticket
@@ -108,16 +109,28 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		initialiseComboBoxType(this); 
 		this.add(comboBoxType, gc);
 		
-		gc.fill = GridBagConstraints.WEST;
+		gc.fill = GridBagConstraints.CENTER;
 		gc.gridx = 0;
 		gc.gridy ++;
 		gc.gridwidth = 1;
 		gc.gridheight = 1;
-		this.add(creerTexte("Ressource concern� : "), gc);
+		this.add(creerTexte("Ressource concernée : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(textFieldLogin, gc);
+		this.add(comboBoxRessource, gc);
+
+		
+		gc.fill = GridBagConstraints.CENTER;
+		gc.gridx = 0;
+		gc.gridy ++;
+		gc.gridwidth = 1;
+		this.add(creerTexte("Activité concernée : "), gc);
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.gridx ++;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		//majComboBoxActivite(this);
+		this.add(comboBoxActivite2, gc);
 
 	}
 	
@@ -125,12 +138,13 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-		gc.gridx ++;
+		gc.gridx=0;
 		gc.gridy ++;
-		gc.gridwidth = GridBagConstraints.RELATIVE;
+		gc.gridwidth = 1;
 		this.add(creerTitre("Type de la ressource"), gc);
 		
 		gc.gridx ++;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
 		initialiseComboBoxType(this); 
 		this.add(comboBoxType, gc);
 
@@ -139,20 +153,22 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridy ++;
 		gc.gridwidth = 1;
 		gc.gridheight = 1;
-		this.add(creerTexte("Ressource concern� : "), gc);
+		this.add(creerTexte("Ressource concernée : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(textFieldLogin, gc);
+		this.add(comboBoxRessource, gc);
 
+		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.gridx = 0;
 		gc.gridy ++;
 		gc.gridwidth = 1;
-		this.add(creerTexte("Projet concern� : "), gc);
+		this.add(creerTexte("Activité d'origine : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
+		//majComboBoxActivite(this);
 		this.add( comboBoxActivite, gc);
 		
 	}
@@ -190,52 +206,26 @@ public class PanelNouveauTicket  extends PanelFenetre{
 				}
 			}
 			else {
-			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login du destinataire", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			   	JOptionPane.showMessageDialog(null, "Veuillez écrire le login du destinataire", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 			break;
 
 		case Ticket.LIBERE:
-			if (!textFieldLogin.getText().isEmpty()) {
-				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
-					
+					Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
 					Activite act = (Activite) comboBoxActivite.getSelectedItem();
 					Projet p =  entreprise.getProjetDeActiviteParId(act.getId());
-					int type = comboBoxType.getSelectedIndex();
-					String login = textFieldLogin.getText();
 				
-					entreprise.nouvTicketLiberation(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
-							entreprise.getRessourceParLogin(type, login), act);
+					entreprise.nouvTicketLiberation(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(), r, act);
 					fm.dispose();
-				}
-				else {
-				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
-				}
-
-			}
-			else {
-			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
-			}
 			break;
 
 		case Ticket.TRANSFERT:
-			if (!textFieldLogin.getText().isEmpty()) {
-				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
-	
-					Activite act = (Activite) comboBoxActivite.getSelectedItem();
-					Projet p =  entreprise.getProjetDeActiviteParId(act.getId());
-					int type = comboBoxType.getSelectedIndex();
-					String login = textFieldLogin.getText();
+					Ressource r1 = (Ressource) comboBoxRessource.getSelectedItem();
+					Activite act1 = (Activite) comboBoxActivite2.getSelectedItem();
+					Projet p1 =  entreprise.getProjetDeActiviteParId(act1.getId());
 					
-					entreprise.nouvTicketTransfert(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(), entreprise.getRessourceParLogin(type, login), act);
+					entreprise.nouvTicketTransfert(sujet(), textArea.getText(), entreprise.getUser().getId(), p1.getChefDeProjet().getId(), r1, act1);
 					fm.dispose();
-				}
-				else {
-				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
-				}
-			}
-			else {
-			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
-			}
 			break;
 
 		default:

@@ -95,7 +95,7 @@ public class PanelInfoRessource extends JPanel{
 	        }
 	    });			
 
-		boutonConge = new JButton("Voir les conges");
+		boutonConge = new JButton("Voir les congés");
 		boutonConge.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
 	        	actionBoutonConge();
@@ -184,10 +184,10 @@ public class PanelInfoRessource extends JPanel{
 		
 		if (ressource.getType() == Ressource.PERSONNE) {
 			gc.gridy ++;
-			this.add(labelInfo("Prenom : " + prenom), gc);
+			this.add(labelInfo("Prénom : " + prenom), gc);
 
 			gc.gridy ++;
-			this.add(labelInfo("Role : " + role), gc);		
+			this.add(labelInfo("Rôle : " + role), gc);		
 			
 			gc.gridy ++;
 			this.add(labelInfo("Login : " + login), gc);
@@ -203,7 +203,7 @@ public class PanelInfoRessource extends JPanel{
 		
 		if (ressource.getType() == Ressource.SALLE) {
 			gc.gridy ++;
-			this.add(labelInfo("Capacite : " + capacite), gc);			
+			this.add(labelInfo("Capacité : " + capacite), gc);			
 		}
 		
 		gc.gridy ++;
@@ -248,7 +248,7 @@ public class PanelInfoRessource extends JPanel{
 
 		
 		if (ressource.getType() == Ressource.PERSONNE) {
-			this.add(panelJtextfield("Prenom : ",textFieldPrenom), gc);
+			this.add(panelJtextfield("Prénom : ",textFieldPrenom), gc);
 			gc.gridy ++;
 			this.add(panelJtextfield("Nom : ",textFieldNom), gc);
 
@@ -394,7 +394,7 @@ public class PanelInfoRessource extends JPanel{
 					maj();
 				}	
 				else {
-			    	JOptionPane.showMessageDialog(null, "Vous l'avez dejae choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Vous l'avez déjà choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
@@ -402,7 +402,7 @@ public class PanelInfoRessource extends JPanel{
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Choissisez une competence", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Choissisez une compétence", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 		
 	}
@@ -644,7 +644,7 @@ public class PanelInfoRessource extends JPanel{
 					entreprise.modifPersonne((Personne) ressource, nom, prenom, role, mdp, listeComp);
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Veillez ecrire son prenom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veillez écrire son prenom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			if (ressource.getType() == Ressource.SALLE) {
@@ -653,7 +653,7 @@ public class PanelInfoRessource extends JPanel{
 					entreprise.modifSalle((Salle) ressource, nom, capacite);
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veillez écrire un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			if (ressource.getType() == Ressource.CALCULATEUR) {
@@ -661,7 +661,7 @@ public class PanelInfoRessource extends JPanel{
 			}	
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veillez écrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 
 		
@@ -679,7 +679,7 @@ public class PanelInfoRessource extends JPanel{
 
 	private void actionBoutonSupprimer() {
 		modeModification = false;
-		String texte = "<html> etes-vous sur de vouloir supprimer cette ressource ? <br> La suppression de cette ressource supprimera tout son contenu. </html>";
+		String texte = "<html> êtes-vous sur de vouloir supprimer cette ressource ? <br> La suppression de cette ressource supprimera tout son contenu. </html>";
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
 			if (entreprise.ressourceTravailleDansUnProjetParId(ressource.getType(), ressource.getId())) {
@@ -687,7 +687,7 @@ public class PanelInfoRessource extends JPanel{
 				fir.dispose();				
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Cette ressource est attache aux act/projets suivant (pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Cette ressource est attachée aux activitées/projets suivant (pas encore implementé)", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}		
 		maj();

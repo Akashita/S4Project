@@ -72,8 +72,10 @@ public class JavaSQLTicket extends JavaSQL{
 						try (ResultSet res2 = stmt2.executeQuery(sql2)){
 							 res2.next();
 							 for(int i = 0; i<liste.size(); i++) {
-									JavaSQLTicket.insertion(Ticket.LIBERE, sujet, message, numSalarieEnv, (JavaSQLRecherche.recupereChefDeProjetParIdActivite(liste.get(i).getId()).getId()), r,null,liste.get(i),JavaSQLRecherche.recupereTicketParId(res2.getInt(1)));
-
+								 int receveur = (JavaSQLRecherche.recupereChefDeProjetParIdActivite(liste.get(i).getId())).getId();
+								 if (numSalarieEnv != receveur) {
+									JavaSQLTicket.insertion(Ticket.LIBERE, sujet, message, numSalarieEnv, receveur, r,null,liste.get(i),JavaSQLRecherche.recupereTicketParId(res2.getInt(1)));
+								 }
 							 }
 						 }
 						
@@ -95,15 +97,29 @@ public class JavaSQLTicket extends JavaSQL{
 	 }
 	 
 	 
-	 public static void modifieStatut(int idT, int statut) throws SQLException {
-		 try{
-			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Ticket SET statut= '" + statut + "' WHERE idT= '"+ idT+"';";
-			 stmt.executeUpdate(sql);
-		} catch(SQLException e){
-			e.printStackTrace();
-		}
+	 public static void modifieStatut(Ticket ticket, int statut) throws SQLException {
+		 if (ticket.getStatut() == Ticket.NONVU && statut == Ticket.VU) {
+			 try{
+				 Statement stmt = getCon().createStatement();
+				 String sql = "UPDATE Ticket SET statut= '" + statut + "' WHERE idT= '"+ ticket.getId()+"';";
+				 stmt.executeUpdate(sql);
+			} catch(SQLException e){
+				e.printStackTrace();
+			}			 
+		 }
+		 if (ticket.getStatut() == Ticket.VU) {			 
+			if( statut == Ticket.ACCEPTEE || statut == Ticket.REFUSE) {
+				 try{
+					 Statement stmt = getCon().createStatement();
+					 String sql = "UPDATE Ticket SET statut= '" + statut + "' WHERE idT= '"+ ticket.getId()+"';";
+					 stmt.executeUpdate(sql);
+				} catch(SQLException e){
+					e.printStackTrace();
+				}		 				
+			}
+		 }
 	}
+	 
 	public static String toString(String sujet ,String message ,String modif ,LocalDate dateTicket, int statut,int numSalarieEnv ,int numSalarieRec) {
 		return "nom : " + sujet+message+modif+dateTicket+statut+numSalarieEnv+numSalarieRec; 
 	}

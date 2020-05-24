@@ -85,7 +85,7 @@ public class PanelInfoProjet extends JPanel{
 		String nom = projet.getChefDeProjet().getPrenom() + " " + projet.getChefDeProjet().getNom();
 		p.add(creerLabel("Chef de projet: "+ nom), gc);
 		gc.gridx = 1;
-		p.add(creerLabel("Priorite: "+(int)projet.getPriorite()), gc);
+		p.add(creerLabel("Priorité: "+(int)projet.getPriorite()), gc);
 		gc.gridx = 2;
 		
 		LocalDate deadline = projet.getDeadline();

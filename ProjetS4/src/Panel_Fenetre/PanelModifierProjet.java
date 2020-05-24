@@ -88,7 +88,7 @@ public class PanelModifierProjet extends PanelFenetre{
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
 		gc.gridy = 2;
-		this.add(creerTexte("Priorite"), gc);
+		this.add(creerTexte("Priorité"), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridwidth = 2;
 		gc.gridx = 1;
@@ -150,20 +150,20 @@ public class PanelModifierProjet extends PanelFenetre{
 					fm.dispose();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veuillez écrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Veillez ecrire sa priorit�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veuillez écrire sa priorité", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veuillez écrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 	
 	protected void supprimer() {
-		String texte = "<html> �tes-vous sur de vouloir supprimer ce projet ? <br> La suppression de ce projet supprimera tout son contenu. </html>";
+		String texte = "<html> êtes-vous sur de vouloir supprimer ce projet ? <br> La suppression de ce projet supprimera tout son contenu. </html>";
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
 			entreprise.supprimerProjet(entreprise.getProjetSelectionner());

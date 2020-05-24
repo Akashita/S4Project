@@ -749,6 +749,22 @@ public class Entreprise extends Observable{
 
 	//------------------------------>>>>> Retourne element de la bdd
 
+	
+	public ArrayList<Activite> getListeActivite(){
+		ArrayList<Activite> activiteTab = new ArrayList<Activite>();
+		try {
+			activiteTab = JavaSQLRecherche.recupereListeActivite();
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			return activiteTab ;
+	}
+	
+	
+	
 	/**
 	 * Cherche toute les ressource du type choisi de l'entreprise de la bdd
 	 * @param type de la ressource
@@ -2319,7 +2335,7 @@ public class Entreprise extends Observable{
 	 */
 	public void setStatutTicket(int statut, Ticket ticket) {	
 		try {
-			JavaSQLTicket.modifieStatut(ticket.getId(), statut);
+			JavaSQLTicket.modifieStatut(ticket, statut);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -2331,7 +2347,7 @@ public class Entreprise extends Observable{
 		try {
 			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
 		
-		String[] regex = modif.split(SEPARATEUR, 5); 
+		String[] regex = modif.split(Ticket.SEPARATEUR); 
 		int typeRessource = Integer.parseInt(regex[1]);
 		int idRessource = Integer.parseInt(regex[2]);
 		int idActiviteDepart = Integer.parseInt(regex[3]);

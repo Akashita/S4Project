@@ -71,7 +71,7 @@ public class PanelFenetre extends JPanel{
     protected JComboBox<String> comboBoxType = new JComboBox<String>(listeType);		
     protected JComboBox<Ressource> comboBoxRessource;		
 
-    private String [] niveau = {"niveau", "Debutant", "Confirme", "Expert"};
+    private String [] niveau = {"niveau", "Debutant", "Confirmé", "Expert"};
     protected JComboBox<String> comboBoxNiveau, comboBoxDomaine;		
     protected ArrayList<Competence> listeCompetenceChoisie;
     protected ArrayList<String> listeDomaineChoisi;
@@ -93,7 +93,7 @@ public class PanelFenetre extends JPanel{
     protected JScrollPane scrollPaneJListDomaine;
     protected JButton boutonSupprimerDomaine;
     
-    protected JComboBox<Activite> comboBoxActivite;
+    protected JComboBox<Activite> comboBoxActivite, comboBoxActivite2;
     
     protected JButton boutonAfficherDateDebut, boutonAfficherDateFin, boutonAjoutDate;
     protected boolean afficherDateDebut = false, afficherDateFin = false;
@@ -183,11 +183,11 @@ public class PanelFenetre extends JPanel{
 				maj(pf);
 				}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Ce domaine existe d�j�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Ce domaine existe déjà", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nom de domaine", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veillez écrire un nom de domaine", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 
 	}
@@ -198,7 +198,7 @@ public class PanelFenetre extends JPanel{
 			maj(pf);			
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null,"Des personnes ont ce domaine (liste de ces personnes pas encore implementé)", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}			
 	}
 
@@ -265,7 +265,7 @@ public class PanelFenetre extends JPanel{
 				maj(pf);
 				}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Il y a deja un conge a cette date", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Il y a déjà un congé a cette date", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 	}
 	
@@ -340,7 +340,7 @@ public class PanelFenetre extends JPanel{
 				maj(pf);
 				}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Il y a deja une reunion cette date", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Il y a déjà une réunion cette date", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}			
 	}
 	
@@ -387,7 +387,7 @@ public class PanelFenetre extends JPanel{
 					maj(pf);
 				}	
 				else {
-			    	JOptionPane.showMessageDialog(null, "Vous l'avez deja� choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Vous l'avez déjà choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
@@ -395,7 +395,7 @@ public class PanelFenetre extends JPanel{
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Choissisez une competence", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Choissisez une compétence", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 	
@@ -403,7 +403,7 @@ public class PanelFenetre extends JPanel{
 		JPanel panel = new JPanel();
 		panel.setBackground(couleurFond);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.add(creerTexte("Competences choisies: "));
+		panel.add(creerTexte("Compétences choisies: "));
 		for (int i=0; i<listeCompetenceChoisie.size(); i++) {
 			panel.add(creerTexte(listeCompetenceChoisie.get(i).getNom()));
 		}
@@ -419,7 +419,7 @@ public class PanelFenetre extends JPanel{
 
 		listeDomaine = entreprise.getListeDomaineEntreprise();
 		String [] liste = new String [listeDomaine.size()+1];
-		liste[0] = "Competence";
+		liste[0] = "Compétence";
 		for (int i=0; i<liste.length-1; i++) {
 			liste[i+1] = listeDomaine.get(i);
 		}
@@ -448,11 +448,11 @@ public class PanelFenetre extends JPanel{
 				maj(pf);
 			}	
 			else {
-			    JOptionPane.showMessageDialog(null, "Vous l'avez deja� choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    JOptionPane.showMessageDialog(null, "Vous l'avez déjà choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Choissisez une competence", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Choissisez une compétence", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 	
@@ -518,82 +518,79 @@ public class PanelFenetre extends JPanel{
 	//----------------------------------------------------->>>> Gesion ticket
 
 	protected void initialiseTicket(PanelFenetre pf) {
-		//afficherDateDebut =  afficherDateFin = false;
-		comboBoxActivite = new JComboBox<Activite>();
 		comboBoxActionTicket = new JComboBox<String>(actionTicket);
 		comboBoxActionTicket.addActionListener (new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				nouvelleAction(pf);
 			}
-		});	    
-		calendrier1 = new Calendrier(this, pf, Temps.getAujourdhui());
-		calendrier2 = new Calendrier(this, pf, Temps.getAujourdhui());
-		initialiseTextFieldLogin(pf);
+		});	 
+		
+		comboBoxType.addActionListener (new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				majComboBoxRessourceTicket(pf);
+			}
+		});
+		
+		comboBoxRessource = new JComboBox<Ressource>();
+		ArrayList<Ressource> listeRessource = entreprise.getListeRessourceEntrepriseParType(typeChoisi);
+		Ressource [] tabRes = new Ressource[listeRessource.size()];
+		for (int i=0; i<tabRes.length; i++) {
+			tabRes[i] = listeRessource.get(i);
+		}	
+		comboBoxRessource = new JComboBox<Ressource>(tabRes);
+		comboBoxRessource.addActionListener (new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				majComboBoxActivite(pf);
+			}
+		});	  
+		
+		comboBoxActivite = new JComboBox<Activite>();
+		ArrayList<Activite> lae = entreprise.getListeActivite();
+		Activite [] tae = new Activite[lae.size()];
+		for (int i=0; i<tae.length; i++) {
+			tae[i] = lae.get(i);
+		}	
+		comboBoxActivite2 = new JComboBox<Activite>(tae);
+		
 		textArea = new JTextArea();
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		textArea.setBorder(BorderFactory.createCompoundBorder(border,
 	            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		//majComboBoxRessourceTicket(pf);
+
 	}
 	
-	protected void actualiseTicket(PanelFenetre pf) {
-		afficherDateDebut =  afficherDateFin = false;
-		initialiseTextFieldLogin(pf);		
+	
+	protected void majComboBoxRessourceTicket(PanelFenetre pf) {
+		ArrayList<Ressource> listeRessource = entreprise.getListeRessourceEntrepriseParType(typeChoisi);
+		Ressource [] tabRes = new Ressource[listeRessource.size()];
+		for (int i=0; i<tabRes.length; i++) {
+			tabRes[i] = listeRessource.get(i);
+		}	
+		comboBoxRessource = new JComboBox<Ressource>(tabRes);
+		maj(pf);
 	}
 
 	
 	
-	protected void initialiseTextFieldLogin(PanelFenetre pf) {
-    	textFieldLogin = new JTextField("nom#id");
-    	textFieldLogin.getFont().deriveFont(Font.ITALIC);
-    	textFieldLogin.setForeground(PanelPrincipal.GRIS2);
-    	textFieldLogin.addMouseListener(new MouseListener() {           
-			@Override
-			public void mouseClicked(MouseEvent e) {
-    	        JTextField texteField = ((JTextField)e.getSource());
-    	        texteField.setText("");
-    	        texteField.getFont().deriveFont(Font.PLAIN);
-    	        texteField.setForeground(PanelPrincipal.NOIR);
-    	        texteField.removeMouseListener(this);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-    	});
-    	textFieldLogin.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {alreadyPressed = false;}
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (!alreadyPressed) {
-					alreadyPressed = true;
-					if (textFieldCapacite.getText().indexOf(Entreprise.SEPARATEUR)!=-1) {
-						majComboBoxProjet(pf);
-					}
-				}
-			}
-		});
-	}
-	
-	protected void majComboBoxProjet(PanelFenetre pf) {
-		String login = textFieldCapacite.getText();
+	protected void majComboBoxActivite(PanelFenetre pf) {
 		int type = comboBoxType.getSelectedIndex();
-		ArrayList<Activite> l = entreprise.getListeActivitetdeRessourceParLogin(type, login);
-		
-		comboBoxActivite = new JComboBox<Activite>((Activite[]) l.toArray());			
+		Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
+			ArrayList<Activite> l = entreprise.getListeActivitetdeRessourceParId(type, r.getId());
+			Activite [] t = new Activite[l.size()];
+			for (int i=0; i<t.length; i++) {
+				t[i] = l.get(i);
+			}	
+			comboBoxActivite = new JComboBox<Activite>(t);			
 		maj(pf);
 	}
 	
+	
 	protected void nouvelleAction(PanelFenetre pf) {
 		actionChoisie = comboBoxActionTicket.getSelectedIndex();
-		actualiseTicket(this);
 		maj(pf);
 	}
 

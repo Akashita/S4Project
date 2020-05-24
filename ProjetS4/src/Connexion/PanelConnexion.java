@@ -60,7 +60,7 @@ public class PanelConnexion extends JPanel{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Veillez entrer vos coordonnees"), gc);
+		this.add(creerTitre("Veuillez entrer vos coordonnées"), gc);
 		
 		//--------------- zone saisie
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
@@ -140,15 +140,15 @@ public class PanelConnexion extends JPanel{
 					fc.dispose();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Le login ou le mot de passe sont incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Le login et/ou le mot de passe est/sont incorrect/s", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Veuillez ecrire le mot de passe", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veuillez écrire le mot de passe", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Veuillez ecrire le login", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veuillez écrire le login", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}	
     }
     

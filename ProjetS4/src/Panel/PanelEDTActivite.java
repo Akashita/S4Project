@@ -223,7 +223,7 @@ public class PanelEDTActivite extends JPanel{
 			label.setText("Janvier");
 			break;
 		case 2:
-			label.setText("Fevrier");
+			label.setText("Février");
 			break;
 		case 3:
 			label.setText("Mars");
@@ -253,7 +253,7 @@ public class PanelEDTActivite extends JPanel{
 			label.setText("Novembre");
 			break;
 		case 12:
-			label.setText("Decembre");
+			label.setText("Décembre");
 			break;
 		
 		}

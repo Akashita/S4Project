@@ -35,12 +35,23 @@ public class FenetreInfoTicket extends JDialog{
 	private Color couleurFond;
 	private JButton boutonAccepter, boutonRefuser;
 	private Entreprise entreprise;
+	private boolean envoye;
 	
 	public FenetreInfoTicket(Entreprise entreprise, Ticket ticket) {
 		super(entreprise.getFenetrePrincipale(), "Information du ticket");
 		this.entreprise = entreprise;
 		this.ticket  = ticket;
-		this.entreprise.setStatutTicket(Ticket.VU, this.ticket);
+		if (ticket.getIdEnvoyeur() == entreprise.getUser().getId()) {
+			envoye = true;
+		}
+		else {
+			envoye = false;
+		}
+		
+		if (!envoye) {
+			this.entreprise.setStatutTicket(Ticket.VU, this.ticket);			
+		}
+
 		couleurFond = PanelPrincipal.BLEU2;
 		this.setSize(300, 400);
 		this.setLocationRelativeTo(null);
@@ -70,6 +81,7 @@ public class FenetreInfoTicket extends JDialog{
 	}
 	
 	public void actionBoutonAccepter() {
+		entreprise.accepteTicket(ticket.getId());
 		entreprise.setStatutTicket(Ticket.ACCEPTEE, ticket);
 		this.dispose();
 	}
@@ -144,16 +156,18 @@ public class FenetreInfoTicket extends JDialog{
 		this.add(creerTextArea(ticket.getMessage()), gc);			
 		
 		
-		if (ticket.getStatut() == Ticket.VU || ticket.getStatut() == Ticket.NONVU) {
-			gc.gridwidth = 1;
-			gc.gridheight = 1;
-			gc.ipadx = gc.anchor = GridBagConstraints.EAST;
-			gc.gridx = 1;
-			gc.gridy ++;
-			this.add(boutonRefuser, gc);		
-			gc.ipadx = gc.anchor = GridBagConstraints.WEST;
-			gc.gridx = 2;
-			this.add(boutonAccepter, gc);
+		if (!envoye) {
+			if (ticket.getStatut() == Ticket.VU || ticket.getStatut() == Ticket.NONVU) {
+				gc.gridwidth = 1;
+				gc.gridheight = 1;
+				gc.ipadx = gc.anchor = GridBagConstraints.EAST;
+				gc.gridx = 1;
+				gc.gridy ++;
+				this.add(boutonRefuser, gc);		
+				gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+				gc.gridx = 2;
+				this.add(boutonAccepter, gc);
+			}			
 		}
 	}
 	
