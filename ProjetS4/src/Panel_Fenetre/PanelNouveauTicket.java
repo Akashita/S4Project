@@ -221,7 +221,6 @@ public class PanelNouveauTicket  extends PanelFenetre{
 			break;
 
 		case Ticket.TRANSFERT:
-			if (!textFieldLogin.getText().isEmpty()) {
 				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
 	
 					Activite act = (Activite) comboBoxActivite.getSelectedItem();
@@ -235,10 +234,6 @@ public class PanelNouveauTicket  extends PanelFenetre{
 				else {
 				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
-			}
-			else {
-			   	JOptionPane.showMessageDialog(null, "Veuillez écrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
-			}
 			break;
 
 		default:
