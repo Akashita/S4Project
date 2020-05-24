@@ -393,6 +393,67 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 	
 	
+	public static ArrayList<Projet> recupereListeProjetTrieParPriorite() throws SQLException{
+		ArrayList<Projet> protab = new ArrayList<Projet>();
+		ArrayList<String> listeDom = new ArrayList<String>();
+		String sql = "SELECT * FROM Projet ORDER BY priorite;";
+		Personne personne;
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 String sql2 = "SELECT * FROM Personne WHERE numSalarie = " + res.getString("numSalarie") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+							 ArrayList<Competence> tagtab = new ArrayList<Competence>();
+							 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
+							 Statement stmt3 = getCon().createStatement();
+							 try (ResultSet res3 = stmt3.executeQuery(sqltag)){
+								 while(res3.next()) {
+									 tagtab.add(new Competence(res3.getString("tag"), res3.getInt("niveau")));
+								 }
+							 } 
+							 res2.next();
+							 personne  = new Personne(res2.getString("nom"), res2.getString("prenom"), res2.getString("role"), res2.getInt("numSalarie"), res2.getString("motDePasse"), tagtab);
+						 }
+						 
+						 
+						 ArrayList<Activite> acttab = new ArrayList<Activite>();
+						 String sql5 = "SELECT * FROM Activite WHERE idP = "  + res.getInt("idP") +";";
+								try{
+									 Statement stmt5 = getCon().createStatement();
+									 try (ResultSet res5 = stmt5.executeQuery(sql5)){
+										 while(res5.next()) {
+											 String sql6 = "SELECT tag FROM ListeDomaine WHERE idA = " + res5.getInt("idA") + ";";
+											 Statement stmt6 = getCon().createStatement();
+											 try (ResultSet res6 = stmt6.executeQuery(sql6)){
+												 while(res6.next()) {
+													 listeDom.add(res6.getString("tag"));
+												 }
+											 }
+											 LocalDate debut = res5.getDate("debut").toLocalDate();
+											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getFloat("charge"), debut, 
+													 new Color(res5.getInt("couleur")), res5.getInt("ordre"),listeDom));
+										 }
+									 }
+								} catch(SQLException e){
+									e.printStackTrace();
+								}
+						 LocalDate deadl = res.getDate("deadline").toLocalDate();
+						 protab.add(new Projet(acttab,personne, res.getString("nom"), res.getFloat("priorite"), deadl, res.getInt("idP"), 
+								 new Color(res.getInt("couleur"))));
+						 
+						
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return protab;
+
+	}
+	
+	
 	public static Projet recupereProjetParId(int idP) throws SQLException{
 		Projet projet = null;
 		ArrayList<String> listeDom = new ArrayList<String>();
