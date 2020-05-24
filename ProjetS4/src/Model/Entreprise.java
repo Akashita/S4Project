@@ -195,11 +195,16 @@ public class Entreprise extends Observable{
 	 * @param L'activitée concernée par la modification
 	 * @return la liste des EDT prévisionels
 	 */
-	private Hashtable<Pair<Integer, Integer>, EDT> generationPrevisionEDT(Operation operation, Ressource res, Activite act) {
+	private LocalDateTime[] generationPrevisionEDT(Operation operation, Ressource res, Activite act) {
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite;
+		
+		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise());
+		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne);
 
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = new Hashtable<Pair<Integer, Integer>, EDT>();
+		listeEDTPersonnes.putAll(creerLCongePersonnes(listeConge));
+
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
@@ -246,9 +251,7 @@ public class Entreprise extends Observable{
 						}
 					 }
 				 
-				 	Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listePersonnes);
-
-
+				 listeConge = creerHTConge(listePersonnes);
 				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge);
 				 //listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles);
 				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
@@ -258,9 +261,13 @@ public class Entreprise extends Observable{
 				 listeEDTComplete.putAll(listeEDTCalculateurs);
 			}
 		}
-		return listeEDTComplete;
+		 LocalDateTime[] ret = new LocalDateTime[2];
+		 Pair<LocalDateTime, LocalDateTime> bornes = getDebutFinActivite(listeEDTComplete, act);
+		 ret[0] = bornes.getLeft();
+		 ret[1] = bornes.getRight();
+		return ret;
 	}
-
+	
 
 	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
@@ -374,7 +381,7 @@ public class Entreprise extends Observable{
 					Personne persCourante = listePersonnes.get(i);
 					EDT edtCourant = getEDTRessource(persCourante.getType(), persCourante.getId(), listeEDTPersonnes);
 
-					if(verifierOrdre(edtCourant, act, jourCourant, heureCourante)) {
+					if(verifierOrdre(listeEDTPersonnes, act, jourCourant, heureCourante)) {
 						if(!estEnConge(listeConge.get(persCourante), jourCourant)) {
 							if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
 								String titreCreneau = proj.getNom() + " | " + act.getTitre();
@@ -607,12 +614,23 @@ public class Entreprise extends Observable{
 	 * @param L'EDT, l'activitée, le jour et l'heure concernés
 	 * @return true si c'est le cas
 	 */
-	private boolean verifierOrdre(EDT edtCourant, Activite act, LocalDate jour, int heure) {
-		LocalDateTime tmp = LocalDateTime.of(jour, LocalTime.of(heure, 0));
+	private boolean verifierOrdre(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act, LocalDate jour, int heure) {
+		LocalDateTime courant = LocalDateTime.of(jour, LocalTime.of(heure, 0));
 		int ordre = act.getOrdre();
-		LocalDateTime premierLibre = edtCourant.getPremiereCreneauApresAct(ordre);
-
-		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp)) || ordre == 0;
+		LocalDateTime tmp = null;
+		LocalDateTime premierLibre = null;
+		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
+		for (Pair<Integer, Integer> key : keys) {
+			tmp = listeEDT.get(key).getPremiereCreneauApresAct(ordre);
+			if(premierLibre != null && tmp != null) {
+				if(premierLibre.isBefore(tmp)) {
+					premierLibre = tmp;
+				}
+			} else if (premierLibre == null && tmp != null) {
+				premierLibre = tmp;
+			}
+		}
+		return premierLibre == null || (premierLibre.isEqual(courant) || premierLibre.isBefore(courant));
 	}
 
 

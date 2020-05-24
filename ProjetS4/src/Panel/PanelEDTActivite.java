@@ -69,15 +69,6 @@ public class PanelEDTActivite extends JPanel{
 				fin = finProjet;
 			}
 			
-			//LocalDate tempoFin = entreprise.getDebutFinActivite(listeEDTpersonne, activite).getRight().toLocalDate();
-
-			/*for(int i=0; i<listeEDTpersonne.size();i++) {
-				EDT edt = listeEDTpersonne.get(i);
-				LocalDate tempoFin = edt.getDerniereDateActivite(activite);
-				if (Temps.dateUnEstSuperieurDateDeux(tempoFin, fin)) {
-					fin = tempoFin;
-				}
-			}*/
 			listeNumeroSemaine = Temps.getNumSemainesEntreDates(debut, fin);
 			nombreDeMois = Temps.nombreDeMoisEntreDeuxDates(debut,fin);
 			this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);			
@@ -90,35 +81,6 @@ public class PanelEDTActivite extends JPanel{
 		panel.setLayout(new GridBagLayout());
 		
 		GridBagConstraints gc = new GridBagConstraints();
-		
-		/*gc.fill = GridBagConstraints.CENTER;
-		
-		gc.insets = new Insets(5, 5, 5, 5);
-		
-		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
-
-		gc.weightx = 13;
-		
-		gc.weighty = nbPersonne+1;
-		
-		gc.gridx = 0;
-		gc.gridy = 0;*/
-		
-		
-		/*panel.add(creerLabel(activite.getTitre(), true), gc);
-		
-		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-		gc.gridx = 1;
-		gc.gridy = 0;
-		gc.gridwidth = GridBagConstraints.REMAINDER;
-
-		panel.add(afficheEchelle(),gc);*/
-		
-		/*for (int i=0; i<nbMois; i++) {
-			gc.gridx ++;
-			panel.add(labelMois(i), gc);
-		}*/
 		
 		gc.fill = GridBagConstraints.BOTH;
 		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
@@ -135,18 +97,7 @@ public class PanelEDTActivite extends JPanel{
 		
 		for (int i=0; i<nbPersonne;i++) {
 			gc.gridy ++;
-			panel.add(afficheRessourceEtDiagramme(i), gc);
-			/*gc.gridwidth = 1;
-			gc.gridx = 0;
-			gc.gridy ++;
-			Ressource res = listePersonne.get(i);
-			String nom = ((Personne) res).getPrenomNom();
-			panel.add(creerLabel(nom, res), gc);
-			
-			gc.gridwidth = GridBagConstraints.REMAINDER;
-			gc.gridx ++;
-			panel.add(afficheDiagrammeGantt(i), gc);*/
-			
+			panel.add(afficheRessourceEtDiagramme(i), gc);			
 		}
 		return panel;
 	}
@@ -219,7 +170,7 @@ public class PanelEDTActivite extends JPanel{
 		
 		for(int i=0; i<listeNumeroSemaine.size();i++) {
 			int numSemaine = listeNumeroSemaine.get(i);
-			if (i>0 &&  numSemaine < listeNumeroSemaine.get(i-1) ) { // on v�rifie si on a pass� une ann�e
+			if (i>0 &&  numSemaine < listeNumeroSemaine.get(i-1) ) { // on verifie si on a passe une ann�e
 				annee ++;
 			}
 			JPanel semaine = new JPanel();
@@ -237,41 +188,13 @@ public class PanelEDTActivite extends JPanel{
 				p.add(jour);
 
 			}
-			/*if(travailleSemaine(tableauCreneau)) {
-				semaine.setBackground(PanelPrincipal.BLEU1);
-			}
-
-			p.add(semaine);*/
 		}
 		
 		return p;
 	}
 
-	private boolean travailleSemaine(CreneauHoraire [][] liste) {
-		boolean travaille = false;
-		for (int i=0; i<liste.length; i++) {
-			for (int j=0; j<liste[0].length; j++) {
-				if (liste[i][j] != null && liste[i][j].getActivite().getId() == activite.getId()) {
-					travaille = true;
-					break;
-				}
-			}
-			if (travaille) {
-				break;
-			}
-		}
-		return travaille;
-	}
-
 	private boolean travailleJour(CreneauHoraire [][] liste, int numeroJour) {
 		boolean travaille = false;
-		/*int i = 0;
-		while(!travaille || i<liste[0].length) {
-			if (liste[numeroJour][i] != null && liste[numeroJour][i].getActivite().getId() == activite.getId()) {
-				travaille = true;
-			}	
-			i++;
-		}*/
 		for (int i=0; i<liste[0].length; i++) {
 			if (liste[numeroJour][i] != null && liste[numeroJour][i].getActivite().getId() == activite.getId()) {
 				travaille = true;
@@ -283,71 +206,6 @@ public class PanelEDTActivite extends JPanel{
 		
 	}
 
-	/**
-	 * met à jour debut et fin qu'il  faut afficher pour voir toute les ressource de l'act
-	 */
-	/*private void duree() {
-		LocalDate [] duree = new LocalDate[2]; // la premiere case correspon
-		
-		LocalDate debut, lastDebut; 
-		
-		CreneauHoraire fin;
-		//fin = res.getDernierCreneauActivite(activite);
-
-		ArrayList<Ressource> listeRes = activite.getListeRessourceType(Ressource.PERSONNE);
-		for (int i=0; i<listeRes.size(); i++) {
-			Ressource res = listeRes.get(i);
-			debut = res.getPremierCreneauActivite(activite);
-			if (debut.getDebut().get)
-		}
-
-		this.debut = debut;
-		this.fin = fin;
-}*/
-	
-	/*private JPanel afficheEDTRessource(Ressource res) {
-		JPanel panel = new JPanel();
-		int nbMois = 
-		panel.setBackground(couleurFond);
-		return panel;
-		
-	}*/
-	
-	/*private JPanel afficheMoisRes(Ressource res) {
-		JPanel panel = new JPanel();
-		
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		EDT edtR = entreprise.getEDTRessource(res.getType(), res.getId());
-	
-		for (int i=1; i<52;i++) {
-			JPanel semaine = new JPanel();
-					semaine.setBackground(PanelPrincipal.BLANC);
-					CreneauHoraire [][] tableauCreneau = edtR.getSemaineEDT(Temps.getAnnee(), i);
-
-					if(travailleSemaine(tableauCreneau)) {
-						semaine.setBackground(PanelPrincipal.BLEU1);
-					}
-					panel.add(semaine);
-		}
-		panel.setBackground(couleurFond);
-		return panel;
-	}
-	*/
-	/*private boolean travailleSemaine(CreneauHoraire [][] liste) {
-		boolean travaille = false;
-		for (int i=0; i<liste.length; i++) {
-			for (int j=0; j<liste[0].length; j++) {
-				if (liste[i][j] != null && liste[i][j].getActivite().getId() == activite.getId()) {
-					travaille = true;
-					break;
-				}
-			}
-			if (travaille) {
-				break;
-			}
-		}
-		return travaille;
-	}*/
 	
 
 	private JLabel creerLabel(String nom, Ressource ressource) {
@@ -399,9 +257,6 @@ public class PanelEDTActivite extends JPanel{
 			break;
 		
 		}
-		/*JPanel panel = new JPanel();
-		panel.setBackground(couleurFond);
-		panel.add(label);*/
 		return label;
 	}
 	
