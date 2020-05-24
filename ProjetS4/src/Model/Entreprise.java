@@ -9,10 +9,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Set;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import Connexion.FenetreConnexion;
 import DebugFenetre.FenetreDebugBDD;
 import Fenetre.FenetreInfoRessource;
@@ -73,7 +70,6 @@ public class Entreprise extends Observable{
 
 
 	//=========== Attribut graphique
-	private ArrayList<JPanel> lPanel = new ArrayList<JPanel>();
 	private FenetrePrincipale fenetrePrincipale;
 	private ArrayList<FenetreInfoRessource> listeFenetreInfoRessource = new ArrayList<FenetreInfoRessource>();
 	private ArrayList<FenetreInfoTicket> listeFenetreInfoTicket = new ArrayList<FenetreInfoTicket>();
@@ -95,25 +91,11 @@ public class Entreprise extends Observable{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//creeation de l'entreprise unique il faudra lui ajouter un nom si on deesire eetendre nos activitees
 	public Entreprise() {
-		/*this.lProjet =  new ArrayList<Projet>();
-		this.lType =  new ArrayList<String>();
-		this.lRessource =  new ArrayList<Ressource>();
-		this.idCour = 0;
-		this.domaine = new Domaine();*/
-		//recupInfoBdd();
-
 		fenetrePrincipale = new FenetrePrincipale(this);
 		listeEDT = new Hashtable<Pair<Integer, Integer>, EDT>();
 		this.update();
 	}
 	public Entreprise(String typeDebug) {
-		/*this.lProjet =  new ArrayList<Projet>();
-		this.lType =  new ArrayList<String>();
-		this.lRessource =  new ArrayList<Ressource>();
-		this.idCour = 0;
-		this.domaine = new Domaine();*/
-		//recupInfoBdd();
-
 		if (typeDebug == "debugBDD") {
 			fenetreBDD = new FenetreDebugBDD(this);
 		}
@@ -128,41 +110,9 @@ public class Entreprise extends Observable{
 		this.update();
 	}
 
-//	private void recupInfoBdd() {
-//		try {
-//			testSqlDomaine.insertion();
-//			JavaSQLDomaine.insertion("php");
-//			JavaSQLPersonne.insertion("Geyer","Jules","Chef","putheu", testP, testN);
-//			JavaSQLProjet.insertion("test1",1,date,1, 1);
-//			testprojet.insertion();
-//			testact.insertion();
-//			RecupInfoBDD.recupBDDProjet(this);
-//			RecupInfoBDD.recupBDDDomaine(this);
-//			RecupInfoBDD.recupBDDRessource(this);
-//			test.affiche();
-//			test.drop();
-//			java.creation();
-//			test.affiche();
-
-//
-//		}catch(SQLException f){
-//			f.printStackTrace();
-//		}
-//	}
-
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//classe de base qui permettent de voir la chaeeeeeene et reeeeeecupeeeeeerer les infos de la classe
-	/*@Override
-	public String toString() {
-		String chaineActProjet = "Voici la liste des projets ainsi que leurs activites : ";
-		for (int i = 0; i < this.lProjet.size(); i++) {
-			chaineActProjet += this.lProjet.get(i).toString();
-
-		}
-		return chaineActProjet;
-	}*/
 
 	//------------------------------------------------------------------------>>>>>>>> Changement de compte
 
@@ -185,14 +135,33 @@ public class Entreprise extends Observable{
 	}
 
 	//---------------------------------------------------------------------------------------------------->>>>>>>>> EDT
-
+	
+	
+	/**
+	 * Met à jour l'EDT de toutes les ressources en recréant tous les créneaux horaires (en prenant en compte les nouvelles containtes)
+	 * Fonction principale de la gestion des EDT
+	 */
+	public void majEDT() {
+		viderRessources();
+		listeEDT = generationEDT();
+	}
+	
+	/**
+	 * Vide les créneaux horaires déjà existants dans les EDT de toutes les ressources
+	 */
+	private void viderRessources() {
+		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
+		for (Pair<Integer, Integer> key : keys) {
+			listeEDT.get(key).vider();
+		}
+	} 
 
 	/**
-	 * Renvoie une prédiction de l'EDT de ressources d'une activitée en fonction de l'ajout ou d'une supression d'une ressource dans une activitée
+	 * Renvoie les bornes de l'EDT prévisionel de l'activité passée en paremètre
 	 * @param L'opération à effectuer (ajout ou suppresion), voir l'enum Operation
 	 * @param La ressource concernée par la modification
-	 * @param L'activitée concernée par la modification
-	 * @return la liste des EDT prévisionels
+	 * @param L'activité concernée par la modification
+	 * @return Deux localDateTime qui correspondent aux bornes
 	 */
 	private LocalDateTime[] generationPrevisionEDT(Operation operation, Ressource res, Activite act) {
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
@@ -267,7 +236,12 @@ public class Entreprise extends Observable{
 		 return ret;
 	}
 	
-
+	
+	
+	/**
+	 * Méthode de génération de l'EDT des ressources de l'entreprise
+	 * @return Renvoie l'EDT de toutes les ressources de l'entreprise
+	 */
 	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite; 
@@ -307,19 +281,11 @@ public class Entreprise extends Observable{
 		return listeEDTComplete;
 	}
 	
-	private Hashtable<Pair<Integer, Integer>, EDT> mergeHashTables(Hashtable<Pair<Integer, Integer>, EDT> prem,  Hashtable<Pair<Integer, Integer>, EDT> deux){
-		Set<Pair<Integer, Integer>> ident = deux.keySet();
-		for (Pair<Integer, Integer> pair : ident) {
-			if(prem.containsKey(pair)) {
-				prem.get(pair).mergeEDT(deux.get(pair));
-			} else {
-				prem.put(pair, deux.get(pair));
-			}
-		}
-		
-		return prem;
-	}
-	
+	/**
+	 * Créé un tableau associatif : key -> personne ; value : liste de congés
+	 * @param La liste des personnes pour lesquels ont créé les congés
+	 * @return Le tableau associatif
+	 */
 	private Hashtable<Personne, ArrayList<CreneauHoraire>> creerHTConge(ArrayList<Personne> listePersonnes){
 		Hashtable<Personne, ArrayList<CreneauHoraire>> res = new Hashtable<Personne, ArrayList<CreneauHoraire>>();
 		for (int i = 0; i < listePersonnes.size(); i++) {
@@ -329,15 +295,12 @@ public class Entreprise extends Observable{
 		return res;
 	}
 	
-	private Hashtable<Personne, ArrayList<CreneauHoraire>> creerHTReunion(ArrayList<Personne> listePersonnes, ArrayList<CreneauHoraire> creneauReunion){
-		Hashtable<Personne, ArrayList<CreneauHoraire>> res = new Hashtable<Personne, ArrayList<CreneauHoraire>>();
-		for (int i = 0; i < listePersonnes.size(); i++) {
-			Personne perCourante = listePersonnes.get(i);
-			res.put(perCourante, creneauReunion);
-		}
-		return res;
-	}
 	
+	/**
+	 * Créé un tableau associatif : key -> activite ; value : liste des réunions
+	 * @param La liste des personnes activités pour lesquels on créé les réunions
+	 * @return Le tableau associatif
+	 */
 	private Hashtable<Activite, ArrayList<CreneauHoraire>> creerALReunion(ArrayList<Activite> listeAct){
 		Hashtable<Activite, ArrayList<CreneauHoraire>> res = new Hashtable<Activite, ArrayList<CreneauHoraire>>();
 		for (int i = 0; i < listeAct.size(); i++) {
@@ -347,27 +310,12 @@ public class Entreprise extends Observable{
 		return res;
 	}
 
-
-	/**
-	 * Met à jour l'EDT de toutes les ressources en recréant tous les créneaux horaires (en prenant en compte les nouvelles containtes)
-	 * Fonction principale de la gestion des EDT
-	 */
-	public void majEDT() {
-		viderRessources();
-		listeEDT = generationEDT();
-	}
-
-
-	/**
-	 * Vide les créneaux horaires déjà existants dans les EDT de toutes les ressources
-	 */
-	private void viderRessources() {
-		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
-		for (Pair<Integer, Integer> key : keys) {
-			listeEDT.get(key).vider();
-		}
-	} 
 	
+	/**
+	 * Créé un tableau associatif : key -> identRessource ; value : EDT de la personne
+	 * @param La liste des congés pour chaque personne
+	 * @return Le tableau associatif
+	 */
 	private Hashtable<Pair<Integer, Integer>, EDT> creerLCongePersonnes(Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge){
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDT = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Set<Personne> keys = listeConge.keySet();
@@ -386,28 +334,11 @@ public class Entreprise extends Observable{
 		
 		return listeEDT;
 	}
-	
-	private Hashtable<Pair<Integer, Integer>, EDT> creerLReunionPersonnes(Hashtable<Personne, ArrayList<CreneauHoraire>> listeReunion){
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDT = new Hashtable<Pair<Integer, Integer>, EDT>();
-		Set<Personne> keys = listeReunion.keySet();
-		CreneauHoraire chCourant;
-		for (Personne personne : keys) {
-			Pair<Integer, Integer> ident = new Pair<Integer, Integer>(0, personne.getId());
-			EDT EDTCourant = new EDT(ident);
-			for (int i = 0; i < listeReunion.get(personne).size(); i++) {
-				chCourant = listeReunion.get(personne).get(i);
-				EDTCourant.ajouterReunion(chCourant);
-				
-			}
-			listeEDT.put(ident, EDTCourant);
-		}
-		return listeEDT;
-	}
  
 	/**
-	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
+	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activité courante
 	 * @param L'activité courante
-	 * @param La liste des personnes qui participent à l'activitée
+	 * @param La liste des personnes qui participent à l'activité
 	 * @param La liste des EDT
 	 * @return  La liste des EDT
 	 */
@@ -422,6 +353,7 @@ public class Entreprise extends Observable{
 			int heureCourante = HEURE_DEBUT_MATIN;
 
 			while (chargeAloue < charge) {
+				@SuppressWarnings("unchecked")
 				Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnesCourante = (Hashtable<Pair<Integer, Integer>, EDT>) listeEDTPersonnes.clone();
 				for (int i = 0; i < listePersonnes.size(); i++) {
 					Personne persCourante = listePersonnes.get(i);
@@ -454,6 +386,13 @@ public class Entreprise extends Observable{
 		return listeEDTPersonnes;
 	}
 	
+	
+	/**
+	 * Indique si le jourCourant correspond à un jour de congé
+	 * @param La liste des congés d'une personne
+	 * @param Le jour courant
+	 * @return True si le jour est un congé
+	 */
 	private boolean estEnConge(ArrayList<CreneauHoraire> listeConge, LocalDate jourCourant) {
 		boolean res = false;
 		if(listeConge != null) {
@@ -468,6 +407,14 @@ public class Entreprise extends Observable{
 		return res;
 	}
 	
+	
+	/**
+	 * Indique si le creneau courant est une réunion
+	 * @param La liste des congés réunion d'une activité
+	 * @param Le jour courant
+	 * @param L'heure courante
+	 * @return True si le creneau est une réunion
+	 */
 	private boolean estEnReunion(ArrayList<CreneauHoraire> listeReunion, LocalDate jourCourant, int heureCourante) {
 		boolean res = false;
 		for (int i = 0; i < listeReunion.size(); i++) {
@@ -482,11 +429,11 @@ public class Entreprise extends Observable{
 
 
 	/**
-	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
+	 * Créée les créneaux horaires de l'EDT de toutes les salles participant à l'activité courante
 	 * @param L'activité courante
-	 * @param La liste des personnes qui participent à l'activitée
+	 * @param La liste des salles qui participent à l'activité
 	 * @param La liste des EDT
-	 * @return  La liste des EDT
+	 * @return La liste des EDT
 	 */
 	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxSalles(Projet proj, Activite act, ArrayList<Salle> listeSalles, Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
 		if(listeSalles.size() > 0) {
@@ -526,6 +473,14 @@ public class Entreprise extends Observable{
 	}
 	
 	
+	
+	/**
+	 * Créée les créneaux horaires de l'EDT de tous les calculateurs participant à l'activité courante
+	 * @param L'activité courante
+	 * @param La liste des calculateurs qui participent à l'activité
+	 * @param La liste des EDT
+	 * @return La liste des EDT
+	 */
 	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxCalculateurs(Projet proj, Activite act, ArrayList<Calculateur> listeCalc, Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalc, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
 		if(listeCalc.size() > 0) {
 			Pair<LocalDateTime, LocalDateTime> dateDebutFin = getDebutFinActivite(listeEDTPersonnes, act);
@@ -565,9 +520,10 @@ public class Entreprise extends Observable{
 
 
 	/**
-	 * Retrourne les date de debut et de fin d'une activitée
+	 * Retrourne les date de debut et de fin d'une activité
 	 * @param La liste d'EDT dans laquelle chercher
 	 * @param l'acivitée concernée
+	 * @return un tuple avec le debut et la fin de l'activité
 	 */
 	public Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act) {
 		ArrayList<EDT> res = new ArrayList<EDT>();
@@ -577,7 +533,14 @@ public class Entreprise extends Observable{
 		}
 		return getDebutFinActivite(res, act);
 	}
-
+	
+	
+	/**
+	 * Retrourne les date de debut et de fin d'une activité
+	 * @param La liste d'EDT dans laquelle chercher
+	 * @param l'acivitée concernée
+	 * @return un tuple avec le debut et la fin de l'activité
+	 */
 	public Pair<LocalDateTime, LocalDateTime> getDebutFinActivite(ArrayList<EDT> listeEDT, Activite act) {
 		LocalDateTime debut = null;
 		LocalDateTime fin = null;
@@ -601,7 +564,7 @@ public class Entreprise extends Observable{
 			if (der != null) {
 				if(fin == null) {
 					fin = der;
-				}else if(der.isAfter(fin)) {
+				} else if(der.isAfter(fin)) {
 					fin = der;
 				}
 			}
@@ -612,10 +575,10 @@ public class Entreprise extends Observable{
 	}
 
 	/**
-	 * Retourne la derniere date de travail d'une activite
+	 * Retourne la dernière date de travail d'une activité
 	 * @param listeEDT contient toute les info de creneau de l'activite par ressource
-	 * @param act activite concerner
-	 * @return fin
+	 * @param act activite concernée
+	 * @return La fin d'une activité
 	 */
 	public LocalDate getLocalDateFinDuneActivite(ArrayList<EDT> listeEDT, Activite act) {
 		Pair<LocalDateTime, LocalDateTime> dates = getDebutFinActivite(listeEDT, act);
@@ -628,22 +591,6 @@ public class Entreprise extends Observable{
 	 */
 	public void ajouterEDTRessource(Pair<Integer, Integer> ident) {
 		listeEDT.put(ident, new EDT(ident));
-	}
-
-
-	/**
-	 * Renvoie l'EDT de la ressource passée en paramètre
-	 * @param La ressource concernée (de type de Ressource)
-	 * @return l'EDT de la ressource
-	 */
-	private EDT getEDTRessource(Ressource res) {
-		int id_ressource = res.getId();
-		int type_ressource = res.getType();
-		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(type_ressource,id_ressource);
-		if(!listeEDT.containsKey(ident)) {
-			ajouterEDTRessource(ident);
-		}
-		return listeEDT.get(ident);
 	}
 
 
@@ -715,8 +662,8 @@ public class Entreprise extends Observable{
 	 }
 
 	/**
-	 * Vérifie qu'une activité d'ordre n+1 soit placée après une activitée d'ordre n
-	 * @param L'EDT, l'activitée, le jour et l'heure concernés
+	 * Vérifie qu'une activité d'ordre n+1 soit placée après une activité d'ordre n
+	 * @param L'EDT, l'activité, le jour et l'heure concernés
 	 * @return true si c'est le cas
 	 */
 	private boolean verifierOrdre(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act, LocalDate jour, int heure) {

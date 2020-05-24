@@ -20,7 +20,7 @@ public final class JavaSQLProjet extends JavaSQL{
 //	private LocalDate deadline;
 //	private int couleur;
 //	private int numSalarie;
-//	
+//
 //	public JavaSQLProjet (int idP,String nom, int priorite, LocalDate deadline, int couleur, int numSalarie) {
 //		super();
 //		this.idP = idP;
@@ -30,18 +30,18 @@ public final class JavaSQLProjet extends JavaSQL{
 //		this.couleur = couleur;
 //		this.numSalarie = numSalarie;
 //	}
-//	
+//
 //	public JavaSQLProjet () {
 //		super();
 //	}
-	
-	
+
+
 	public static void connection() {
 		JavaSQL.connection();
 	}
-	
-	
-	
+
+
+
 	public static ArrayList<Projet> affiche() throws SQLException{
 		ArrayList<Projet> protab = new ArrayList<Projet>();
 		ArrayList<String> listeDom = new ArrayList<String>();
@@ -61,12 +61,12 @@ public final class JavaSQLProjet extends JavaSQL{
 								 while(res3.next()) {
 									 tagtab.add(new Competence(res3.getString("tag"), res3.getInt("niveau")));
 								 }
-							 } 
+							 }
 							 res2.next();
 							 personne  = new Personne(res2.getString("nom"), res2.getString("prenom"), res2.getString("role"), res2.getInt("numSalarie"), res2.getString("motDePasse"), tagtab);
 						 }
-						 
-						 
+
+
 						 ArrayList<Activite> acttab = new ArrayList<Activite>();
 						 String sql5 = "SELECT * FROM Activite WHERE idP = "  + res.getInt("idP") +";";
 								try{
@@ -81,7 +81,7 @@ public final class JavaSQLProjet extends JavaSQL{
 												 }
 											 }
 											 LocalDate debut = res5.getDate("debut").toLocalDate();
-											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getFloat("charge"), debut, 
+											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getFloat("charge"), debut,
 													 new Color(res5.getInt("couleur")), res5.getInt("ordre"),listeDom));
 										 }
 									 }
@@ -89,9 +89,9 @@ public final class JavaSQLProjet extends JavaSQL{
 									e.printStackTrace();
 								}
 						 LocalDate deadl = res.getDate("deadline").toLocalDate();
-						 protab.add(new Projet(acttab,personne, res.getString("nom"), res.getFloat("priorite"), deadl, res.getInt("idP"), 
+						 protab.add(new Projet(acttab,personne, res.getString("nom"), res.getFloat("priorite"), deadl, res.getInt("idP"),
 								 new Color(res.getInt("couleur"))));
-						 
+
 						 System.out.println("idP = " + res.getString("idP") +"nom = " + res.getString("nom") + ", priorite = " + res.getString("priorite") + ", deadline = " + res.getString("deadline") +
 								 ", couleur = " + res.getString("couleur") + ", numSalarie = " + res.getString("numSalarie"));
 					 }
@@ -102,8 +102,8 @@ public final class JavaSQLProjet extends JavaSQL{
 			return protab;
 
 	}
-	
-	public static void insertion(String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
+
+	public static void insertion(String nom,float priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
 		Date tadat = Date.valueOf(deadline);
 		String sql = "INSERT INTO Projet(idP, nom, priorite, deadline, couleur, numSalarie) VALUE(NULL,'" + nom + "' ,  '"+priorite+"' ,'"+tadat+"' , '"+couleur+"' , '"+numSalarie+"');";
 			try{
@@ -114,7 +114,7 @@ public final class JavaSQLProjet extends JavaSQL{
 				e.printStackTrace();
 			}
 	}
-	
+
 	public static void supprime(int idP) throws SQLException{
 		String sql = "SELECT idA FROM Activite WHERE idP =" + idP;
 		try{
@@ -132,7 +132,7 @@ public final class JavaSQLProjet extends JavaSQL{
 					 sql = "DELETE FROM Creneaux WHERE idA =" + res.getInt("idA");
 					 stmt.executeUpdate(sql);
 					 sql = "DELETE FROM Activite WHERE idA =" + res.getInt("idA");
-					 stmt.executeUpdate(sql);					 
+					 stmt.executeUpdate(sql);
 				 }
 				 sql = "DELETE FROM Projet WHERE idP = " + idP;
 				 stmt.executeUpdate(sql);
@@ -141,32 +141,33 @@ public final class JavaSQLProjet extends JavaSQL{
 			e.printStackTrace();
 		}
 	}
-	
-	public static void modifie(int idP, String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
+
+	public static void modifie(int idP, String nom,float priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
 		try{
 			 Statement stmt = getCon().createStatement();
 			 Date date1 = Date.valueOf(deadline);
 			 String sql = "UPDATE Projet SET nom = '" + nom + "' ,priorite  = '" + priorite + "' ,deadline = '" + date1 + "' ,couleur = '" + couleur + "' ,numSalarie = '" + numSalarie + "' WHERE idP = '"+ idP+"';";
 			 stmt.executeUpdate(sql);
-			 
+
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public static void modifiePriorite(int idP,float priorite) throws SQLException{
 		try{
 			 Statement stmt = getCon().createStatement();
 			 String sql = "UPDATE Projet SET priorite  = '" + priorite + "' WHERE idP = '"+ idP+"';";
 			 stmt.executeUpdate(sql);
-			 
+
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
-	
-	public static String toString(String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) {
+
+
+	public static String toString(String nom,float priorite,LocalDate deadline,int couleur, int numSalarie) {
 		return "nom : " + nom +priorite+deadline+couleur+numSalarie; 
 	}
 
