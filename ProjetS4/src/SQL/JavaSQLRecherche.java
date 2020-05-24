@@ -622,7 +622,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 	
 	public static String recupereModifTicketParId(int idT) throws SQLException {
-		String sql = "SELECT * FROM Ticket WHERE idT = '" + idT + "';";
+		String sql = "SELECT modif FROM Ticket WHERE idT = '" + idT + "';";
 		String stringCour = null;
 		try{
 			 Statement stmt = getCon().createStatement();

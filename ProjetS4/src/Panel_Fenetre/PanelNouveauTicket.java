@@ -11,6 +11,7 @@ import GestionTicket.Ticket;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
+import Ressource.Ressource;
 
 /**
  *  Affiche les information a saisir pour creer un ticket
@@ -198,36 +199,20 @@ public class PanelNouveauTicket  extends PanelFenetre{
 			break;
 
 		case Ticket.LIBERE:
-			if (!textFieldLogin.getText().isEmpty()) {
-				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
-					
+					Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
 					Activite act = (Activite) comboBoxActivite.getSelectedItem();
 					Projet p =  entreprise.getProjetDeActiviteParId(act.getId());
-					int type = comboBoxType.getSelectedIndex();
-					String login = textFieldLogin.getText();
 				
-					entreprise.nouvTicketLiberation(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
-							entreprise.getRessourceParLogin(type, login), act);
+					entreprise.nouvTicketLiberation(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(), r, act);
 					fm.dispose();
-				}
-				else {
-				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
-				}
-
-			}
-			else {
-			   	JOptionPane.showMessageDialog(null, "Veillez ecrire le login de la ressource", "Erreur", JOptionPane.ERROR_MESSAGE);			
-			}
 			break;
 
 		case Ticket.TRANSFERT:
-	
-					Activite act = (Activite) comboBoxActivite.getSelectedItem();
-					Projet p =  entreprise.getProjetDeActiviteParId(act.getId());
-					int type = comboBoxType.getSelectedIndex();
-					String login = textFieldLogin.getText();
+					Ressource r1 = (Ressource) comboBoxRessource.getSelectedItem();
+					Activite act1 = (Activite) comboBoxActivite.getSelectedItem();
+					Projet p1 =  entreprise.getProjetDeActiviteParId(act1.getId());
 					
-					entreprise.nouvTicketTransfert(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(), entreprise.getRessourceParLogin(type, login), act);
+					entreprise.nouvTicketTransfert(sujet(), textArea.getText(), entreprise.getUser().getId(), p1.getChefDeProjet().getId(), r1, act1);
 					fm.dispose();
 			break;
 
@@ -243,10 +228,10 @@ public class PanelNouveauTicket  extends PanelFenetre{
 			s = "message";
 			break;
 		case Ticket.LIBERE:
-			s = "libérer" ;
+			s = "liberer" ;
 			break;
 		case Ticket.TRANSFERT:
-			s = "transférer";
+			s = "transferer";
 			break;
 
 		default:

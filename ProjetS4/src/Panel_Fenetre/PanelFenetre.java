@@ -84,7 +84,7 @@ public class PanelFenetre extends JPanel{
     protected int actionChoisie;
     
     protected JComboBox<String> comboBoxActionTicket;	
-    protected String [] actionTicket = {"Envoyer un message", "Libérer une ressource", "Transférer une ressource"};
+    protected String [] actionTicket = {"Envoyer un message", "Liberer une ressource", "Transferer une ressource"};
     protected Checkbox checkBoxestAdmin = new Checkbox("administrateur", false);
     protected JButton boutonAjoutCompetence, boutonAjoutDomaine;
     

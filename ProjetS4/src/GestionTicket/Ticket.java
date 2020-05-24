@@ -23,10 +23,9 @@ public class Ticket {
 	private int idEnvoyeur;
 	private int idReceveur;
 	private Ressource r;
-
+	public final static String SEPARATEUR= "*";
 	
 	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  VU= 5, ERREUR = 6,NONVU = 7;
-	private static final String SEPARATEUR = "|";
 
 	
 	
@@ -56,9 +55,16 @@ public class Ticket {
 	
 	
 	//constructeur libération/transfert
-	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r, Activite activiteDepart, Activite activiteArrive, Ticket ticketTransfert) {
-		this(id, action, sujet, message, dateTicket, statut, idEnvoyeur, idReceveur);
+	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r, Activite activiteArrive, Activite activiteDepart, Ticket ticketTransfert) {
+		this.id = id;
+		this.action = action;
+		this.sujet = sujet;
+		this.message = message;
 		this.r = r;
+		this.dateTicket = dateTicket;
+		this.statut = statut;
+		this.idEnvoyeur = idEnvoyeur;
+		this.idReceveur = idReceveur;
 		if (ticketTransfert == null) {
 			this.modif = creeModif(action,activiteArrive, activiteDepart, -1);
 

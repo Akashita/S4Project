@@ -95,14 +95,25 @@ public class JavaSQLTicket extends JavaSQL{
 	 }
 	 
 	 
-	 public static void modifieStatut(int idT, int statut) throws SQLException {
-		 try{
-			 Statement stmt = getCon().createStatement();
-			 String sql = "UPDATE Ticket SET statut= '" + statut + "' WHERE idT= '"+ idT+"';";
-			 stmt.executeUpdate(sql);
-		} catch(SQLException e){
-			e.printStackTrace();
-		}
+	 public static void modifieStatut(Ticket ticket, int statut) throws SQLException {
+		 if (ticket.getStatut() == Ticket.NONVU && statut == Ticket.VU) {
+			 try{
+				 Statement stmt = getCon().createStatement();
+				 String sql = "UPDATE Ticket SET statut= '" + statut + "' WHERE idT= '"+ ticket.getId()+"';";
+				 stmt.executeUpdate(sql);
+			} catch(SQLException e){
+				e.printStackTrace();
+			}			 
+		 }
+		 if (ticket.getStatut() == Ticket.VU && statut == Ticket.ACCEPTEE || statut == Ticket.REFUSE) {
+			 try{
+				 Statement stmt = getCon().createStatement();
+				 String sql = "UPDATE Ticket SET statut= '" + statut + "' WHERE idT= '"+ ticket.getId()+"';";
+				 stmt.executeUpdate(sql);
+			} catch(SQLException e){
+				e.printStackTrace();
+			}		 
+		 }
 	}
 	public static String toString(String sujet ,String message ,String modif ,LocalDate dateTicket, int statut,int numSalarieEnv ,int numSalarieRec) {
 		return "nom : " + sujet+message+modif+dateTicket+statut+numSalarieEnv+numSalarieRec; 
