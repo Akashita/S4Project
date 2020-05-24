@@ -9,6 +9,7 @@ import Model.Projet;
 import Ressource.Personne;
 import Ressource.Ressource;
 import SQL.JavaSQLPersonne;
+import SQL.JavaSQLRecherche;
 
 public class Ticket {
 	private int id;
@@ -45,7 +46,7 @@ public class Ticket {
 		this.action = action;
 		this.sujet = sujet;
 		this.message = message;
-		this.modif = creeModif(action,null,null, null);
+		this.modif = creeModif(action,null,null,-1);
 		this.dateTicket = dateTicket;
 		this.statut = statut;
 		this.idEnvoyeur = idEnvoyeur;
@@ -57,27 +58,37 @@ public class Ticket {
 	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r, Activite activiteDepart, Activite activiteArrive, Ticket ticketTransfert) {
 		this(id, action, sujet, message, dateTicket, statut, idEnvoyeur, idReceveur);
 		this.r = r;
-		this.modif = creeModif(action,activiteArrive, activiteDepart, ticketTransfert);
-		
+		if (ticketTransfert == null) {
+			this.modif = creeModif(action,activiteArrive, activiteDepart, -1);
+
+		}
+		else {
+		this.modif = creeModif(action,activiteArrive, activiteDepart, ticketTransfert.getId());
+		}
 	}
 
 	
 
 	
-	private String creeModif(int action, Activite activiteArrive,Activite activiteDepart, Ticket ticketTransfert) {
+	private String creeModif(int action, Activite activiteArrive,Activite activiteDepart, int idTicketTransfert) {
 		if (action == MESSAGE) {
 			return "message"+ SEPARATEUR;
 		}
 		else if (action == TRANSFERT) {
-			return "transfert"+ SEPARATEUR + r.getId()+ SEPARATEUR + activiteArrive.getId();
+			return "transfert"+ SEPARATEUR +r.getType() + SEPARATEUR + r.getId()+ SEPARATEUR + activiteArrive.getId();
 		}
 		else if (action == LIBERE) {
-			return "libere"+ SEPARATEUR + r.getId() + SEPARATEUR + activiteDepart.getId() + SEPARATEUR + ticketTransfert.getId();
+			return "libere"+ SEPARATEUR + r.getType() + SEPARATEUR + r.getId() + SEPARATEUR + activiteDepart.getId() + SEPARATEUR + idTicketTransfert;
 		}
 		else {
 			return "erreur"+ SEPARATEUR;
 		}
 	}
+	
+	
+	
+	
+	
 	
 	public static int getTache(String modif) {
 		String[] regex = modif.split(SEPARATEUR, 2); 

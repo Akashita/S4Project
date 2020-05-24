@@ -1027,6 +1027,27 @@ public class Entreprise extends Observable{
 		return getCalculateurParId(id);
 	}
 
+	
+	public Ressource getRessourceParId(int type, int id) {
+		Ressource r = null;
+		switch (type) {
+		case Ressource.PERSONNE:
+			r = getPersonneParId(id);
+			break;
+		case Ressource.SALLE:
+			r = getSalleParId(id);
+			break;
+		case Ressource.CALCULATEUR:
+			r = getCalculateurParId(id);
+			break;
+		default:
+			break;
+		}
+		return r;
+	}
+
+	
+
 	/**
 	 * cherche dans la bdd l'activite associer a son id
 	 * @param id de l'activite
@@ -2231,6 +2252,32 @@ public class Entreprise extends Observable{
 			e.printStackTrace();
 		}
 	
+	}
+	
+	public void accepteTicket(int idT) {
+		String modif;
+		try {
+			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
+		
+		String[] regex = modif.split(SEPARATEUR, 5); 
+		int typeRessource = Integer.parseInt(regex[1]);
+		int idRessource = Integer.parseInt(regex[2]);
+		int idActiviteDepart = Integer.parseInt(regex[3]);
+		int idTicketTransfert = Integer.parseInt(regex[4]);
+		Activite a = this.getActiviteParId(idActiviteDepart);
+		Ressource r = this.getRessourceParId(typeRessource,idRessource);
+		this.enleverRessourceActivite(typeRessource, r,a);
+		if (idTicketTransfert != -1 ) {
+			this.accepteTicketTransfert(idTicketTransfert,typeRessource,r,a);
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void accepteTicketTransfert(int idT, int type, Ressource r, Activite a) {
+		this.ajouterRessourceActivite(type, r, a);
 	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource

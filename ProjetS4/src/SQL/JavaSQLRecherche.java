@@ -619,9 +619,25 @@ public final class JavaSQLRecherche extends JavaSQL{
 			e.printStackTrace();
 		}
 		return ticketCour;
-}
-
+	}
 	
+	public static String recupereModifTicketParId(int idT) throws SQLException {
+		String sql = "SELECT * FROM Ticket WHERE idT = '" + idT + "';";
+		String stringCour = null;
+		try{
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {					
+						 stringCour = res.getString("modif");
+
+					 
+				}	
+			 }
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return stringCour;
+	}
 	
 	
 	public static ArrayList<Ticket> recupereTicketEnvUser(int idUser) throws SQLException{
