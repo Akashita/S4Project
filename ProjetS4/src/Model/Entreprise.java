@@ -2171,6 +2171,22 @@ public class Entreprise extends Observable{
 
 	}
 
+	/**
+	 * Change dans la bdd le statut du ticket
+	 * On passe le statut ENCOURS uniquement si le ticket est NONVU
+	 * On passe le statut ACCEPTER ou REFUSER uniquement si le ticket est ENCOURS
+	 * @param statut sera le nouveau statut du ticket
+	 * @param ticket
+	 */
+	public void setStatutTicket(int statut, Ticket ticket) {
+		if (ticket.getStatut() == Ticket.NONVU) {
+			
+		}
+		if (ticket.getStatut() == Ticket.ENCOURS) {
+		}
+		asdasd
+	}
+	
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
 
 	public void nouvPersonne (String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {
