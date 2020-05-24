@@ -153,8 +153,8 @@ public class FenetreInfoTicket extends JDialog{
 		
 		if (ticket.getAction() == Ticket.TRANSFERT || ticketTest != null ) {
 			
-			Activite activiteDepart = entreprise.getActiviteDepartLiberation(ticketTest.getId());
-			Activite activiteArrive = entreprise.getActiviteArriveTransfert(ticket.getId());
+			Activite activiteArrive= entreprise.getActiviteDepartLiberation(ticketTest.getId());
+			Activite activiteDepart = entreprise.getActiviteArriveTransfert(ticket.getId());
 
 			
 			gc.ipadx = gc.anchor = GridBagConstraints.WEST;
