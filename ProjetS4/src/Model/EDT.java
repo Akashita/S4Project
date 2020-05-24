@@ -181,16 +181,26 @@ public class EDT {
 				creneauCourant = jourCourant.get(j);
 				if(dernierCreneau == null) {
 					dernierCreneau = creneauCourant;
+				} else if(creneauCourant != null) {
+					if (dernierCreneau.getDebut() < creneauCourant.getDebut() || creneauCourant.getDebut() == Entreprise.HEURE_DEBUT_MATIN) {
+						dernierCreneau = creneauCourant;
+					}
 				}
-				if(creneauCourant.getActivite() != null) {
-					if((creneauCourant.getActivite().getOrdre() > ordre) || (dernierCreneau != null && creneauCourant == null)) {
+								
+				if(creneauCourant == null) {
+					if(dernierCreneau != null) {
 						trouve = true;
 						break;
 					}
-				}
-				if(trouve) {
-					break;
-				}
+				} else if(creneauCourant.getActivite() != null) {
+					if(creneauCourant.getActivite().getOrdre() > ordre) {
+						trouve = true;
+						break;
+					}
+				} 
+			}
+			if(trouve) {
+				break;
 			}
 		}
 		
