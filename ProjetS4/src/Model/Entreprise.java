@@ -2514,6 +2514,17 @@ public class Entreprise extends Observable{
 
 	}
 
+	public boolean personneEstChefDuProjet(Personne personne, Projet projet) {
+		boolean b = false;
+		ArrayList<Projet> listeProjet = getListeProjetDePersonneParId(personne.getId());
+		for (int i=0; i<listeProjet.size(); i++) {
+			if (listeProjet.get(i).getId() == projet.getId()) {
+				b = true;
+				break;
+			}
+		}
+		return b;
+	}
 
 	public void nouvSalle (String nom, int capacite) {
 		try {

@@ -2,6 +2,7 @@ package Ressource;
 
 import java.util.ArrayList;
 
+import Model.Entreprise;
 import Model.Projet;
 
 public class Personne extends Ressource{
@@ -59,16 +60,6 @@ public class Personne extends Ressource{
 		return b;
 	}
 	
-	public boolean estChef(Projet p) {
-		boolean b = false;
-		for (int i=0; i<listeProjet.size(); i++) {
-			if (listeProjet.get(i).getId() == p.getId()) {
-				b = true;
-				break;
-			}
-		}
-		return b;
-	}
 	
 	public String getPrenom() {
 		return this.prenom;

@@ -38,7 +38,11 @@ public class MenuBarListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Personne user = entreprise.getUser();
 		boolean estAdmin = user.estAdmin();
-		
+		Projet p = entreprise.getProjetSelectionner();
+		boolean estChef = false;
+		if(p != null) {
+			estChef = entreprise.personneEstChefDuProjet(user, p);
+		}
 		if (choix == FenetrePrincipale.NouvelleRessource || choix == FenetrePrincipale.NouveauDomaine) {	
 			if (estAdmin) { //fonction autoris� pour les admin uniquement
 				creerFenetre();
@@ -63,10 +67,9 @@ public class MenuBarListener implements ActionListener{
 		
 			
 			
-		if (choix == FenetrePrincipale.ModifierProjet || choix == FenetrePrincipale.NouvelleActivite) {
-			Projet p = entreprise.getProjetSelectionner();
+		if (choix == FenetrePrincipale.ModifierProjet) {
 			if (p != null) {
-				if (estAdmin || user.estChef(p)) { //fonction autoris� pour les admin et chef de ce projet
+				if (estAdmin) { //fonction autoris� pour les admin et chef de ce projet
 					creerFenetre();
 				}
 				else {
@@ -77,16 +80,30 @@ public class MenuBarListener implements ActionListener{
 			    JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
-			
+
+		
+		if (choix == FenetrePrincipale.NouvelleActivite) {
+			if (p != null) {
+				if (estAdmin || estChef) { //fonction autorisé pour les admin et chef de ce projet
+					creerFenetre();
+				}
+				else {
+			    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder à cette fonctionnalité", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				}					
+			}
+			else {
+			    JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			}
+		}
+
 		
 		
 
 		if (choix == FenetrePrincipale.ModifierActivite || choix == FenetrePrincipale.AjouterRessource || choix == FenetrePrincipale.EnleverRessource) {
-			Projet p = entreprise.getProjetSelectionner();
 			if (p != null) {
 				Activite a = entreprise.getActiviteSelectionner();
 				if (a != null) {
-					if (estAdmin || user.estChef(p)) {//fonction autoris� pour les admin et chef de ce projet
+					if (estAdmin || estChef) {//fonction autoris� pour les admin et chef de ce projet
 						creerFenetre();
 					}
 					else {
