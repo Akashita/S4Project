@@ -588,6 +588,16 @@ public class Entreprise extends Observable{
 	}
 
 	/**
+	 * Retourne la dernière date de travail d'une activité
+	 * @param listeEDT contient toute les info de creneau de l'activite par ressource
+	 * @param act activite concernée
+	 * @return La fin d'une activité
+	 */
+	public static LocalDate getLocalDateFinDunProjet(Projet p) {
+		
+	}
+
+	/**
 	 * Initialise un EDT (vide) pour une ressource
 	 * @param l'identifiant de la ressource concernée
 	 */
