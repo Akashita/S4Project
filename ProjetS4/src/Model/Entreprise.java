@@ -982,10 +982,10 @@ public class Entreprise extends Observable{
 		return ticketTab;
 		}
 	
-	public ArrayList<Ticket> getListeTicketEnvoyeDeUserSaufMemeReceveurEnvoyeur(int idUser){
+	public ArrayList<Ticket> getListeTicketEnvoyeDeUserSaufMemeReceveurEnvoyeurPasTransfert(int idUser){
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
         try {
-        	ticketTab = JavaSQLRecherche.recupereTicketEnvUserSaufMemeReceveurEnvoyeur(idUser);
+        	ticketTab = JavaSQLRecherche.recupereTicketEnvUserSaufMemeReceveurEnvoyeurPasTransfert(idUser);
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -1012,10 +1012,10 @@ public class Entreprise extends Observable{
 		return ticketTab;
 		}
 	
-	public ArrayList<Ticket> getListeTicketRecuDeUserSaufMemeReceveurEnvoyeur(int idUser){
+	public ArrayList<Ticket> getListeTicketRecuDeUserSaufMemeReceveurEnvoyeurPasTransfert(int idUser){
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
         try {
-        	ticketTab = JavaSQLRecherche.recupereTicketRecUserSaufMemeReceveurEnvoyeur(idUser);
+        	ticketTab = JavaSQLRecherche.recupereTicketRecUserSaufMemeReceveurEnvoyeurPasTransfert(idUser);
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -2456,6 +2456,9 @@ public class Entreprise extends Observable{
 		update();
 	}
 	
+	
+	
+	
 	public void accepteTicket(int idT) {
 		String modif;
 		try {
@@ -2469,7 +2472,7 @@ public class Entreprise extends Observable{
 		Activite a = this.getActiviteParId(idActiviteDepart);
 		Ressource r = this.getRessourceParId(typeRessource,idRessource);
 		this.enleverRessourceActivite(typeRessource, r,a);
-		
+		this.setStatutTicket(Ticket.ACCEPTEE, JavaSQLRecherche.recupereTicketParId(idT));
 		if (idTicketTransfert != -1 ) {
 			this.accepteTicketTransfert(idTicketTransfert);
 		}
@@ -2483,17 +2486,19 @@ public class Entreprise extends Observable{
 		
 		String modif;
 		try {
-			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
-		
-		String[] regex = modif.split(Ticket.SEPARATEUR); 
-		int typeRessource = Integer.parseInt(regex[1]);
-		int idRessource = Integer.parseInt(regex[2]);
-		int idActiviteDepart = Integer.parseInt(regex[3]);
-		Activite a = this.getActiviteParId(idActiviteDepart);
-		Ressource r = this.getRessourceParId(typeRessource,idRessource);
-		
-		this.ajouterRessourceActivite(typeRessource, r, a);
-		
+		Ticket ticketCour = JavaSQLRecherche.recupereTicketParId(idT);
+			if (ticketCour.getStatut() == Ticket.ACCEPTEE) {
+				modif = JavaSQLRecherche.recupereModifTicketParId(idT);	
+				String[] regex = modif.split(Ticket.SEPARATEUR); 
+				int typeRessource = Integer.parseInt(regex[1]);
+				int idRessource = Integer.parseInt(regex[2]);
+				int idActiviteDepart = Integer.parseInt(regex[3]);
+				Activite a = this.getActiviteParId(idActiviteDepart);
+				Ressource r = this.getRessourceParId(typeRessource,idRessource);
+				
+				this.ajouterRessourceActivite(typeRessource, r, a);
+				this.setStatutTicket(Ticket.ACCEPTEE, ticketCour);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
