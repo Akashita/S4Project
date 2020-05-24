@@ -163,45 +163,31 @@ public class EDT {
 	
 	
 	
-	public LocalDateTime getPremiereCreneauApresAct(int ordre) {
-		Set<LocalDate> keys = listeCreneaux.keySet(); //On recupere les cles de la hashtable jours
-		ArrayList<CreneauHoraire> jourCourant;	
-		CreneauHoraire dernierCreneau = null;
-		CreneauHoraire creneauCourant = null;
-		int j = 0;
-		boolean trouve = false;
-		LocalDate keyCourante = null;
-		LocalDateTime res = null; 
-		
-		for (LocalDate key : keys) {
-			keyCourante = key;
-			jourCourant = listeCreneaux.get(key); //On recupere le jour courant
-			for (j = 0; j < jourCourant.size(); j++) {
-				creneauCourant = jourCourant.get(j);
-				if(dernierCreneau == null && creneauCourant != null) {
-					dernierCreneau = creneauCourant;
-				} else if(dernierCreneau != null && creneauCourant == null) {
-					if(dernierCreneau.getActivite() != null) {
-						if(dernierCreneau.getActivite().getOrdre() > ordre) {
-							trouve = true;
-							res = LocalDateTime.of(key, LocalTime.of(dernierCreneau.getDebut(), 0));
-							break;
-						}
-					}
+	public LocalDateTime getPremiereCreneauApresAct() {
+
+		ArrayList<LocalDate> sortedKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
+		Collections.sort(sortedKeys);
+		LocalDate dernierJour;
+		LocalDateTime res = null;
+		if(sortedKeys.size() != 0) {
+			 dernierJour = sortedKeys.get(sortedKeys.size()-1);
+			boolean trouve = false;
+			
+			ArrayList<CreneauHoraire> creneauxJour = listeCreneaux.get(dernierJour);
+			
+			for (int i = 0; i < creneauxJour.size(); i++) {
+				CreneauHoraire crCourant = creneauxJour.get(i);
+				if(crCourant == null) {
+					trouve = true;
+					res = LocalDateTime.of(dernierJour, LocalTime.of(indiceToHeure(i), 0));
+					break;
 				}
 			}
-			if(trouve) {
-				break;
+			if(!trouve) {
+				res = getCreneauSuivant(dernierJour, 7);
 			}
 		}
-		
-		if(keyCourante == null) {
-			res = null;
-		} else if(!trouve) {
-			res = getCreneauSuivant(keyCourante, j);
-		} else {
-			res =  LocalDateTime.of(keyCourante, LocalTime.of(indiceToHeure(j), 0));
-		}
+
 			
 		return res;
 	}
@@ -209,7 +195,7 @@ public class EDT {
 	private LocalDateTime getCreneauSuivant(LocalDate key, int indice) {
 		if(indice == 7) {
 			key = key.plus(1, ChronoUnit.DAYS);
-			indice = indiceToHeure(indice);
+			indice = Entreprise.HEURE_DEBUT_MATIN;
 		}
 		return LocalDateTime.of(key, LocalTime.of(indice, 0));
 	}
