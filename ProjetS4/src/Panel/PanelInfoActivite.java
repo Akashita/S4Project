@@ -113,10 +113,6 @@ public class PanelInfoActivite extends JPanel{
 			panel.add(labelInfo("Domaines demandés: "+liste), gc);
 			
 
-			gc.gridx = 0;
-			gc.gridy = 2;
-			panel.add(labelInfo("Travail achevé: pas encore implemente"), gc);
-
 			gc.gridx = 1;
 			gc.gridy = 0;
 			panel.add(labelInfo("Commence le: " + activite.getJourDebut()), gc);

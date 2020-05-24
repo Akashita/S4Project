@@ -63,7 +63,6 @@ public class FenetrePrincipale extends JFrame{
 		JMenu menuFichier = new JMenu("Fichier");
 		JMenu menuEditer = new JMenu("Editer");
 		JMenu menuModifier = new JMenu("Modifier");
-		JMenu menuPropos = new JMenu("à propos");
 		JMenu menuCompte = new JMenu(entreprise.getUser().getPrenomNom());
 		
 
@@ -120,8 +119,6 @@ public class FenetrePrincipale extends JFrame{
 	    itemModifierActivite.addActionListener(new MenuBarListener(entreprise, ModifierActivite));
 	    
 
-		//------------------------------------------------------------------->>> menu propos
-		JMenuItem itemPropos = new JMenuItem("Projet");
 
 		//------------------------------------------------------------------->>> menu compte
 		JMenuItem itemInfoCompte = new JMenuItem("Information Compte", KeyEvent.VK_I);
@@ -129,8 +126,8 @@ public class FenetrePrincipale extends JFrame{
 	    itemInfoCompte.setAccelerator(ctrlInfoCompte);
 	    itemInfoCompte.addActionListener(new MenuBarListener(entreprise, InformationCompte));
 
-	    JMenuItem itemDeconnexion = new JMenuItem("Déconnexion", KeyEvent.VK_D);
-	    KeyStroke ctrlDeconnexion = KeyStroke.getKeyStroke("control D");
+	    JMenuItem itemDeconnexion = new JMenuItem("Déconnexion", KeyEvent.VK_Q);
+	    KeyStroke ctrlDeconnexion = KeyStroke.getKeyStroke("control Q");
 	    itemDeconnexion.setAccelerator(ctrlDeconnexion);
 	    itemDeconnexion.addActionListener(new MenuBarListener(entreprise, Deconnexion));
 
@@ -151,14 +148,12 @@ public class FenetrePrincipale extends JFrame{
 		menuModifier.add(itemModifierActivite);	
 		menuEditer.add(menuModifier);
 		
-		menuPropos.add(itemPropos);
 		
 		menuCompte.add(itemInfoCompte);
 		menuCompte.add(itemDeconnexion);
 		
 		menuBar.add(menuFichier);
 		menuBar.add(menuEditer);
-		menuBar.add(menuPropos);
 		menuBar.add(menuCompte);
 		this.setJMenuBar(menuBar);	
 	}
