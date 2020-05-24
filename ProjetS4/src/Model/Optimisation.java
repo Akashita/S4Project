@@ -1,6 +1,7 @@
 package Model;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import SQL.JavaSQLProjet;
@@ -10,8 +11,8 @@ public class Optimisation {
 
 	
 	
-	public static float optimisePriorite(Projet projetCour) {
-		float prioriteCour = projetCour.getPriorite();
+	public static float optimisePriorite(float priorite, LocalDate deadline ) {
+		float prioriteCour = priorite;
 		int i = 0;
 		Boolean difference = false;
 		try {
@@ -19,7 +20,7 @@ public class Optimisation {
 			while (i < liste.size() && difference == false) {
 				Projet projetListe = liste.get(i);
 				if (prioriteCour == projetListe.getPriorite()) {
-					if (Temps.dateUnEstSuperieurDateDeux(projetCour.getDeadline(), projetListe.getDeadline())) {
+					if (Temps.dateUnEstSuperieurDateDeux(deadline, projetListe.getDeadline())) {
 						prioriteCour = (float)(prioriteCour + 0.1);
 					}
 					else {

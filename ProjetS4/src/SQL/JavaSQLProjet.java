@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Model.Activite;
+import Model.Optimisation;
 import Model.Projet;
 import Ressource.Competence;
 import Ressource.Personne;
@@ -105,6 +106,7 @@ public final class JavaSQLProjet extends JavaSQL{
 
 	public static void insertion(String nom,float priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
 		Date tadat = Date.valueOf(deadline);
+		priorite = Optimisation.optimisePriorite(priorite,deadline);
 		String sql = "INSERT INTO Projet(idP, nom, priorite, deadline, couleur, numSalarie) VALUE(NULL,'" + nom + "' ,  '"+priorite+"' ,'"+tadat+"' , '"+couleur+"' , '"+numSalarie+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
