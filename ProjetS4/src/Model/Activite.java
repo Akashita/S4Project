@@ -31,6 +31,7 @@ public class Activite implements Comparable<Activite>{
 		this.titre = titre;
 		this.chargeJHomme = chargeJH;
 		this.chargeHeure = (int)(chargeJH * Entreprise.NB_HEURE_JOUR);
+		this.ordre = ordre;
 		this.debut = debut;
 		this.couleur = couleur;
 		this.listeDomaine = listeDomaine;
