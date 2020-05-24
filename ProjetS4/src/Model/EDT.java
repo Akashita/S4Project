@@ -306,18 +306,21 @@ public class EDT {
 	
 	
 	public LocalDateTime getPremiereDateActivite(Activite act) {
-		List<LocalDate> listKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
+		Hashtable<LocalDate, ArrayList<CreneauHoraire>> sansCongeEtReunion = enleverCongeReu(listeCreneaux);
+		List<LocalDate> listKeys = new ArrayList<LocalDate>(sansCongeEtReunion.keySet());
 		LocalDateTime premDate = null;
 		Collections.sort(listKeys);
 		boolean quitter = false;
 		for (int i = 0; i < listKeys.size(); i++) {
-			ArrayList<CreneauHoraire> jour = listeCreneaux.get(listKeys.get(i));
+			ArrayList<CreneauHoraire> jour = sansCongeEtReunion.get(listKeys.get(i));
 			for (int j = 0; j < jour.size(); j++) {
 				CreneauHoraire crCourant = jour.get(j);
-				if (crCourant.getActivite().equals(act)) {
-					premDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
-					quitter = true;
-					break;
+				if(crCourant != null) {
+					if (crCourant.getActivite().equals(act)) {
+						premDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
+						quitter = true;
+						break;
+					}
 				}
 			}
 			if (quitter) {
@@ -330,18 +333,21 @@ public class EDT {
 	
 	
 	public LocalDateTime getDerniereDateActivite(Activite act) {
-		List<LocalDate> listKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
+		Hashtable<LocalDate, ArrayList<CreneauHoraire>> sansCongeEtReunion = enleverCongeReu(listeCreneaux);
+		List<LocalDate> listKeys = new ArrayList<LocalDate>(sansCongeEtReunion.keySet());
 		LocalDateTime derDate = null;
 		Collections.sort(listKeys);
 		boolean quitter = false;
 		for (int i = listKeys.size()-1; i >= 0; i--) {
-			ArrayList<CreneauHoraire> jour = listeCreneaux.get(listKeys.get(i));
+			ArrayList<CreneauHoraire> jour = sansCongeEtReunion.get(listKeys.get(i));
 			for (int j = jour.size()-1; j >= 0 ; j--) {
 				CreneauHoraire crCourant = jour.get(j);
-				if (crCourant.getActivite().equals(act)) {
-					derDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
-					quitter = true;
-					break;
+				if(crCourant != null) {
+					if (crCourant.getActivite().equals(act)) {
+						derDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
+						quitter = true;
+						break;
+					}
 				}
 			}
 			if (quitter) {
