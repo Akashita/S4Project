@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -32,7 +31,6 @@ import Fenetre.FenetrePrincipale;
 import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
-import Panel_Fenetre.PanelFenetre;
 import Ressource.Calculateur;
 import Ressource.Competence;
 import Ressource.Personne;
@@ -544,15 +542,6 @@ public class PanelInfoRessource extends JPanel{
 		return liste(jlt);
 	}
 
-	@SuppressWarnings("unchecked")
-	private JList<Activite> listActivite(ArrayList<Activite> l){
-		Activite [] tr = new Activite [l.size()];
-		for (int i=0; i<tr.length; i++) {
-			tr[i] = l.get(i);
-		}
-		JList<Activite> jlt = new JList<Activite>(tr);
-		return liste(jlt);
-	}
 	
 	@SuppressWarnings("unchecked")
 	private JList<String> listString(ArrayList<String> l){
@@ -573,7 +562,7 @@ public class PanelInfoRessource extends JPanel{
 		return jlt;
 	}
 	
-	private JScrollPane creerScrollPane(JList l) {
+	private JScrollPane creerScrollPane(@SuppressWarnings("rawtypes") JList l) {
 		JScrollPane scrollPane = new JScrollPane(l);
 		scrollPane.setViewportView(l);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
