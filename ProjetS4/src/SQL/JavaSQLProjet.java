@@ -103,7 +103,7 @@ public final class JavaSQLProjet extends JavaSQL{
 
 	}
 	
-	public static void insertion(String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
+	public static void insertion(String nom,float priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
 		Date tadat = Date.valueOf(deadline);
 		String sql = "INSERT INTO Projet(idP, nom, priorite, deadline, couleur, numSalarie) VALUE(NULL,'" + nom + "' ,  '"+priorite+"' ,'"+tadat+"' , '"+couleur+"' , '"+numSalarie+"');";
 			try{
@@ -142,7 +142,7 @@ public final class JavaSQLProjet extends JavaSQL{
 		}
 	}
 	
-	public static void modifie(int idP, String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
+	public static void modifie(int idP, String nom,float priorite,LocalDate deadline,int couleur, int numSalarie) throws SQLException{
 		try{
 			 Statement stmt = getCon().createStatement();
 			 Date date1 = Date.valueOf(deadline);
@@ -154,7 +154,7 @@ public final class JavaSQLProjet extends JavaSQL{
 		}
 	}
 	
-	public static String toString(String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) {
+	public static String toString(String nom,float priorite,LocalDate deadline,int couleur, int numSalarie) {
 		return "nom : " + nom +priorite+deadline+couleur+numSalarie; 
 	}
 
