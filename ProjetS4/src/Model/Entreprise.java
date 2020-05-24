@@ -201,16 +201,16 @@ public class Entreprise extends Observable{
 		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise());
 		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne);
 
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = new Hashtable<Pair<Integer, Integer>, EDT>();
-		listeEDTPersonnes.putAll(creerLCongePersonnes(listeConge));
-
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = creerLCongePersonnes(listeConge);
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
+		
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
 
 		 for (int i = 0; i < lProjet.size(); i++) {
 			 Projet projetCourant = lProjet.get(i);
 			 lActivite = projetCourant.getListe();
+			 Hashtable<Activite, ArrayList<CreneauHoraire>> htReunion = creerALReunion(lActivite);
 			 for (int j = 0; j < lActivite.size(); j++) {
 				 Activite activiteCourante = lActivite.get(j);
 
@@ -250,31 +250,30 @@ public class Entreprise extends Observable{
 						}
 					 }
 				 
-				 listeConge = creerHTConge(listePersonnes);
-				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge);
-				 //listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles);
-				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
-
-				 listeEDTComplete.putAll(listeEDTPersonnes);
-				 listeEDTComplete.putAll(listeEDTSalles);
-				 listeEDTComplete.putAll(listeEDTCalculateurs);
+				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge, htReunion.get(activiteCourante)));
+				 listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
+				 listeEDTCalculateurs.putAll(creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs, listeEDTPersonnes));	
 			}
 		}
+		 
+		 listeEDTComplete.putAll(listeEDTPersonnes);
+		 listeEDTComplete.putAll(listeEDTSalles);
+		 listeEDTComplete.putAll(listeEDTCalculateurs);
+		 
 		 LocalDateTime[] ret = new LocalDateTime[2];
 		 Pair<LocalDateTime, LocalDateTime> bornes = getDebutFinActivite(listeEDTComplete, act);
 		 ret[0] = bornes.getLeft();
 		 ret[1] = bornes.getRight();
-		return ret;
+		 return ret;
 	}
 	
 
 	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
-		ArrayList<Activite> lActivite;
+		ArrayList<Activite> lActivite; 
 		
 		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise());
 		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne);
-		//Hashtable<Personne, ArrayList<CreneauHoraire>> listeReunion = new Hashtable<Personne, ArrayList<CreneauHoraire>>();
 		
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = creerLCongePersonnes(listeConge);
 		
@@ -291,11 +290,9 @@ public class Entreprise extends Observable{
 				 Activite activiteCourante = lActivite.get(j);
 				 				  
 				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId()));
-				 //listeReunion.putAll(creerHTReunion(listePersonnes, htReunion.get(activiteCourante)));
 				 
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
-				 
 				 
 				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge, htReunion.get(activiteCourante)));
 				 listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
