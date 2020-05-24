@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Model.Activite;
+import Model.Entreprise;
 import Model.Projet;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -139,6 +140,7 @@ public class Ticket {
 	public LocalDate getdateTicket() {
 		return this.dateTicket;
 	}
+	
 	
 	public void setStatut(int s) {
 		this.statut = s;
