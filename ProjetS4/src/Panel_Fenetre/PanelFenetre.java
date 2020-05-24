@@ -278,7 +278,7 @@ public class PanelFenetre extends JPanel{
 		boutonAjoutConge = new JButton("Ajouter");
 		boutonAjoutConge.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
-	        	ajoutConge(pf, idActivite);
+	        	ajoutReunion(pf, idActivite);
 	        }
 	    });			
 	}
