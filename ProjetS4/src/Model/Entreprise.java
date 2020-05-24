@@ -2243,7 +2243,7 @@ public class Entreprise extends Observable{
 	 */
 	public void setStatutTicket(int statut, Ticket ticket) {	
 		try {
-			JavaSQLTicket.modifieStatut(ticket.getId(), statut);
+			JavaSQLTicket.modifieStatut(ticket, statut);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

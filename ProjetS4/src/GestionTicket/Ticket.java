@@ -184,11 +184,11 @@ public class Ticket {
 			break;
 
 		case ACCEPTEE:
-			s = "en cours";
+			s = "Accepter";
 			break;
 
 		case REFUSE:
-			s = "en cours";
+			s = "Refuser";
 			break;
 
 		default:
