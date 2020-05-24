@@ -2294,6 +2294,26 @@ public class Entreprise extends Observable{
 	}
 	
 	
+	public Ressource getRessourceTicket(int idT) {
+		String modif;
+		Ressource r = null;
+		try {
+			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
+		
+		String[] regex = modif.split(Ticket.SEPARATEUR);
+		if (regex[0].equals("libere")){
+			int typeRessource = Integer.parseInt(regex[1]);
+			int idRessource = Integer.parseInt(regex[2]);
+			r = this.getRessourceParId(typeRessource, idRessource);
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return r;
+	}
+	
+	
 	
 	
 	public Activite getActiviteDepartLiberation(int idT) {
