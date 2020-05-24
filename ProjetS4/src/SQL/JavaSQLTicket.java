@@ -61,10 +61,10 @@ public class JavaSQLTicket extends JavaSQL{
 							liste = JavaSQLRecherche.recupereActiviteParIdPersonne(r.getId());
 							break;
 						case Ressource.SALLE:
-							liste = JavaSQLRecherche.recupereActiviteParIdPersonne(r.getId());
+							liste = JavaSQLRecherche.recupereActiviteParIdSalle(r.getId());
 							break;
 						case Ressource.CALCULATEUR:
-							liste = JavaSQLRecherche.recupereActiviteParIdPersonne(r.getId());
+							liste = JavaSQLRecherche.recupereActiviteParIdCalculateur(r.getId());
 							break;
 						default:
 							break;

@@ -16,7 +16,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 import GestionTicket.Ticket;
+import Model.Activite;
 import Model.Entreprise;
+import Model.Projet;
 import Panel.PanelPrincipal;
 
 
@@ -98,7 +100,7 @@ public class FenetreInfoTicket extends JDialog{
 		GridBagConstraints gc = new GridBagConstraints();
 		
 		gc.weightx = 3;
-		gc.weighty = 6;
+		gc.weighty = 8;
 
 		
 		gc.fill = GridBagConstraints.CENTER;
@@ -133,6 +135,47 @@ public class FenetreInfoTicket extends JDialog{
 		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridx ++;
 		this.add(creerTextArea(ticket.getPersonneReceveur().getPrenomNom()), gc);			
+		Ticket ticketTest = entreprise.getTicketTransfertQuiLibereParId(ticket.getId());
+		
+		if (ticket.getAction() == Ticket.LIBERE || ticketTest == null) {
+			gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+			gc.gridx = 0;
+			gc.gridy  ++;
+			gc.gridwidth = 1;
+			this.add(creerTexte("Activité d'origine : "), gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridwidth = GridBagConstraints.REMAINDER;
+			gc.gridx ++;
+			Activite act = entreprise.getActiviteDepartLiberation(ticket.getId());
+			Projet proj = entreprise.getProjetDeActiviteParId(act.getId());
+			this.add(creerTextArea(act.getTitre()+" - "+proj.getNom()), gc);						
+		}
+		
+		if (ticket.getAction() == Ticket.TRANSFERT || ticketTest != null ) {
+			
+			Activite activiteDepart = entreprise.getActiviteDepartLiberation(ticketTest.getId());
+			Activite activiteArrive = entreprise.getActiviteArriveTransfert(ticket.getId());
+
+			
+			gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+			gc.gridx = 0;
+			gc.gridy  ++;
+			gc.gridwidth = 1;
+			this.add(creerTexte("Activité d'origine : "), gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridwidth = GridBagConstraints.REMAINDER;
+			gc.gridx ++;
+			this.add(creerTextArea(activiteDepart.toString()), gc);						
+			gc.ipadx = gc.anchor = GridBagConstraints.WEST;
+			gc.gridx = 0;
+			gc.gridy  ++;
+			gc.gridwidth = 1;
+			this.add(creerTexte("Activité d'arrivé : "), gc);
+			gc.fill = GridBagConstraints.HORIZONTAL;
+			gc.gridwidth = GridBagConstraints.REMAINDER;
+			gc.gridx ++;
+			this.add(creerTextArea(activiteArrive.toString()), gc);						
+		}
 
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
