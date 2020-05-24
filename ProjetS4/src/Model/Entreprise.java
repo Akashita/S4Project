@@ -2300,6 +2300,30 @@ public class Entreprise extends Observable{
 		//majEDT();
 		update();
 	}
+	
+	public Ticket getTicketTransfertQuiLibereParId(int idT) {
+		String modif;
+		Ticket t = null;
+		try {
+			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
+		
+		String[] regex = modif.split(Ticket.SEPARATEUR);
+		int idTicket = Integer.parseInt(regex[5]);
+		if (idTicket != -1) {
+			t = JavaSQLRecherche.recupereTicketParId(idTicket);	
+
+		}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return t;
+	}
+	
+	
+	
+	
 	public Activite getActiviteDepartLiberation(int idT) {
 		String modif;
 		Activite a = null;
