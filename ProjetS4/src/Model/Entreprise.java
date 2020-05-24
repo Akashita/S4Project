@@ -39,20 +39,11 @@ import SQL.JavaSQLSalle;
 import SQL.JavaSQLTicket;
 
 
-//model il sert a creer des projets puis leur donne des ressources.
-
 public class Entreprise extends Observable{
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	/*private ArrayList<Projet> lProjet;//liste qui contient tous les projets de l'entreprise
-	private ArrayList<String> lType;//liste qui contient tous les types de ressourceAutre qui ont deejee eetee creee pour les reeutiliser
-	private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de leeentrepris
-	private int idCour;//id des ressources
-	private int idAct; //id des activiteeeeees
-	private int idProjet;
-	private Domaine domaine;*/
 
 	public static final int HEURE_DEBUT_MATIN = 8;
 	public static final int HEURE_FIN_MATIN = 12;
@@ -156,8 +147,64 @@ public class Entreprise extends Observable{
 		}
 	} 
 
+	
+	/**
+	 * Méthode de génération de l'EDT des ressources de l'entreprise
+	 * @return Renvoie l'EDT de toutes les ressources de l'entreprise
+	 */
+	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
+		ArrayList<Projet> lProjet = getListeProjetDeEntreprise(); //On récupère les projets de toute l'entreprise
+		ArrayList<Activite> lActivite; 
+		
+		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise()); //On récupère toutes les personnes l'entreprise
+		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne); //Création de la liste des congés pour chaque personne
+		
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = creerLCongePersonnes(listeConge); //On écrase la listeEDTPersonnes avec les congés
+		
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
+
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
+
+		 for (int i = 0; i < lProjet.size(); i++) { 
+			 Projet projetCourant = lProjet.get(i);
+			 lActivite = getListeActiviteDuProjet(projetCourant.getId());
+			 Hashtable<Activite, ArrayList<CreneauHoraire>> htReunion = creerALReunion(lActivite); //Création de la liste des congés pour chaque activité
+			 for (int j = 0; j < lActivite.size(); j++) {
+				 Activite activiteCourante = lActivite.get(j);
+				 				  
+				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId())); 
+				 //Recupération de la liste des personne faisant partie de l'activité courante
+				 
+				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
+				//Recupération de la liste des salles faisant partie de l'activité courante
+				 
+				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
+				//Recupération de la liste des calculateurs faisant partie de l'activité courante
+				 
+				 
+				 //Création des EDT pour l'activité courante (concaténation avec les EDT des autres activités)
+				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge, htReunion.get(activiteCourante)));
+				 listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
+				 listeEDTCalculateurs.putAll(creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs, listeEDTPersonnes));
+
+			 }
+		}
+		 
+		 //Ajout des EDT de toutes les ressources à la liste finale
+		 listeEDTComplete.putAll(listeEDTPersonnes);
+		 listeEDTComplete.putAll(listeEDTSalles);
+		 listeEDTComplete.putAll(listeEDTCalculateurs);
+
+		return listeEDTComplete;
+	}
+	
 	/**
 	 * Renvoie les bornes de l'EDT prévisionel de l'activité passée en paremètre
+	 * 
+	 * Même principe que generationEDT() sauf qu'on effectue l'action en paramètre avant de générer l'EDT
+	 * 
+	 * 
 	 * @param L'opération à effectuer (ajout ou suppresion), voir l'enum Operation
 	 * @param La ressource concernée par la modification
 	 * @param L'activité concernée par la modification
@@ -236,51 +283,6 @@ public class Entreprise extends Observable{
 		 return ret;
 	}
 	
-	
-	
-	/**
-	 * Méthode de génération de l'EDT des ressources de l'entreprise
-	 * @return Renvoie l'EDT de toutes les ressources de l'entreprise
-	 */
-	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
-		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
-		ArrayList<Activite> lActivite; 
-		
-		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise());
-		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne);
-		
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = creerLCongePersonnes(listeConge);
-		
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
-
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
-
-		 for (int i = 0; i < lProjet.size(); i++) { 
-			 Projet projetCourant = lProjet.get(i);
-			 lActivite = getListeActiviteDuProjet(projetCourant.getId());
-			 Hashtable<Activite, ArrayList<CreneauHoraire>> htReunion = creerALReunion(lActivite);
-			 for (int j = 0; j < lActivite.size(); j++) {
-				 Activite activiteCourante = lActivite.get(j);
-				 				  
-				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId()));
-				 
-				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
-				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
-				 
-				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge, htReunion.get(activiteCourante)));
-				 listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
-				 listeEDTCalculateurs.putAll(creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs, listeEDTPersonnes));
-
-			 }
-		}
-		 listeEDTComplete.putAll(listeEDTPersonnes);
-		 listeEDTComplete.putAll(listeEDTSalles);
-		 listeEDTComplete.putAll(listeEDTCalculateurs);
-
-		return listeEDTComplete;
-	}
-	
 	/**
 	 * Créé un tableau associatif : key -> personne ; value : liste de congés
 	 * @param La liste des personnes pour lesquels ont créé les congés
@@ -352,17 +354,17 @@ public class Entreprise extends Observable{
 			LocalDate jourCourant = verifierJour(act.getDebut());
 			int heureCourante = HEURE_DEBUT_MATIN;
 
-			while (chargeAloue < charge) {
+			while (chargeAloue < charge) { //Tant que tous les créneaux ne sont pas placés on continue
 				@SuppressWarnings("unchecked")
 				Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnesCourante = (Hashtable<Pair<Integer, Integer>, EDT>) listeEDTPersonnes.clone();
 				for (int i = 0; i < listePersonnes.size(); i++) {
 					Personne persCourante = listePersonnes.get(i);
 					EDT edtCourant = getEDTRessource(persCourante.getType(), persCourante.getId(), listeEDTPersonnes);
 
-					if(!estEnConge(listeConge.get(persCourante), jourCourant)) {
-						if(!estEnReunion(listeReunion, jourCourant, heureCourante)) {
-							if(verifierOrdre(listeEDTPersonnesCourante, act, jourCourant, heureCourante)) {
-								if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
+					if(!estEnConge(listeConge.get(persCourante), jourCourant)) { //On regarde si la personne est en congé, si oui on n'ajoute pas de creneau (il sont déjà présents)
+						if(!estEnReunion(listeReunion, jourCourant, heureCourante)) { //On regarde si la personne est en réunion, si oui on ajoute un creneaux de type réunion
+							if(verifierOrdre(listeEDTPersonnesCourante, act, jourCourant, heureCourante)) { //On vérifie que le crenneau n'est pas placé avant des creneaux d'une activité avec un ordre supérieur
+								if(edtCourant.creneauDispo(jourCourant, heureCourante)) { //Enfin on regarde si la personne n'a pas déjà quelque chose de prévu à ce moment la
 									titreCreneau = proj.getNom() + " | " + act.getTitre();
 									edtCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
 									chargeAloue++;
