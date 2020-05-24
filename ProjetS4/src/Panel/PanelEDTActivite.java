@@ -23,7 +23,7 @@ import Ressource.Personne;
 import Ressource.Ressource;
 
 /**
- * Affiche l'emploi du temps de l'activit� sous forme de diagramme de gantt
+ * Affiche l'emploi du temps de l'activite sous forme de diagramme de gantt
  * @author Damien
  *
  */
@@ -170,7 +170,7 @@ public class PanelEDTActivite extends JPanel{
 		
 		for(int i=0; i<listeNumeroSemaine.size();i++) {
 			int numSemaine = listeNumeroSemaine.get(i);
-			if (i>0 &&  numSemaine < listeNumeroSemaine.get(i-1) ) { // on verifie si on a passe une ann�e
+			if (i>0 &&  numSemaine < listeNumeroSemaine.get(i-1) ) { // on verifie si on a passe une annee
 				annee ++;
 			}
 			JPanel semaine = new JPanel();

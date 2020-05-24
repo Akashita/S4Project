@@ -12,6 +12,11 @@ import Model.Entreprise;
 import Model.Projet;
 import Model.Temps;
 
+/**
+ *  Affiche les information a saisir pour creer une activite
+ * @author Damien
+ *
+ */
 public class PanelNouvelleActivite extends PanelFenetre{
 	
 	/**

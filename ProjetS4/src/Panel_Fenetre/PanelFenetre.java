@@ -1,13 +1,11 @@
 package Panel_Fenetre;
 
-import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.BoxLayout;
-import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -42,9 +39,14 @@ import Model.Projet;
 import Model.Temps;
 import Panel.PanelPrincipal;
 import Ressource.Competence;
-import Ressource.Domaine;
 import Ressource.Ressource;
 
+
+/**
+ * Contient les methode utiliser par plusieur panelFentre
+ * @author Damien
+ *
+ */
 public class PanelFenetre extends JPanel{
 
     /**
@@ -569,7 +571,7 @@ public class PanelFenetre extends JPanel{
 			public void keyPressed(KeyEvent e) {
 				if (!alreadyPressed) {
 					alreadyPressed = true;
-					if (textFieldCapacite.getText().indexOf(entreprise.SEPARATEUR)!=-1) {
+					if (textFieldCapacite.getText().indexOf(Entreprise.SEPARATEUR)!=-1) {
 						majComboBoxProjet(pf);
 					}
 				}

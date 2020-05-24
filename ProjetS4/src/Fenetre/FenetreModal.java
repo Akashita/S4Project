@@ -11,13 +11,13 @@ import Panel_Fenetre.PanelAjouterRessource;
 import Panel_Fenetre.PanelEnleverRessource;
 import Panel_Fenetre.PanelModifierActivite;
 import Panel_Fenetre.PanelModifierProjet;
-import Panel_Fenetre.PanelNouveauConge;
+import Panel_Fenetre.PanelConge;
 import Panel_Fenetre.PanelDomaine;
 import Panel_Fenetre.PanelNouveauProjet;
 import Panel_Fenetre.PanelNouveauTicket;
 import Panel_Fenetre.PanelNouvelleActivite;
 import Panel_Fenetre.PanelNouvelleRessource;
-import Panel_Fenetre.PanelNouvelleReunion;
+import Panel_Fenetre.PanelReunion;
 
 
 /**
@@ -91,11 +91,11 @@ public class FenetreModal extends JDialog{
 			break;
 		case FenetrePrincipale.NouveauConge:
 			titre = "Ajouter conge";
-			panelInterface = new PanelNouveauConge(entreprise, this, id);
+			panelInterface = new PanelConge(entreprise, this, id);
 			break;
 		case FenetrePrincipale.NouvelleReunion:
 			titre = "Ajouter reunion";
-			panelInterface = new PanelNouvelleReunion(entreprise, this, id);
+			panelInterface = new PanelReunion(entreprise, this, id);
 			break;
 		case FenetrePrincipale.NouveauDomaine:
 			titre = "Creation domaine";

@@ -15,6 +15,11 @@ import Model.Projet;
 import Model.Temps;
 import Ressource.Personne;
 
+/**
+ *  Affiche les information a saisir pour creer un ticket
+ * @author Damien
+ *
+ */
 public class PanelNouveauTicket  extends PanelFenetre{
 
 	/**

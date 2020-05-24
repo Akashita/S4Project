@@ -1,20 +1,21 @@
 package Panel_Fenetre;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
-import Ressource.Domaine;
-import Ressource.Ressource;
 
+/**
+ * Affiche la liste de domaine de l'entreprise 
+ * permet d'ajouter ou de supprimer des domaines
+ * @author Damien
+ *
+ */
 public class PanelDomaine extends PanelFenetre{
 	
 	/**

@@ -1,33 +1,34 @@
 package Panel_Fenetre;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
 import Model.Temps;
-import Ressource.Domaine;
-import Ressource.Ressource;
 
-public class PanelNouveauConge extends PanelFenetre{
+/**
+ * Affiche la liste des reunions de l'activite
+ * permet d'ajouter ou de supprimer des reunions
+ * @author Damien
+ *
+ */
+public class PanelReunion extends PanelFenetre{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int idPersonne;
+	private int idActivite;
 	
-	public PanelNouveauConge(Entreprise entreprise, FenetreModal fm, int idPersonne) {
+	public PanelReunion(Entreprise entreprise, FenetreModal fm, int idActivite) {
 		super(entreprise, fm);
-		this.idPersonne = idPersonne;
-		initialiseConge(this, idPersonne);
+		this.idActivite = idActivite;
+		initialiseReunion(this, idActivite);
 		initialiseCalendrier(Temps.getAujourdhui(), this);
 		creerInterface();
 	}
@@ -45,7 +46,7 @@ public class PanelNouveauConge extends PanelFenetre{
 		
 		gc.fill = GridBagConstraints.CENTER;
 		
-		gc.insets = new Insets(5, 5, 5, 5);
+		gc.insets = new Insets(1, 5, 1, 5);
 		
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
@@ -53,22 +54,19 @@ public class PanelNouveauConge extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(creerTitre("Conges existants"), gc);
+		this.add(creerTitre("Reunions existants"), gc);
 		
 		gc.fill = GridBagConstraints.BOTH;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridheight = GridBagConstraints.RELATIVE;
 		gc.gridy ++;
-		this.add(afficheListeConge(this, idPersonne), gc);
-		
-		gc.fill = GridBagConstraints.CENTER;
-		gc.gridwidth = 1;
-		gc.gridheight = 1;
-		gc.gridy ++;
-
+		this.add(afficheListeReunion(this, idActivite), gc);
+				
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		gc.gridx = 2;
+		gc.gridheight = GridBagConstraints.REMAINDER;
+		gc.gridy ++;
 		this.add(panelBouton(), gc);
 
 	}
@@ -77,7 +75,7 @@ public class PanelNouveauConge extends PanelFenetre{
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		p.setBackground(couleurFond);
-		p.add(panelCalendrier(calendrier1));
+		p.add(panelCalendrierAvecHeure(calendrier1));
 		p.add(boutonAjoutConge);
 		p.add(creerBoutonFin(this, "Terminer"));
 		return p;

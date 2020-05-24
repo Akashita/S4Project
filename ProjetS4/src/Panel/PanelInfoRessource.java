@@ -203,7 +203,7 @@ public class PanelInfoRessource extends JPanel{
 		
 		if (ressource.getType() == Ressource.SALLE) {
 			gc.gridy ++;
-			this.add(labelInfo("Capacit� : " + capacite), gc);			
+			this.add(labelInfo("Capacite : " + capacite), gc);			
 		}
 		
 		gc.gridy ++;
@@ -394,7 +394,7 @@ public class PanelInfoRessource extends JPanel{
 					maj();
 				}	
 				else {
-			    	JOptionPane.showMessageDialog(null, "Vous l'avez deja� choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Vous l'avez dejae choisie", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
@@ -414,7 +414,7 @@ public class PanelInfoRessource extends JPanel{
 		gc.gridx ++;
 		gc.gridy = 0;
 		
-		this.add(labelTitreColonne("ACTIVIT�S"),gc);
+		this.add(labelTitreColonne("ACTIVITeS"),gc);
 
 		ArrayList<Activite> listeAct = entreprise.getListeActivitetdeRessourceParId(ressource.getType(), ressource.getId());
 		gc.fill = GridBagConstraints.BOTH;
@@ -679,7 +679,7 @@ public class PanelInfoRessource extends JPanel{
 
 	private void actionBoutonSupprimer() {
 		modeModification = false;
-		String texte = "<html> �tes-vous sur de vouloir supprimer cette ressource ? <br> La suppression de cette ressource supprimera tout son contenu. </html>";
+		String texte = "<html> etes-vous sur de vouloir supprimer cette ressource ? <br> La suppression de cette ressource supprimera tout son contenu. </html>";
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
 			if (entreprise.ressourceTravailleDansUnProjetParId(ressource.getType(), ressource.getId())) {
@@ -687,7 +687,7 @@ public class PanelInfoRessource extends JPanel{
 				fir.dispose();				
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Cette ressource est attach� aux act/projets suivant (pas encore impl�ment�)", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Cette ressource est attache aux act/projets suivant (pas encore implemente)", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}		
 		maj();

@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import Ressource.Personne;
-import Ressource.Ressource;
 import Fenetre.FenetreInfoRessource;
 import Fenetre.FenetreModal;
 import Fenetre.FenetrePrincipale;
@@ -41,20 +40,20 @@ public class MenuBarListener implements ActionListener{
 		boolean estAdmin = user.estAdmin();
 		
 		if (choix == FenetrePrincipale.NouvelleRessource || choix == FenetrePrincipale.NouveauDomaine) {	
-			if (estAdmin) { //fonction autorisé pour les admin uniquement
+			if (estAdmin) { //fonction autorisï¿½ pour les admin uniquement
 				creerFenetre();
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder à cette fonctionnalité", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder ï¿½ cette fonctionnalitï¿½", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}					
 		}	
 		if (choix == FenetrePrincipale.NouveauProjet) {
 			if (entreprise.getListePersonneEntreprise().size()>0) {
-				if (estAdmin) { //fonction autorisé pour les admin uniquement
+				if (estAdmin) { //fonction autorisï¿½ pour les admin uniquement
 					creerFenetre();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder à cette fonctionnalité", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder ï¿½ cette fonctionnalitï¿½", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}	
 			}
 			else {
@@ -67,15 +66,15 @@ public class MenuBarListener implements ActionListener{
 		if (choix == FenetrePrincipale.ModifierProjet || choix == FenetrePrincipale.NouvelleActivite) {
 			Projet p = entreprise.getProjetSelectionner();
 			if (p != null) {
-				if (estAdmin || user.estChef(p)) { //fonction autorisé pour les admin et chef de ce projet
+				if (estAdmin || user.estChef(p)) { //fonction autorisï¿½ pour les admin et chef de ce projet
 					creerFenetre();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder à cette fonctionnalité", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder ï¿½ cette fonctionnalitï¿½", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}					
 			}
 			else {
-			    JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    JOptionPane.showMessageDialog(null, "Aucun projet selectionnï¿½", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 			
@@ -87,20 +86,20 @@ public class MenuBarListener implements ActionListener{
 			if (p != null) {
 				Activite a = entreprise.getActiviteSelectionner();
 				if (a != null) {
-					if (estAdmin || user.estChef(p)) {//fonction autorisé pour les admin et chef de ce projet
+					if (estAdmin || user.estChef(p)) {//fonction autorisï¿½ pour les admin et chef de ce projet
 						creerFenetre();
 					}
 					else {
-				    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder à cette fonctionnalité", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder ï¿½ cette fonctionnalitï¿½", "Erreur", JOptionPane.ERROR_MESSAGE);			
 					}					
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Aucune activité selectionnée", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Aucune activitï¿½ selectionnï¿½e", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Aucun projet selectionnï¿½", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 
@@ -110,7 +109,7 @@ public class MenuBarListener implements ActionListener{
 			new FenetreInfoRessource(entreprise, entreprise.getUser());
 		}
 		if (choix == FenetrePrincipale.Deconnexion) {
-			String texte = "<html>Êtes vous sur de vouloir vous deconnecter ?</html>";
+			String texte = "<html>ï¿½tes vous sur de vouloir vous deconnecter ?</html>";
 			int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 			if (res == 0) { //0 = yes
 				entreprise.changementUtilisateur();

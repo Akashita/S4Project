@@ -8,7 +8,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,9 +18,7 @@ import javax.swing.JTextField;
 
 import Model.Entreprise;
 import Ressource.Personne;
-import Ressource.Ressource;
 import SQL.JavaSQL;
-import SQL.JavaSQLRecherche;
 
 
 /**
