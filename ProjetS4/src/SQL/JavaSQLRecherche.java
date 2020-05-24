@@ -663,7 +663,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	
 	
-	public static ArrayList<Ticket> recupereTicketEnvUserSaufMemeReceveurEnvoyeur(int idUser) throws SQLException{
+	public static ArrayList<Ticket> recupereTicketEnvUserSaufMemeReceveurEnvoyeurPasTransfert(int idUser) throws SQLException{
 		String sql = "SELECT * FROM Ticket WHERE numSalarieEnv = '" + idUser + "';";
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
 
@@ -672,7 +672,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
-						if (res.getInt("numSalarieEnv") !=  res.getInt("numSalarieRec") ) {
+						if (res.getInt("numSalarieEnv") !=  res.getInt("numSalarieRec") && res.getInt("statut") != Ticket.TRANSFERT ) {
 							 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") ));
 						}
 						 
@@ -706,7 +706,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 	
 	
-	public static ArrayList<Ticket> recupereTicketRecUserSaufMemeReceveurEnvoyeur(int idUser) throws SQLException{
+	public static ArrayList<Ticket> recupereTicketRecUserSaufMemeReceveurEnvoyeurPasTransfert(int idUser) throws SQLException{
 		String sql = "SELECT * FROM Ticket WHERE numSalarieRec = '" + idUser + "';";
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
 
@@ -715,7 +715,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
 						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
-							if (res.getInt("numSalarieEnv") !=  res.getInt("numSalarieRec") ) {
+							if (res.getInt("numSalarieEnv") !=  res.getInt("numSalarieRec")  && res.getInt("statut") != Ticket.TRANSFERT ) {
 
 							 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") ));
 							}

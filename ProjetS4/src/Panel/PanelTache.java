@@ -65,8 +65,8 @@ public class PanelTache extends JPanel {
 	private void afficheInterface() {
 		ticketTab = ticketRecuTab = ticketEnvTab = new ArrayList<Ticket>();
 		
-		ticketRecuTab = entreprise.getListeTicketRecuDeUserSaufMemeReceveurEnvoyeur(entreprise.getUser().getId());
-		ticketEnvTab = entreprise.getListeTicketEnvoyeDeUserSaufMemeReceveurEnvoyeur(entreprise.getUser().getId());
+		ticketRecuTab = entreprise.getListeTicketRecuDeUserSaufMemeReceveurEnvoyeurPasTransfert(entreprise.getUser().getId());
+		ticketEnvTab = entreprise.getListeTicketEnvoyeDeUserSaufMemeReceveurEnvoyeurPasTransfert(entreprise.getUser().getId());
 
 		
 		this.setLayout(new GridBagLayout());
