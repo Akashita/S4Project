@@ -93,7 +93,7 @@ public class PanelFenetre extends JPanel{
     protected JScrollPane scrollPaneJListDomaine;
     protected JButton boutonSupprimerDomaine;
     
-    protected JComboBox<Activite> comboBoxActivite;
+    protected JComboBox<Activite> comboBoxActivite, comboBoxActivite2;
     
     protected JButton boutonAfficherDateDebut, boutonAfficherDateFin, boutonAjoutDate;
     protected boolean afficherDateDebut = false, afficherDateFin = false;
@@ -548,6 +548,13 @@ public class PanelFenetre extends JPanel{
 		});	  
 		
 		comboBoxActivite = new JComboBox<Activite>();
+		ArrayList<Activite> lae = entreprise.getListeActivite();
+		Activite [] tae = new Activite[lae.size()];
+		for (int i=0; i<tae.length; i++) {
+			tae[i] = lae.get(i);
+		}	
+		comboBoxActivite2 = new JComboBox<Activite>(tae);
+		
 		textArea = new JTextArea();
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		textArea.setBorder(BorderFactory.createCompoundBorder(border,
@@ -580,6 +587,7 @@ public class PanelFenetre extends JPanel{
 			comboBoxActivite = new JComboBox<Activite>(t);			
 		maj(pf);
 	}
+	
 	
 	protected void nouvelleAction(PanelFenetre pf) {
 		actionChoisie = comboBoxActionTicket.getSelectedIndex();

@@ -109,7 +109,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		initialiseComboBoxType(this); 
 		this.add(comboBoxType, gc);
 		
-		gc.fill = GridBagConstraints.WEST;
+		gc.fill = GridBagConstraints.CENTER;
 		gc.gridx = 0;
 		gc.gridy ++;
 		gc.gridwidth = 1;
@@ -118,7 +118,19 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(textFieldLogin, gc);
+		this.add(comboBoxRessource, gc);
+
+		
+		gc.fill = GridBagConstraints.CENTER;
+		gc.gridx = 0;
+		gc.gridy ++;
+		gc.gridwidth = 1;
+		this.add(creerTexte("Activité concernée : "), gc);
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.gridx ++;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		//majComboBoxActivite(this);
+		this.add(comboBoxActivite2, gc);
 
 	}
 	
@@ -152,7 +164,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy ++;
 		gc.gridwidth = 1;
-		this.add(creerTexte("Projet concernée : "), gc);
+		this.add(creerTexte("Activité d'origine : "), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
@@ -209,7 +221,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 
 		case Ticket.TRANSFERT:
 					Ressource r1 = (Ressource) comboBoxRessource.getSelectedItem();
-					Activite act1 = (Activite) comboBoxActivite.getSelectedItem();
+					Activite act1 = (Activite) comboBoxActivite2.getSelectedItem();
 					Projet p1 =  entreprise.getProjetDeActiviteParId(act1.getId());
 					
 					entreprise.nouvTicketTransfert(sujet(), textArea.getText(), entreprise.getUser().getId(), p1.getChefDeProjet().getId(), r1, act1);

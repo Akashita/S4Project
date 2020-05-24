@@ -81,8 +81,8 @@ public class FenetreInfoTicket extends JDialog{
 	}
 	
 	public void actionBoutonAccepter() {
-		entreprise.setStatutTicket(Ticket.ACCEPTEE, ticket);
 		entreprise.accepteTicket(ticket.getId());
+		entreprise.setStatutTicket(Ticket.ACCEPTEE, ticket);
 		this.dispose();
 	}
 	
