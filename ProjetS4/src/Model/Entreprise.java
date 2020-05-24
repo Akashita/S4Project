@@ -50,10 +50,10 @@ public class Entreprise extends Observable{
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	/*private ArrayList<Projet> lProjet;//liste qui contient tous les projets de l'entreprise
-	private ArrayList<String> lType;//liste qui contient tous les types de ressourceAutre qui ont d��j�� ��t�� cr��e pour les r��utiliser
-	private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de l��entrepris
+	private ArrayList<String> lType;//liste qui contient tous les types de ressourceAutre qui ont deejee eetee creee pour les reeutiliser
+	private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de leeentrepris
 	private int idCour;//id des ressources
-	private int idAct; //id des activit������s
+	private int idAct; //id des activiteeeeees
 	private int idProjet;
 	private Domaine domaine;*/
 
@@ -93,7 +93,7 @@ public class Entreprise extends Observable{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//cr��ation de l'entreprise unique il faudra lui ajouter un nom si on d��sire ��tendre nos activit��s
+	//creeation de l'entreprise unique il faudra lui ajouter un nom si on deesire eetendre nos activitees
 	public Entreprise() {
 		/*this.lProjet =  new ArrayList<Projet>();
 		this.lType =  new ArrayList<String>();
@@ -153,7 +153,7 @@ public class Entreprise extends Observable{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//classe de base qui permettent de voir la cha������ne et r������cup������rer les infos de la classe
+	//classe de base qui permettent de voir la chaeeeeeene et reeeeeecupeeeeeerer les infos de la classe
 	/*@Override
 	public String toString() {
 		String chaineActProjet = "Voici la liste des projets ainsi que leurs activites : ";
@@ -1831,7 +1831,7 @@ public class Entreprise extends Observable{
      * cherche l'user avec son login et son mdp
      * @param login du compte
      * @param mdp du compte
-     * @return la personne asssoci� sinon null
+     * @return la personne asssocie sinon null
      */
 	public static Ressource chercheUser(String login, String mdp) {
     	Ressource p = null;
@@ -1933,7 +1933,7 @@ public class Entreprise extends Observable{
 
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion projet
 
-	public void creerProjet(Personne chefDeProjet, String nom, int priorite, LocalDate deadline) {//cr��e un projet si son nom n'est pas d��j�� utilis��
+	public void creerProjet(Personne chefDeProjet, String nom, int priorite, LocalDate deadline) {//creee un projet si son nom n'est pas deejee utilisee
 		try {
 			JavaSQLProjet.insertion(nom, priorite, deadline, 0, chefDeProjet.getId());
 		} catch (SQLException e) {
@@ -1943,7 +1943,7 @@ public class Entreprise extends Observable{
 		update();
 	}
 
-	/*public void ajouterProjet(Projet proj) { //Les projets sont ajout���s ��� la liste en les triant par ordre de priorite
+	/*public void ajouterProjet(Projet proj) { //Les projets sont ajouteees eee la liste en les triant par ordre de priorite
 		Boolean place = false;
 		int i = 0;
 		while (i < lProjet.size() && !place) {
@@ -1974,7 +1974,7 @@ public class Entreprise extends Observable{
 
 	public void supprimerProjet(Projet projet) {
 
-		for (int i=0; i<projet.getListe().size(); i++) { // on supprime toutes ses activit������s
+		for (int i=0; i<projet.getListe().size(); i++) { // on supprime toutes ses activiteeeeees
 			supprimerActiviter(projet.getListe().get(i));
 		}
 
@@ -1993,8 +1993,8 @@ public class Entreprise extends Observable{
 			e.printStackTrace();
 		}
 		projetSelectionner = null;// enleve la selection projet
-		//majEDT(); // remet ������ jour les emplois du temps
-		update(); // remet ������ jour l'interface
+		//majEDT(); // remet eeeeee jour les emplois du temps
+		update(); // remet eeeeee jour l'interface
 	}
 
 
@@ -2047,8 +2047,8 @@ public class Entreprise extends Observable{
 		activite.supprimerToutesRessources(); //on enleve toute ses ressources
 
 		activiteSelectionner = null; // on le deselectionne
-		//majEDT(); // met ������ jour l'emploi du temps
-		update(); // met ������ jour l'interface
+		//majEDT(); // met a jour l'emploi du temps
+		update(); // met a jour l'interface
 	}
 
 
@@ -2489,58 +2489,6 @@ public class Entreprise extends Observable{
 		int r = (int) (Math.random() * tab.length) ;
 		return tab[r];
 	}
-
-
-
-
-	/*public void selectionnerListeRessource(String type) {
-		boolean estPresent = false;
-		for (int i=0; i<ressourceAfficher.size(); i++) {
-			if (ressourceAfficher.get(i) == type) {
-				estPresent = true;
-				ressourceAfficher.remove(i);
-				break;
-			}
-		}
-		if (!estPresent) {
-			ressourceAfficher.add(type);
-		}
-		adapteListeRessourceAfficher();
-		update();
-	}
-
-	private void adapteListeRessourceAfficher() {
-		int taille = ressourceAfficher.size();
-		for (int i=0; i<taille; i++) {
-			if (ressourceAfficher.get(i) == Ressource.PERSONNE) {
-				ressourceAfficher.remove(i);
-				ressourceAfficher.add(0, Ressource.PERSONNE);
-			}
-			if (ressourceAfficher.get(i) == Ressource.SALLE) {
-				ressourceAfficher.remove(i);
-				if (taille==1) {
-					ressourceAfficher.add(0, Ressource.SALLE);
-				}
-				else {
-					ressourceAfficher.add(1, Ressource.SALLE);
-				}
-			}
-			if (ressourceAfficher.get(i) == Ressource.CALCULATEUR) {
-				ressourceAfficher.remove(i);
-				if (taille==1) {
-					ressourceAfficher.add(0, Ressource.CALCULATEUR);
-				}
-				else {
-					if (taille==2) {
-						ressourceAfficher.add(1, Ressource.CALCULATEUR);
-					}
-					else {
-						ressourceAfficher.add(2, Ressource.CALCULATEUR);
-					}
-				}
-			}
-		}
-	}*/
 
 
 	public ArrayList<String> getListeRessourceAfficher(){

@@ -92,7 +92,7 @@ public class PanelFenetre extends JPanel{
     protected JScrollPane scrollPaneJListDomaine;
     protected JButton boutonSupprimerDomaine;
     
-    protected JComboBox<Projet> comboBoxProjet;
+    protected JComboBox<Activite> comboBoxActivite;
     
     protected JButton boutonAfficherDateDebut, boutonAfficherDateFin, boutonAjoutDate;
     protected boolean afficherDateDebut = false, afficherDateFin = false;
@@ -518,7 +518,7 @@ public class PanelFenetre extends JPanel{
 
 	protected void initialiseTicket(PanelFenetre pf) {
 		//afficherDateDebut =  afficherDateFin = false;
-		comboBoxProjet = new JComboBox<Projet>();
+		comboBoxActivite = new JComboBox<Activite>();
 		comboBoxActionTicket = new JComboBox<String>(actionTicket);
 		comboBoxActionTicket.addActionListener (new ActionListener () {
 			@Override
@@ -528,7 +528,6 @@ public class PanelFenetre extends JPanel{
 		});	    
 		calendrier1 = new Calendrier(this, pf, Temps.getAujourdhui());
 		calendrier2 = new Calendrier(this, pf, Temps.getAujourdhui());
-		//initialiseBoutonDate(pf);
 		initialiseTextFieldLogin(pf);
 		textArea = new JTextArea();
 	}
@@ -582,9 +581,9 @@ public class PanelFenetre extends JPanel{
 	protected void majComboBoxProjet(PanelFenetre pf) {
 		String login = textFieldCapacite.getText();
 		int type = comboBoxType.getSelectedIndex();
-		ArrayList<Projet> l = entreprise.getListeProjetdeRessourceParLogin(type, login);
+		ArrayList<Activite> l = entreprise.getListeActivitetdeRessourceParLogin(type, login);
 		
-		comboBoxProjet = new JComboBox<Projet>((Projet[]) l.toArray());			
+		comboBoxActivite = new JComboBox<Activite>((Activite[]) l.toArray());			
 		maj(pf);
 	}
 	
