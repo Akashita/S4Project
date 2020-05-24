@@ -171,32 +171,24 @@ public class EDT {
 		int j = 0;
 		boolean trouve = false;
 		LocalDate keyCourante = null;
-		LocalDateTime res = null;
+		LocalDateTime res = null; 
 		
 		for (LocalDate key : keys) {
 			keyCourante = key;
 			jourCourant = listeCreneaux.get(key); //On recupere le jour courant
 			for (j = 0; j < jourCourant.size(); j++) {
 				creneauCourant = jourCourant.get(j);
-				if(dernierCreneau == null) {
+				if(dernierCreneau == null && creneauCourant != null) {
 					dernierCreneau = creneauCourant;
-				} else if(creneauCourant != null) {
-					if (dernierCreneau.getDebut() < creneauCourant.getDebut() || creneauCourant.getDebut() == Entreprise.HEURE_DEBUT_MATIN) {
-						dernierCreneau = creneauCourant;
+				} else if(dernierCreneau != null && creneauCourant == null) {
+					if(dernierCreneau.getActivite() != null) {
+						if(dernierCreneau.getActivite().getOrdre() > ordre) {
+							trouve = true;
+							res = LocalDateTime.of(key, LocalTime.of(dernierCreneau.getDebut(), 0));
+							break;
+						}
 					}
 				}
-								
-				if(creneauCourant == null) {
-					if(dernierCreneau != null) {
-						trouve = true;
-						break;
-					}
-				} else if(creneauCourant.getActivite() != null) {
-					if(creneauCourant.getActivite().getOrdre() > ordre) {
-						trouve = true;
-						break;
-					}
-				} 
 			}
 			if(trouve) {
 				break;
@@ -210,32 +202,7 @@ public class EDT {
 		} else {
 			res =  LocalDateTime.of(keyCourante, LocalTime.of(indiceToHeure(j), 0));
 		}
-		
-		/*
-		Iterator<LocalDate> itt = keys.iterator();
-		boolean trouve = false;		
-		LocalDate key = null;
-		LocalDateTime res = null;
-		
-		int i = 0;
-		
-		
-		
-		while(itt.hasNext() && !trouve) { //On parcours les jours
-			key = itt.next();
-			jourCourant = listeCreneaux.get(key); //On recupere le jour courant
-			for (i = 0; i < jourCourant.size(); i++) {
-				if(jourCourant.get(i).getActivite() != null) {
-					if(jourCourant.get(i).getActivite().getOrdre() >= ordre) {
-						trouve = true;
-						break;
-					}
-				}	
-			}			
-		}
-		*/
-		
-		
+			
 		return res;
 	}
 	
