@@ -107,14 +107,16 @@ public class JavaSQLTicket extends JavaSQL{
 				e.printStackTrace();
 			}			 
 		 }
-		 if (ticket.getStatut() == Ticket.VU && statut == Ticket.ACCEPTEE || statut == Ticket.REFUSE) {
-			 try{
-				 Statement stmt = getCon().createStatement();
-				 String sql = "UPDATE Ticket SET statut= '" + statut + "' WHERE idT= '"+ ticket.getId()+"';";
-				 stmt.executeUpdate(sql);
-			} catch(SQLException e){
-				e.printStackTrace();
-			}		 
+		 if (ticket.getStatut() == Ticket.VU) {			 
+			if( statut == Ticket.ACCEPTEE || statut == Ticket.REFUSE) {
+				 try{
+					 Statement stmt = getCon().createStatement();
+					 String sql = "UPDATE Ticket SET statut= '" + statut + "' WHERE idT= '"+ ticket.getId()+"';";
+					 stmt.executeUpdate(sql);
+				} catch(SQLException e){
+					e.printStackTrace();
+				}		 				
+			}
 		 }
 	}
 	 
