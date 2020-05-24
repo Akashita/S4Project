@@ -661,6 +661,29 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return ticketTab;
 	}
 	
+	
+	
+	public static ArrayList<Ticket> recupereTicketEnvUserSaufMemeReceveurEnvoyeur(int idUser) throws SQLException{
+		String sql = "SELECT * FROM Ticket WHERE numSalarieEnv = '" + idUser + "';";
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
+						if (res.getInt("numSalarieEnv") !=  res.getInt("numSalarieRec") ) {
+							 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") ));
+						}
+						 
+					}	
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return ticketTab;
+	}
+	
 	public static ArrayList<Ticket> recupereTicketRecUser(int idUser) throws SQLException{
 		String sql = "SELECT * FROM Ticket WHERE numSalarieRec = '" + idUser + "';";
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
@@ -673,6 +696,29 @@ public final class JavaSQLRecherche extends JavaSQL{
 						
 							 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") ));
  
+						 
+					}	
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return ticketTab;
+	}
+	
+	
+	public static ArrayList<Ticket> recupereTicketRecUserSaufMemeReceveurEnvoyeur(int idUser) throws SQLException{
+		String sql = "SELECT * FROM Ticket WHERE numSalarieRec = '" + idUser + "';";
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
+							if (res.getInt("numSalarieEnv") !=  res.getInt("numSalarieRec") ) {
+
+							 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") ));
+							}
 						 
 					}	
 				 }

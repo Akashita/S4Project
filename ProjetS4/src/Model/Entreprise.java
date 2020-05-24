@@ -984,6 +984,20 @@ public class Entreprise extends Observable{
         }
 		return ticketTab;
 		}
+	
+	public ArrayList<Ticket> getListeTicketEnvoyeDeUserSaufMemeReceveurEnvoyeur(int idUser){
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+        try {
+        	ticketTab = JavaSQLRecherche.recupereTicketEnvUserSaufMemeReceveurEnvoyeur(idUser);
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+		return ticketTab;
+		}
+	
+	
 	/**
 	 * Cherche tout les tickets recu par l'user
 	 * @param id de l'user
@@ -1000,7 +1014,18 @@ public class Entreprise extends Observable{
         }
 		return ticketTab;
 		}
+	
+	public ArrayList<Ticket> getListeTicketRecuDeUserSaufMemeReceveurEnvoyeur(int idUser){
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+        try {
+        	ticketTab = JavaSQLRecherche.recupereTicketRecUserSaufMemeReceveurEnvoyeur(idUser);
 
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+		return ticketTab;
+		}
 
 
 	//------------------------------>>>>> Recherche element dans la bdd
@@ -2308,12 +2333,13 @@ public class Entreprise extends Observable{
 			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
 		
 		String[] regex = modif.split(Ticket.SEPARATEUR);
-		int idTicket = Integer.parseInt(regex[5]);
+		if (regex[0].equals("libere")){
+		int idTicket = Integer.parseInt(regex[4]);
 		if (idTicket != -1) {
 			t = JavaSQLRecherche.recupereTicketParId(idTicket);	
 
 		}
-
+		}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

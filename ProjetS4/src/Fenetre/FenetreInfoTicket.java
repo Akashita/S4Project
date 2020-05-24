@@ -137,7 +137,7 @@ public class FenetreInfoTicket extends JDialog{
 		this.add(creerTextArea(ticket.getPersonneReceveur().getPrenomNom()), gc);			
 		Ticket ticketTest = entreprise.getTicketTransfertQuiLibereParId(ticket.getId());
 		
-		if (ticket.getAction() == Ticket.LIBERE || ticketTest == null) {
+		if (ticket.getAction() == Ticket.LIBERE && ticketTest == null) {
 			gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 			gc.gridx = 0;
 			gc.gridy  ++;
