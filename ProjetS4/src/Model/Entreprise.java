@@ -620,7 +620,7 @@ public class Entreprise extends Observable{
 		LocalDateTime premierLibre = null;
 		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
 		for (Pair<Integer, Integer> key : keys) {
-			tmp = listeEDT.get(key).getPremiereCreneauApresAct(ordre);
+			tmp = listeEDT.get(key).getPremiereCreneauApresAct();
 			if(premierLibre != null && tmp != null) {
 				if(premierLibre.isBefore(tmp)) {
 					premierLibre = tmp;
