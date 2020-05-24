@@ -2177,12 +2177,13 @@ public class Entreprise extends Observable{
 	 * @param ticket
 	 */
 	public void setStatutTicket(int statut, Ticket ticket) {
-		if (ticket.getStatut() == Ticket.NONVU) {
-			
+		
+		try {
+			JavaSQLTicket.modifieStatut(ticket.getId(), statut);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		if (ticket.getStatut() == Ticket.VU) {
-		}
-		asdasd
 	}
 	
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
