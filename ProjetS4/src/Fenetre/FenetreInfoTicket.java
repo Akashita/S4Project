@@ -144,7 +144,7 @@ public class FenetreInfoTicket extends JDialog{
 		this.add(creerTextArea(ticket.getMessage()), gc);			
 		
 		
-		if (ticket.getStatut() == Ticket.VU) {
+		if (ticket.getStatut() == Ticket.VU || ticket.getStatut() == Ticket.NONVU) {
 			gc.gridwidth = 1;
 			gc.gridheight = 1;
 			gc.ipadx = gc.anchor = GridBagConstraints.EAST;
