@@ -53,7 +53,7 @@ public class PanelInfoProjet extends JPanel{
 		//affiche information du projet
 		this.add(panelInfoProjet(), BorderLayout.NORTH);
 		
-		//affiche les activité
+		//affiche les activite
 		/*gc.fill = GridBagConstraints.BOTH;			
 		gc.gridx = 0;
 		gc.gridy ++;

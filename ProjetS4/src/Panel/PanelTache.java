@@ -30,7 +30,7 @@ import SQL.JavaSQLTicket;
 
 /**
  * Affiche la liste des tache (ticket et optimisation)
- * Et affiche la liste des ticket ou la liste de propostion d'optimisation
+ * Et affiche la liste des ticket ou la liste de propostion d'optimisation du projet selectionner
  * @author Damien
  *
  */
@@ -223,12 +223,12 @@ public class PanelTache extends JPanel {
 		p.add(creerList(ticketRecuTab), gc);
 		
 		
-		//ticket envoyé
+		//ticket envoye
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridheight = 1;
 		gc.gridy = 3;
-		p.add(creerLabel("Ticket envoyé", true), gc);
+		p.add(creerLabel("Ticket envoye", true), gc);
 
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridy = 4;
@@ -291,26 +291,6 @@ public class PanelTache extends JPanel {
 		return label;
 	}
 	
-	private JLabel creerLabelIco(ImageIcon icon, int tache) {
-		JLabel label = new JLabel(icon);
-		label.setBackground(Color.red);
-		label.addMouseListener(new MouseListener() {           
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				entreprise.setAfficheTache(tache);
- 			}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-    	});
-		return label;
-	}
-
 	private JScrollPane creerList(ArrayList<Ticket> lt) {
 		Ticket [] tt = new Ticket [lt.size()];
 		for (int i=0; i<tt.length; i++) {

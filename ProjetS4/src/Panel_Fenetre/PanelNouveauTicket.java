@@ -3,18 +3,20 @@ package Panel_Fenetre;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import Fenetre.FenetreModal;
 import GestionTicket.Ticket;
+import Model.Activite;
 import Model.Entreprise;
 import Model.Projet;
-import Model.Temps;
-import Ressource.Personne;
 
+/**
+ *  Affiche les information a saisir pour creer un ticket
+ * @author Damien
+ *
+ */
 public class PanelNouveauTicket  extends PanelFenetre{
 
 	/**
@@ -151,7 +153,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add( comboBoxProjet, gc);
+		this.add( comboBoxActivite, gc);
 		
 	}
 	
@@ -180,7 +182,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		case Ticket.MESSAGE:
 			if (!textFieldLogin.getText().isEmpty()) {
 				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
-					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), getIdFromLogin(), null);	
+					entreprise.nouvTicketMessage(sujet(), textArea.getText(), entreprise.getUser().getId(), getIdFromLogin());
 				}
 				else {
 				   	JOptionPane.showMessageDialog(null, "Ce destinataire n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -194,12 +196,14 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		case Ticket.LIBERE:
 			if (!textFieldLogin.getText().isEmpty()) {
 				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
-					Activite act 
-					Projet p =  (Projet) comboBoxProjet.getSelectedItem();
+					
+					Activite act = (Activite) comboBoxActivite.getSelectedItem();
+					Projet p =  entreprise.getProjetDeActiviteParId(act.getId());
 					int type = comboBoxType.getSelectedIndex();
 					String login = textFieldLogin.getText();
-					entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
-							entreprise.getRessourceParLogin(type, login));				
+				
+					entreprise.nouvTicketLiberation(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
+							entreprise.getRessourceParLogin(type, login), act);
 				}
 				else {
 				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -214,14 +218,14 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		case Ticket.TRANSFERT:
 			if (!textFieldLogin.getText().isEmpty()) {
 				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
+	
+					Activite act = (Activite) comboBoxActivite.getSelectedItem();
+					Projet p =  entreprise.getProjetDeActiviteParId(act.getId());
 					int type = comboBoxType.getSelectedIndex();
 					String login = textFieldLogin.getText();
-					ArrayList<Personne> lchef = entreprise.getListeDesChefDeProjetPossedantLaRessourceParLogin(type, login);
 					
-					for (int i=0; i<lchef.size(); i++) {
-						entreprise.nouvTicket(actionChoisie, sujet(), textArea.getText(), entreprise.getUser().getId(),
-								lchef.get(i).getId(), entreprise.getRessourceParLogin(type, login));
-					}				
+					entreprise.nouvTicketTransfert(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(), entreprise.getRessourceParLogin(type, login), act);
+					
 				}
 				else {
 				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -257,7 +261,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 	}
 
 	private int getIdFromLogin() {
-		String[] regex = textFieldLogin.getText().split(entreprise.SEPARATEUR, 2); 
+		String[] regex = textFieldLogin.getText().split(Entreprise.SEPARATEUR, 2); 
 		int id = Integer.parseInt(regex[1]);
 		return id;
 	}

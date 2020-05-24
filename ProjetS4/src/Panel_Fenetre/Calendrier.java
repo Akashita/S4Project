@@ -8,6 +8,11 @@ import javax.swing.JComboBox;
 
 import Model.Temps;
 
+/**
+ * Permet de gerer l'affichage des date lorsque qu'on doit en creer une ou en modifier une
+ * @author Damien
+ *
+ */
 public class Calendrier {
 
 	private PanelFenetre pfp, pfe;

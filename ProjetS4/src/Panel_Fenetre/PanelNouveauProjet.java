@@ -12,6 +12,11 @@ import Model.Entreprise;
 import Model.Temps;
 import Ressource.Personne;
 
+/**
+ *  Affiche les information a saisir pour creer un projet
+ * @author Damien
+ *
+ */
 public class PanelNouveauProjet extends PanelFenetre{
 	
 	/**

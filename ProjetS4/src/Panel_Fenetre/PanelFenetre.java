@@ -1,13 +1,11 @@
 package Panel_Fenetre;
 
-import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.BoxLayout;
-import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -42,9 +39,14 @@ import Model.Projet;
 import Model.Temps;
 import Panel.PanelPrincipal;
 import Ressource.Competence;
-import Ressource.Domaine;
 import Ressource.Ressource;
 
+
+/**
+ * Contient les methode utiliser par plusieur panelFentre
+ * @author Damien
+ *
+ */
 public class PanelFenetre extends JPanel{
 
     /**
@@ -90,7 +92,7 @@ public class PanelFenetre extends JPanel{
     protected JScrollPane scrollPaneJListDomaine;
     protected JButton boutonSupprimerDomaine;
     
-    protected JComboBox<Projet> comboBoxProjet;
+    protected JComboBox<Activite> comboBoxActivite;
     
     protected JButton boutonAfficherDateDebut, boutonAfficherDateFin, boutonAjoutDate;
     protected boolean afficherDateDebut = false, afficherDateFin = false;
@@ -516,7 +518,7 @@ public class PanelFenetre extends JPanel{
 
 	protected void initialiseTicket(PanelFenetre pf) {
 		//afficherDateDebut =  afficherDateFin = false;
-		comboBoxProjet = new JComboBox<Projet>();
+		comboBoxActivite = new JComboBox<Activite>();
 		comboBoxActionTicket = new JComboBox<String>(actionTicket);
 		comboBoxActionTicket.addActionListener (new ActionListener () {
 			@Override
@@ -526,7 +528,6 @@ public class PanelFenetre extends JPanel{
 		});	    
 		calendrier1 = new Calendrier(this, pf, Temps.getAujourdhui());
 		calendrier2 = new Calendrier(this, pf, Temps.getAujourdhui());
-		//initialiseBoutonDate(pf);
 		initialiseTextFieldLogin(pf);
 		textArea = new JTextArea();
 	}
@@ -569,7 +570,7 @@ public class PanelFenetre extends JPanel{
 			public void keyPressed(KeyEvent e) {
 				if (!alreadyPressed) {
 					alreadyPressed = true;
-					if (textFieldCapacite.getText().indexOf(entreprise.SEPARATEUR)!=-1) {
+					if (textFieldCapacite.getText().indexOf(Entreprise.SEPARATEUR)!=-1) {
 						majComboBoxProjet(pf);
 					}
 				}
@@ -580,9 +581,9 @@ public class PanelFenetre extends JPanel{
 	protected void majComboBoxProjet(PanelFenetre pf) {
 		String login = textFieldCapacite.getText();
 		int type = comboBoxType.getSelectedIndex();
-		ArrayList<Projet> l = entreprise.getListeProjetdeRessourceParLogin(type, login);
+		ArrayList<Activite> l = entreprise.getListeActivitetdeRessourceParLogin(type, login);
 		
-		comboBoxProjet = new JComboBox<Projet>((Projet[]) l.toArray());			
+		comboBoxActivite = new JComboBox<Activite>((Activite[]) l.toArray());			
 		maj(pf);
 	}
 	

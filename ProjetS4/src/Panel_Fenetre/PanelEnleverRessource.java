@@ -9,6 +9,12 @@ import Fenetre.FenetreModal;
 import Model.Entreprise;
 import Ressource.Ressource;
 
+/**
+ * Affiche la liste des ressource de l'activite
+ * Permet d'un choisir une pour l'enlever de l'activite
+ * @author Damien
+ *
+ */
 public class PanelEnleverRessource extends PanelFenetre{
 	
 	/**

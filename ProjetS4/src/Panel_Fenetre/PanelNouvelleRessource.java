@@ -4,7 +4,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.AbstractButton;
 import javax.swing.JOptionPane;
 
 import Fenetre.FenetreModal;
@@ -12,6 +11,11 @@ import Model.Entreprise;
 import Ressource.Personne;
 import Ressource.Ressource;
 
+/**
+ *  Affiche les information a saisir pour creer une ressource
+ * @author Damien
+ *
+ */
 public class PanelNouvelleRessource extends PanelFenetre{
 	
 	/**
@@ -30,24 +34,24 @@ public class PanelNouvelleRessource extends PanelFenetre{
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
+		/* Le gridBagConstraints va dï¿½finir la position et la taille des ï¿½lï¿½ments */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert Ã  définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
+		/* le parametre fill sert Ã  dï¿½finir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
 		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
 		 */
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
+		/* insets dï¿½finir la marge entre les composant new Insets(margeSupï¿½rieure, margeGauche, margeInfï¿½rieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir oÃ¹ on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
+		/* ipady permet de savoir oÃ¹ on place le composant s'il n'occupe pas la totalitï¿½ de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
+		/* weightx dï¿½finit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx définit le nombre de cases en ordonnée */
+		/* weightx dï¿½finit le nombre de cases en ordonnï¿½e */
 		int maxHauteur = 10;
 		gc.weighty = maxHauteur;
 
@@ -69,7 +73,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.gridwidth = 1;
 			gc.gridx = 0;
 			gc.gridy ++;
-			this.add(creerTexte("Indiquez son prénom"), gc);
+			this.add(creerTexte("Indiquez son prï¿½nom"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
@@ -100,7 +104,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
 			gc.gridy ++;
-			this.add(creerTitre("Indiquez ses compétences"), gc);
+			this.add(creerTitre("Indiquez ses compï¿½tences"), gc);
 
 			gc.fill = GridBagConstraints.WEST;
 			gc.gridy ++;		
@@ -136,7 +140,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
 			gc.gridy = 4;
-			this.add(creerTexte("Indiquez sa capacité"), gc);
+			this.add(creerTexte("Indiquez sa capacitï¿½"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
@@ -164,7 +168,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Créer"), gc);
+		this.add(creerBoutonFin(this, "Crï¿½er"), gc);
 
 	}
 	
