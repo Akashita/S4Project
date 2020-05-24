@@ -1986,7 +1986,7 @@ public class Entreprise extends Observable{
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion activite
 
 	public void creerActivite(Projet projet, String titre, float charge, LocalDate debut, ArrayList<String> listeDomaine) {
-		int ordre = projet.getListe().size();
+		int ordre = getListeActiviteDuProjet(projet.getId()).size();
 		Color couleur = couleurAleatoire();
 		//selectionnerActivite(act);
 		try {
