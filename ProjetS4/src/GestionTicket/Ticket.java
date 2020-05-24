@@ -23,7 +23,7 @@ public class Ticket {
 	private Projet projetArrive;
 
 	
-	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5, ERREUR = 6, VUE = 7, NONVU = 8;
+	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  VU= 5, ERREUR = 6,NONVU = 7;
 	private static final String SEPARATEUR = "|";
 
 	
@@ -164,11 +164,11 @@ public class Ticket {
 	private String getStringStatut() {
 		String s = "";
 		switch (statut) {
-		case ENCOURS:
+		case NONVU:
 			s = "non lue";
 			break;
 
-		case VUE:
+		case VU:
 			s = "lue";
 			break;
 

@@ -52,11 +52,7 @@ public class PanelAjouterRessource extends PanelFenetre{
 		initialiseComboBoxRessource(entreprise.getListeRessourceEntrepriseParType(typeChoisi));
 		this.add(comboBoxRessource, gc);			
 
-		
-		gc.fill = GridBagConstraints.CENTER;
-		gc.gridy = 3;
-		this.add(creerTitre("Filtres"), gc);
-		
+				
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridx = 1;

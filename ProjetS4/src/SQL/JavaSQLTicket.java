@@ -45,7 +45,7 @@ public class JavaSQLTicket extends JavaSQL{
 	public static void insertion(int action,String sujet ,String message  ,  int numSalarieEnv ,int numSalarieRec,Ressource r) throws SQLException{
 		Ticket ticketCour = new Ticket(0, action, sujet, message, Temps.getAujourdhui(), 0, numSalarieEnv, numSalarieRec, r);
 		String modif = ticketCour.getModif();
-		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+Temps.getAujourdhui()+"', '"+ Ticket.ENCOURS +"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
+		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+Temps.getAujourdhui()+"', '"+ Ticket.NONVU +"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);

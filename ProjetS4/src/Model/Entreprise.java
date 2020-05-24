@@ -890,7 +890,6 @@ public class Entreprise extends Observable{
         	personneTab = JavaSQLRecherche.recupereListePersonneParTag(tag);
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -904,7 +903,6 @@ public class Entreprise extends Observable{
         	personneTab = JavaSQLRecherche.recupereListePersonneParOrdreAlphabetique();
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -2171,6 +2169,23 @@ public class Entreprise extends Observable{
 
 	}
 
+	/**
+	 * Change dans la bdd le statut du ticket
+	 * On passe le statut VU uniquement si le ticket est NONVU
+	 * On passe le statut ACCEPTER ou REFUSER uniquement si le ticket est VU
+	 * @param statut sera le nouveau statut du ticket
+	 * @param ticket
+	 */
+	public void setStatutTicket(int statut, Ticket ticket) {	
+		try {
+			JavaSQLTicket.modifieStatut(ticket.getId(), statut);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
 
 	public void nouvPersonne (String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {

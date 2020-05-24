@@ -59,7 +59,7 @@ public class PanelNouvelleReunion extends PanelFenetre{
 		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridheight = GridBagConstraints.RELATIVE;
 		gc.gridy ++;
-		this.add(afficheListeConge(this, idActivite), gc);
+		this.add(afficheListeReunion(this, idActivite), gc);
 				
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
