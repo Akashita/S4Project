@@ -274,9 +274,9 @@ public class Entreprise extends Observable{
 		
 		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise());
 		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne);
-
-		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = new Hashtable<Pair<Integer, Integer>, EDT>();
-		listeEDTPersonnes.putAll(creerLCongePersonnes(listeConge));
+		//Hashtable<Personne, ArrayList<CreneauHoraire>> listeReunion = new Hashtable<Personne, ArrayList<CreneauHoraire>>();
+		
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = creerLCongePersonnes(listeConge);
 		
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
@@ -286,16 +286,18 @@ public class Entreprise extends Observable{
 		 for (int i = 0; i < lProjet.size(); i++) { 
 			 Projet projetCourant = lProjet.get(i);
 			 lActivite = getListeActiviteDuProjet(projetCourant.getId());
+			 Hashtable<Activite, ArrayList<CreneauHoraire>> htReunion = creerALReunion(lActivite);
 			 for (int j = 0; j < lActivite.size(); j++) {
 				 Activite activiteCourante = lActivite.get(j);
-
+				 				  
 				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId()));
+				 //listeReunion.putAll(creerHTReunion(listePersonnes, htReunion.get(activiteCourante)));
+				 
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
-
 				 
-				 listeConge = creerHTConge(listePersonnes);
-				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge));
+				 
+				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge, htReunion.get(activiteCourante)));
 
 				 //listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
 				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
@@ -303,12 +305,26 @@ public class Entreprise extends Observable{
 
 			 }
 		}
-		 
+		 //listeEDTPersonnes = mergeHashTables(listeEDTPersonnes, creerLReunionPersonnes(listeReunion));
+		 //listeEDTPersonnes.putAll(creerLReunionPersonnes(listeReunion));
 		 listeEDTComplete.putAll(listeEDTPersonnes);
 		 listeEDTComplete.putAll(listeEDTSalles);
 		 listeEDTComplete.putAll(listeEDTCalculateurs);
 
 		return listeEDTComplete;
+	}
+	
+	private Hashtable<Pair<Integer, Integer>, EDT> mergeHashTables(Hashtable<Pair<Integer, Integer>, EDT> prem,  Hashtable<Pair<Integer, Integer>, EDT> deux){
+		Set<Pair<Integer, Integer>> ident = deux.keySet();
+		for (Pair<Integer, Integer> pair : ident) {
+			if(prem.containsKey(pair)) {
+				prem.get(pair).mergeEDT(deux.get(pair));
+			} else {
+				prem.put(pair, deux.get(pair));
+			}
+		}
+		
+		return prem;
 	}
 	
 	private Hashtable<Personne, ArrayList<CreneauHoraire>> creerHTConge(ArrayList<Personne> listePersonnes){
@@ -319,6 +335,25 @@ public class Entreprise extends Observable{
 		}
 		return res;
 	}
+	
+	private Hashtable<Personne, ArrayList<CreneauHoraire>> creerHTReunion(ArrayList<Personne> listePersonnes, ArrayList<CreneauHoraire> creneauReunion){
+		Hashtable<Personne, ArrayList<CreneauHoraire>> res = new Hashtable<Personne, ArrayList<CreneauHoraire>>();
+		for (int i = 0; i < listePersonnes.size(); i++) {
+			Personne perCourante = listePersonnes.get(i);
+			res.put(perCourante, creneauReunion);
+		}
+		return res;
+	}
+	
+	private Hashtable<Activite, ArrayList<CreneauHoraire>> creerALReunion(ArrayList<Activite> listeAct){
+		Hashtable<Activite, ArrayList<CreneauHoraire>> res = new Hashtable<Activite, ArrayList<CreneauHoraire>>();
+		for (int i = 0; i < listeAct.size(); i++) {
+			ArrayList<CreneauHoraire> listeCrCourant = getListeReunionDeActivite(listeAct.get(i).getId());
+			res.put(listeAct.get(i), listeCrCourant);
+		}
+		return res;
+	}
+
 
 	/**
 	 * Met à jour l'EDT de toutes les ressources en recréant tous les créneaux horaires (en prenant en compte les nouvelles containtes)
@@ -358,6 +393,23 @@ public class Entreprise extends Observable{
 		
 		return listeEDT;
 	}
+	
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLReunionPersonnes(Hashtable<Personne, ArrayList<CreneauHoraire>> listeReunion){
+		Hashtable<Pair<Integer, Integer>, EDT> listeEDT = new Hashtable<Pair<Integer, Integer>, EDT>();
+		Set<Personne> keys = listeReunion.keySet();
+		CreneauHoraire chCourant;
+		for (Personne personne : keys) {
+			Pair<Integer, Integer> ident = new Pair<Integer, Integer>(0, personne.getId());
+			EDT EDTCourant = new EDT(ident);
+			for (int i = 0; i < listeReunion.get(personne).size(); i++) {
+				chCourant = listeReunion.get(personne).get(i);
+				EDTCourant.ajouterReunion(chCourant);
+				
+			}
+			listeEDT.put(ident, EDTCourant);
+		}
+		return listeEDT;
+	}
 
 	/**
 	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
@@ -366,28 +418,38 @@ public class Entreprise extends Observable{
 	 * @param La liste des EDT
 	 * @return  La liste des EDT
 	 */
-	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Projet proj, Activite act, ArrayList<Personne> listePersonnes, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes, Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge) {
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxPersonnes(Projet proj, Activite act, ArrayList<Personne> listePersonnes, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes, Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge, ArrayList<CreneauHoraire> listeReunion) {
 		if(listePersonnes.size() > 0) {
 			int charge = act.getChargeHeure();
 			int chargeAloue = 0;
+			
+			String titreCreneau;
 
 			LocalDate jourCourant = verifierJour(act.getDebut());
 			int heureCourante = HEURE_DEBUT_MATIN;
 
 			while (chargeAloue < charge) {
+				Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnesCourante = (Hashtable<Pair<Integer, Integer>, EDT>) listeEDTPersonnes.clone();
 				for (int i = 0; i < listePersonnes.size(); i++) {
-
 					Personne persCourante = listePersonnes.get(i);
 					EDT edtCourant = getEDTRessource(persCourante.getType(), persCourante.getId(), listeEDTPersonnes);
+
 					if(!estEnConge(listeConge.get(persCourante), jourCourant)) {
-						if(verifierOrdre(listeEDTPersonnes, act, jourCourant, heureCourante)) {
-							if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
-								String titreCreneau = proj.getNom() + " | " + act.getTitre();
-								edtCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
-								chargeAloue++;
-							}
-						} 
+						if(!estEnReunion(listeReunion, jourCourant, heureCourante)) {
+							if(verifierOrdre(listeEDTPersonnesCourante, act, jourCourant, heureCourante)) {
+								if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
+									titreCreneau = proj.getNom() + " | " + act.getTitre();
+									edtCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
+									chargeAloue++;
+								}
+							} 
+						} else {
+							titreCreneau = proj.getNom() + " | " + act.getTitre();
+							edtCourant.ajouterCreneau(new CreneauHoraire(jourCourant, heureCourante, "Réunion : "+ titreCreneau), jourCourant);
+						}
 					}
+					Pair<Integer, Integer> ident = new Pair<Integer, Integer>(persCourante.getType(), persCourante.getId());
+					listeEDTPersonnesCourante.remove(ident);
 				}
 
 				heureCourante = heureSuivante(heureCourante);
@@ -401,9 +463,23 @@ public class Entreprise extends Observable{
 	
 	private boolean estEnConge(ArrayList<CreneauHoraire> listeConge, LocalDate jourCourant) {
 		boolean res = false;
-		for (int i = 0; i < listeConge.size(); i++) {
-			CreneauHoraire congeCourant = listeConge.get(i);
-			if(congeCourant.getDate().equals(jourCourant)) {
+		if(listeConge != null) {
+			for (int i = 0; i < listeConge.size(); i++) {
+				CreneauHoraire congeCourant = listeConge.get(i);
+				if(congeCourant.getDate().equals(jourCourant)) {
+					res = true;
+					break;
+				}
+			}
+		}
+		return res;
+	}
+	
+	private boolean estEnReunion(ArrayList<CreneauHoraire> listeReunion, LocalDate jourCourant, int heureCourante) {
+		boolean res = false;
+		for (int i = 0; i < listeReunion.size(); i++) {
+			CreneauHoraire reuCourante = listeReunion.get(i);
+			if(reuCourante.getDate().equals(jourCourant) && reuCourante.getDebut() == heureCourante) {
 				res = true;
 				break;
 			}

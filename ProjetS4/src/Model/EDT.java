@@ -61,7 +61,28 @@ public class EDT {
 	
 	
 	//--------------------------------------------------------------------------------->>>>> Méthodes complexes
-
+	
+	public void mergeEDT(EDT autre) {
+		Hashtable<LocalDate, ArrayList<CreneauHoraire>> autreHT = autre.listeCreneaux;
+		Set<LocalDate> keys = autreHT.keySet();
+		for (LocalDate autreKey : keys) {
+			if(listeCreneaux.contains(autreKey)) {
+				mergeAL(listeCreneaux.get(autreKey), autreHT.get(autreKey));
+			} else {
+				listeCreneaux.put(autreKey, autreHT.get(autreKey));
+			}
+		}
+	}
+	
+	private void mergeAL(ArrayList<CreneauHoraire> prem, ArrayList<CreneauHoraire> deux) {
+		for (int i = 0; i < deux.size(); i++) {
+			CreneauHoraire deuxCourant = deux.get(i);
+			if(deuxCourant != null) {
+				prem.add(i, deuxCourant);
+			}
+		}
+	}
+	
 	/**
 	 * Ajoute un creneau ��� la ressource (si possible)
 	 * 
@@ -96,6 +117,27 @@ public class EDT {
 			listeCr.add(new CreneauHoraire(date));
 		}
 		listeCreneaux.put(date, listeCr);
+	}
+	
+	public void ajouterReunion(CreneauHoraire creneau) {
+		LocalDate date = creneau.getDate();
+		if(listeCreneaux.containsKey(date)) {
+			ArrayList<CreneauHoraire> tab = listeCreneaux.get(date);
+			tab.add(creneau.getPosition(), new CreneauHoraire(date, creneau.getDebut(), "Reunion", creneau.getId()));
+			listeCreneaux.put(date, tab);
+		} else {
+			ArrayList<CreneauHoraire> listeCr = new ArrayList<CreneauHoraire>();
+			for (int i = 0; i < 8; i++) {
+				if(i == creneau.getPosition()) {
+					listeCr.add(i, new CreneauHoraire(date, creneau.getDebut(), "Reunion", creneau.getId()));
+				} else {
+					listeCr.add(i, null);
+				}
+			}
+			listeCreneaux.put(date, listeCr);
+		}
+		
+
 	}
 
 	/**
@@ -164,8 +206,8 @@ public class EDT {
 	
 	
 	public LocalDateTime getPremiereCreneauApresAct() {
-
-		ArrayList<LocalDate> sortedKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
+		Hashtable<LocalDate, ArrayList<CreneauHoraire>> sansCongeEtReunion = enleverCongeReu(listeCreneaux);
+		ArrayList<LocalDate> sortedKeys = new ArrayList<LocalDate>(sansCongeEtReunion.keySet());
 		Collections.sort(sortedKeys);
 		LocalDate dernierJour;
 		LocalDateTime res = null;
@@ -173,7 +215,7 @@ public class EDT {
 			 dernierJour = sortedKeys.get(sortedKeys.size()-1);
 			boolean trouve = false;
 			
-			ArrayList<CreneauHoraire> creneauxJour = listeCreneaux.get(dernierJour);
+			ArrayList<CreneauHoraire> creneauxJour = sansCongeEtReunion.get(dernierJour);
 			
 			for (int i = 0; i < creneauxJour.size(); i++) {
 				CreneauHoraire crCourant = creneauxJour.get(i);
@@ -189,6 +231,42 @@ public class EDT {
 		}
 
 			
+		return res;
+	}
+	
+	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> enleverCongeReu(Hashtable<LocalDate, ArrayList<CreneauHoraire>> liste) {
+		Hashtable<LocalDate, ArrayList<CreneauHoraire>> res = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
+		Set<LocalDate> keys = liste.keySet();
+		for (LocalDate key : keys) {
+			ArrayList<CreneauHoraire> jourCourant = liste.get(key);
+			ArrayList<CreneauHoraire> tmp = new ArrayList<CreneauHoraire>();
+			for (int i = 0; i < jourCourant.size(); i++) {
+				CreneauHoraire crCourant = jourCourant.get(i);
+				if(crCourant != null) {
+					if(crCourant.getType() == CreneauHoraire.CONGE || crCourant.getType() == CreneauHoraire.REUNION) {
+						tmp.add(null);
+					} else {
+						tmp.add(crCourant);
+					}
+				} else {
+					tmp.add(null);
+				}
+				
+			}
+			if(!jourNull(tmp)) {
+				res.put(key, tmp);
+			}
+		}
+		return res;
+	}
+	
+	private boolean jourNull(ArrayList<CreneauHoraire> jour) {
+		boolean res = true;
+		for (int i = 0; i < jour.size(); i++) {
+			if(jour.get(i) != null) {
+				res = false;
+			}
+		}
 		return res;
 	}
 	
