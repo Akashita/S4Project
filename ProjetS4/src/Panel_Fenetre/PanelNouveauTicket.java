@@ -183,6 +183,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 			if (!textFieldLogin.getText().isEmpty()) {
 				if (entreprise.getListeProjetDePersonneParLogin(textFieldLogin.getText()) != null) {
 					entreprise.nouvTicketMessage(sujet(), textArea.getText(), entreprise.getUser().getId(), getIdFromLogin());
+					fm.dispose();
 				}
 				else {
 				   	JOptionPane.showMessageDialog(null, "Ce destinataire n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -204,6 +205,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 				
 					entreprise.nouvTicketLiberation(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(),
 							entreprise.getRessourceParLogin(type, login), act);
+					fm.dispose();
 				}
 				else {
 				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
@@ -225,7 +227,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 					String login = textFieldLogin.getText();
 					
 					entreprise.nouvTicketTransfert(sujet(), textArea.getText(), entreprise.getUser().getId(), p.getChefDeProjet().getId(), entreprise.getRessourceParLogin(type, login), act);
-					
+					fm.dispose();
 				}
 				else {
 				   	JOptionPane.showMessageDialog(null, "Cette ressource n'existe pas", "Erreur", JOptionPane.ERROR_MESSAGE);			
