@@ -600,7 +600,30 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	
 ///////////////////////////////////////////////////////////////////////////////////TICKET////////////////////////////////////////////////////////////////////////////	
+	public static Ticket recupereTicketParId(int idT) throws SQLException {
+		String sql = "SELECT * FROM Ticket WHERE idT = '" + idT + "';";
+		Ticket ticketCour = null;
+		try{
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
+					
+						 ticketCour = new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"),
+								 res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") );
 
+					 
+				}	
+			 }
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return ticketCour;
+}
+
+	
+	
+	
 	public static ArrayList<Ticket> recupereTicketEnvUser(int idUser) throws SQLException{
 		String sql = "SELECT * FROM Ticket WHERE numSalarieEnv = '" + idUser + "';";
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();

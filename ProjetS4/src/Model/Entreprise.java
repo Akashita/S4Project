@@ -2142,10 +2142,11 @@ public class Entreprise extends Observable{
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
-	public void nouvTicket(int action,String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r) {
+
+	public void nouvTicketMessage(String sujet,String message,int numSalarieEnv, int numSalarieRec) {
 
 		try {
-			JavaSQLTicket.insertion(action, sujet, message, numSalarieEnv, numSalarieRec, r);
+			JavaSQLTicket.insertion(Ticket.MESSAGE, sujet, message, numSalarieEnv, numSalarieRec, null, null, null, null);
 			update();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -2153,6 +2154,34 @@ public class Entreprise extends Observable{
 		}
 
 	}
+	
+	public void nouvTicketLiberation(String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r,Activite activiteDepart) {
+
+		try {
+			JavaSQLTicket.insertion(Ticket.LIBERE, sujet, message, numSalarieEnv, numSalarieRec, r ,null, activiteDepart, null);
+			update();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void nouvTicketTransfert(String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r,Activite activiteArrive) {
+
+		try {
+			JavaSQLTicket.insertion(Ticket.TRANSFERT, sujet, message, numSalarieEnv, numSalarieRec, r,activiteArrive,null,null);
+			update();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	
+	
+	
 
 	public void afficheInfoTicket(Ticket t) {
 		int exist = -1;
