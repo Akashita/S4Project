@@ -150,6 +150,10 @@ public class Ticket {
 		return this.idReceveur;
 	}
 	
+	public Ressource getRessource() {
+		return r;
+	}
+	
 	public String getSujet() {
 		return this.sujet;
 	}

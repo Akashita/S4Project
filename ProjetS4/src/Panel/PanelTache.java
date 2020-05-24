@@ -199,15 +199,6 @@ public class PanelTache extends JPanel {
 		gc.weightx = 1;
 		gc.weighty = 3;
 		
-		
-		
-		//tickets recu
-		gc.fill = GridBagConstraints.BOTH;
-		gc.gridwidth = GridBagConstraints.REMAINDER;
-		gc.gridheight = 1;
-		gc.gridx = 0;
-		gc.gridy = 0;
-		p.add(afficheTitreEtList("Ticket envoyés", ticketEnvTab),gc);
 
 		//ticket envoye
 		gc.fill = GridBagConstraints.BOTH;
@@ -215,7 +206,17 @@ public class PanelTache extends JPanel {
 		gc.gridheight = 1;
 		gc.gridx = 0;
 		gc.gridy ++;
-		p.add(afficheTitreEtList("Ticket reçus", ticketRecuTab),gc);
+		p.add(afficheTitreEtList("Tickets reçus", ticketRecuTab),gc);
+
+		
+		//tickets recu
+		gc.fill = GridBagConstraints.BOTH;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.gridheight = 1;
+		gc.gridx = 0;
+		gc.gridy = 0;
+		p.add(afficheTitreEtList("Tickets envoyés", ticketEnvTab),gc);
+
 		
 		//bouton nouveau ticket
 		gc.fill = GridBagConstraints.HORIZONTAL;
