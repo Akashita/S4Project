@@ -105,7 +105,7 @@ public class PanelNouvelleActivite extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 7;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Commence a�partir du"), gc);
+		this.add(creerTitre("Commence à partir du"), gc);
 		
 		gc.gridx = 0;
 		gc.gridy = 8;
@@ -120,7 +120,7 @@ public class PanelNouvelleActivite extends PanelFenetre{
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Cr�er"), gc);
+		this.add(creerBoutonFin(this, "Créer"), gc);
 
 	}
 	
@@ -135,15 +135,15 @@ public class PanelNouvelleActivite extends PanelFenetre{
 					fm.dispose();
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
+					JOptionPane.showMessageDialog(null, "Veuillez écrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Veillez ecrire sa charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				JOptionPane.showMessageDialog(null, "Veuillez écrire sa charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-		   	JOptionPane.showMessageDialog(null, "Veillez ecrire son titre", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		   	JOptionPane.showMessageDialog(null, "Veuillez écrire son titre", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 }

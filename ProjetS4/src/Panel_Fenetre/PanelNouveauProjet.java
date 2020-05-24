@@ -69,7 +69,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
 		gc.gridy = 3;
-		this.add(creerTexte("Indiquez sa priorit�"), gc);
+		this.add(creerTexte("Indiquez sa priorité"), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridwidth = 2;
 		gc.gridx = 1;
@@ -94,7 +94,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 5;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Precisez sa deadline"), gc);
+		this.add(creerTitre("Préçisez sa deadline"), gc);
 		
 		gc.gridx = 0;
 		gc.gridy = 6;
@@ -109,7 +109,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Cr�er"), gc);
+		this.add(creerBoutonFin(this, "Créer"), gc);
 
 	}
 	
@@ -125,15 +125,15 @@ public class PanelNouveauProjet extends PanelFenetre{
 					fm.dispose();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veuillez écrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Veillez ecrire sa priorit�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veuillez écrire sa priorité", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veuillez écrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 }

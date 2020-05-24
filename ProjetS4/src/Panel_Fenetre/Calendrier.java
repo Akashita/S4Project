@@ -21,9 +21,9 @@ public class Calendrier {
 	private JComboBox<String> cba,cbm,cbj,cbh = null;
 	
 	private String [] jours,
-	mois = {"Janvier", "Fevrier", "Mars", "Avril",
+	mois = {"Janvier", "Février", "Mars", "Avril",
 			"Mai", "Juin", "Juillet", "Aout",
-			"Septembre", "Octobre", "Novembre", "Decembre"},
+			"Septembre", "Octobre", "Novembre", "Décembre"},
 	heure = {"8h", "9h", "10h", "11h", "13h", "14", "15", "16h", "17h"},
 	annees = new String [Temps.nbAnnnee];
 	

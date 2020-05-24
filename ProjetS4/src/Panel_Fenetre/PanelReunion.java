@@ -54,7 +54,7 @@ public class PanelReunion extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(creerTitre("Reunions existants"), gc);
+		this.add(creerTitre("Réunions existantes"), gc);
 		
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridwidth = GridBagConstraints.REMAINDER;

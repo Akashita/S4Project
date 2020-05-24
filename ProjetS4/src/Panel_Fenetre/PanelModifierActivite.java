@@ -42,7 +42,7 @@ public class PanelModifierActivite extends PanelFenetre{
 	}
 	
 	private void initialiseBouton() {
-		boutonReunion = new JButton("Voir les reunions");
+		boutonReunion = new JButton("Voir les réunions");
 		boutonReunion.addActionListener(new ActionListener() {  
 	        public void actionPerformed(ActionEvent e) {
 	        	actionBoutonReunion();
@@ -73,7 +73,7 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = 3;		
-		this.add(creerTitre("Modifiez ses informations"), gc);
+		this.add(creerTitre("Modifier ses informations"), gc);
 
 		
 		
@@ -103,14 +103,14 @@ public class PanelModifierActivite extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 3;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Debut"), gc);
+		this.add(creerTitre("Début"), gc);
 
 		gc.fill = GridBagConstraints.CENTER;
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridx = 0;
 		gc.gridy = 3;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Debut"), gc);
+		this.add(creerTitre("Début"), gc);
 
 		gc.gridx = 0;
 		gc.gridy = 4;
@@ -150,20 +150,20 @@ public class PanelModifierActivite extends PanelFenetre{
 					fm.dispose();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veillez écrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Veillez ecrire sa priorite", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veillez écrire sa priorite", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veillez écrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 	
 	protected void supprimer() {
-		String texte = "<html> Êtes-vous sur de vouloir supprimer cette activite ? <br> La suppression de cette activite supprimera tout son contenu. </html>";
+		String texte = "<html> Êtes-vous sur de vouloir supprimer cette activité ? <br> La suppression de cette activité supprimera tout son contenu. </html>";
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
 			entreprise.supprimerActiviter(activite);

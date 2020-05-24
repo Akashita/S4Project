@@ -73,7 +73,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.gridwidth = 1;
 			gc.gridx = 0;
 			gc.gridy ++;
-			this.add(creerTexte("Indiquez son pr�nom"), gc);
+			this.add(creerTexte("Indiquez son prénom"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
@@ -104,7 +104,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
 			gc.gridy ++;
-			this.add(creerTitre("Indiquez ses comp�tences"), gc);
+			this.add(creerTitre("Indiquez ses compétences"), gc);
 
 			gc.fill = GridBagConstraints.WEST;
 			gc.gridy ++;		
@@ -140,7 +140,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			gc.fill = GridBagConstraints.CENTER;
 			gc.gridx = 0;
 			gc.gridy = 4;
-			this.add(creerTexte("Indiquez sa capacit�"), gc);
+			this.add(creerTexte("Indiquez sa capacité"), gc);
 			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridwidth = 2;
 			gc.gridx = 1;
@@ -168,7 +168,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Cr�er"), gc);
+		this.add(creerBoutonFin(this, "Créer"), gc);
 
 	}
 	
@@ -189,7 +189,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 					fm.dispose();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Veillez ecrire son prenom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veuillez écrire son prenom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			if (typeChoisi == Ressource.SALLE) {
@@ -198,7 +198,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 					fm.dispose();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veuillez écrire un nombre", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			if (typeChoisi == Ressource.CALCULATEUR) {
@@ -209,7 +209,7 @@ public class PanelNouvelleRessource extends PanelFenetre{
 			}	
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veuillez écrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 }
