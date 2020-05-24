@@ -86,25 +86,25 @@ public class FenetreModal extends JDialog{
 			panelInterface = new PanelNouvelleActivite(entreprise, this);
 			break;
 		case FenetrePrincipale.NouvelleRessource:
-			titre = "Creation ressource";
+			titre = "Création ressource";
 			panelInterface = new PanelNouvelleRessource(entreprise, this);
 			break;
 		case FenetrePrincipale.NouveauConge:
-			titre = "Ajouter conge";
+			titre = "Ajouter congé";
 			panelInterface = new PanelConge(entreprise, this, id);
 			break;
 		case FenetrePrincipale.NouvelleReunion:
-			titre = "Ajouter reunion";
+			titre = "Ajouter réunion";
 			panelInterface = new PanelReunion(entreprise, this, id);
 			break;
 		case FenetrePrincipale.NouveauDomaine:
-			titre = "Creation domaine";
+			titre = "Création domaine";
 			panelInterface = new PanelDomaine(entreprise, this);
 			largeur = 400;
 			hauteur = 300;
 			break;
 		case FenetrePrincipale.NouveauTicket:
-			titre = "Creation ticket";
+			titre = "Création ticket";
 			largeur = 400;
 			hauteur = 600;
 			panelInterface = new PanelNouveauTicket(entreprise, this);
@@ -116,7 +116,7 @@ public class FenetreModal extends JDialog{
 			panelInterface = new PanelModifierProjet(entreprise, this);
 			break;
 		case FenetrePrincipale.ModifierActivite:
-			titre = "Modifier activite";
+			titre = "Modifier activité";
 			panelInterface = new PanelModifierActivite(entreprise, this);
 			break;
 			
