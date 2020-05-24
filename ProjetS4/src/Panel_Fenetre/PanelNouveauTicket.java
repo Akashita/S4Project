@@ -155,7 +155,7 @@ public class PanelNouveauTicket  extends PanelFenetre{
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridx ++;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		majComboBoxActivite(this);
+		//majComboBoxActivite(this);
 		this.add( comboBoxActivite, gc);
 		
 	}

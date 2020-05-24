@@ -524,26 +524,35 @@ public class PanelFenetre extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				nouvelleAction(pf);
 			}
-		});	    
+		});	 
+		
 		comboBoxType.addActionListener (new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				majComboBoxRessourceTicket(pf);
 			}
-		});	    
+		});
+		
 		comboBoxRessource = new JComboBox<Ressource>();
+		ArrayList<Ressource> listeRessource = entreprise.getListeRessourceEntrepriseParType(typeChoisi);
+		Ressource [] tabRes = new Ressource[listeRessource.size()];
+		for (int i=0; i<tabRes.length; i++) {
+			tabRes[i] = listeRessource.get(i);
+		}	
+		comboBoxRessource = new JComboBox<Ressource>(tabRes);
 		comboBoxRessource.addActionListener (new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				majComboBoxActivite(pf);
 			}
 		});	  
+		
 		comboBoxActivite = new JComboBox<Activite>();
 		textArea = new JTextArea();
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		textArea.setBorder(BorderFactory.createCompoundBorder(border,
 	            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		majComboBoxRessourceTicket(pf);
+		//majComboBoxRessourceTicket(pf);
 
 	}
 	
@@ -569,7 +578,7 @@ public class PanelFenetre extends JPanel{
 				t[i] = l.get(i);
 			}	
 			comboBoxActivite = new JComboBox<Activite>(t);			
-		//maj(pf);
+		maj(pf);
 	}
 	
 	protected void nouvelleAction(PanelFenetre pf) {
