@@ -23,7 +23,7 @@ public class Ticket {
 	private int idEnvoyeur;
 	private int idReceveur;
 	private Ressource r;
-	public final static String SEPARATEUR= "*";
+	public final static String SEPARATEUR= "[+]";
 	
 	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  VU= 5, ERREUR = 6,NONVU = 7;
 
