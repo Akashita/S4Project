@@ -338,7 +338,7 @@ public class Entreprise extends Observable{
 		for (Pair<Integer, Integer> key : keys) {
 			listeEDT.get(key).vider();
 		}
-	}
+	} 
 	
 	private Hashtable<Pair<Integer, Integer>, EDT> creerLCongePersonnes(Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge){
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDT = new Hashtable<Pair<Integer, Integer>, EDT>();
@@ -379,9 +379,8 @@ public class Entreprise extends Observable{
 
 					Personne persCourante = listePersonnes.get(i);
 					EDT edtCourant = getEDTRessource(persCourante.getType(), persCourante.getId(), listeEDTPersonnes);
-
-					if(verifierOrdre(listeEDTPersonnes, act, jourCourant, heureCourante)) {
-						if(!estEnConge(listeConge.get(persCourante), jourCourant)) {
+					if(!estEnConge(listeConge.get(persCourante), jourCourant)) {
+						if(verifierOrdre(listeEDTPersonnes, act, jourCourant, heureCourante)) {
 							if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
 								String titreCreneau = proj.getNom() + " | " + act.getTitre();
 								edtCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
@@ -615,7 +614,6 @@ public class Entreprise extends Observable{
 	 */
 	private boolean verifierOrdre(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act, LocalDate jour, int heure) {
 		LocalDateTime courant = LocalDateTime.of(jour, LocalTime.of(heure, 0));
-		int ordre = act.getOrdre();
 		LocalDateTime tmp = null;
 		LocalDateTime premierLibre = null;
 		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();

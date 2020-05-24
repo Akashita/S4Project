@@ -179,17 +179,33 @@ public class EDT {
 				CreneauHoraire crCourant = creneauxJour.get(i);
 				if(crCourant == null) {
 					trouve = true;
-					res = LocalDateTime.of(dernierJour, LocalTime.of(indiceToHeure(i), 0));
+					res = LocalDateTime.of(verifierJour(dernierJour), LocalTime.of(indiceToHeure(i), 0));
 					break;
 				}
 			}
 			if(!trouve) {
-				res = getCreneauSuivant(dernierJour, 7);
+				res = getCreneauSuivant(verifierJour(dernierJour), 7);
 			}
 		}
 
 			
 		return res;
+	}
+	
+	private LocalDate verifierJour(LocalDate jourCourant) {
+		LocalDate jourVerifie;
+		switch (jourCourant.getDayOfWeek()) {
+		case SATURDAY:
+			jourVerifie = jourCourant.plus(2, ChronoUnit.DAYS);
+			break;
+		case SUNDAY:
+			jourVerifie = jourCourant.plus(1, ChronoUnit.DAYS);
+			break;
+		default:
+			jourVerifie = jourCourant;
+			break;
+		}
+		return jourVerifie;
 	}
 	
 	private LocalDateTime getCreneauSuivant(LocalDate key, int indice) {
