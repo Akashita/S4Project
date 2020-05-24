@@ -1,9 +1,7 @@
 package Ressource;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-import Model.CreneauHoraire;
 import Model.Projet;
 
 public class Personne extends Ressource{

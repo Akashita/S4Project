@@ -7,7 +7,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -166,32 +165,44 @@ public class EDT {
 	
 	public LocalDateTime getPremiereCreneauApresAct(int ordre) {
 		Set<LocalDate> keys = listeCreneaux.keySet(); //On recupere les cles de la hashtable jours
-		Iterator<LocalDate> itt = keys.iterator();
-		boolean trouve = false;		
-		LocalDate key = null;
-		LocalDateTime res = null;
-		ArrayList<CreneauHoraire> jourCourant;
-		int i = 0;
-		while(itt.hasNext() && !trouve) { //On parcours les jours
-			key = itt.next();
+		ArrayList<CreneauHoraire> jourCourant;	
+		CreneauHoraire dernierCreneau = null;
+		CreneauHoraire creneauCourant = null;
+		int j = 0;
+		boolean trouve = false;
+		LocalDate keyCourante = null;
+		LocalDateTime res = null; 
+		
+		for (LocalDate key : keys) {
+			keyCourante = key;
 			jourCourant = listeCreneaux.get(key); //On recupere le jour courant
-			for (i = 0; i < jourCourant.size(); i++) {
-				if(jourCourant.get(i).getActivite() != null) {
-					if(jourCourant.get(i).getActivite().getOrdre() >= ordre) {
-						trouve = true;
-						break;
+			for (j = 0; j < jourCourant.size(); j++) {
+				creneauCourant = jourCourant.get(j);
+				if(dernierCreneau == null && creneauCourant != null) {
+					dernierCreneau = creneauCourant;
+				} else if(dernierCreneau != null && creneauCourant == null) {
+					if(dernierCreneau.getActivite() != null) {
+						if(dernierCreneau.getActivite().getOrdre() > ordre) {
+							trouve = true;
+							res = LocalDateTime.of(key, LocalTime.of(dernierCreneau.getDebut(), 0));
+							break;
+						}
 					}
-				}	
-			}			
-		}
-		if(key == null) {
-			res = null;
-		} else if(!trouve) {
-			res = getCreneauSuivant(key, i);
-		} else {
-			res =  LocalDateTime.of(key, LocalTime.of(indiceToHeure(i), 0));
+				}
+			}
+			if(trouve) {
+				break;
+			}
 		}
 		
+		if(keyCourante == null) {
+			res = null;
+		} else if(!trouve) {
+			res = getCreneauSuivant(keyCourante, j);
+		} else {
+			res =  LocalDateTime.of(keyCourante, LocalTime.of(indiceToHeure(j), 0));
+		}
+			
 		return res;
 	}
 	

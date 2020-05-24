@@ -11,6 +11,11 @@ import Fenetre.FenetreModal;
 import Model.Entreprise;
 import Ressource.Personne;
 
+/**
+ * Affiche les information du projet et permet de les modifier
+ * @author Damien
+ *
+ */
 public class PanelModifierProjet extends PanelFenetre{
 	
 	/**

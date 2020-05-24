@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import GestionTicket.Ticket;
+import Model.Activite;
 import Model.Temps;
 import Ressource.Personne;
 import Ressource.Ressource;
@@ -42,14 +43,42 @@ public class JavaSQLTicket extends JavaSQL{
 			return ticketTab;
 	}
 	
-	public static void insertion(int action,String sujet ,String message  ,  int numSalarieEnv ,int numSalarieRec,Ressource r) throws SQLException{
-		Ticket ticketCour = new Ticket(0, action, sujet, message, Temps.getAujourdhui(), 0, numSalarieEnv, numSalarieRec, r);
+	public static void insertion(int action,String sujet ,String message  ,  int numSalarieEnv ,int numSalarieRec,Ressource r, Activite activiteArrive,Activite activiteDepart,Ticket ticketTransfert) throws SQLException{
+		Ticket ticketCour = new Ticket(0, action, sujet, message, Temps.getAujourdhui(), 0, numSalarieEnv, numSalarieRec, r, activiteArrive, activiteDepart, ticketTransfert);
 		String modif = ticketCour.getModif();
-		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+Temps.getAujourdhui()+"', '"+ Ticket.ENCOURS +"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
+		String sql = "INSERT INTO Ticket(sujet, message, modif,dateTicket, statut, numSalarieEnv, numSalarieRec) VALUE('" + sujet+ "' ,  '"+message+"' ,  '"+modif+"' , '"+Temps.getAujourdhui()+"', '"+ Ticket.NONVU +"', '"+numSalarieEnv+"' ,  '"+numSalarieRec+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
 				 System.out.println("insertion fait");
+				 
+				 String sql2 = "SELECT MAX(idT) FROM Ticket;";
+				 Statement stmt2 = getCon().createStatement();
+					if (action == Ticket.TRANSFERT) {
+						ArrayList<Activite> liste = new ArrayList<Activite>();
+						switch (r.getType()) {
+						case Ressource.PERSONNE:
+							liste = JavaSQLRecherche.recupereActiviteParIdPersonne(r.getId());
+							break;
+						case Ressource.SALLE:
+							liste = JavaSQLRecherche.recupereActiviteParIdPersonne(r.getId());
+							break;
+						case Ressource.CALCULATEUR:
+							liste = JavaSQLRecherche.recupereActiviteParIdPersonne(r.getId());
+							break;
+						default:
+							break;
+						}
+						try (ResultSet res2 = stmt2.executeQuery(sql2)){
+							 res2.next();
+							 for(int i = 0; i<liste.size(); i++) {
+									JavaSQLTicket.insertion(Ticket.LIBERE, sujet, message, numSalarieEnv, (JavaSQLRecherche.recupereChefDeProjetParIdActivite(liste.get(i).getId()).getId()), r,null,liste.get(i),JavaSQLRecherche.recupereTicketParId(res2.getInt(1)));
+
+							 }
+						 }
+						
+					}
+
 			} catch(SQLException e){
 				e.printStackTrace();
 			}

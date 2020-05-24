@@ -1,33 +1,34 @@
 package Panel_Fenetre;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
 import Model.Temps;
-import Ressource.Domaine;
-import Ressource.Ressource;
 
-public class PanelNouvelleReunion extends PanelFenetre{
+/**
+ * Affiche la liste des conge de la personne 
+ * permet d'ajouter ou de supprimer de la personne 
+ * @author Damien
+ *
+ */
+public class PanelConge extends PanelFenetre{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int idActivite;
+	private int idPersonne;
 	
-	public PanelNouvelleReunion(Entreprise entreprise, FenetreModal fm, int idActivite) {
+	public PanelConge(Entreprise entreprise, FenetreModal fm, int idPersonne) {
 		super(entreprise, fm);
-		this.idActivite = idActivite;
-		initialiseReunion(this, idActivite);
+		this.idPersonne = idPersonne;
+		initialiseConge(this, idPersonne);
 		initialiseCalendrier(Temps.getAujourdhui(), this);
 		creerInterface();
 	}
@@ -45,7 +46,7 @@ public class PanelNouvelleReunion extends PanelFenetre{
 		
 		gc.fill = GridBagConstraints.CENTER;
 		
-		gc.insets = new Insets(1, 5, 1, 5);
+		gc.insets = new Insets(5, 5, 5, 5);
 		
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
@@ -53,19 +54,22 @@ public class PanelNouvelleReunion extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(creerTitre("Reunions existants"), gc);
+		this.add(creerTitre("Conges existants"), gc);
 		
 		gc.fill = GridBagConstraints.BOTH;
-		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridheight = GridBagConstraints.RELATIVE;
 		gc.gridy ++;
-		this.add(afficheListeConge(this, idActivite), gc);
-				
+		this.add(afficheListeConge(this, idPersonne), gc);
+		
+		gc.fill = GridBagConstraints.CENTER;
+		gc.gridwidth = 1;
+		gc.gridheight = 1;
+		gc.gridy ++;
+
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		gc.gridheight = GridBagConstraints.REMAINDER;
-		gc.gridy ++;
+		gc.gridx = 2;
 		this.add(panelBouton(), gc);
 
 	}
@@ -74,7 +78,7 @@ public class PanelNouvelleReunion extends PanelFenetre{
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		p.setBackground(couleurFond);
-		p.add(panelCalendrierAvecHeure(calendrier1));
+		p.add(panelCalendrier(calendrier1));
 		p.add(boutonAjoutConge);
 		p.add(creerBoutonFin(this, "Terminer"));
 		return p;

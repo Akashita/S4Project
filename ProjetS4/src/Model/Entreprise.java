@@ -8,7 +8,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;
-import java.util.Random;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -51,10 +50,10 @@ public class Entreprise extends Observable{
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	/*private ArrayList<Projet> lProjet;//liste qui contient tous les projets de l'entreprise
-	private ArrayList<String> lType;//liste qui contient tous les types de ressourceAutre qui ont d��j�� ��t�� cr��e pour les r��utiliser
-	private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de l��entrepris
+	private ArrayList<String> lType;//liste qui contient tous les types de ressourceAutre qui ont deejee eetee creee pour les reeutiliser
+	private ArrayList<Ressource> lRessource;//liste de toutes les differentes ressources de leeentrepris
 	private int idCour;//id des ressources
-	private int idAct; //id des activit������s
+	private int idAct; //id des activiteeeeees
 	private int idProjet;
 	private Domaine domaine;*/
 
@@ -94,7 +93,7 @@ public class Entreprise extends Observable{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//cr��ation de l'entreprise unique il faudra lui ajouter un nom si on d��sire ��tendre nos activit��s
+	//creeation de l'entreprise unique il faudra lui ajouter un nom si on deesire eetendre nos activitees
 	public Entreprise() {
 		/*this.lProjet =  new ArrayList<Projet>();
 		this.lType =  new ArrayList<String>();
@@ -154,7 +153,7 @@ public class Entreprise extends Observable{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//classe de base qui permettent de voir la cha������ne et r������cup������rer les infos de la classe
+	//classe de base qui permettent de voir la chaeeeeeene et reeeeeecupeeeeeerer les infos de la classe
 	/*@Override
 	public String toString() {
 		String chaineActProjet = "Voici la liste des projets ainsi que leurs activites : ";
@@ -195,11 +194,16 @@ public class Entreprise extends Observable{
 	 * @param L'activitée concernée par la modification
 	 * @return la liste des EDT prévisionels
 	 */
-	private Hashtable<Pair<Integer, Integer>, EDT> generationPrevisionEDT(Operation operation, Ressource res, Activite act) {
+	private LocalDateTime[] generationPrevisionEDT(Operation operation, Ressource res, Activite act) {
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite;
+		
+		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise());
+		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne);
 
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = new Hashtable<Pair<Integer, Integer>, EDT>();
+		listeEDTPersonnes.putAll(creerLCongePersonnes(listeConge));
+
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
@@ -246,9 +250,7 @@ public class Entreprise extends Observable{
 						}
 					 }
 				 
-				 	Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listePersonnes);
-
-
+				 listeConge = creerHTConge(listePersonnes);
 				 listeEDTPersonnes = creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge);
 				 //listeEDTSalles = creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles);
 				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
@@ -258,9 +260,13 @@ public class Entreprise extends Observable{
 				 listeEDTComplete.putAll(listeEDTCalculateurs);
 			}
 		}
-		return listeEDTComplete;
+		 LocalDateTime[] ret = new LocalDateTime[2];
+		 Pair<LocalDateTime, LocalDateTime> bornes = getDebutFinActivite(listeEDTComplete, act);
+		 ret[0] = bornes.getLeft();
+		 ret[1] = bornes.getRight();
+		return ret;
 	}
-
+	
 
 	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
@@ -374,7 +380,7 @@ public class Entreprise extends Observable{
 					Personne persCourante = listePersonnes.get(i);
 					EDT edtCourant = getEDTRessource(persCourante.getType(), persCourante.getId(), listeEDTPersonnes);
 
-					if(verifierOrdre(edtCourant, act, jourCourant, heureCourante)) {
+					if(verifierOrdre(listeEDTPersonnes, act, jourCourant, heureCourante)) {
 						if(!estEnConge(listeConge.get(persCourante), jourCourant)) {
 							if(edtCourant.creneauDispo(jourCourant, heureCourante)) {
 								String titreCreneau = proj.getNom() + " | " + act.getTitre();
@@ -607,12 +613,23 @@ public class Entreprise extends Observable{
 	 * @param L'EDT, l'activitée, le jour et l'heure concernés
 	 * @return true si c'est le cas
 	 */
-	private boolean verifierOrdre(EDT edtCourant, Activite act, LocalDate jour, int heure) {
-		LocalDateTime tmp = LocalDateTime.of(jour, LocalTime.of(heure, 0));
+	private boolean verifierOrdre(Hashtable<Pair<Integer, Integer>, EDT> listeEDT, Activite act, LocalDate jour, int heure) {
+		LocalDateTime courant = LocalDateTime.of(jour, LocalTime.of(heure, 0));
 		int ordre = act.getOrdre();
-		LocalDateTime premierLibre = edtCourant.getPremiereCreneauApresAct(ordre);
-
-		return premierLibre == null || (premierLibre.isEqual(tmp) || premierLibre.isBefore(tmp)) || ordre == 0;
+		LocalDateTime tmp = null;
+		LocalDateTime premierLibre = null;
+		Set<Pair<Integer, Integer>> keys = listeEDT.keySet();
+		for (Pair<Integer, Integer> key : keys) {
+			tmp = listeEDT.get(key).getPremiereCreneauApresAct(ordre);
+			if(premierLibre != null && tmp != null) {
+				if(premierLibre.isBefore(tmp)) {
+					premierLibre = tmp;
+				}
+			} else if (premierLibre == null && tmp != null) {
+				premierLibre = tmp;
+			}
+		}
+		return premierLibre == null || (premierLibre.isEqual(courant) || premierLibre.isBefore(courant));
 	}
 
 
@@ -890,7 +907,6 @@ public class Entreprise extends Observable{
         	personneTab = JavaSQLRecherche.recupereListePersonneParTag(tag);
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -904,7 +920,6 @@ public class Entreprise extends Observable{
         	personneTab = JavaSQLRecherche.recupereListePersonneParOrdreAlphabetique();
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -1010,6 +1025,27 @@ public class Entreprise extends Observable{
 
 		return getCalculateurParId(id);
 	}
+
+	
+	public Ressource getRessourceParId(int type, int id) {
+		Ressource r = null;
+		switch (type) {
+		case Ressource.PERSONNE:
+			r = getPersonneParId(id);
+			break;
+		case Ressource.SALLE:
+			r = getSalleParId(id);
+			break;
+		case Ressource.CALCULATEUR:
+			r = getCalculateurParId(id);
+			break;
+		default:
+			break;
+		}
+		return r;
+	}
+
+	
 
 	/**
 	 * cherche dans la bdd l'activite associer a son id
@@ -1816,7 +1852,7 @@ public class Entreprise extends Observable{
      * cherche l'user avec son login et son mdp
      * @param login du compte
      * @param mdp du compte
-     * @return la personne asssoci� sinon null
+     * @return la personne asssocie sinon null
      */
 	public static Ressource chercheUser(String login, String mdp) {
     	Ressource p = null;
@@ -1918,7 +1954,7 @@ public class Entreprise extends Observable{
 
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion projet
 
-	public void creerProjet(Personne chefDeProjet, String nom, int priorite, LocalDate deadline) {//cr��e un projet si son nom n'est pas d��j�� utilis��
+	public void creerProjet(Personne chefDeProjet, String nom, int priorite, LocalDate deadline) {//creee un projet si son nom n'est pas deejee utilisee
 		try {
 			JavaSQLProjet.insertion(nom, priorite, deadline, 0, chefDeProjet.getId());
 		} catch (SQLException e) {
@@ -1928,7 +1964,7 @@ public class Entreprise extends Observable{
 		update();
 	}
 
-	/*public void ajouterProjet(Projet proj) { //Les projets sont ajout���s ��� la liste en les triant par ordre de priorite
+	/*public void ajouterProjet(Projet proj) { //Les projets sont ajouteees eee la liste en les triant par ordre de priorite
 		Boolean place = false;
 		int i = 0;
 		while (i < lProjet.size() && !place) {
@@ -1959,7 +1995,7 @@ public class Entreprise extends Observable{
 
 	public void supprimerProjet(Projet projet) {
 
-		for (int i=0; i<projet.getListe().size(); i++) { // on supprime toutes ses activit������s
+		for (int i=0; i<projet.getListe().size(); i++) { // on supprime toutes ses activiteeeeees
 			supprimerActiviter(projet.getListe().get(i));
 		}
 
@@ -1978,8 +2014,8 @@ public class Entreprise extends Observable{
 			e.printStackTrace();
 		}
 		projetSelectionner = null;// enleve la selection projet
-		//majEDT(); // remet ������ jour les emplois du temps
-		update(); // remet ������ jour l'interface
+		//majEDT(); // remet eeeeee jour les emplois du temps
+		update(); // remet eeeeee jour l'interface
 	}
 
 
@@ -2032,8 +2068,8 @@ public class Entreprise extends Observable{
 		activite.supprimerToutesRessources(); //on enleve toute ses ressources
 
 		activiteSelectionner = null; // on le deselectionne
-		//majEDT(); // met ������ jour l'emploi du temps
-		update(); // met ������ jour l'interface
+		//majEDT(); // met a jour l'emploi du temps
+		update(); // met a jour l'interface
 	}
 
 
@@ -2144,10 +2180,11 @@ public class Entreprise extends Observable{
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
-	public void nouvTicket(int action,String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r) {
+
+	public void nouvTicketMessage(String sujet,String message,int numSalarieEnv, int numSalarieRec) {
 
 		try {
-			JavaSQLTicket.insertion(action, sujet, message, numSalarieEnv, numSalarieRec, r);
+			JavaSQLTicket.insertion(Ticket.MESSAGE, sujet, message, numSalarieEnv, numSalarieRec, null, null, null, null);
 			update();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -2155,6 +2192,34 @@ public class Entreprise extends Observable{
 		}
 
 	}
+	
+	public void nouvTicketLiberation(String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r,Activite activiteDepart) {
+
+		try {
+			JavaSQLTicket.insertion(Ticket.LIBERE, sujet, message, numSalarieEnv, numSalarieRec, r ,null, activiteDepart, null);
+			update();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void nouvTicketTransfert(String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r,Activite activiteArrive) {
+
+		try {
+			JavaSQLTicket.insertion(Ticket.TRANSFERT, sujet, message, numSalarieEnv, numSalarieRec, r,activiteArrive,null,null);
+			update();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	
+	
+	
 
 	public void afficheInfoTicket(Ticket t) {
 		int exist = -1;
@@ -2171,6 +2236,49 @@ public class Entreprise extends Observable{
 
 	}
 
+	/**
+	 * Change dans la bdd le statut du ticket
+	 * On passe le statut VU uniquement si le ticket est NONVU
+	 * On passe le statut ACCEPTER ou REFUSER uniquement si le ticket est VU
+	 * @param statut sera le nouveau statut du ticket
+	 * @param ticket
+	 */
+	public void setStatutTicket(int statut, Ticket ticket) {	
+		try {
+			JavaSQLTicket.modifieStatut(ticket.getId(), statut);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	
+	public void accepteTicket(int idT) {
+		String modif;
+		try {
+			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
+		
+		String[] regex = modif.split(SEPARATEUR, 5); 
+		int typeRessource = Integer.parseInt(regex[1]);
+		int idRessource = Integer.parseInt(regex[2]);
+		int idActiviteDepart = Integer.parseInt(regex[3]);
+		int idTicketTransfert = Integer.parseInt(regex[4]);
+		Activite a = this.getActiviteParId(idActiviteDepart);
+		Ressource r = this.getRessourceParId(typeRessource,idRessource);
+		this.enleverRessourceActivite(typeRessource, r,a);
+		if (idTicketTransfert != -1 ) {
+			this.accepteTicketTransfert(idTicketTransfert,typeRessource,r,a);
+		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void accepteTicketTransfert(int idT, int type, Ressource r, Activite a) {
+		this.ajouterRessourceActivite(type, r, a);
+	}
+	
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
 
 	public void nouvPersonne (String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {
@@ -2428,58 +2536,6 @@ public class Entreprise extends Observable{
 		int r = (int) (Math.random() * tab.length) ;
 		return tab[r];
 	}
-
-
-
-
-	/*public void selectionnerListeRessource(String type) {
-		boolean estPresent = false;
-		for (int i=0; i<ressourceAfficher.size(); i++) {
-			if (ressourceAfficher.get(i) == type) {
-				estPresent = true;
-				ressourceAfficher.remove(i);
-				break;
-			}
-		}
-		if (!estPresent) {
-			ressourceAfficher.add(type);
-		}
-		adapteListeRessourceAfficher();
-		update();
-	}
-
-	private void adapteListeRessourceAfficher() {
-		int taille = ressourceAfficher.size();
-		for (int i=0; i<taille; i++) {
-			if (ressourceAfficher.get(i) == Ressource.PERSONNE) {
-				ressourceAfficher.remove(i);
-				ressourceAfficher.add(0, Ressource.PERSONNE);
-			}
-			if (ressourceAfficher.get(i) == Ressource.SALLE) {
-				ressourceAfficher.remove(i);
-				if (taille==1) {
-					ressourceAfficher.add(0, Ressource.SALLE);
-				}
-				else {
-					ressourceAfficher.add(1, Ressource.SALLE);
-				}
-			}
-			if (ressourceAfficher.get(i) == Ressource.CALCULATEUR) {
-				ressourceAfficher.remove(i);
-				if (taille==1) {
-					ressourceAfficher.add(0, Ressource.CALCULATEUR);
-				}
-				else {
-					if (taille==2) {
-						ressourceAfficher.add(1, Ressource.CALCULATEUR);
-					}
-					else {
-						ressourceAfficher.add(2, Ressource.CALCULATEUR);
-					}
-				}
-			}
-		}
-	}*/
 
 
 	public ArrayList<String> getListeRessourceAfficher(){

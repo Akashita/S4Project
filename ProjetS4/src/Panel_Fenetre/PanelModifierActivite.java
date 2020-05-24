@@ -1,28 +1,24 @@
 package Panel_Fenetre;
 
-import java.awt.Component;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 
 import javax.swing.JButton;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 
 import Fenetre.FenetreModal;
 import Fenetre.FenetrePrincipale;
 import Model.Entreprise;
-import Model.Temps;
-import Ressource.Competence;
 
-
+/**
+ * Affiche les information de l'activite et permet de les modifiers
+ * @author Damien
+ *
+ */
 public class PanelModifierActivite extends PanelFenetre{
 	
 	/**

@@ -11,6 +11,12 @@ import Model.Activite;
 import Model.Entreprise;
 import Ressource.Ressource;
 
+/**
+ * Affiche la liste des ressource de l'entreprise
+ * Permet d'un choisir une pour l'ajouter Ã  l'activite
+ * @author Damien
+ *
+ */
 public class PanelAjouterRessource extends PanelFenetre{
 	
 	/**
@@ -52,11 +58,7 @@ public class PanelAjouterRessource extends PanelFenetre{
 		initialiseComboBoxRessource(entreprise.getListeRessourceEntrepriseParType(typeChoisi));
 		this.add(comboBoxRessource, gc);			
 
-		
-		gc.fill = GridBagConstraints.CENTER;
-		gc.gridy = 3;
-		this.add(creerTitre("Filtres"), gc);
-		
+				
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridx = 1;
@@ -80,7 +82,7 @@ public class PanelAjouterRessource extends PanelFenetre{
 			fm.dispose();
 		}
 		else {
-		   	JOptionPane.showMessageDialog(null, "Cette ressource est deja présente dans cette activité", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		   	JOptionPane.showMessageDialog(null, "Cette ressource est deja prï¿½sente dans cette activitï¿½", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 }

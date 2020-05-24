@@ -166,7 +166,6 @@ public class Activite implements Comparable<Activite>{
 	public String toString() {
 		//String res = "Activite " + ordre;
 		String res = titre;
-		
 		return res;
 	}
 

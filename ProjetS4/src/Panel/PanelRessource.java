@@ -15,14 +15,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import Model.Entreprise;
 import Ressource.Ressource;
 
 /**
  * Affiche personne, salle, calculateur, et recherche
- * Affiche la liste concerné
+ * Affiche la liste concerne
  * @author Damien
  *
  */
@@ -33,7 +32,6 @@ public class PanelRessource extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
 	private Color couleurFond;
-	private JTextField rechercher;
 	
 	public PanelRessource(Entreprise entreprise) {
 		this.entreprise= entreprise;
@@ -164,28 +162,5 @@ public class PanelRessource extends JPanel {
 			entreprise.afficheInfoRessource(r);
 	}
 
-	private void afficherRechercher() {
-    	rechercher = new JTextField("rechercher");
-    	rechercher.getFont().deriveFont(Font.ITALIC);
-    	rechercher.setForeground(PanelPrincipal.GRIS2);
-    	rechercher.addMouseListener(new MouseListener() {           
-			@Override
-			public void mouseClicked(MouseEvent e) {
-    	        JTextField texteField = ((JTextField)e.getSource());
-    	        texteField.setText("");
-    	        texteField.getFont().deriveFont(Font.PLAIN);
-    	        texteField.setForeground(PanelPrincipal.NOIR);
-    	        texteField.removeMouseListener(this);
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-    	});	
-	}	
 
 }
