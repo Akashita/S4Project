@@ -675,16 +675,16 @@ public class Entreprise extends Observable{
 
 	
 	public ArrayList<Activite> getListeActivite(){
-		ArrayList<Activite> personneTab = new ArrayList<Activite>();
+		ArrayList<Activite> activiteTab = new ArrayList<Activite>();
 		try {
-			personneTab = JavaSQLRecherche.recupereListeActivite();
+			activiteTab = JavaSQLRecherche.recupereListeActivite();
 
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			return personneTab ;
+			return activiteTab ;
 	}
 	
 	

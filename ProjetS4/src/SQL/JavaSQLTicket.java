@@ -72,8 +72,10 @@ public class JavaSQLTicket extends JavaSQL{
 						try (ResultSet res2 = stmt2.executeQuery(sql2)){
 							 res2.next();
 							 for(int i = 0; i<liste.size(); i++) {
-									JavaSQLTicket.insertion(Ticket.LIBERE, sujet, message, numSalarieEnv, (JavaSQLRecherche.recupereChefDeProjetParIdActivite(liste.get(i).getId()).getId()), r,null,liste.get(i),JavaSQLRecherche.recupereTicketParId(res2.getInt(1)));
-
+								 int receveur = (JavaSQLRecherche.recupereChefDeProjetParIdActivite(liste.get(i).getId()).getId());
+								 if (numSalarieEnv != receveur) {
+									JavaSQLTicket.insertion(Ticket.LIBERE, sujet, message, numSalarieEnv, receveur, r,null,liste.get(i),JavaSQLRecherche.recupereTicketParId(res2.getInt(1)));
+								 }
 							 }
 						 }
 						
