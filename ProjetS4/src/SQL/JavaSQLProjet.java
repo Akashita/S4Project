@@ -154,6 +154,18 @@ public final class JavaSQLProjet extends JavaSQL{
 		}
 	}
 	
+	
+	public static void modifiePriorite(int idP,float priorite) throws SQLException{
+		try{
+			 Statement stmt = getCon().createStatement();
+			 String sql = "UPDATE Projet SET priorite  = '" + priorite + "' WHERE idP = '"+ idP+"';";
+			 stmt.executeUpdate(sql);
+			 
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 	public static String toString(String nom,int priorite,LocalDate deadline,int couleur, int numSalarie) {
 		return "nom : " + nom +priorite+deadline+couleur+numSalarie; 
 	}
