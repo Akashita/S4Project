@@ -129,7 +129,7 @@ public class PanelEDTRessource extends JPanel{
 			panel.setBackground(PanelPrincipal.INDISPO);
 			if(i == 2) {
 				panel.setLayout(new BorderLayout());
-				JLabel label = new JLabel("pause dejeuner");
+				JLabel label = new JLabel("pause déjeuner");
 				label.setForeground(PanelPrincipal.BLANC);
 				//label.setFont(new Font("Arial", Font.BOLD, 10));
 			    label.setHorizontalAlignment(JLabel.CENTER);

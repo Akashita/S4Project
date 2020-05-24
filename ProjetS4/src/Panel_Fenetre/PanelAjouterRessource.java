@@ -82,7 +82,7 @@ public class PanelAjouterRessource extends PanelFenetre{
 			fm.dispose();
 		}
 		else {
-		   	JOptionPane.showMessageDialog(null, "Cette ressource est deja pr�sente dans cette activit�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		   	JOptionPane.showMessageDialog(null, "Cette ressource est déjà présente dans cette activit�", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 }

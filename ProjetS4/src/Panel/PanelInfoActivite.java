@@ -110,12 +110,12 @@ public class PanelInfoActivite extends JPanel{
 			if (ld.size() == 0) {
 				liste = "aucun";
 			}
-			panel.add(labelInfo("Domaines demandes: "+liste), gc);
+			panel.add(labelInfo("Domaines demandés: "+liste), gc);
 			
 
 			gc.gridx = 0;
 			gc.gridy = 2;
-			panel.add(labelInfo("Travail achevee: pas encore implemente"), gc);
+			panel.add(labelInfo("Travail achevé: pas encore implemente"), gc);
 
 			gc.gridx = 1;
 			gc.gridy = 0;

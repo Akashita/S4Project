@@ -215,7 +215,7 @@ public class PanelTache extends JPanel {
 		gc.gridheight = 1;
 		gc.gridx = 0;
 		gc.gridy ++;
-		p.add(afficheTitreEtList("Ticket recus", ticketRecuTab),gc);
+		p.add(afficheTitreEtList("Ticket reçus", ticketRecuTab),gc);
 		
 		//bouton nouveau ticket
 		gc.fill = GridBagConstraints.HORIZONTAL;
@@ -263,7 +263,7 @@ public class PanelTache extends JPanel {
 		
 		//tickets recu
 		gc.gridheight = 1;
-		p.add(creerLabel("Proposition du systeme", true), gc);
+		p.add(creerLabel("Proposition du système", true), gc);
 
 		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.fill = GridBagConstraints.BOTH;
