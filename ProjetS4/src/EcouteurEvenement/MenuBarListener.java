@@ -44,7 +44,7 @@ public class MenuBarListener implements ActionListener{
 				creerFenetre();
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder � cette fonctionnalit�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'accéder à cette fonctionnalité", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}					
 		}	
 		if (choix == FenetrePrincipale.NouveauProjet) {
@@ -53,11 +53,11 @@ public class MenuBarListener implements ActionListener{
 					creerFenetre();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder � cette fonctionnalit�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder à cette fonctionnalité", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}	
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Veuillez creer une personne", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veuillez créer une personne", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		
@@ -70,11 +70,11 @@ public class MenuBarListener implements ActionListener{
 					creerFenetre();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder � cette fonctionnalit�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder à cette fonctionnalité", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}					
 			}
 			else {
-			    JOptionPane.showMessageDialog(null, "Aucun projet selectionn�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 			
@@ -90,16 +90,16 @@ public class MenuBarListener implements ActionListener{
 						creerFenetre();
 					}
 					else {
-				    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'acceder � cette fonctionnalit�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+				    	JOptionPane.showMessageDialog(null, "Vous n'avez pas la permission d'accéder à cette fonctionnalité", "Erreur", JOptionPane.ERROR_MESSAGE);			
 					}					
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Aucune activit� selectionn�e", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Aucune activité selectionnée", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Aucun projet selectionn�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Aucun projet selectionné", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 
@@ -109,7 +109,7 @@ public class MenuBarListener implements ActionListener{
 			new FenetreInfoRessource(entreprise, entreprise.getUser());
 		}
 		if (choix == FenetrePrincipale.Deconnexion) {
-			String texte = "<html>�tes vous sur de vouloir vous deconnecter ?</html>";
+			String texte = "<html>êtes-vous sur de vouloir vous déconnecter ?</html>";
 			int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 			if (res == 0) { //0 = yes
 				entreprise.changementUtilisateur();
