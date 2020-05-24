@@ -285,7 +285,7 @@ public class PanelFenetre extends JPanel{
 
 	protected Component afficheListeReunion(PanelFenetre pf, int idActivite) {
 		listeReunion = entreprise.getListeReunionDeActivite(idActivite);
-		CreneauHoraire [] reunion = new CreneauHoraire [listeConge.size()];
+		CreneauHoraire [] reunion = new CreneauHoraire [listeReunion.size()];
 		for (int i=0; i<listeReunion.size(); i++) {
 			reunion[i] = listeReunion.get(i);
 		}
@@ -296,7 +296,7 @@ public class PanelFenetre extends JPanel{
 		    public void mousePressed(MouseEvent evt) {
 		        if (evt.getButton() == MouseEvent.BUTTON3) { //clic droit
 		        	jlt.setSelectedIndex(jlt.locationToIndex(evt.getPoint()));
-		        	jlt.setComponentPopupMenu(popupMenuConge(pf, jlt.getSelectedValue()));
+		        	jlt.setComponentPopupMenu(popupMenuReunion(pf, jlt.getSelectedValue()));
 		        	;
 		        }
 		    }
@@ -330,7 +330,8 @@ public class PanelFenetre extends JPanel{
 				}
 			}
 			if (!estPresent) {
-				String titre = "Reunion pour l'activite "+entreprise.getActiviteParId(idActivite).getTitre();
+				String actTitre = entreprise.getActiviteParId(idActivite).getTitre();
+				String titre = "Reunion pour l activite "+actTitre;
 				CreneauHoraire ch = new CreneauHoraire(date, calendrier1.getTemps(), titre);
 				entreprise.nouvelleReunion(ch.getDebut(), ch.getDate(),ch.getTitre(), idActivite);
 				maj(pf);
