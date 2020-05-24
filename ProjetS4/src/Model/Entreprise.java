@@ -298,15 +298,11 @@ public class Entreprise extends Observable{
 				 
 				 
 				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge, htReunion.get(activiteCourante)));
-
-				 //listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
-				 //listeEDTCalculateurs = creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs);
-
+				 listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
+				 listeEDTCalculateurs.putAll(creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs, listeEDTPersonnes));
 
 			 }
 		}
-		 //listeEDTPersonnes = mergeHashTables(listeEDTPersonnes, creerLReunionPersonnes(listeReunion));
-		 //listeEDTPersonnes.putAll(creerLReunionPersonnes(listeReunion));
 		 listeEDTComplete.putAll(listeEDTPersonnes);
 		 listeEDTComplete.putAll(listeEDTSalles);
 		 listeEDTComplete.putAll(listeEDTCalculateurs);
@@ -410,7 +406,7 @@ public class Entreprise extends Observable{
 		}
 		return listeEDT;
 	}
-
+ 
 	/**
 	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activitée courante
 	 * @param L'activité courante
@@ -530,6 +526,44 @@ public class Entreprise extends Observable{
 			}
 		}
 		return listeEDTSalles;
+	}
+	
+	
+	private Hashtable<Pair<Integer, Integer>, EDT> creerLCreneauxCalculateurs(Projet proj, Activite act, ArrayList<Calculateur> listeCalc, Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalc, Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes) {
+		if(listeCalc.size() > 0) {
+			Pair<LocalDateTime, LocalDateTime> dateDebutFin = getDebutFinActivite(listeEDTPersonnes, act);
+			if(dateDebutFin.getLeft() != null && dateDebutFin.getRight() != null) {
+				LocalDate jourCourant = verifierJour(dateDebutFin.getLeft().toLocalDate());
+				int heureCourante = dateDebutFin.getLeft().toLocalTime().getHour();
+
+				LocalDate jourFin = verifierJour(dateDebutFin.getRight().toLocalDate());
+				int heureFin = dateDebutFin.getRight().toLocalTime().getHour();
+
+				while (!(jourCourant.equals(jourFin) && (heureCourante == heureFin))) {
+					for (int i = 0; i < listeCalc.size(); i++) {
+						Calculateur calcCourante = listeCalc.get(i);
+						String titreCreneau = " " + proj.getNom() + " | " + act.getTitre()+ " ";
+						EDT EDTCourant = getEDTRessource(calcCourante.getType(), calcCourante.getId(), listeEDTCalc);
+						if(EDTCourant.creneauDispo(jourCourant, heureCourante)) {
+							EDTCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
+						}
+					}
+					heureCourante = heureSuivante(heureCourante);
+					if(heureCourante == HEURE_DEBUT_MATIN) {
+						jourCourant = verifierJour(jourCourant.plus(1, ChronoUnit.DAYS));
+					}
+				}
+				for (int i = 0; i < listeCalc.size(); i++) {
+					Calculateur calcCourante = listeCalc.get(i);
+					String titreCreneau = proj.getNom() + " | " + act.getTitre();
+					EDT EDTCourant = getEDTRessource(calcCourante.getType(), calcCourante.getId(), listeEDTCalc);
+					if(EDTCourant.creneauDispo(jourCourant, heureCourante)) {
+						EDTCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
+					}
+				}
+			}
+		}
+		return listeEDTCalc;
 	}
 
 
