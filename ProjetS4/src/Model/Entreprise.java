@@ -1950,27 +1950,7 @@ public class Entreprise extends Observable{
 		}
 		return b;
 	}
-	public ArrayList<Ticket> getListeTicketEnvoyeur(int numSalarie){
-		ArrayList<Ticket> liste = new ArrayList<Ticket>();
-		try {
-			liste = JavaSQLRecherche.recupereTicketEnvUser(numSalarie);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return liste; 
-	}
-	
-	public ArrayList<Ticket> getListeTicketReceveur(int numSalarie){
-		ArrayList<Ticket> liste = new ArrayList<Ticket>();
-		try {
-			liste = JavaSQLRecherche.recupereTicketRecUser(numSalarie);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return liste; 
-	}
+
 
 	//------------------------------------------------------------------------------------------------------------------------------->>>>>>>>>> Gestion projet
 
