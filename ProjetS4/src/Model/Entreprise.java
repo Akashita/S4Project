@@ -2266,7 +2266,40 @@ public class Entreprise extends Observable{
 		//majEDT();
 		update();
 	}
+	public Activite getActiviteDepartLiberation(int idT) {
+		String modif;
+		Activite a = null;
+		try {
+			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
+		
+		String[] regex = modif.split(Ticket.SEPARATEUR);
+		int idActiviteDepart = Integer.parseInt(regex[3]);
+		a = this.getActiviteParId(idActiviteDepart);	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return a;
+	}
 
+	
+	
+	
+	public Activite getActiviteArriveTransfert(int idT) {
+		String modif;
+		Activite a = null;
+		try {
+			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
+		
+		String[] regex = modif.split(Ticket.SEPARATEUR);
+		int idActiviteDepart = Integer.parseInt(regex[3]);
+		a = this.getActiviteParId(idActiviteDepart);	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return a;
+	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
