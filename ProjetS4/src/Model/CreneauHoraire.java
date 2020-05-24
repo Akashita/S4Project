@@ -165,7 +165,12 @@ public class CreneauHoraire {
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override 
 	public String toString() {
-		return Temps.dateToString(date);
+		if (type == REUNION) {
+			return titre+" - "+Temps.dateToString(date);
+		}
+		else {
+			return Temps.dateToString(date);
+		}
 	}
 
 }
