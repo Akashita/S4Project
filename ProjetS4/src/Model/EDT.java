@@ -7,64 +7,68 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
+
 import java.util.List;
 import java.util.Set;
 
 
 public class EDT {
-	
+
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private int id_ressource;
 	private int type_ressource;
-	
+
 	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> listeCreneaux;
-	
-	
+
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
+
 	public EDT(int id_ressource, int type_ressource) {
 		this.id_ressource = id_ressource;
 		this.type_ressource = type_ressource;
 		this.listeCreneaux = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
 
 	}
-	
+
 	public EDT(Pair<?, ?> duet) {
+
 		this((int) duet.getLeft(), (int) duet.getRight());
 	}
-	
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public int getIdRessource() {
 		return id_ressource;
 	}
-	
+
 	public int getTypeRessource() {
 		return id_ressource;
 	}
-	
+
 	public Pair<Integer, Integer> getPair() {
 		return new Pair<Integer, Integer>(id_ressource, type_ressource);
 	}
+
 
 	//--------------------------------------------------------------------------------->>>>> Setteurs simples
 	public void vider() {
 		listeCreneaux.clear();
 	}
-	
-	
+
+
 	//--------------------------------------------------------------------------------->>>>> Méthodes complexes
 
 	/**
 	 * Ajoute un creneau à la ressource (si possible)
-	 * 
+	 *
 	 * @param creneau Le creneau a ajouter
 	 * @param jour    Le jour ou le creneau doit etre ajoute
 	 * @return true si le creneau a ete ajoute
@@ -88,11 +92,12 @@ public class EDT {
 		}
 		return place;
 	}
-	
-	
+
+
+
 	/**
 	 * Ajoute un congé à la ressource
-	 * 
+	 *
 	 * @param creneau Le congé à ajouter
 	 */
 	public void ajouterConge(CreneauHoraire creneau) {
@@ -103,11 +108,11 @@ public class EDT {
 		}
 		listeCreneaux.put(date, listeCr);
 	}
-	
-	
+
+
 	/**
 	 * Ajoute une réunion à la ressource
-	 * 
+	 *
 	 * @param creneau la réunion à ajouter
 	 */
 	public void ajouterReunion(CreneauHoraire creneau) {
@@ -127,13 +132,14 @@ public class EDT {
 			}
 			listeCreneaux.put(date, listeCr);
 		}
-		
+
 
 	}
 
 	/**
 	 * Cree une journee entierement disponible
-	 * 
+	 *
+
 	 * @return Un tableau de CreneauHoraire initialisé à null
 	 */
 	private ArrayList<CreneauHoraire> creeJourneeCreneauLibre() {
@@ -145,8 +151,9 @@ public class EDT {
 	}
 
 	/**
+
 	 * Dit si le creneau (en paramètre) est dispo pour la ressource courante
-	 * 
+	 *
 	 * @param date  La date du creneau
 	 * @param heure L'heure du creneau
 	 * @return true si le creneau est dispo
@@ -169,7 +176,7 @@ public class EDT {
 
 	/**
 	 * Retourne l'EDT d'une ressource en fonction de la semaine et de l'annee.
-	 * 
+	 *
 	 * @param annee   Annee pour laquelle on veut l'EDT
 	 * @param semaine Semaine choisi pour afficher l'EDT
 	 * @return Un tableau a deux dimensions compose de CreaneauxHoraires ou de la
@@ -192,9 +199,10 @@ public class EDT {
 		}
 		return semaineEDT;
 	}
-	
-	
-	
+
+
+
+
 	/**
 	 * Retourne le premier creneau d'une activité (pour l'EDT courant)
 	 * @return Le creneau en question
@@ -208,9 +216,9 @@ public class EDT {
 		if(sortedKeys.size() != 0) {
 			 dernierJour = sortedKeys.get(sortedKeys.size()-1);
 			boolean trouve = false;
-			
+
 			ArrayList<CreneauHoraire> creneauxJour = sansCongeEtReunion.get(dernierJour);
-			
+
 			for (int i = 0; i < creneauxJour.size(); i++) {
 				CreneauHoraire crCourant = creneauxJour.get(i);
 				if(crCourant == null) {
@@ -224,11 +232,11 @@ public class EDT {
 			}
 		}
 
-			
+
 		return res;
 	}
-	
-	
+
+
 	/**
 	 * Enlève les congés et les réunions de l'EDT et en renvoie une copie
 	 * @return Le nouvel EDT
@@ -250,7 +258,7 @@ public class EDT {
 				} else {
 					tmp.add(null);
 				}
-				
+
 			}
 			if(!jourNull(tmp)) {
 				res.put(key, tmp);
@@ -258,8 +266,8 @@ public class EDT {
 		}
 		return res;
 	}
-	
-	
+
+
 	/**
 	 * Dit si une journéee est constituée que de creneauxHoraires null
 	 * @param La liste des creneaux de la journée
@@ -274,8 +282,8 @@ public class EDT {
 		}
 		return res;
 	}
-	
-	
+
+
 	/**
 	 * Vérifie qu'une journée est ouvrable, si ce n'est pas le cas on renvoie le jour ouvrable suivant le plus proche
 	 * @param La journée à vérifier
@@ -296,8 +304,8 @@ public class EDT {
 		}
 		return jourVerifie;
 	}
-	
-	
+
+
 	/**
 	 * Vérifie qu'une journée est ouvrable, si ce n'est pas le cas on renvoie le jour ouvrable suivant le plus proche
 	 * @param La journée à vérifier
@@ -310,8 +318,9 @@ public class EDT {
 		}
 		return LocalDateTime.of(key, LocalTime.of(indice, 0));
 	}
-	
-	
+
+
+
 	/**
 	 * Transforme un indice d'arrayList de creneauxHoaire en heure correspondante à celles de l'entreprise
 	 * @param L'indice à transformer
@@ -324,8 +333,8 @@ public class EDT {
 		}
 		return heure;
 	}
-	
-	
+
+
 	/**
 	 * Donne la date du premier creneaux d'une activité dans l'EDT courant
 	 * @param L'activité concernée
@@ -354,11 +363,11 @@ public class EDT {
 			}
 		}
 
-		return premDate;	
+		return premDate;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Donne la date du dernier creneaux d'une activité dans l'EDT courant
 	 * @param L'activité concernée
@@ -386,9 +395,9 @@ public class EDT {
 				break;
 			}
 		}
-		return derDate;	
+		return derDate;
 	}
-	
+
 
 
 }

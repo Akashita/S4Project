@@ -1,14 +1,15 @@
 package Model;
 
-public class Pair<L,R> { 
-	//Classe générique, le type des variables passée en paramètre est à indiquer. 
+
+public class Pair<L,R> {
+	//Classe gï¿½nï¿½rique, le type des variables passï¿½e en paramï¿½tre est ï¿½ indiquer.
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private final L left;
 	private final R right;
-	
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -20,25 +21,25 @@ public class Pair<L,R> {
 		this.left = left;
 		this.right = right;
 	}
-	
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	//--------------------------------------------------------------------------------->>>>> Getteurs simples
-	public L getLeft() { 
-		return left; 
+	public L getLeft() {
+		return left;
 	}
-	
-	
-	public R getRight() { 
-		return right; 
+
+
+	public R getRight() {
+		return right;
 	}
-	
+
 	//--------------------------------------------------------------------------------->>>>> Override
 	@Override
-	public int hashCode() { 
-		return left.hashCode() ^ right.hashCode(); 
+	public int hashCode() {
+		return left.hashCode() ^ right.hashCode();
 	}
 
 	@Override

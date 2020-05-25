@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Set;
@@ -53,6 +54,7 @@ public class Entreprise extends Observable{
 	public static final int NB_HEURE_JOUR = 8;
 
 	private FenetreDebugBDD fenetreBDD;
+
 
 	//=========== EDT
 	private Hashtable<Pair<Integer, Integer>, EDT> listeEDT;
@@ -126,8 +128,9 @@ public class Entreprise extends Observable{
 	}
 
 	//---------------------------------------------------------------------------------------------------->>>>>>>>> EDT
-	
-	
+
+
+
 	/**
 	 * Met à jour l'EDT de toutes les ressources en recréant tous les créneaux horaires (en prenant en compte les nouvelles containtes)
 	 * Fonction principale de la gestion des EDT
@@ -136,7 +139,7 @@ public class Entreprise extends Observable{
 		viderRessources();
 		listeEDT = generationEDT();
 	}
-	
+
 	/**
 	 * Vide les créneaux horaires déjà existants dans les EDT de toutes les ressources
 	 */
@@ -145,44 +148,44 @@ public class Entreprise extends Observable{
 		for (Pair<Integer, Integer> key : keys) {
 			listeEDT.get(key).vider();
 		}
-	} 
+	}
 
-	
+
 	/**
 	 * Méthode de génération de l'EDT des ressources de l'entreprise
 	 * @return Renvoie l'EDT de toutes les ressources de l'entreprise
 	 */
 	public Hashtable<Pair<Integer, Integer>, EDT> generationEDT(){
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise(); //On récupère les projets de toute l'entreprise
-		ArrayList<Activite> lActivite; 
-		
+		ArrayList<Activite> lActivite;
+
 		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise()); //On récupère toutes les personnes l'entreprise
 		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne); //Création de la liste des congés pour chaque personne
-		
+
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = creerLCongePersonnes(listeConge); //On écrase la listeEDTPersonnes avec les congés
-		
+
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
 
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
 
-		 for (int i = 0; i < lProjet.size(); i++) { 
+		 for (int i = 0; i < lProjet.size(); i++) {
 			 Projet projetCourant = lProjet.get(i);
 			 lActivite = getListeActiviteDuProjet(projetCourant.getId());
 			 Hashtable<Activite, ArrayList<CreneauHoraire>> htReunion = creerALReunion(lActivite); //Création de la liste des congés pour chaque activité
 			 for (int j = 0; j < lActivite.size(); j++) {
 				 Activite activiteCourante = lActivite.get(j);
-				 				  
-				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId())); 
+
+				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId()));
 				 //Recupération de la liste des personne faisant partie de l'activité courante
-				 
+
 				 ArrayList<Salle> listeSalles = castListeRessourceEnSalles(this.getListeRessourcedeActiviteParId(Ressource.SALLE, activiteCourante.getId()));
 				//Recupération de la liste des salles faisant partie de l'activité courante
-				 
+
 				 ArrayList<Calculateur> listeCalculateurs = castListeRessourceEnCalculateurs(this.getListeRessourcedeActiviteParId(Ressource.CALCULATEUR, activiteCourante.getId()));
 				//Recupération de la liste des calculateurs faisant partie de l'activité courante
-				 
-				 
+
+
 				 //Création des EDT pour l'activité courante (concaténation avec les EDT des autres activités)
 				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge, htReunion.get(activiteCourante)));
 				 listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
@@ -190,7 +193,7 @@ public class Entreprise extends Observable{
 
 			 }
 		}
-		 
+
 		 //Ajout des EDT de toutes les ressources à la liste finale
 		 listeEDTComplete.putAll(listeEDTPersonnes);
 		 listeEDTComplete.putAll(listeEDTSalles);
@@ -198,13 +201,13 @@ public class Entreprise extends Observable{
 
 		return listeEDTComplete;
 	}
-	
+
 	/**
 	 * Renvoie les bornes de l'EDT prévisionel de l'activité passée en paremètre
-	 * 
+	 *
 	 * Même principe que generationEDT() sauf qu'on effectue l'action en paramètre avant de générer l'EDT
-	 * 
-	 * 
+	 *
+	 *
 	 * @param L'opération à effectuer (ajout ou suppresion), voir l'enum Operation
 	 * @param La ressource concernée par la modification
 	 * @param L'activité concernée par la modification
@@ -213,14 +216,14 @@ public class Entreprise extends Observable{
 	private LocalDateTime[] generationPrevisionEDT(Operation operation, Ressource res, Activite act) {
 		ArrayList<Projet> lProjet = getListeProjetDeEntreprise();
 		ArrayList<Activite> lActivite;
-		
+
 		ArrayList<Personne> listeAllPersonne = castListeRessourceEnPersonnes(getListePersonneEntreprise());
 		Hashtable<Personne, ArrayList<CreneauHoraire>> listeConge = creerHTConge(listeAllPersonne);
 
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTPersonnes = creerLCongePersonnes(listeConge);
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTSalles = new Hashtable<Pair<Integer, Integer>, EDT>();
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTCalculateurs = new Hashtable<Pair<Integer, Integer>, EDT>();
-		
+
 		Hashtable<Pair<Integer, Integer>, EDT> listeEDTComplete = new Hashtable<Pair<Integer, Integer>, EDT>();
 
 		 for (int i = 0; i < lProjet.size(); i++) {
@@ -228,6 +231,7 @@ public class Entreprise extends Observable{
 			 lActivite = projetCourant.getListe();
 			 Hashtable<Activite, ArrayList<CreneauHoraire>> htReunion = creerALReunion(lActivite);
 			 for (int j = 0; j < lActivite.size(); j++) {
+
 				 Activite activiteCourante = lActivite.get(j);
 
 				 ArrayList<Personne> listePersonnes = castListeRessourceEnPersonnes(this.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activiteCourante.getId()));
@@ -260,29 +264,30 @@ public class Entreprise extends Observable{
 								listeCalculateurs.add(calc);
 							}
 							break;
-	
+
 						default:
 							break;
 						}
 					 }
-				 
+
 				 listeEDTPersonnes.putAll(creerLCreneauxPersonnes(projetCourant, activiteCourante, listePersonnes, listeEDTPersonnes, listeConge, htReunion.get(activiteCourante)));
 				 listeEDTSalles.putAll(creerLCreneauxSalles(projetCourant, activiteCourante, listeSalles, listeEDTSalles, listeEDTPersonnes));
-				 listeEDTCalculateurs.putAll(creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs, listeEDTPersonnes));	
+				 listeEDTCalculateurs.putAll(creerLCreneauxCalculateurs(projetCourant, activiteCourante, listeCalculateurs, listeEDTCalculateurs, listeEDTPersonnes));
 			}
 		}
-		 
+
 		 listeEDTComplete.putAll(listeEDTPersonnes);
 		 listeEDTComplete.putAll(listeEDTSalles);
 		 listeEDTComplete.putAll(listeEDTCalculateurs);
-		 
+
 		 LocalDateTime[] ret = new LocalDateTime[2];
 		 Pair<LocalDateTime, LocalDateTime> bornes = getDebutFinActivite(listeEDTComplete, act);
 		 ret[0] = bornes.getLeft();
 		 ret[1] = bornes.getRight();
 		 return ret;
 	}
-	
+
+
 	/**
 	 * Créé un tableau associatif : key -> personne ; value : liste de congés
 	 * @param La liste des personnes pour lesquels ont créé les congés
@@ -296,8 +301,8 @@ public class Entreprise extends Observable{
 		}
 		return res;
 	}
-	
-	
+
+
 	/**
 	 * Créé un tableau associatif : key -> activite ; value : liste des réunions
 	 * @param La liste des personnes activités pour lesquels on créé les réunions
@@ -312,7 +317,7 @@ public class Entreprise extends Observable{
 		return res;
 	}
 
-	
+
 	/**
 	 * Créé un tableau associatif : key -> identRessource ; value : EDT de la personne
 	 * @param La liste des congés pour chaque personne
@@ -328,15 +333,15 @@ public class Entreprise extends Observable{
 			for (int i = 0; i < listeConge.get(personne).size(); i++) {
 				chCourant = listeConge.get(personne).get(i);
 				EDTCourant.ajouterConge(chCourant);
-				
+
 			}
 			listeEDT.put(ident, EDTCourant);
 		}
-		
-		
+
+
 		return listeEDT;
 	}
- 
+
 	/**
 	 * Créée les créneaux horaires de l'EDT de toutes les personnes participant à l'activité courante
 	 * @param L'activité courante
@@ -348,7 +353,7 @@ public class Entreprise extends Observable{
 		if(listePersonnes.size() > 0) {
 			int charge = act.getChargeHeure();
 			int chargeAloue = 0;
-			
+
 			String titreCreneau;
 
 			LocalDate jourCourant = verifierJour(act.getDebut());
@@ -369,7 +374,7 @@ public class Entreprise extends Observable{
 									edtCourant.ajouterCreneau(new CreneauHoraire(titreCreneau, act, heureCourante, act.getCouleur()), jourCourant);
 									chargeAloue++;
 								}
-							} 
+							}
 						} else {
 							titreCreneau = proj.getNom() + " | " + act.getTitre();
 							edtCourant.ajouterCreneau(new CreneauHoraire(jourCourant, heureCourante, "Réunion : "+ titreCreneau), jourCourant);
@@ -387,8 +392,8 @@ public class Entreprise extends Observable{
 		}
 		return listeEDTPersonnes;
 	}
-	
-	
+
+
 	/**
 	 * Indique si le jourCourant correspond à un jour de congé
 	 * @param La liste des congés d'une personne
@@ -408,8 +413,8 @@ public class Entreprise extends Observable{
 		}
 		return res;
 	}
-	
-	
+
+
 	/**
 	 * Indique si le creneau courant est une réunion
 	 * @param La liste des congés réunion d'une activité
@@ -473,9 +478,9 @@ public class Entreprise extends Observable{
 		}
 		return listeEDTSalles;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Créée les créneaux horaires de l'EDT de tous les calculateurs participant à l'activité courante
 	 * @param L'activité courante
@@ -520,6 +525,28 @@ public class Entreprise extends Observable{
 		return listeEDTCalc;
 	}
 
+	public EDT getEDTRessource(Ressource res) {
+		int id_ressource = res.getId();
+		int type_ressource = res.getType();
+		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id_ressource, type_ressource);
+		return listeEDT.get(ident);
+	}
+
+
+	public EDT getEDTRessource(int type, int id){
+		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id, type);
+		return listeEDT.get(ident);
+	}
+
+
+	 private ArrayList<Personne> castRessourceEnPersonnes(ArrayList<Ressource> src) {
+		 ArrayList<Personne> res = new ArrayList<Personne>();
+		 for (int i = 0; i < src.size(); i++) {
+			res.add((Personne)src.get(i));
+		}
+		return res;
+	 }
+
 
 	/**
 	 * Retrourne les date de debut et de fin d'une activité
@@ -535,8 +562,8 @@ public class Entreprise extends Observable{
 		}
 		return getDebutFinActivite(res, act);
 	}
-	
-	
+
+
 	/**
 	 * Retrourne les date de debut et de fin d'une activité
 	 * @param La liste d'EDT dans laquelle chercher
@@ -607,7 +634,7 @@ public class Entreprise extends Observable{
 				}
 			}
 		}
-		
+
 		return derniereDate;
 	}
 
@@ -632,7 +659,7 @@ public class Entreprise extends Observable{
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Renvoie l'EDT de la ressource dont les identifiants ont été passés en paramètre (pour le graphique)
 	 * @param Identifiants de la ressource
@@ -722,6 +749,7 @@ public class Entreprise extends Observable{
 		}
 		return premierLibre == null || (premierLibre.isEqual(courant) || premierLibre.isBefore(courant));
 	}
+	*/
 
 
 	/**
@@ -766,7 +794,7 @@ public class Entreprise extends Observable{
 
 	//------------------------------>>>>> Retourne element de la bdd
 
-	
+
 	public ArrayList<Activite> getListeActivite(){
 		ArrayList<Activite> activiteTab = new ArrayList<Activite>();
 		try {
@@ -779,9 +807,9 @@ public class Entreprise extends Observable{
 		}
 			return activiteTab ;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Cherche toute les ressource du type choisi de l'entreprise de la bdd
 	 * @param type de la ressource
@@ -967,7 +995,7 @@ public class Entreprise extends Observable{
         }
 		return ticketTab;
 		}
-	
+
 	public ArrayList<Ticket> getListeTicketEnvoyeDeUserSaufMemeReceveurEnvoyeurPasTransfert(int idUser){
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
         try {
@@ -979,8 +1007,8 @@ public class Entreprise extends Observable{
         }
 		return ticketTab;
 		}
-	
-	
+
+
 	/**
 	 * Cherche tout les tickets recu par l'user
 	 * @param id de l'user
@@ -997,7 +1025,7 @@ public class Entreprise extends Observable{
         }
 		return ticketTab;
 		}
-	
+
 	public ArrayList<Ticket> getListeTicketRecuDeUserSaufMemeReceveurEnvoyeurPasTransfert(int idUser){
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
         try {
@@ -1158,7 +1186,7 @@ public class Entreprise extends Observable{
 		return getCalculateurParId(id);
 	}
 
-	
+
 	public Ressource getRessourceParId(int type, int id) {
 		Ressource r = null;
 		switch (type) {
@@ -1177,7 +1205,7 @@ public class Entreprise extends Observable{
 		return r;
 	}
 
-	
+
 
 	/**
 	 * cherche dans la bdd l'activite associer a son id
@@ -1185,7 +1213,7 @@ public class Entreprise extends Observable{
 	 * @return l'activite associer
 	 */
 	public Activite getActiviteParId(int idA) {
-		Activite act = null;	
+		Activite act = null;
 		try {
 			act = JavaSQLRecherche.recupereActiviteParId(idA);
 		} catch (SQLException e) {
@@ -2308,18 +2336,18 @@ public class Entreprise extends Observable{
 		//majEDT();
 		update();
 	}
-	
+
 	public Ticket getTicketTransfertQuiLibereParId(int idT) {
 		String modif;
 		Ticket t = null;
 		try {
 			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
-		
+
 		String[] regex = modif.split(Ticket.SEPARATEUR);
 		if (regex[0].equals("libere")){
 		int idTicket = Integer.parseInt(regex[4]);
 		if (idTicket != -1) {
-			t = JavaSQLRecherche.recupereTicketParId(idTicket);	
+			t = JavaSQLRecherche.recupereTicketParId(idTicket);
 
 		}
 		}
@@ -2329,14 +2357,14 @@ public class Entreprise extends Observable{
 		}
 		return t;
 	}
-	
-	
+
+
 	public Ressource getRessourceTicket(int idT) {
 		String modif;
 		Ressource r = null;
 		try {
 			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
-		
+
 		String[] regex = modif.split(Ticket.SEPARATEUR);
 		if (regex[0].equals("libere")){
 			int typeRessource = Integer.parseInt(regex[1]);
@@ -2349,19 +2377,19 @@ public class Entreprise extends Observable{
 		}
 		return r;
 	}
-	
-	
-	
-	
+
+
+
+
 	public Activite getActiviteDepartLiberation(int idT) {
 		String modif;
 		Activite a = null;
 		try {
 			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
-		
+
 		String[] regex = modif.split(Ticket.SEPARATEUR);
 		int idActiviteDepart = Integer.parseInt(regex[3]);
-		a = this.getActiviteParId(idActiviteDepart);	
+		a = this.getActiviteParId(idActiviteDepart);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2369,18 +2397,18 @@ public class Entreprise extends Observable{
 		return a;
 	}
 
-	
-	
-	
+
+
+
 	public Activite getActiviteArriveTransfert(int idT) {
 		String modif;
 		Activite a = null;
 		try {
 			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
-		
+
 		String[] regex = modif.split(Ticket.SEPARATEUR);
 		int idActiviteDepart = Integer.parseInt(regex[3]);
-		a = this.getActiviteParId(idActiviteDepart);	
+		a = this.getActiviteParId(idActiviteDepart);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2400,8 +2428,8 @@ public class Entreprise extends Observable{
 		return liste ;
 	}
 
-	
-	
+
+
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
 
@@ -2416,7 +2444,7 @@ public class Entreprise extends Observable{
 		}
 
 	}
-	
+
 	public void nouvTicketLiberation(String sujet,String message,int numSalarieEnv, int numSalarieRec,Ressource r,Activite activiteDepart) {
 
 		try {
@@ -2439,11 +2467,11 @@ public class Entreprise extends Observable{
 		}
 
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 
 	public void afficheInfoTicket(Ticket t) {
 		int exist = -1;
@@ -2467,7 +2495,7 @@ public class Entreprise extends Observable{
 	 * @param statut sera le nouveau statut du ticket
 	 * @param ticket
 	 */
-	public void setStatutTicket(int statut, Ticket ticket) {	
+	public void setStatutTicket(int statut, Ticket ticket) {
 		try {
 			JavaSQLTicket.modifieStatut(ticket, statut);
 		} catch (SQLException e) {
@@ -2475,16 +2503,16 @@ public class Entreprise extends Observable{
 		}
 		update();
 	}
-	
-	
-	
-	
+
+
+
+
 	public void accepteTicket(int idT) {
 		String modif;
 		try {
 			modif = JavaSQLRecherche.recupereModifTicketParId(idT);
-		
-		String[] regex = modif.split(Ticket.SEPARATEUR); 
+
+		String[] regex = modif.split(Ticket.SEPARATEUR);
 		int typeRessource = Integer.parseInt(regex[1]);
 		int idRessource = Integer.parseInt(regex[2]);
 		int idActiviteDepart = Integer.parseInt(regex[3]);
@@ -2501,21 +2529,21 @@ public class Entreprise extends Observable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void accepteTicketTransfert(int idT) {
-		
+
 		String modif;
 		try {
 		Ticket ticketCour = JavaSQLRecherche.recupereTicketParId(idT);
 			if (ticketCour.getStatut() != Ticket.ACCEPTEE) {
-				modif = JavaSQLRecherche.recupereModifTicketParId(idT);	
-				String[] regex = modif.split(Ticket.SEPARATEUR); 
+				modif = JavaSQLRecherche.recupereModifTicketParId(idT);
+				String[] regex = modif.split(Ticket.SEPARATEUR);
 				int typeRessource = Integer.parseInt(regex[1]);
 				int idRessource = Integer.parseInt(regex[2]);
 				int idActiviteDepart = Integer.parseInt(regex[3]);
 				Activite a = this.getActiviteParId(idActiviteDepart);
 				Ressource r = this.getRessourceParId(typeRessource,idRessource);
-				
+
 				this.ajouterRessourceActivite(typeRessource, r, a);
 				this.setStatutTicket(Ticket.ACCEPTEE, ticketCour);
 			}
@@ -2524,7 +2552,7 @@ public class Entreprise extends Observable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ressource
 
 	public void nouvPersonne (String nom, String prenom, String role, String mdp, ArrayList<Competence> listeComp) {
@@ -2704,7 +2732,7 @@ public class Entreprise extends Observable{
 	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion Conge
-	
+
 	public void nouveauConge(LocalDate date, int numSalarie) {
 		try {
 			JavaSQLConge.insertion(date, numSalarie);
@@ -2722,7 +2750,7 @@ public class Entreprise extends Observable{
 	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion Reunion
-	
+
 	public void nouvelleReunion(int debut, LocalDate date, String titre, int idA) {
 		try {
 			JavaSQLReunion.insertion(debut, date, titre, idA);
