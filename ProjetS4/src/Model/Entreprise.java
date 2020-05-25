@@ -2361,6 +2361,20 @@ public class Entreprise extends Observable{
 		return a;
 	}
 
+	public ArrayList<Ticket> getListeTicketRecuDeUserDeEntreprise(int numSalarie) {
+		ArrayList<Ticket> liste = new ArrayList<Ticket>();
+
+		try {
+			liste = JavaSQLRecherche.getListeTicketRecuDeUserDeEntreprise(numSalarie);
+			} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return liste ;
+	}
+
+	
+	
 	//---------------------------------------------------------------------------------------------------------------------------------->>>>>>> Gestion ticket
 
 
