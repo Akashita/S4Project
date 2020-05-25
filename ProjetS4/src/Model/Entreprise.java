@@ -533,12 +533,6 @@ public class Entreprise extends Observable{
 	}
 
 
-	public EDT getEDTRessource(int type, int id){
-		Pair<Integer, Integer> ident = new Pair<Integer, Integer>(id, type);
-		return listeEDT.get(ident);
-	}
-
-
 	 private ArrayList<Personne> castRessourceEnPersonnes(ArrayList<Ressource> src) {
 		 ArrayList<Personne> res = new ArrayList<Personne>();
 		 for (int i = 0; i < src.size(); i++) {
@@ -687,7 +681,7 @@ public class Entreprise extends Observable{
 		}
 		return listeEDT.get(ident);
 	}
-
+ 
 	/**
 	 * Transforme une liste de Ressources en liste de Personnes
 	 * @param La liste de Ressources
@@ -713,7 +707,7 @@ public class Entreprise extends Observable{
 		}
 		return salles;
 	 }
-
+ 
 	/**
 	 * Transforme une liste de Ressources en liste de Calculateur
 	 * @param La liste de Ressources
@@ -749,8 +743,6 @@ public class Entreprise extends Observable{
 		}
 		return premierLibre == null || (premierLibre.isEqual(courant) || premierLibre.isBefore(courant));
 	}
-	*/
-
 
 	/**
 	 * Vérifie que le jour courant est un jour ouvrable, si ce n'est pas le cas il renvoie le jour ouvrable le plus proche
