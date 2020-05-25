@@ -2365,7 +2365,7 @@ public class Entreprise extends Observable{
 		ArrayList<Ticket> liste = new ArrayList<Ticket>();
 
 		try {
-			liste = JavaSQLRecherche.getListeTicketRecuDeUserDeEntreprise(numSalarie);
+			liste = JavaSQLRecherche.recupereListeTicketRecuDeUserDeEntreprise(numSalarie);
 			} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
