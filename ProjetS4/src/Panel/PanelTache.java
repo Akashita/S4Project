@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -65,8 +66,6 @@ public class PanelTache extends JPanel {
 	private void afficheInterface() {
 		ticketTab = ticketRecuTab = ticketEnvTab = new ArrayList<Ticket>();
 		
-		ticketRecuTab = entreprise.getListeTicketRecuDeUserSaufMemeReceveurEnvoyeurPasTransfert(entreprise.getUser().getId());
-		ticketEnvTab = entreprise.getListeTicketEnvoyeDeUserSaufMemeReceveurEnvoyeurPasTransfert(entreprise.getUser().getId());
 
 		
 		this.setLayout(new GridBagLayout());
@@ -82,9 +81,14 @@ public class PanelTache extends JPanel {
 		gc.weighty = 2;
 
 		switch (entreprise.getAfficheTache()) {
-		case TICKET: affichePanelTicket(gc);
+		case TICKET: 
+			ticketRecuTab = entreprise.getListeTicketRecuDeUserSaufMemeReceveurEnvoyeurPasTransfert(entreprise.getUser().getId());
+			ticketEnvTab = entreprise.getListeTicketEnvoyeDeUserSaufMemeReceveurEnvoyeurPasTransfert(entreprise.getUser().getId());
+			affichePanelTicket(gc);
 		break;
-		case OPTIMISATION: afficheOptimisation(gc);
+		case OPTIMISATION: 
+			ticketRecuTab = entreprise.getListeTicketRecuDeUserDeEntreprise(entreprise.getUser().getId());
+			afficheOptimisation(gc);
 		break;
 
 		default:
@@ -249,28 +253,15 @@ public class PanelTache extends JPanel {
 		
 		
 		JPanel p = new JPanel();
-		
+		p.setBackground(couleurFond);
+	
 		this.add(p, gcPrincipale);
 		
-		p.setLayout(new GridBagLayout());
-		GridBagConstraints gc = new GridBagConstraints();
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
-		gc.fill = GridBagConstraints.CENTER;
-		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
-		gc.insets = new Insets(0, 10, 0, 10);
-		gc.gridx = 0;
-		gc.gridy = 0;
-		
 		//tickets recu
-		gc.gridheight = 1;
-		p.add(creerLabel("Proposition du système", true), gc);
-
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
-		gc.fill = GridBagConstraints.BOTH;
-		gc.gridy=1;
-		gc.gridheight = 2;
-		//p.add(creerList(ticketRecuTab), gc);
+		p.add(creerLabel("Proposition du système", true));
+		p.add(creerList(ticketRecuTab));
 		
 		
 	}
