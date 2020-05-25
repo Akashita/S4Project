@@ -2,7 +2,7 @@ package Model;
 
 
 public class Pair<L,R> {
-	//Classe g�n�rique, le type des variables pass�e en param�tre est � indiquer.
+	//Classe générique, le type des variables pass�e en paramètre est à indiquer.
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
