@@ -18,7 +18,7 @@ public final class JavaSQLDebug extends JavaSQL{
 	public static void drop() throws SQLException{
 		String sql = "DROP TABLE IF EXISTS Competence";
 		try{
-			 connection();
+
 			 Statement stmt = getCon().createStatement();
 			 stmt.executeUpdate(sql);
 			 System.out.println("drop Competence fait");
@@ -39,9 +39,13 @@ public final class JavaSQLDebug extends JavaSQL{
 			 stmt.executeUpdate(sql);
 			 System.out.println("drop ListeDomaine fait");
 			 
-			 sql = "DROP TABLE IF EXISTS Creneaux";
+			 sql = "DROP TABLE IF EXISTS Reunion";
 			 stmt.executeUpdate(sql);
-			 System.out.println("drop Creneaux fait");
+			 System.out.println("drop Reunion fait");
+			 
+			 sql = "DROP TABLE IF EXISTS Conge";
+			 stmt.executeUpdate(sql);
+			 System.out.println("drop Conge fait");
 			 
 			 sql = "DROP TABLE IF EXISTS Activite";
 			 stmt.executeUpdate(sql);
@@ -81,7 +85,7 @@ public final class JavaSQLDebug extends JavaSQL{
 		}
 	}
 	
-	public void affiche() throws SQLException{
+	public static void affiche() throws SQLException{
 		String sql = "SELECT TABLE_NAME\r\n" +
 				"FROM   INFORMATION_SCHEMA.TABLES\r\n" +
 				"WHERE Table_Type='BASE TABLE'";

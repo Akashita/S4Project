@@ -6,6 +6,11 @@ import java.awt.event.MouseListener;
 import Model.Entreprise;
 import Model.Projet;
 
+/**
+ *  Affiche le panel panelInfoProjet du projet selectionner
+ * @author Damien
+ *
+ */
 public class SourisProjetListener implements MouseListener {
 
 	private Entreprise entreprise;

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,8 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -25,12 +28,11 @@ import Fenetre.FenetreModal;
 import Fenetre.FenetrePrincipale;
 import GestionTicket.Ticket;
 import Model.Entreprise;
-import Ressource.Ressource;
 import SQL.JavaSQLTicket;
 
 /**
  * Affiche la liste des tache (ticket et optimisation)
- * Et affiche la liste des ticket ou la liste de propostion d'optimisation
+ * Et affiche la liste des ticket ou la liste de propostion d'optimisation du projet selectionner
  * @author Damien
  *
  */
@@ -43,9 +45,10 @@ public class PanelTache extends JPanel {
 	private Entreprise entreprise;
 	private Color couleurFond;
 	public final static int RIEN = -1, TICKET = 0, OPTIMISATION = 1;
-
 	private JButton boutonNouveauTicket;
-	
+	private ArrayList<Ticket> ticketTab, ticketRecuTab, ticketEnvTab;
+
+
 	
 	public PanelTache(Entreprise entreprise) {
 		this.entreprise = entreprise;
@@ -61,6 +64,10 @@ public class PanelTache extends JPanel {
 	}
 	
 	private void afficheInterface() {
+		ticketTab = ticketRecuTab = ticketEnvTab = new ArrayList<Ticket>();
+		
+
+		
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
 		GridBagConstraints gc = new GridBagConstraints();
@@ -71,12 +78,17 @@ public class PanelTache extends JPanel {
 
 		gc.weightx = 3;
 		
-		gc.weighty = 7;
+		gc.weighty = 2;
 
 		switch (entreprise.getAfficheTache()) {
-		case TICKET: afficheTicket(gc);
+		case TICKET: 
+			ticketRecuTab = entreprise.getListeTicketRecuDeUserSaufMemeReceveurEnvoyeurPasTransfert(entreprise.getUser().getId());
+			ticketEnvTab = entreprise.getListeTicketEnvoyeDeUserSaufMemeReceveurEnvoyeurPasTransfert(entreprise.getUser().getId());
+			affichePanelTicket(gc);
 		break;
-		case OPTIMISATION: afficheOptimisation(gc);
+		case OPTIMISATION: 
+			ticketRecuTab = entreprise.getListeTicketRecuDeUserDeEntreprise(entreprise.getUser().getId());
+			afficheOptimisation(gc);
 		break;
 
 		default:
@@ -91,13 +103,45 @@ public class PanelTache extends JPanel {
 		gc.gridy = 0;
 		gc.gridwidth = 1;
 		gc.gridheight= 1;
-		this.add(creerImageTache(TICKET), gc);
+		this.add(panelIcon(TICKET), gc);
 
-		gc.gridy = 6;
-		this.add(creerImageTache(OPTIMISATION), gc);
+		gc.gridy ++;
+		this.add(panelIcon(OPTIMISATION), gc);
 }
 	
-	private JLabel creerImageTache(int tache) {
+	private JPanel panelIcon(int tache) {
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new GridLayout(1,2,5,5));
+		p.add(creerIcon(tache));
+		int nbNotif = 0;
+		switch (tache) {
+		case TICKET:
+			for (int i=0; i<ticketRecuTab.size(); i++) {
+				if (ticketRecuTab.get(i).getStatut() == Ticket.NONVU) {
+					nbNotif ++;
+				}
+			}
+			break;
+
+		default:
+			break;
+		}
+		if (nbNotif > 0) {
+			JPanel panelNotif = new JPanel() ;
+			panelNotif.setBackground(PanelPrincipal.NOTIFICATION);
+			JLabel notif = new JLabel();
+			notif.setText(Integer.toString(nbNotif));
+			notif.setForeground(PanelPrincipal.BLANC);
+			notif.setFont(new Font("Arial", Font.BOLD, 15));
+			panelNotif.add(notif);
+			p.add(panelNotif);
+		}
+
+		return p;
+	}
+	
+	private JLabel creerIcon(int tache) {
 		int tacheSelectionner = entreprise.getAfficheTache();
 		ImageIcon ico = new ImageIcon();
 		switch (tache) {
@@ -142,84 +186,82 @@ public class PanelTache extends JPanel {
 	}
 
 
-	private void afficheTicket(GridBagConstraints gc) {
-		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
-		ArrayList<Ticket> ticketRecuTab = new ArrayList<Ticket>();
-		ArrayList<Ticket> ticketEnvTab = new ArrayList<Ticket>();
-
-
-		try {
-			ticketTab = JavaSQLTicket.affiche();
-
-			for (int i = 0; i < ticketTab.size(); i++) {
-					if (entreprise.getUser().getId() == ticketTab.get(i).getIdReceveur()) {
-						ticketRecuTab.add(ticketTab.get(i));
-					}
-					else if (entreprise.getUser().getId() == ticketTab.get(i).getIdEnvoyeur()) {
-						ticketEnvTab.add(ticketTab.get(i));
-
-					}
+	private void affichePanelTicket(GridBagConstraints gcPrincipale) {
+		gcPrincipale.fill = GridBagConstraints.BOTH;
+		gcPrincipale.gridx = 0;
+		gcPrincipale.gridy = 0;	
+		gcPrincipale.gridwidth = GridBagConstraints.RELATIVE;
+		gcPrincipale.gridheight = GridBagConstraints.REMAINDER;
 		
-		}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		gc.fill = GridBagConstraints.CENTER;
-		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
-		gc.insets = new Insets(0, 10, 0, 10);
+		
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		
+		p.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.insets = new Insets(10, 10, 10, 10);
+		gc.weightx = 1;
+		gc.weighty = 3;
+		
+
+		//ticket envoye
+		gc.fill = GridBagConstraints.BOTH;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.gridheight = 1;
 		gc.gridx = 0;
 		gc.gridy = 0;
+		p.add(afficheTitreEtList("Tickets re√ßus", ticketRecuTab),gc);
+
 		
 		//tickets recu
-		gc.gridheight = 1;
-		this.add(creerLabel("Ticket recus", true), gc);
-
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
 		gc.fill = GridBagConstraints.BOTH;
-		gc.gridy=1;
-		gc.gridheight = 2;
-		this.add(creerList(ticketRecuTab), gc);
-		
-		
-		//ticket envoyÈ
-		gc.fill = GridBagConstraints.CENTER;
-		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridheight = 1;
-		gc.gridy = 3;
-		this.add(creerLabel("Ticket envoyÈ", true), gc);
+		gc.gridx = 0;
+		gc.gridy ++;
+		p.add(afficheTitreEtList("Tickets envoy√©s", ticketEnvTab),gc);
 
-		gc.fill = GridBagConstraints.BOTH;
-		gc.gridy = 4;
-		gc.gridheight = 2;
-		this.add(creerList(ticketEnvTab), gc);
 		
 		//bouton nouveau ticket
-		gc.fill = GridBagConstraints.CENTER;
-		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
-		gc.gridy = 6;
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 		gc.gridheight = 1;
-		this.add(boutonNouveauTicket, gc);
+		gc.gridx = 0;
+		gc.gridy ++;
+		p.add(boutonNouveauTicket, gc);
 		
+		this.add(p, gcPrincipale);
 	}
 
-	private void afficheOptimisation (GridBagConstraints gc) {
-		gc.fill = GridBagConstraints.CENTER;
-		//gc.ipadx = gc.anchor = GridBagConstraints.HORIZONTAL;
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
-		gc.insets = new Insets(0, 10, 0, 10);
-		gc.gridx = 0;
-		gc.gridy = 0;
-		
-		//tickets recu
-		gc.gridheight = 1;
-		this.add(creerLabel("Proposition du systeme", true), gc);
+	private JPanel afficheTitreEtList(String titre, ArrayList<Ticket> liste) {
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new GridLayout(2,1,2,0));
+		p.add(creerLabel(titre, true));
+		p.add(creerList(liste));
 
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
-		gc.fill = GridBagConstraints.BOTH;
-		gc.gridy=1;
-		gc.gridheight = 2;
-		//this.add(creerList(ticketRecuTab), gc);
+		return p;
+	}
+	
+	private void afficheOptimisation (GridBagConstraints gcPrincipale) {
+		gcPrincipale.fill = GridBagConstraints.BOTH;
+		gcPrincipale.gridx = 0;
+		gcPrincipale.gridy = 0;	
+		gcPrincipale.gridwidth = GridBagConstraints.RELATIVE;
+		gcPrincipale.gridheight = GridBagConstraints.REMAINDER;
+		
+		
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+	
+		this.add(p, gcPrincipale);
+		
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+
+		//tickets recu
+		p.add(creerLabel("Proposition du syst√®me", true));
+		p.add(creerList(ticketRecuTab));
 		
 		
 	}
@@ -236,26 +278,6 @@ public class PanelTache extends JPanel {
 		return label;
 	}
 	
-	private JLabel creerLabelIco(ImageIcon icon, int tache) {
-		JLabel label = new JLabel(icon);
-		label.setBackground(Color.red);
-		label.addMouseListener(new MouseListener() {           
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				entreprise.setAfficheTache(tache);
- 			}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-    	});
-		return label;
-	}
-
 	private JScrollPane creerList(ArrayList<Ticket> lt) {
 		Ticket [] tt = new Ticket [lt.size()];
 		for (int i=0; i<tt.length; i++) {

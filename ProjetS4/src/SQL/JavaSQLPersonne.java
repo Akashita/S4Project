@@ -93,9 +93,7 @@ public final class JavaSQLPersonne extends JavaSQL{
 	public static void supprime(int numSalarie) throws SQLException{
 		try{
 			 Statement stmt = getCon().createStatement();
-			 String sql = "DELETE FROM Creneaux WHERE numSalarie ="+ numSalarie;
-			 stmt.executeUpdate(sql);					 
-			 sql = "DELETE FROM ParticipeSalarie WHERE numSalarie =" + numSalarie ;
+			 String sql = "DELETE FROM ParticipeSalarie WHERE numSalarie ="+ numSalarie;
 			 stmt.executeUpdate(sql);
 			 sql = "DELETE FROM Competence WHERE numSalarie =" + numSalarie ;
 			 stmt.executeUpdate(sql);

@@ -9,10 +9,13 @@ import javax.swing.JOptionPane;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
-import Model.Temps;
 import Ressource.Personne;
-import Ressource.Ressource;
 
+/**
+ * Affiche les information du projet et permet de les modifier
+ * @author Damien
+ *
+ */
 public class PanelModifierProjet extends PanelFenetre{
 	
 	/**
@@ -43,24 +46,24 @@ public class PanelModifierProjet extends PanelFenetre{
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
+		/* Le gridBagConstraints va dï¿½finir la position et la taille des ï¿½lï¿½ments */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert à  définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
+		/* le parametre fill sert ï¿½ dï¿½finir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
 		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
 		 */
 		gc.fill = GridBagConstraints.CENTER;
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
+		/* insets dï¿½finir la marge entre les composant new Insets(margeSupï¿½rieure, margeGauche, margeInfï¿½rieur, margeDroite) */
 		gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* ipady permet de savoir oà¹ on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
+		/* ipady permet de savoir oï¿½ on place le composant s'il n'occupe pas la totalitï¿½ de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
+		/* weightx dï¿½finit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx définit le nombre de cases en ordonnée */
+		/* weightx dï¿½finit le nombre de cases en ordonnï¿½e */
 		gc.weighty = 6;
 
 		gc.gridx = 0;
@@ -85,7 +88,7 @@ public class PanelModifierProjet extends PanelFenetre{
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
 		gc.gridy = 2;
-		this.add(creerTexte("Priorité"), gc);
+		this.add(creerTexte("PrioritÃ©"), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridwidth = 2;
 		gc.gridx = 1;
@@ -139,28 +142,28 @@ public class PanelModifierProjet extends PanelFenetre{
 					Personne chefDeProjet = (Personne) comboBoxRessource.getSelectedItem();
 					String nom = textFieldNom.getText();
 					int priorite = Integer.parseInt(textFieldPriorite.getText());
-					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
+					/*int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
 					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
-					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
-					LocalDate date =  Temps.creerLaDate(jour, mois, annee);
+					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());*/
+					LocalDate date =  calendrier1.getDate();
 					entreprise.modifierProjet(projet, nom, priorite, chefDeProjet, date);
 					fm.dispose();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veuillez Ã©crire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Veillez ecrire sa priorité", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veuillez Ã©crire sa prioritÃ©", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veuillez Ã©crire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 	
 	protected void supprimer() {
-		String texte = "<html> êtes-vous sur de vouloir supprimer ce projet ? <br> La suppression de ce projet supprimera tout son contenu. </html>";
+		String texte = "<html> Ãªtes-vous sur de vouloir supprimer ce projet ? <br> La suppression de ce projet supprimera tout son contenu. </html>";
 		int res = JOptionPane.showConfirmDialog(null, texte, "Attention", JOptionPane.YES_NO_OPTION);			
 		if (res == 0) { //0 = yes
 			entreprise.supprimerProjet(entreprise.getProjetSelectionner());

@@ -1,14 +1,11 @@
 package Model;
 import java.awt.Color;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 
-import javax.swing.JTextArea;
-
-import Ressource.Personne;
+import Ressource.Personne; 
 import Ressource.Ressource;
 
 public class Projet implements Comparable<Projet>{
@@ -16,10 +13,10 @@ public class Projet implements Comparable<Projet>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	private ArrayList<Activite> lActivite;//liste des activites (ordonnees par ordre)
-
+	private ArrayList<Activite> lActivite;
+ 
 	private String nom;
-	private float priorite; //Priorite du projet
+	private float priorite;
 	private int id;
 	private LocalDate deadline;
 	private Color couleur;
@@ -29,7 +26,7 @@ public class Projet implements Comparable<Projet>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Projet(ArrayList<Activite> Activite, Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
 		this.chefDeProjet = chefDeProjet;
-		this.lActivite =  Activite;   // liste des activité du projet (demander pas Dams)
+		this.lActivite =  Activite;
 		this.nom = nom;
 		this.priorite = priorite;
 		this.deadline = deadline;
@@ -166,12 +163,6 @@ public class Projet implements Comparable<Projet>{
 
 	}
 	
-	public void vider() {
-		for (int i = 0; i < lActivite.size(); i++) {
-			lActivite.get(i).vider();
-		}
-	}
-
 
 	/**
 	 * Enleve une activite du projet

@@ -18,6 +18,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import Model.CreneauHoraire;
+import Model.EDT;
 import Model.Temps;
 import Ressource.Ressource;
 
@@ -33,6 +34,7 @@ public class PanelEDTRessource extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Ressource ressource;
+	private EDT edtRessource;
 	private CreneauHoraire [][] tableauCreneau;
 	private int semaineSelectionner;
 	private int anneeSelectionner;
@@ -41,8 +43,9 @@ public class PanelEDTRessource extends JPanel{
 	
 
 
-	public PanelEDTRessource(Ressource resssource) {
+	public PanelEDTRessource(Ressource resssource, EDT edtRessource) {
 		this.ressource = resssource;
+		this.edtRessource = edtRessource;
 		couleurFond = PanelPrincipal.BLEU2;
 		this.setBackground(couleurFond);
 		semaineSelectionner = Temps.getSemaine();
@@ -53,7 +56,7 @@ public class PanelEDTRessource extends JPanel{
 
 
 	private void afficherEmploiDuTemps() {
-		tableauCreneau = ressource.getSemaineEDT(anneeSelectionner, semaineSelectionner);
+		tableauCreneau = edtRessource.getSemaineEDT(anneeSelectionner, semaineSelectionner);
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
@@ -271,11 +274,10 @@ public class PanelEDTRessource extends JPanel{
             String[] regex = creneau.getTitre().split("%", 2); 
 			label.setText("<html>"+regex[0]+"<br>"+regex[1]+"</html>");
 			*/
-			
-			label.setText("Activité n°"+creneau.getTitre());
+			label.setText(creneau.getTitre());
 			
 			label.setOpaque(true);
-			label.setBackground(creneau.getCouleurActivite());			
+			label.setBackground(creneau.getCouleur());			
 		}
 		else {
 			label.setText(" ");

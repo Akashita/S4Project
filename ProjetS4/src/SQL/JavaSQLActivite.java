@@ -57,7 +57,7 @@ public final class JavaSQLActivite extends JavaSQL{
 							 }
 						 }
 						 acttab.add(new Activite(res.getInt("idA"), res.getString("titre"), res.getFloat("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom));
-
+						 System.out.println("activité = " + res.getInt("idA") + "- "+ res.getString("titre") +"- "+ res.getFloat("charge") +"- "+ debut +"- "+  res.getInt("ordre") +"- "+ listeDom);
 					 }
 				 }
 			} catch(SQLException e){
@@ -69,7 +69,7 @@ public final class JavaSQLActivite extends JavaSQL{
 
 	public static void insertion(String titre, LocalDate debut, float charge, int ordre, int couleur, int idP, ArrayList<String> listeDom) throws SQLException{
 		Date debut1 = Date.valueOf(debut);
-		String sql = "INSERT INTO Activite(idA, titre, debut, charge, ordre, couleur, idP) VALUE(NULL, '" + titre + "' ,  '"+debut1+"' ,'"+charge+"' , '"+ordre+"' , '"+couleur+"' , '"+idP+"');";
+		String sql = "INSERT INTO Activite(titre, debut, charge, ordre, couleur, idP) VALUE('" + titre + "' ,  '"+debut1+"' ,'"+charge+"' , '"+ordre+"' , '"+couleur+"' , '"+idP+"');";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
@@ -78,8 +78,9 @@ public final class JavaSQLActivite extends JavaSQL{
 				 Statement stmt2 = getCon().createStatement();
 				 if (listeDom != null) {
 				 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+					 res2.next();
 					 for(int i = 0; i<listeDom.size(); i++) {
-						 JavaSQLListeDomaine.insertion(listeDom.get(i),res2.getInt("idA"));
+						 JavaSQLListeDomaine.insertion(listeDom.get(i),res2.getInt(1));
 					 }
 				 }
 				 }

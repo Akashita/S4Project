@@ -53,7 +53,7 @@ public class PanelInfoProjet extends JPanel{
 		//affiche information du projet
 		this.add(panelInfoProjet(), BorderLayout.NORTH);
 		
-		//affiche les activité
+		//affiche les activite
 		/*gc.fill = GridBagConstraints.BOTH;			
 		gc.gridx = 0;
 		gc.gridy ++;
@@ -72,7 +72,7 @@ public class PanelInfoProjet extends JPanel{
 		gc.fill = GridBagConstraints.CENTER;
 		gc.insets = new Insets(20, 5, 5, 5);
 		
-		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 
 		gc.weightx = 5;
 		
@@ -85,7 +85,7 @@ public class PanelInfoProjet extends JPanel{
 		String nom = projet.getChefDeProjet().getPrenom() + " " + projet.getChefDeProjet().getNom();
 		p.add(creerLabel("Chef de projet: "+ nom), gc);
 		gc.gridx = 1;
-		p.add(creerLabel("Priorite: "+(int)projet.getPriorite()), gc);
+		p.add(creerLabel("PrioritÃ©: "+(int)projet.getPriorite()), gc);
 		gc.gridx = 2;
 		
 		LocalDate deadline = projet.getDeadline();
@@ -102,7 +102,9 @@ public class PanelInfoProjet extends JPanel{
 			break;
 			case 2: type = Ressource.CALCULATEUR;
 			break;
-			}
+			}		
+			//gc.insets = new Insets(20, 100, 5, 20);
+			gc.fill = GridBagConstraints.HORIZONTAL;
 			gc.gridx = i+3;
 			gc.gridy = 0;
 			p.add(creerLabelInterfaceRessource(type), gc);
@@ -138,7 +140,7 @@ public class PanelInfoProjet extends JPanel{
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 		p.setBackground(couleurFond);
-		ArrayList<Activite> listeActivite = projet.getListe();
+		ArrayList<Activite> listeActivite = entreprise.getListeActiviteDuProjet(projet.getId());
 		int taille = 5 - listeActivite.size();
 		if (taille<0) {
 			taille = 0;

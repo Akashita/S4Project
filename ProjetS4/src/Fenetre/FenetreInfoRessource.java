@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JDialog;
 
+import Model.EDT;
 import Model.Entreprise;
 import Panel.PanelEDTRessource;
 import Panel.PanelInfoRessource;
@@ -21,8 +22,8 @@ public class FenetreInfoRessource extends JDialog{
 	private static final long serialVersionUID = 1L;
 	private Entreprise entreprise;
 	private Ressource ressource;
-
-	public FenetreInfoRessource(Entreprise entreprise, Ressource ressource, int typeDeLaRessource) {
+	
+	public FenetreInfoRessource(Entreprise entreprise, Ressource ressource) {
 		super(entreprise.getFenetrePrincipale(), "Information de la ressource");
 		this.entreprise = entreprise;
 		this.ressource = ressource;
@@ -35,14 +36,11 @@ public class FenetreInfoRessource extends JDialog{
 	}
 	
 
-
-
-
 	private void creationInterface() {
 		this.setLayout(new BorderLayout());
 		this.add(new PanelInfoRessource(this, entreprise, ressource), BorderLayout.NORTH);
-		this.add(new PanelEDTRessource(ressource), BorderLayout.CENTER);
-		//this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);
+		EDT edtR = entreprise.getEDTRessource(ressource.getType(), ressource.getId());
+		this.add(new PanelEDTRessource(ressource, edtR), BorderLayout.CENTER);
 		this.revalidate();
 
 	}

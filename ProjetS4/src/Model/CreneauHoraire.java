@@ -1,31 +1,40 @@
 package Model;
 
 import java.awt.Color;
+import java.time.LocalDate;
+
+import Panel.PanelPrincipal;
 
 public class CreneauHoraire {
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	public static final int CONGE = 0, REUNION = 1, TRAVAIL = 2;
+	
 	private String titre;
 	private int debut;
-	private int fin;
 	private int position;
-	private Color couleurActivite;
+	private Color couleur;
 	private Activite activite;
+	private int type;
+	private LocalDate date;
+	private int id;
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	public CreneauHoraire(Activite activite, int debut, Color couleurActivite) {
+	public CreneauHoraire(Activite activite, int debut, LocalDate date, int type, String titre, Color couleur, int id) { //Par d�fault un cr�neau horaire est de type "TRAVAIL"
 		this.activite = activite;
-		titre = "" + activite.getId(); //TODO A CHANGER (avec le nom du projet et le nom de l'activité)
 		this.debut = debut;
-		fin = debut + 1; //On calcul la fin du creneau
-		this.couleurActivite = couleurActivite;
-		
-		
-		//On cherche la position du creneau dans une journe (les creneaux sont tous les uns apres mes autres)
+		this.type = type;
+		this.titre = titre;
+		this.couleur = couleur;
+		this.date = date;
+		this.id = id;
+
+		//On cherche la position du creneau dans une journee (les creneaux sont tous les uns apres mes autres)
 		int i = Entreprise.HEURE_DEBUT_MATIN;
 		int pos = 0;
 		boolean posTrouve = false;
@@ -40,11 +49,56 @@ public class CreneauHoraire {
 			}
 			pos++;
 			i++;
-		}
-		
-		
+		}	
 	}
 	
+	public CreneauHoraire(String titre, Activite activite, int debut, Color couleur) {
+		this(activite, debut, null, TRAVAIL, titre, couleur, 0);
+	}
+	
+	public CreneauHoraire(Activite activite, int debut, LocalDate date, int type, String titre, int id) {
+		this(activite, debut, date, -1, titre, null, id);
+		if(type == CONGE) {
+			this.titre = "Conge";
+			this.couleur = Color.RED;
+		} else if(type == REUNION) {
+			this.titre = "Reunion";
+			this.couleur = Color.ORANGE;
+		}
+	}
+	
+	/**
+	 * Genere un conge pour une personne
+	 * @param date du conge
+	 */
+	public CreneauHoraire(LocalDate date) {
+		this(null, 8, date, CONGE, "CONGE", PanelPrincipal.CONGE, 0);
+	}
+
+	/**
+	 * Genere un conge pour une personne via la bdd
+	 * @param date du conge
+	 */
+	public CreneauHoraire(LocalDate date, int id) {
+		this(null, 8, date, CONGE, "CONGE", PanelPrincipal.CONGE, id);
+	}
+
+	/**
+	 * Genere une reunion pour une personne
+	 * @param date de la reunion
+	 */
+	public CreneauHoraire(LocalDate date, int debut, String titre) {
+		this(null, debut, date, REUNION, titre, PanelPrincipal.REUNION, 0);
+	}
+
+	/**
+	 * Genere une reunion pour une personne
+	 * @param date de la reunion
+	 */
+	public CreneauHoraire(LocalDate date, int debut, String titre, int id) {
+		this(null, debut, date, REUNION, titre, PanelPrincipal.REUNION, id);
+	}
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
@@ -66,39 +120,57 @@ public class CreneauHoraire {
 		return debut;
 	}
 	
-	public int getFin() {
-		return fin;
+	public int getType() {
+		return type;
+	}
+	
+	public LocalDate getDate() {
+		return date;
 	}
 	
 
-	public Color getCouleurActivite() {
-		return couleurActivite;
+	public Color getCouleur() {
+		return couleur;
 	}
 
-	//--------------------------------------------------------------------------------->>>>> Comparaison	
-	public boolean estAvant(CreneauHoraire horaire) {
-		return fin <= horaire.debut;
-	}
-	
-	public boolean estApres(CreneauHoraire horaire) {;
-		return debut >= horaire.fin;
+	public int getId() {
+		return id;
 	}
 	
 	@Override
-	public boolean equals(Object obj) { //test si deux CreneauHoraire sont egaux (meme debuts)
+	public boolean equals(Object obj) {
 		if(obj instanceof CreneauHoraire && obj != null) {
 			CreneauHoraire res = (CreneauHoraire)obj;
-			return debut == res.debut;
+			boolean ret = false;
+			switch (res.getType()) {
+			case CONGE:
+				ret = (date.equals(res.getDate()));
+				break;
+			case REUNION:
+				ret = (debut == res.getDebut()) && (date.equals(res.getDate()));
+				break;
+			case TRAVAIL:
+				ret = debut == res.getDebut();
+				break;
+
+			default:
+				break;
+			}
+			return ret;
 		} else {
 			return false;
 		}
-		
 	}
 	
 	//--------------------------------------------------------------------------------->>>>> toString
 	@Override 
 	public String toString() {
-		return "Cr" + debut;
+		if (type == REUNION) {
+			return titre+" - "+Temps.dateToString(date);
+		}
+		else {
+			return Temps.dateToString(date);
+		}
 	}
 
 }

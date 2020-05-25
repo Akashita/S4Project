@@ -9,24 +9,27 @@ import javax.swing.JPanel;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
+import Model.Temps;
 
 /**
- * Affiche la liste de domaine de l'entreprise 
- * permet d'ajouter ou de supprimer des domaines
+ * Affiche la liste des reunions de l'activite
+ * permet d'ajouter ou de supprimer des reunions
  * @author Damien
  *
  */
-public class PanelDomaine extends PanelFenetre{
+public class PanelReunion extends PanelFenetre{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-
-	public PanelDomaine(Entreprise entreprise, FenetreModal fm) {
+	private int idActivite;
+	
+	public PanelReunion(Entreprise entreprise, FenetreModal fm, int idActivite) {
 		super(entreprise, fm);
-		initialiseDomaine(this);
+		this.idActivite = idActivite;
+		initialiseReunion(this, idActivite);
+		initialiseCalendrier(Temps.getAujourdhui(), this);
 		creerInterface();
 	}
 	
@@ -43,7 +46,7 @@ public class PanelDomaine extends PanelFenetre{
 		
 		gc.fill = GridBagConstraints.CENTER;
 		
-		gc.insets = new Insets(5, 5, 5, 5);
+		gc.insets = new Insets(1, 5, 1, 5);
 		
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
@@ -51,22 +54,19 @@ public class PanelDomaine extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(creerTitre("Domaines existants"), gc);
+		this.add(creerTitre("Réunions existantes"), gc);
 		
 		gc.fill = GridBagConstraints.BOTH;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridheight = GridBagConstraints.RELATIVE;
 		gc.gridy ++;
-		this.add(afficheListeDomaine(this), gc);
-		
-		gc.fill = GridBagConstraints.CENTER;
-		gc.gridwidth = 1;
-		gc.gridheight = 1;
-		gc.gridy ++;
-
+		this.add(afficheListeReunion(this, idActivite), gc);
+				
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		gc.gridx = 2;
+		gc.gridheight = GridBagConstraints.REMAINDER;
+		gc.gridy ++;
 		this.add(panelBouton(), gc);
 
 	}
@@ -75,8 +75,8 @@ public class PanelDomaine extends PanelFenetre{
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		p.setBackground(couleurFond);
-		p.add(textFieldNom);
-		p.add(boutonAjoutDomaine);
+		p.add(panelCalendrierAvecHeure(calendrier1));
+		p.add(boutonAjoutConge);
 		p.add(creerBoutonFin(this, "Terminer"));
 		return p;
 	}

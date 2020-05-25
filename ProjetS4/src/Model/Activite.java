@@ -1,12 +1,9 @@
 package Model;
 
 import java.awt.Color;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.swing.JTextArea;
 
 import Ressource.Ressource;
 
@@ -24,17 +21,17 @@ public class Activite implements Comparable<Activite>{
 	private int ordre;
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	private ArrayList<String> listeDomaine;
-	
-	private boolean afficheEDT = false; //pour le graphique
-	private boolean changeSens = false; //pour le graphique
+
+	private boolean changeSens = false; 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Activite(int id, String titre, float chargeJH, LocalDate debut, Color couleur, int ordre, ArrayList<String> listeDomaine) {
 		this.id = id;
 		this.titre = titre;
-		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
+		this.chargeJHomme = chargeJH;
 		this.chargeHeure = (int)(chargeJH * Entreprise.NB_HEURE_JOUR);
+		this.ordre = ordre;
 		this.debut = debut;
 		this.couleur = couleur;
 		this.listeDomaine = listeDomaine;
@@ -82,21 +79,15 @@ public class Activite implements Comparable<Activite>{
 		return couleur;
 	}
 
-	public boolean getAfficheEDT() {
-		return afficheEDT;
-	}
 
 	public boolean getChangeSens() {
 		return changeSens;
 	}
 
+
 	public int getOrdre() {
 		return ordre;
 	}
-
-	public boolean hasRessource() {
-		return lRessources.size() != 0;
- 	}
 	
 	public ArrayList<String> getListeDomaine(){
 		return listeDomaine;
@@ -129,21 +120,12 @@ public class Activite implements Comparable<Activite>{
 		this.debut = debut;
 	}
 
-	public void afficheEDT() {
-		if (afficheEDT) {
-			afficheEDT = false;
-		}
-		else {
-			if (getListeRessourceType(Ressource.PERSONNE).size()>0) {
-				afficheEDT = true;
-			}
-		}
-	}
 
 	public void setChangeSens(boolean b) {
 		changeSens = b;
 	}
-	
+
+
 	public void supprimerToutesRessources() {
 		lRessources.clear();
 	}
@@ -184,70 +166,11 @@ public class Activite implements Comparable<Activite>{
 	public String toString() {
 		//String res = "Activite " + ordre;
 		String res = titre;
-		
 		return res;
 	}
 
 
 	//--------------------------------------------------------------------------------->>>>> Gestion de l'EDT
-
-	/**
-	 * Dit si un creneau est dispo pour toutes lRessources associees
-	 * @param date   La date du creneau
-	 * @param heure  L'heure du creneau
-	 * @return vrai si le creneau est dispo pour toutes les lRessources associees
-	 */
-	public boolean creneauDispo(int type, LocalDate date, int heure){
-		Boolean dispo = true;
-		for (int i = 0; i < lRessources.size(); i++) {
-			if(lRessources.get(i).getType() == type) {
-				if(!lRessources.get(i).creneauDispo(date, heure)) {
-					dispo = false;
-				}
-			}
-			
-		}
-		return dispo;
-	}
-
-
-	/**
-	 * Ajoute un creneau a toutes les lRessources associees
-	 * @param cr   	Le creneau a ajouter
-	 * @param jour 	Le jour auquel ajouter le creneau
-	 */
-	public void ajouterCreneau(int type, CreneauHoraire cr, LocalDate jour) {
-		for (int i = 0; i < lRessources.size(); i++) {
-			if(lRessources.get(i).getType() == type) {
-				lRessources.get(i).ajouterCreneau(cr, jour);
-			}
-		}
-	}
-
-
-	/**
-	 * Supprime une ressource de l'activite
-	 * @param id  L'ID de la ressource
-	 * @return true si la ressource a ete supprimee
-	 */
-	/*public boolean enleverRessource(int id) {
-		return lRessources.remove(new Ressource(id));
-	}*/
-
-
-	/**
-	 * Ajouter une ressource a l'activite
-	 * @param ressource  La ressource
-	 * @return true si la ressource a ete ajoutee
-	 */
-	/*public boolean ajouterRessource(Ressource ressource) {
-		if(!lRessources.contains(ressource)) {
-			lRessources.add(ressource);
-			return true;
-		} else {
-			return false;
-		}
-	}*/
 
 
 	/**
@@ -274,12 +197,6 @@ public class Activite implements Comparable<Activite>{
 		}
 
 		return res;
-	}
-
-	public void vider() {
-		for (int i = 0; i < lRessources.size(); i++) {
-			lRessources.get(i).vider();
-		}
 	}
 
 

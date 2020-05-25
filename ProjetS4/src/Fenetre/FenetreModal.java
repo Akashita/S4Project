@@ -11,11 +11,13 @@ import Panel_Fenetre.PanelAjouterRessource;
 import Panel_Fenetre.PanelEnleverRessource;
 import Panel_Fenetre.PanelModifierActivite;
 import Panel_Fenetre.PanelModifierProjet;
+import Panel_Fenetre.PanelConge;
 import Panel_Fenetre.PanelDomaine;
 import Panel_Fenetre.PanelNouveauProjet;
 import Panel_Fenetre.PanelNouveauTicket;
 import Panel_Fenetre.PanelNouvelleActivite;
 import Panel_Fenetre.PanelNouvelleRessource;
+import Panel_Fenetre.PanelReunion;
 
 
 /**
@@ -38,12 +40,13 @@ public class FenetreModal extends JDialog{
 	private String titre;
     protected Color couleurFond = PanelPrincipal.BLEU2;
     protected int largeur, hauteur;
+    private int id;
 
-
-	public FenetreModal(Entreprise entreprise, int choix) {
+	public FenetreModal(Entreprise entreprise, int choix, int id) {
 		super(entreprise.getFenetrePrincipale(), true);
 		this.entreprise = entreprise;
-		
+		this.id = id;
+
 		getPanelFenetre(choix);
 		
 		this.setTitle(titre);
@@ -57,6 +60,16 @@ public class FenetreModal extends JDialog{
 		this.setResizable(false);
 		this.setVisible(true);
 
+	}
+	
+	/**
+	 * 
+	 * @param entreprise
+	 * @param choix
+	 * @param id d'une personne ou d'une activite en fonction du choix
+	 */
+	public FenetreModal(Entreprise entreprise, int choix) {
+		this(entreprise, choix, -1);
 	}
 	
 	private void getPanelFenetre(int choix) {
@@ -73,17 +86,25 @@ public class FenetreModal extends JDialog{
 			panelInterface = new PanelNouvelleActivite(entreprise, this);
 			break;
 		case FenetrePrincipale.NouvelleRessource:
-			titre = "Creation ressource";
+			titre = "Création ressource";
 			panelInterface = new PanelNouvelleRessource(entreprise, this);
 			break;
+		case FenetrePrincipale.NouveauConge:
+			titre = "Ajouter congé";
+			panelInterface = new PanelConge(entreprise, this, id);
+			break;
+		case FenetrePrincipale.NouvelleReunion:
+			titre = "Ajouter réunion";
+			panelInterface = new PanelReunion(entreprise, this, id);
+			break;
 		case FenetrePrincipale.NouveauDomaine:
-			titre = "Creation domaine";
+			titre = "Création domaine";
 			panelInterface = new PanelDomaine(entreprise, this);
 			largeur = 400;
 			hauteur = 300;
 			break;
 		case FenetrePrincipale.NouveauTicket:
-			titre = "Creation ticket";
+			titre = "Création ticket";
 			largeur = 400;
 			hauteur = 600;
 			panelInterface = new PanelNouveauTicket(entreprise, this);
@@ -95,7 +116,7 @@ public class FenetreModal extends JDialog{
 			panelInterface = new PanelModifierProjet(entreprise, this);
 			break;
 		case FenetrePrincipale.ModifierActivite:
-			titre = "Modifier activit�";
+			titre = "Modifier activité";
 			panelInterface = new PanelModifierActivite(entreprise, this);
 			break;
 			
