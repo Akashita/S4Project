@@ -593,8 +593,22 @@ public class Entreprise extends Observable{
 	 * @param act activite concernée
 	 * @return La fin d'une activité
 	 */
-	public static LocalDate getLocalDateFinDunProjet(Projet p) {
+	public LocalDate getLocalDateFinDunProjet(Projet p) {
+		ArrayList<Activite> listeActivite = getListeActiviteDuProjet(p.getId());
+		LocalDate derniereDate = null;
+		LocalDate dateTMP;
+		for (Activite activite : listeActivite) {
+			dateTMP = getLocalDateFinDuneActivite(getEDTActivite(activite), activite);
+			if(derniereDate == null && dateTMP != null) {
+				derniereDate = dateTMP;
+			} else if(dateTMP != null && derniereDate != null) {
+				if(derniereDate.isBefore(dateTMP)) {
+					derniereDate = dateTMP;
+				}
+			}
+		}
 		
+		return derniereDate;
 	}
 
 	/**
@@ -605,7 +619,20 @@ public class Entreprise extends Observable{
 		listeEDT.put(ident, new EDT(ident));
 	}
 
-
+	/**
+	 * Renvoie l'EDT des ressources présentes dans l'activitée passée en paramètre (pour le graphique)
+	 * @param L'activite
+	 * @return La liste d'EDT de l'act
+	 */
+	public ArrayList<EDT> getEDTActivite(Activite act){
+		ArrayList<Ressource> res = getListePersonnedeActiviteParId(act.getId());
+		ArrayList<EDT> ret = new ArrayList<EDT>();
+		for (Ressource ressource : res) {
+			ret.add(getEDTRessource(ressource.getType(), ressource.getId()));
+		}
+		return ret;
+	}
+	
 	/**
 	 * Renvoie l'EDT de la ressource dont les identifiants ont été passés en paramètre (pour le graphique)
 	 * @param Identifiants de la ressource
