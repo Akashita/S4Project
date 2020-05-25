@@ -4,8 +4,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import GestionTicket.Ticket;
 import SQL.JavaSQLProjet;
 import SQL.JavaSQLRecherche;
+import SQL.JavaSQLTicket;
 
 public class Optimisation {
 
@@ -42,4 +44,19 @@ public class Optimisation {
 		}
 		return prioriteCour;
 	}
+	
+	public static void envoiMessageSiDepasseDeadLine(Projet projet) {
+		LocalDate fin = Entreprise.getLocalDateFinDunProjet(projet);
+		if (Temps.dateUnEstSuperieurDateDeux(fin, projet.getDeadline())) {
+			try {
+				JavaSQLTicket.insertion(Ticket.MESSAGE, "deadLine dépassé", "Vous dépassez la deadLine", 1, projet.getChefDeProjet().getId(), null, null, null, null);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		}
+	}
+	
+	
+	
+	
 }
