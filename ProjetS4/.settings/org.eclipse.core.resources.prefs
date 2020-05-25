@@ -1,5 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/DebugFenetre/NavigationListener.java=US-ASCII
-encoding//src/GestionTicket/Ticket.java=US-ASCII
+encoding//src/GestionTicket/Ticket.java=UTF-8
+encoding//src/Model/EDT.java=UTF-8
 encoding//src/Model/Entreprise.java=UTF-8
 encoding//src/Ressource/Personne.java=UTF-8
+encoding/<project>=UTF-8

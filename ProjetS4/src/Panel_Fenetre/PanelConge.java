@@ -9,24 +9,27 @@ import javax.swing.JPanel;
 
 import Fenetre.FenetreModal;
 import Model.Entreprise;
+import Model.Temps;
 
 /**
- * Affiche la liste de domaine de l'entreprise 
- * permet d'ajouter ou de supprimer des domaines
+ * Affiche la liste des conge de la personne 
+ * permet d'ajouter ou de supprimer de la personne 
  * @author Damien
  *
  */
-public class PanelDomaine extends PanelFenetre{
+public class PanelConge extends PanelFenetre{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-
-	public PanelDomaine(Entreprise entreprise, FenetreModal fm) {
+	private int idPersonne;
+	
+	public PanelConge(Entreprise entreprise, FenetreModal fm, int idPersonne) {
 		super(entreprise, fm);
-		initialiseDomaine(this);
+		this.idPersonne = idPersonne;
+		initialiseConge(this, idPersonne);
+		initialiseCalendrier(Temps.getAujourdhui(), this);
 		creerInterface();
 	}
 	
@@ -51,12 +54,12 @@ public class PanelDomaine extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = GridBagConstraints.REMAINDER;
-		this.add(creerTitre("Domaines existants"), gc);
+		this.add(creerTitre("Congés existants"), gc);
 		
 		gc.fill = GridBagConstraints.BOTH;
 		gc.gridheight = GridBagConstraints.RELATIVE;
 		gc.gridy ++;
-		this.add(afficheListeDomaine(this), gc);
+		this.add(afficheListeConge(this, idPersonne), gc);
 		
 		gc.fill = GridBagConstraints.CENTER;
 		gc.gridwidth = 1;
@@ -75,8 +78,8 @@ public class PanelDomaine extends PanelFenetre{
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		p.setBackground(couleurFond);
-		p.add(textFieldNom);
-		p.add(boutonAjoutDomaine);
+		p.add(panelCalendrier(calendrier1));
+		p.add(boutonAjoutConge);
 		p.add(creerBoutonFin(this, "Terminer"));
 		return p;
 	}

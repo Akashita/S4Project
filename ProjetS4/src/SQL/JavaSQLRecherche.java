@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import GestionTicket.Ticket;
 import Model.Activite;
+import Model.CreneauHoraire;
 import Model.Projet;
 import Ressource.Calculateur;
 import Ressource.Competence;
@@ -18,7 +19,7 @@ import Ressource.Salle;
 
 public final class JavaSQLRecherche extends JavaSQL{
 ///////////////////////////////////////////////////////////////////////////////////ACTIVITE////////////////////////////////////////////////////////////////////////////	
-	public static ArrayList<Activite> recupereActivite() throws SQLException{
+	public static ArrayList<Activite> recupereListeActivite() throws SQLException{
 		ArrayList<Activite> actTab = new ArrayList<Activite>();
 		ArrayList<String> listeDom = new ArrayList<String>();
 		String sql = "SELECT * FROM Activite;";
@@ -61,13 +62,42 @@ public final class JavaSQLRecherche extends JavaSQL{
 							 }
 						 }
 						 	activite = new Activite(res.getInt("idA"), res.getString("titre"), res.getFloat("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom);
-
 					 }
 				 }
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
 			return activite;
+
+	}
+	
+	
+	public static ArrayList<Activite> recupereListeActiviteParIdProjet(int idP) throws SQLException{
+		ArrayList<Activite> actTab = new ArrayList<Activite>();
+		ArrayList<String> listeDom = new ArrayList<String>();
+		Activite activite = null;
+		String sql = "SELECT * FROM Activite WHERE idP = '"+ idP + "';";
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 LocalDate debut = res.getDate("debut").toLocalDate();
+						 String sql2 = "SELECT tag FROM ListeDomaine WHERE idA = " + res.getInt("idA") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+							 while(res2.next()) {
+								 listeDom.add(res2.getString("tag"));
+							 }
+						 }
+						 	activite = new Activite(res.getInt("idA"), res.getString("titre"), res.getFloat("charge"), debut, new Color(res.getInt("couleur")), res.getInt("ordre"),listeDom);
+						 	actTab.add(activite);
+
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return actTab;
 
 	}
 	
@@ -190,11 +220,11 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	public static Boolean presenceActivitePersonne(Personne salarie, int idA) throws SQLException{
 		Boolean presence = false;
-		String sql = "SELECT idA FROM ParticipeSalarie WHERE numero = '"+ salarie.getId() + "';";
+		String sql = "SELECT idA FROM ParticipeSalarie WHERE numSalarie = '"+ salarie.getId() + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
-					 while(res.next() || presence == false) {
+					 while(res.next() && presence == false) {
 						 if (res.getInt("idA") == idA) {
 						 presence = true;	
 						 }
@@ -213,9 +243,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 if (res.getInt("numSalarie") == numSalarie) {
 						 presence = true;	
-						 }
+						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -230,10 +259,10 @@ public final class JavaSQLRecherche extends JavaSQL{
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
-					 while(res.next() || presence == false) {
+					 while(res.next() && presence == false) {
 						 if (res.getInt("idA") == idA) {
-						 presence = true;	
-						 }
+							 presence = true;	
+							 }						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -249,9 +278,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next() ) {
-						 if (res.getInt("numero") == numero) {
 						 presence = true;	
-						 }
+						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -262,14 +290,14 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	public static Boolean presenceActiviteCalculateur(Calculateur calculateur, int idA) throws SQLException {
 		Boolean presence = false;
-		String sql = "SELECT idA FROM ParticipeCalcul WHERE numero = '"+ calculateur.getId() + "';";
+		String sql = "SELECT idA FROM ParticipeCalcul WHERE code = '"+ calculateur.getId() + "';";
 			try{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
-					 while(res.next() || presence == false) {
+					 while(res.next() && presence == false) {
 						 if (res.getInt("idA") == idA) {
-						 presence = true;	
-						 }
+							 presence = true;	
+							 }						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -285,9 +313,8 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next() ) {
-						 if (res.getInt("code") == code) {
 						 presence = true;	
-						 }
+						 
 						 }
 				 }
 			} catch(SQLException e){
@@ -309,6 +336,67 @@ public final class JavaSQLRecherche extends JavaSQL{
 		ArrayList<Projet> protab = new ArrayList<Projet>();
 		ArrayList<String> listeDom = new ArrayList<String>();
 		String sql = "SELECT * FROM Projet WHERE numSalarie = '" + idUser + "';";
+		Personne personne;
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 String sql2 = "SELECT * FROM Personne WHERE numSalarie = " + res.getString("numSalarie") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sql2)){
+							 ArrayList<Competence> tagtab = new ArrayList<Competence>();
+							 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
+							 Statement stmt3 = getCon().createStatement();
+							 try (ResultSet res3 = stmt3.executeQuery(sqltag)){
+								 while(res3.next()) {
+									 tagtab.add(new Competence(res3.getString("tag"), res3.getInt("niveau")));
+								 }
+							 } 
+							 res2.next();
+							 personne  = new Personne(res2.getString("nom"), res2.getString("prenom"), res2.getString("role"), res2.getInt("numSalarie"), res2.getString("motDePasse"), tagtab);
+						 }
+						 
+						 
+						 ArrayList<Activite> acttab = new ArrayList<Activite>();
+						 String sql5 = "SELECT * FROM Activite WHERE idP = "  + res.getInt("idP") +";";
+								try{
+									 Statement stmt5 = getCon().createStatement();
+									 try (ResultSet res5 = stmt5.executeQuery(sql5)){
+										 while(res5.next()) {
+											 String sql6 = "SELECT tag FROM ListeDomaine WHERE idA = " + res5.getInt("idA") + ";";
+											 Statement stmt6 = getCon().createStatement();
+											 try (ResultSet res6 = stmt6.executeQuery(sql6)){
+												 while(res6.next()) {
+													 listeDom.add(res6.getString("tag"));
+												 }
+											 }
+											 LocalDate debut = res5.getDate("debut").toLocalDate();
+											 acttab.add(new Activite(res5.getInt("idA"), res5.getString("titre"), res5.getFloat("charge"), debut, 
+													 new Color(res5.getInt("couleur")), res5.getInt("ordre"),listeDom));
+										 }
+									 }
+								} catch(SQLException e){
+									e.printStackTrace();
+								}
+						 LocalDate deadl = res.getDate("deadline").toLocalDate();
+						 protab.add(new Projet(acttab,personne, res.getString("nom"), res.getFloat("priorite"), deadl, res.getInt("idP"), 
+								 new Color(res.getInt("couleur"))));
+						 
+						
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return protab;
+
+	}
+	
+	
+	public static ArrayList<Projet> recupereListeProjetTrieParPriorite() throws SQLException{
+		ArrayList<Projet> protab = new ArrayList<Projet>();
+		ArrayList<String> listeDom = new ArrayList<String>();
+		String sql = "SELECT * FROM Projet ORDER BY priorite;";
 		Personne personne;
 			try{
 				 Statement stmt = getCon().createStatement();
@@ -573,7 +661,46 @@ public final class JavaSQLRecherche extends JavaSQL{
 	
 	
 ///////////////////////////////////////////////////////////////////////////////////TICKET////////////////////////////////////////////////////////////////////////////	
+	public static Ticket recupereTicketParId(int idT) throws SQLException {
+		String sql = "SELECT * FROM Ticket WHERE idT = '" + idT + "';";
+		Ticket ticketCour = null;
+		try{
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
+					
+						 ticketCour = new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"),
+								 res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") );
 
+					 
+				}	
+			 }
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return ticketCour;
+	}
+	
+	public static String recupereModifTicketParId(int idT) throws SQLException {
+		String sql = "SELECT modif FROM Ticket WHERE idT = '" + idT + "';";
+		String stringCour = null;
+		try{
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {					
+						 stringCour = res.getString("modif");
+
+					 
+				}	
+			 }
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return stringCour;
+	}
+	
+	
 	public static ArrayList<Ticket> recupereTicketEnvUser(int idUser) throws SQLException{
 		String sql = "SELECT * FROM Ticket WHERE numSalarieEnv = '" + idUser + "';";
 		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
@@ -586,6 +713,29 @@ public final class JavaSQLRecherche extends JavaSQL{
 						
 							 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") ));
  
+						 
+					}	
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return ticketTab;
+	}
+	
+	
+	
+	public static ArrayList<Ticket> recupereTicketEnvUserSaufMemeReceveurEnvoyeurPasTransfert(int idUser) throws SQLException{
+		String sql = "SELECT * FROM Ticket WHERE numSalarieEnv = '" + idUser + "';";
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
+						if (res.getInt("numSalarieEnv") !=  res.getInt("numSalarieRec") && res.getInt("statut") != Ticket.TRANSFERT ) {
+							 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") ));
+						}
 						 
 					}	
 				 }
@@ -617,7 +767,50 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 	
 	
+	public static ArrayList<Ticket> recupereTicketRecUserSaufMemeReceveurEnvoyeurPasTransfert(int idUser) throws SQLException{
+		String sql = "SELECT * FROM Ticket WHERE numSalarieRec = '" + idUser + "';";
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
+							if (res.getInt("numSalarieEnv") !=  res.getInt("numSalarieRec")  && res.getInt("statut") != Ticket.TRANSFERT ) {
+
+							 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") ));
+							}
+						 
+					}	
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return ticketTab;
+	}
 	
+	
+	public static  ArrayList<Ticket> recupereListeTicketRecuDeUserDeEntreprise(int numSalarie) throws SQLException{
+		String sql = "SELECT * FROM Ticket WHERE numSalarieRec = '" + numSalarie + "' AND numSalarieEnv = '" + 1+ "';";
+		ArrayList<Ticket> ticketTab = new ArrayList<Ticket>();
+
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 LocalDate dateTicket = res.getDate("dateTicket").toLocalDate();
+							if (res.getInt("numSalarieEnv") !=  res.getInt("numSalarieRec")  && res.getInt("statut") != Ticket.TRANSFERT ) {
+
+							 ticketTab.add(new Ticket(res.getInt("idT"), res.getString("sujet"), res.getString("message"), res.getString("modif"),dateTicket ,res.getInt("statut") , res.getInt("numSalarieEnv"), res.getInt("numSalarieRec") ));
+							}
+						 
+					}	
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return ticketTab;
+	}
 ///////////////////////////////////////////////////////////////////////////////////PERSONNE////////////////////////////////////////////////////////////////////////////	
 
 	public static Ressource recuperePersonneParId(int numSalarie) throws SQLException{
@@ -682,7 +875,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 Ressource ressource= recupereSalleParId(res.getInt("numSalarie"));
+						 Ressource ressource= recuperePersonneParId(res.getInt("numSalarie"));
 						 liste.add( ressource);
 					 }
 				 }
@@ -692,6 +885,58 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return liste;
 
 	}
+	
+	
+	public static ArrayList<Ressource> recupereListePersonneParTag(String tag) throws SQLException{
+		String sql = "SELECT numSalarie FROM Competence WHERE tag = '" + tag + "';";
+		ArrayList<Ressource> personneTab= new ArrayList<Ressource>();
+
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 personneTab.add(recuperePersonneParId(res.getInt("numSalarie")));
+
+						 //System.out.println("numSalarie = " + res.getString("numSalarie") + ", tag = " + res.getString("tag") + ", niveau = " + res.getString("niveau"));
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return personneTab;
+
+	}
+	
+	public static ArrayList<Ressource> recupereListePersonneParOrdreAlphabetique() throws SQLException{
+		String sql = "SELECT * FROM Personne ORDER BY nom;";
+		ArrayList<Ressource> personnetab = new ArrayList<Ressource>();
+
+			try{
+				 Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+						 ArrayList<Competence> tagtab = new ArrayList<Competence>();
+						 String sqltag = "SELECT * FROM Competence WHERE numSalarie = " + res.getString("numSalarie") + ";";
+						 Statement stmt2 = getCon().createStatement();
+						 try (ResultSet res2 = stmt2.executeQuery(sqltag)){
+							 while(res2.next()) {
+								 tagtab.add(new Competence(res2.getString("tag"), res2.getInt("niveau")));
+							 }
+						 }
+						 personnetab.add(new Personne(res.getString("nom"), res.getString("prenom"), res.getString("role"), res.getInt("numSalarie"), res.getString("motDePasse"), tagtab));
+						 
+						 
+						
+					 }
+				 }
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			return personnetab;
+
+	}
+	
+	
 	
 	public static  Ressource recupereChefDeProjetParIdProjet(int idP) throws SQLException{
 		Ressource chef = null;
@@ -768,8 +1013,25 @@ public final class JavaSQLRecherche extends JavaSQL{
 		}
 		return chefListe;
 	}
-	
-	
+/////////////////////////////////////////////////////////////////////////////////////PRESENCE//////////////////////////////////////////////////////////////////////////	
+	public static Boolean presenceDansUnProjetPersonne(int numSalarie) throws SQLException {
+		Boolean b = false;
+		ArrayList<Projet> projetRessource;
+		try {
+			projetRessource = recupereProjetParIdPersonne(numSalarie);if (projetRessource == null) {
+				b = true;
+			}
+			else if (projetRessource.isEmpty()) {
+				b = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return b;
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////SALLE////////////////////////////////////////////////////////////////////////////	
 
@@ -827,7 +1089,27 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return liste;
 
 	}
-	
+/////////////////////////////////////////////////////////////////////////////////////PRESENCE//////////////////////////////////////////////////////////////////////////	
+	public static Boolean presenceDansUnProjetSalle(int numero) throws SQLException {
+		Boolean b = false;
+		ArrayList<Projet> projetRessource;
+		try {
+			projetRessource = recupereProjetParIdSalle(numero);
+			if (projetRessource == null) {
+				b = true;
+			}
+			else if (projetRessource.isEmpty()) {
+				b = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return b;
+	}
+
 ///////////////////////////////////////////////////////////////////////////////////CALCULATEUR////////////////////////////////////////////////////////////////////////////	
 
 	public static Ressource recupereCalculateurParId(int idCalculateur	) throws SQLException{
@@ -874,7 +1156,7 @@ public final class JavaSQLRecherche extends JavaSQL{
 				 Statement stmt = getCon().createStatement();
 				 try (ResultSet res = stmt.executeQuery(sql)){
 					 while(res.next()) {
-						 Ressource ressource= recupereSalleParId(res.getInt("code"));
+						 Ressource ressource= recupereCalculateurParId(res.getInt("code"));
 						 liste.add( ressource);
 					 }
 				 }
@@ -884,7 +1166,48 @@ public final class JavaSQLRecherche extends JavaSQL{
 			return liste;
 
 	}
+	
+/////////////////////////////////////////////////////////////////////////////////////PRESENCE//////////////////////////////////////////////////////////////////////////	
+	public static Boolean presenceDansUnProjetCalculateur(int code) throws SQLException {
+		Boolean b = false;
+		ArrayList<Projet> projetRessource;
+		try {
+			projetRessource = recupereProjetParIdCalculateur(code);
+			if (projetRessource == null) {
+				b = true;
+			}
+			else if (projetRessource.isEmpty()) {
+				b = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return b;
+	}
+
 ///////////////////////////////////////////////////////////////////////////////////LISTEDOMAINE////////////////////////////////////////////////////////////////////////////	
+	public static  ArrayList<String> recupereListeDomaineParIdActivite(int idA) throws SQLException{
+		ArrayList<String> liste = new ArrayList<String>();
+		String sql = "SELECT tag FROM ListeDomaine WHERE idA = '"+ idA + "';";
+		try{
+			 Statement stmt = getCon().createStatement();
+			 try (ResultSet res = stmt.executeQuery(sql)){
+				 while(res.next()) {
+					 String newDomaine = res.getString("tag");
+					 liste.add(newDomaine);
+					 }
+			 }
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return liste;
+
+}
+	
+	
 	public static  Boolean presenceDomaineDansListeDomaine(String domaine) throws SQLException{
 		Boolean presence = false;
 		String sql = "SELECT * FROM ListeDomaine WHERE tag = '"+ domaine + "';";
@@ -938,7 +1261,42 @@ public final class JavaSQLRecherche extends JavaSQL{
 	}
 	
 	
+///////////////////////////////////////////////////////////////////////////////////CRENEAUX////////////////////////////////////////////////////////////////////////////	
+	public static ArrayList<CreneauHoraire> getConge(int numSalarie) throws SQLException{
+		ArrayList<CreneauHoraire> conge = new ArrayList<CreneauHoraire>();
+		String sql = "SELECT * FROM Conge WHERE numSalarie = '"+numSalarie+"' ;";
+			try {
+				Statement stmt = getCon().createStatement();
+				try (ResultSet res = stmt.executeQuery(sql)){
+					while(res.next()) {
+							 LocalDate date = res.getDate("date").toLocalDate();
+							 CreneauHoraire creneaux = new CreneauHoraire(date, res.getInt("idC"));
+							 conge.add(creneaux);
+						 }
+					 }
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			return conge;
+	}
 	
-	
+
+	public static ArrayList<CreneauHoraire> getReunion(int idA) throws SQLException{
+		ArrayList<CreneauHoraire> reunion = new ArrayList<CreneauHoraire>();
+		String sql = "SELECT * FROM Reunion WHERE idA = '"+idA+"' ";
+			try {
+				Statement stmt = getCon().createStatement();
+				 try (ResultSet res = stmt.executeQuery(sql)){
+					 while(res.next()) {
+							 LocalDate date = res.getDate("date").toLocalDate();
+							 CreneauHoraire creneaux = new CreneauHoraire(date,res.getInt("debut"),res.getString("titre"),res.getInt("idR"));
+							 reunion.add(creneaux);
+						 }
+					 }
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			return reunion;
+	}
 	
 }

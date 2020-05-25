@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 
+
 import Ressource.Personne;
 import Ressource.Ressource;
 
@@ -13,10 +14,10 @@ public class Projet implements Comparable<Projet>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	private ArrayList<Activite> lActivite;//liste des activites (ordonnees par ordre)
+	private ArrayList<Activite> lActivite;
 
 	private String nom;
-	private float priorite; //Priorite du projet
+	private float priorite;
 	private int id;
 	private LocalDate deadline;
 	private Color couleur;
@@ -26,14 +27,14 @@ public class Projet implements Comparable<Projet>{
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Projet(ArrayList<Activite> Activite, Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
 		this.chefDeProjet = chefDeProjet;
-		this.lActivite =  Activite;   // liste des activité du projet (demander pas Dams)
+		this.lActivite =  Activite;
 		this.nom = nom;
 		this.priorite = priorite;
 		this.deadline = deadline;
 		this.id = id;
 		this.couleur = couleur;
 	}
-	
+
 	public Projet(Personne chefDeProjet, String nom, float priorite, LocalDate deadline, int id, Color couleur) {
 		this(new ArrayList<Activite>(), chefDeProjet, nom, priorite, deadline, id, couleur);
 	}
@@ -50,11 +51,11 @@ public class Projet implements Comparable<Projet>{
 	public ArrayList<Activite> getListe(){
 		return lActivite;
 	}
-	
+
 	public float getPriorite() {
 		return priorite;
 	}
-	
+
 	public LocalDate getDeadline() {
 		return deadline;
 	}
@@ -62,7 +63,7 @@ public class Projet implements Comparable<Projet>{
 	public int getId() {
 		return id;
 	}
-	
+
 	public Color getCouleur() {
 		return couleur;
 	}
@@ -70,7 +71,7 @@ public class Projet implements Comparable<Projet>{
 	public Personne getChefDeProjet() {
 		return chefDeProjet;
 	}
-	
+
 	public Hashtable<String, Integer> getActiviteOrdre(){
 		Hashtable<String, Integer> ht = new Hashtable<String, Integer>();
 		for (int i = 0; i < lActivite.size(); i++) {
@@ -79,7 +80,7 @@ public class Projet implements Comparable<Projet>{
 		}
 		return ht;
 	}
-	
+
 	public boolean ressourcePresente(Ressource r) {
 		boolean b = false;
 		for (int i=0; i<lActivite.size(); i++) {
@@ -90,9 +91,9 @@ public class Projet implements Comparable<Projet>{
 		}
 		return b;
 	}
-	
+
 	//------------------------------------------------------------------------------->>>>>>> Setteurs
-	
+
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
@@ -112,7 +113,7 @@ public class Projet implements Comparable<Projet>{
 	public void setListeActivite(ArrayList<Activite> lActivite) {
 		this.lActivite = lActivite;
 	}
-	
+
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {//permet de tester si deux projets ont le m�me nom.
@@ -141,7 +142,7 @@ public class Projet implements Comparable<Projet>{
 	//--------------------------------------------------------------------------------->>>>> toString
 	public String toString() {
 		String liste = this.nom;
-		
+
 		return liste;
 	}
 
@@ -172,8 +173,8 @@ public class Projet implements Comparable<Projet>{
 	public boolean enlever(Activite activite) {
 		return lActivite.remove(activite);
 	}
-	
-	
+
+
 	public boolean contientActivite(Activite act) {
 		boolean contient = false;
 		for (int i = 0; i < lActivite.size(); i++) {
@@ -188,8 +189,8 @@ public class Projet implements Comparable<Projet>{
 		// TODO Auto-generated method stub
 		return "nom : " + this.nom + ",id :" + this.id + ",priorite : " + this.priorite + ", chef de projet : " + this.chefDeProjet + ", couleur : " + this.couleur + ", deadline : " + this.deadline;
 	}
-	
-	
+
+
 
 
 

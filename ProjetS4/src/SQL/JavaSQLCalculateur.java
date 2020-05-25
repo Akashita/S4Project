@@ -61,10 +61,8 @@ public final class JavaSQLCalculateur extends JavaSQL{
 	
 	public static void supprime(int code) throws SQLException{
 		try{
-			 String sql = "DELETE FROM Creneaux WHERE code =" + code;
+			 String sql = "DELETE FROM ParticipeCalcul WHERE code =" + code;
 			 Statement stmt = getCon().createStatement();
-			 stmt.executeUpdate(sql);
-			 sql = "DELETE FROM ParticipeCalcul WHERE code =" + code;
 			 stmt.executeUpdate(sql);
 			 sql = "DELETE FROM Calculateur WHERE code =" + code;
 			 stmt.executeUpdate(sql);

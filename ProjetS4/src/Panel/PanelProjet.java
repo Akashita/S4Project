@@ -2,20 +2,24 @@ package Panel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import EcouteurEvenement.SourisProjetListener;
 import Model.Entreprise;
 import Model.Projet;
 
+
+/**
+ * Affiche en haut une barre contenenant tout les projets concerner par l'user
+ * Un admin peut voir tout les projets
+ * Un Colaborateur peut voir tout ses projets (ceux qu'il gere et ceux dans lequel il travaille)
+ * @author Damien
+ *
+ */
 public class PanelProjet extends JPanel{
 	/**
 	 * 
@@ -37,7 +41,13 @@ public class PanelProjet extends JPanel{
 	public JPanel afficherProjet() {
 		JPanel panel = new JPanel();
 		panel.setBackground(PanelPrincipal.BLEU2);
-		ArrayList<Projet> listeProjet = entreprise.getListeProjetDeUser(entreprise.getUser().getId());
+		ArrayList<Projet> listeProjet = new ArrayList<Projet>();
+		if (entreprise.getUser().estAdmin()) {
+			listeProjet = entreprise.getListeProjetDeEntreprise();
+		}
+		else {
+			listeProjet = entreprise.getListeProjetDeUser(entreprise.getUser().getId());
+		}
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		if (listeProjet.size()>0) {
 			for (int i=0; i<listeProjet.size(); i++) {

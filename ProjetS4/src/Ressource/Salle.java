@@ -1,32 +1,24 @@
 package Ressource;
 
-import java.util.ArrayList;
-
 public class Salle extends Ressource{
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			ATTRIBUTS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
-	private ArrayList<Materiel> lMatos; 
 	private int capacite;
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEURS
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public Salle(int numSalle, String nom, int capacite, ArrayList<Materiel> matos) {
+	public Salle(int numSalle, String nom, int capacite) {
 		super(numSalle, nom, Ressource.SALLE);
-		
-		this.lMatos = matos; //La liste du matos qui compose la salle
-		this.capacite = capacite; //Capacite de la salle en terme d'effectif
+		this.capacite = capacite;
 	}
 	
 	public Salle(int numSalle) {
-		this(numSalle, "",0, new ArrayList<Materiel>());
+		this(numSalle, "",0);
 	}
 	
-	public Salle(int numSalle, String nom, int capacite) {
-		this(numSalle, nom,capacite, new ArrayList<Materiel>());
-	}
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			METHODES
@@ -37,7 +29,7 @@ public class Salle extends Ressource{
 		return this.capacite;
 	}
 
-	//--------------------------------------------------------------------------------->>>>> Getteurs 
+	//--------------------------------------------------------------------------------->>>>> Setteurs 
 
 	public void setCapacite(int c) {
 		this.capacite = c;

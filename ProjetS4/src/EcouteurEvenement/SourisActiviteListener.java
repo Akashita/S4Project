@@ -2,12 +2,15 @@ package EcouteurEvenement;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import Model.Activite;
 import Model.Entreprise;
-import Panel.PanelInfoActivite;
 
+/**
+ *  selectionne l'activite cliquer
+ * @author Damien
+ *
+ */
 public class SourisActiviteListener implements MouseListener{
 
 	private Entreprise entreprise;

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -15,13 +16,14 @@ import javax.swing.JPanel;
 import EcouteurEvenement.SourisRessourceListener;
 import Model.Activite;
 import Model.CreneauHoraire;
+import Model.EDT;
 import Model.Entreprise;
 import Model.Temps;
 import Ressource.Personne;
 import Ressource.Ressource;
 
 /**
- * Affiche l'emploi du temps de l'activit� sous forme de diagramme de gantt
+ * Affiche l'emploi du temps de l'activite sous forme de diagramme de gantt
  * @author Damien
  *
  */
@@ -35,7 +37,13 @@ public class PanelEDTActivite extends JPanel{
 	private int nbPersonne;
 	private Entreprise entreprise;
 	private Color couleurFond;
-
+	private ArrayList<Ressource> listePersonne;
+	private ArrayList<EDT> listeEDTpersonne = new ArrayList<EDT>();
+	private LocalDate debut, fin;
+	private int nombreDeMois;
+	private ArrayList<Integer> listeNumeroSemaine;
+	
+	
 	public PanelEDTActivite(Entreprise entreprise, Activite activite) {
 		this.entreprise = entreprise;
 		this.activite = activite;
@@ -45,9 +53,24 @@ public class PanelEDTActivite extends JPanel{
 				couleurFond = PanelPrincipal.BLEU2;
 			}					
 		}
-		nbPersonne = activite.getListeRessourceType(Ressource.PERSONNE).size();
+		listePersonne = entreprise.getListeRessourcedeActiviteParId(Ressource.PERSONNE, activite.getId());
+		nbPersonne = listePersonne.size();
 		this.setLayout(new BorderLayout());
 		if (nbPersonne > 0) {
+			for (int i=0; i<listePersonne.size();i++) {
+				Ressource res = listePersonne.get(i);
+				EDT edt = entreprise.getEDTRessource(res.getType(), res.getId());
+				listeEDTpersonne.add(edt);
+			}
+			debut = Temps.getAujourdhui();
+			fin = entreprise.getLocalDateFinDuneActivite(listeEDTpersonne, activite);
+			LocalDate finProjet = entreprise.getProjetDeActiviteParId(activite.getId()).getDeadline();
+			if (Temps.dateUnEstSuperieurDateDeux(finProjet, fin)) {
+				fin = finProjet;
+			}
+			
+			listeNumeroSemaine = Temps.getNumSemainesEntreDates(debut, fin);
+			nombreDeMois = Temps.nombreDeMoisEntreDeuxDates(debut,fin);
 			this.add(afficherEmploiDuTemps(), BorderLayout.CENTER);			
 		}
 	}
@@ -57,127 +80,136 @@ public class PanelEDTActivite extends JPanel{
 		panel.setBackground(couleurFond);
 		panel.setLayout(new GridBagLayout());
 		
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
 		GridBagConstraints gc = new GridBagConstraints();
 		
-		/* le parametre fill sert à définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
-		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
-		 */
 		gc.fill = GridBagConstraints.BOTH;
-		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
-		gc.insets = new Insets(5, 5, 5, 5);
-		
-		/* ipady permet de savoir où on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
-		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
-
-		/* weightx définit le nombre de cases en abscisse */
-		int nbMois = 12;
-		gc.weightx = nbMois+1;
-		
-		/* weightx définit le nombre de cases en ordonnée */
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.insets = new Insets(2, 2, 2, 2);
+		gc.weightx = 1;	
 		gc.weighty = nbPersonne+1;
-		
-		/* pour dire qu'on ajoute un composant en position (i, j), on définit gridx=i et gridy=j */
+
+		gc.gridwidth = GridBagConstraints.REMAINDER;
 		gc.gridx = 0;
 		gc.gridy = 0;
-		
-		
-		panel.add(creerLabel(activite.getTitre(), true), gc);
-		
-		gc.fill = GridBagConstraints.NONE;
-		gc.ipady = gc.anchor = GridBagConstraints.SOUTH;
+		panel.add(afficheTitreEtEchelle(), gc);
 
-		for (int i=0; i<nbMois; i++) {
-			gc.gridx ++;
-			panel.add(labelMois(i), gc);
-		}
 		
-		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.ipady = gc.anchor = GridBagConstraints.NORTH;
-		gc.insets = new Insets(5, 2, 2, 5);
-
+		
 		for (int i=0; i<nbPersonne;i++) {
-			gc.gridwidth = 1;
-			gc.gridx = 0;
 			gc.gridy ++;
-			ArrayList<Ressource> listeRes = activite.getListeRessourceType(Ressource.PERSONNE);
-			Ressource res = listeRes.get(i);
-			String nom = (((Personne) res).getPrenom()) + " " + res.getNom();
-			panel.add(creerLabel(nom, res), gc);
-			
-			gc.gridwidth = GridBagConstraints.REMAINDER;
+			panel.add(afficheRessourceEtDiagramme(i), gc);			
+		}
+		return panel;
+	}
+	
+	private JPanel afficheTitreEtEchelle() {
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		p.add(creerLabel(activite.getTitre(), true));
+		p.add(afficheEchelle());
+		return p;
+	}
+
+	private JPanel afficheRessourceEtDiagramme(int index) {
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		Ressource res = listePersonne.get(index);
+		String nom = ((Personne) res).getPrenomNom();
+		p.add(creerLabel(nom, res));
+		p.add(afficheDiagrammeGantt(index));
+		return p;
+	}
+
+	private JPanel afficheEchelle() {
+		int annee = debut.getYear();
+		int nbAnnee=1;
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+		gc.fill = GridBagConstraints.CENTER;
+		gc.insets = new Insets(5, 5, 5, 5);	
+		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
+		gc.ipadx = gc.anchor = GridBagConstraints.CENTER;
+		gc.weightx = nombreDeMois;
+		
+		gc.weighty = 2;
+		
+		gc.gridx = 0;
+		gc.gridy = 1;
+		gc.gridwidth = 1;
+		gc.gridheight = 1;
+		int numeroMois = debut.getMonthValue();
+		for(int i=0; i<=nombreDeMois;i++) {
+			if (numeroMois > 12) {
+				nbAnnee ++;
+				numeroMois = 1;
+			}
+			p.add(labelMois(numeroMois), gc);
+			numeroMois ++;
 			gc.gridx ++;
-			panel.add(afficheMoisRes(res), gc);
-			//panel.add(afficheMoisRes(res), gc);
-			
 		}
-		return panel;
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		for(int i=0; i<nbAnnee;i++) {
+			p.add(new JLabel(Integer.toString(annee+i)), gc);
+			gc.gridx ++;	
+		}
+		return p;
 	}
 	
-	/**
-	 * met à jour debut et fin qu'il  faut afficher pour voir toute les ressource de l'act
-	 */
-	/*private void duree() {
-		LocalDate [] duree = new LocalDate[2]; // la premiere case correspon
+	private JPanel afficheDiagrammeGantt(int index) {
+		JPanel p = new JPanel();
+		p.setBackground(couleurFond);
+		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		EDT edtR = listeEDTpersonne.get(index);
+		int annee = debut.getYear();
 		
-		LocalDate debut, lastDebut; 
-		
-		CreneauHoraire fin;
-		//fin = res.getDernierCreneauActivite(activite);
-
-		ArrayList<Ressource> listeRes = activite.getListeRessourceType(Ressource.PERSONNE);
-		for (int i=0; i<listeRes.size(); i++) {
-			Ressource res = listeRes.get(i);
-			debut = res.getPremierCreneauActivite(activite);
-			if (debut.getDebut().get)
-		}
-
-		this.debut = debut;
-		this.fin = fin;
-}*/
-	
-	/*private JPanel afficheEDTRessource(Ressource res) {
-		JPanel panel = new JPanel();
-		int nbMois = 
-		panel.setBackground(couleurFond);
-		return panel;
-		
-	}*/
-	
-	private JPanel afficheMoisRes(Ressource res) {
-		JPanel panel = new JPanel();
-		
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		
-		for (int i=1; i<52;i++) {
+		for(int i=0; i<listeNumeroSemaine.size();i++) {
+			int numSemaine = listeNumeroSemaine.get(i);
+			if (i>0 &&  numSemaine < listeNumeroSemaine.get(i-1) ) { // on verifie si on a passe une annee
+				annee ++;
+			}
 			JPanel semaine = new JPanel();
-					semaine.setBackground(PanelPrincipal.BLANC);
-					if(travailleSemaine(res.getSemaineEDT(Temps.getAnnee(), i))) {
-						semaine.setBackground(PanelPrincipal.BLEU1);
-					}
-					panel.add(semaine);
-		}
-		panel.setBackground(couleurFond);
-		return panel;
-	}
-	
-	private boolean travailleSemaine(CreneauHoraire [][] liste) {
-		boolean travaille = false;
-		for (int i=0; i<liste.length; i++) {
-			for (int j=0; j<liste[0].length; j++) {
-				if (liste[i][j] != null && liste[i][j].getActivite().getId() == activite.getId()) {
-					travaille = true;
-					break;
+			semaine.setBackground(PanelPrincipal.BLANC);
+			CreneauHoraire [][] tableauCreneau = edtR.getSemaineEDT(annee, numSemaine);
+
+			for (int j=0; j<5; j++) {
+				JPanel jour = new JPanel();
+				if (travailleJour(tableauCreneau, j)) {
+					jour.setBackground(PanelPrincipal.BLEU1);
 				}
+				else {
+					jour.setBackground(PanelPrincipal.BLANC);	
+				}
+				p.add(jour);
+
 			}
-			if (travaille) {
-				break;
-			}
+		}
+		
+		return p;
+	}
+
+	private boolean travailleJour(CreneauHoraire [][] liste, int numeroJour) {
+		boolean travaille = false;
+		for (int i=0; i<liste[0].length; i++) {
+			if (liste[numeroJour][i].getType() == CreneauHoraire.TRAVAIL) {
+				if( liste[numeroJour][i].getActivite().getId() == activite.getId()) {
+				travaille = true;
+				break;		
+				}
+			}	
 		}
 		return travaille;
+		
+		
 	}
+
 	
+
 	private JLabel creerLabel(String nom, Ressource ressource) {
 		JLabel label = new JLabel(nom);
 		label.setBackground(couleurFond);
@@ -189,47 +221,44 @@ public class PanelEDTActivite extends JPanel{
 	private JLabel labelMois(int numeroMois) {
 		JLabel label = new JLabel();
 		switch (numeroMois) {
-		case 0:
+		case 1:
 			label.setText("Janvier");
 			break;
-		case 1:
-			label.setText("Fevrier");
-			break;
 		case 2:
-			label.setText("Mars");
+			label.setText("Février");
 			break;
 		case 3:
-			label.setText("Avril");
+			label.setText("Mars");
 			break;
 		case 4:
-			label.setText("Mai");
+			label.setText("Avril");
 			break;
 		case 5:
-			label.setText("Juin");
+			label.setText("Mai");
 			break;
 		case 6:
-			label.setText("Juillet");
+			label.setText("Juin");
 			break;
 		case 7:
-			label.setText("Aout");
+			label.setText("Juillet");
 			break;
 		case 8:
-			label.setText("Septembre");
+			label.setText("Aout");
 			break;
 		case 9:
-			label.setText("Octobre");
+			label.setText("Septembre");
 			break;
 		case 10:
-			label.setText("Novembre");
+			label.setText("Octobre");
 			break;
 		case 11:
-			label.setText("Decembre");
+			label.setText("Novembre");
+			break;
+		case 12:
+			label.setText("Décembre");
 			break;
 		
 		}
-		JPanel panel = new JPanel();
-		panel.setBackground(couleurFond);
-		panel.add(label);
 		return label;
 	}
 	

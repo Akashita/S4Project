@@ -63,8 +63,6 @@ public final class JavaSQLSalle extends JavaSQL{
 				 String sql = "DELETE FROM Materiel WHERE numero =" + numero;
 				 Statement stmt = getCon().createStatement();
 				 stmt.executeUpdate(sql);
-				 sql = "DELETE FROM Creneaux WHERE numero =" + numero;
-				 stmt.executeUpdate(sql);
 				 sql = "DELETE FROM ParticipeSalle WHERE numero =" + numero;
 				 stmt.executeUpdate(sql);
 				 sql = "DELETE FROM Salle WHERE numero =" + numero;

@@ -4,10 +4,13 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Model.Activite;
+import Model.Entreprise;
 import Model.Projet;
 import Ressource.Personne;
 import Ressource.Ressource;
 import SQL.JavaSQLPersonne;
+import SQL.JavaSQLRecherche;
 
 public class Ticket {
 	private int id;
@@ -20,11 +23,13 @@ public class Ticket {
 	private int idEnvoyeur;
 	private int idReceveur;
 	private Ressource r;
+	public final static String SEPARATEUR= "#";
+	
+	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  VU= 5, ERREUR = 6,NONVU = 7;
 
 	
-	public static final int MESSAGE = 0, LIBERE= 1, TRANSFERT = 2,  REFUSE = 3,   ACCEPTEE= 4,  ENCOURS= 5, ERREUR = 6;
-	private static final String SEPARATEUR = "|";
-
+	
+	//constructeur BDD
 	public Ticket(int id, String sujet,String message,String modif,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
 		this.id = id;
 		this.sujet = sujet;
@@ -35,13 +40,13 @@ public class Ticket {
 		this.idEnvoyeur = idEnvoyeur;
 		this.idReceveur = idReceveur;
 	}
-	
+	//constructeur message
 	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur) {
 		this.id = id;
 		this.action = action;
 		this.sujet = sujet;
 		this.message = message;
-		this.modif = creeModif(action);
+		this.modif = creeModif(action,null,null,-1);
 		this.dateTicket = dateTicket;
 		this.statut = statut;
 		this.idEnvoyeur = idEnvoyeur;
@@ -49,30 +54,66 @@ public class Ticket {
 	}
 	
 	
-
-	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r) {
-		this(id, action, sujet, message, dateTicket, statut, idEnvoyeur, idReceveur);
+	//constructeur libération/transfert
+	public Ticket(int id,int action, String sujet,String message,LocalDate dateTicket, int statut, int idEnvoyeur, int idReceveur, Ressource r, Activite activiteArrive, Activite activiteDepart, Ticket ticketTransfert) {
+		this.id = id;
+		this.action = action;
+		this.sujet = sujet;
+		this.message = message;
 		this.r = r;
-		this.modif = creeModif(action);
-		
-	}
-	
+		this.dateTicket = dateTicket;
+		this.statut = statut;
+		this.idEnvoyeur = idEnvoyeur;
+		this.idReceveur = idReceveur;
+		if (ticketTransfert == null) {
+			this.modif = creeModif(action,activiteArrive, activiteDepart, -1);
 
-	
-	private String creeModif(int action) {
-		if (action == MESSAGE) {
-			return "message|";
-		}
-		else if (action == TRANSFERT) {
-			return "transfert|" + r.getId() ;
-		}
-		else if (action == LIBERE) {
-			return "libere|" + r.getId();
 		}
 		else {
-			return "erreur|";
+		this.modif = creeModif(action,activiteArrive, activiteDepart, ticketTransfert.getId());
 		}
 	}
+
+	
+
+	
+	private String creeModif(int action, Activite activiteArrive,Activite activiteDepart, int idTicketTransfert) {
+		if (action == MESSAGE) {
+			return "message"+ SEPARATEUR;
+		}
+		else if (action == TRANSFERT) {
+			return "transfert"+ SEPARATEUR +r.getType() + SEPARATEUR + r.getId()+ SEPARATEUR + activiteArrive.getId();
+		}
+		else if (action == LIBERE) {
+			return "libere"+ SEPARATEUR + r.getType() + SEPARATEUR + r.getId() + SEPARATEUR + activiteDepart.getId() + SEPARATEUR + idTicketTransfert;
+		}
+		else {
+			return "erreur"+ SEPARATEUR;
+		}
+	}
+	
+	public int getAction() {
+		String[] regex = this.modif.split(SEPARATEUR, 2); 
+		String avantSeparateur = regex[0];
+		if (avantSeparateur == "message") {
+			return MESSAGE;
+		}
+		else if (avantSeparateur == "libere") {
+			return LIBERE;
+
+		}
+		else if (avantSeparateur == "transfert") {
+			return TRANSFERT;
+
+		}
+		else {
+			return ERREUR;
+		}
+			
+		}
+	
+	
+	
 	
 	public static int getTache(String modif) {
 		String[] regex = modif.split(SEPARATEUR, 2); 
@@ -109,6 +150,10 @@ public class Ticket {
 		return this.idReceveur;
 	}
 	
+	public Ressource getRessource() {
+		return r;
+	}
+	
 	public String getSujet() {
 		return this.sujet;
 	}
@@ -123,6 +168,7 @@ public class Ticket {
 	public LocalDate getdateTicket() {
 		return this.dateTicket;
 	}
+	
 	
 	public void setStatut(int s) {
 		this.statut = s;
@@ -141,7 +187,7 @@ public class Ticket {
 	}
 	
 	public String toString() {
-		return this.sujet + " - " + this.getPersonneEnvoyeur().getPrenomNom() + " - " + dateTicket.toString();
+		return this.sujet + " - " + this.getPersonneEnvoyeur().getPrenomNom() + " - " + dateTicket.toString() + " - " + getStringStatut();
  
 		
 		
@@ -149,20 +195,29 @@ public class Ticket {
 
 
 	private String getStringStatut() {
-		if (this.statut == ENCOURS ) {
-		return "EN COURS";
+		String s = "";
+		switch (statut) {
+		case NONVU:
+			s = "non lu";
+			break;
+
+		case VU:
+			s = "lu";
+			break;
+
+		case ACCEPTEE:
+			s = "Accepter";
+			break;
+
+		case REFUSE:
+			s = "Refuser";
+			break;
+
+		default:
+			s = "erreur";
 		}
-		else if (this.statut == ACCEPTEE) {
-			return "ACCEPTEE";
-		}
-		else if (this.statut == REFUSE) {
-			return "REFUSE";
-		}
-		else {
-			return "ERREUR";
-		}
-	
-		}
+		return s;
+	}
 	
 	public Personne getPersonneEnvoyeur() {
 		ArrayList<Personne> personneTab = new ArrayList<Personne>();

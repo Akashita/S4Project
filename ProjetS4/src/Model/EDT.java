@@ -7,15 +7,26 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
-import java.util.Iterator;
+
 import java.util.List;
 import java.util.Set;
 
 
 public class EDT {
+
+
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			ATTRIBUTS
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	private int id_ressource;
 	private int type_ressource;
+
 	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> listeCreneaux;
+
+
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			CONSTRUCTEUR
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	public EDT(int id_ressource, int type_ressource) {
 		this.id_ressource = id_ressource;
@@ -23,34 +34,41 @@ public class EDT {
 		this.listeCreneaux = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
 
 	}
-	
-	public EDT(Pair<?, ?> duet) {
-		this.id_ressource = (int) duet.getLeft();
-		this.type_ressource = (int) duet.getRight();
-		this.listeCreneaux = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
 
+	public EDT(Pair<?, ?> duet) {
+
+		this((int) duet.getLeft(), (int) duet.getRight());
 	}
 
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//			METHODES
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	//--------------------------------------------------------------------------------->>>>> Getteurs simples
 	public int getIdRessource() {
 		return id_ressource;
 	}
-	
+
 	public int getTypeRessource() {
 		return id_ressource;
 	}
-	
+
 	public Pair<Integer, Integer> getPair() {
 		return new Pair<Integer, Integer>(id_ressource, type_ressource);
 	}
 
 
+	//--------------------------------------------------------------------------------->>>>> Setteurs simples
 	public void vider() {
 		listeCreneaux.clear();
 	}
 
+
+	//--------------------------------------------------------------------------------->>>>> Méthodes complexes
+
 	/**
-	 * Ajoute un creneau ��� la ressource (si possible)
-	 * 
+	 * Ajoute un creneau à la ressource (si possible)
+	 *
 	 * @param creneau Le creneau a ajouter
 	 * @param jour    Le jour ou le creneau doit etre ajoute
 	 * @return true si le creneau a ete ajoute
@@ -75,10 +93,54 @@ public class EDT {
 		return place;
 	}
 
+
+
+	/**
+	 * Ajoute un congé à la ressource
+	 *
+	 * @param creneau Le congé à ajouter
+	 */
+	public void ajouterConge(CreneauHoraire creneau) {
+		LocalDate date = creneau.getDate();
+		ArrayList<CreneauHoraire> listeCr = new ArrayList<CreneauHoraire>();
+		for (int i = 0; i < 8; i++) {
+			listeCr.add(new CreneauHoraire(date));
+		}
+		listeCreneaux.put(date, listeCr);
+	}
+
+
+	/**
+	 * Ajoute une réunion à la ressource
+	 *
+	 * @param creneau la réunion à ajouter
+	 */
+	public void ajouterReunion(CreneauHoraire creneau) {
+		LocalDate date = creneau.getDate();
+		if(listeCreneaux.containsKey(date)) {
+			ArrayList<CreneauHoraire> tab = listeCreneaux.get(date);
+			tab.add(creneau.getPosition(), new CreneauHoraire(date, creneau.getDebut(), "Reunion", creneau.getId()));
+			listeCreneaux.put(date, tab);
+		} else {
+			ArrayList<CreneauHoraire> listeCr = new ArrayList<CreneauHoraire>();
+			for (int i = 0; i < 8; i++) {
+				if(i == creneau.getPosition()) {
+					listeCr.add(i, new CreneauHoraire(date, creneau.getDebut(), "Reunion", creneau.getId()));
+				} else {
+					listeCr.add(i, null);
+				}
+			}
+			listeCreneaux.put(date, listeCr);
+		}
+
+
+	}
+
 	/**
 	 * Cree une journee entierement disponible
-	 * 
-	 * @return Un tableau de CreneauHoraire init ��� null
+	 *
+
+	 * @return Un tableau de CreneauHoraire initialisé à null
 	 */
 	private ArrayList<CreneauHoraire> creeJourneeCreneauLibre() {
 		ArrayList<CreneauHoraire> creneaux = new ArrayList<CreneauHoraire>();
@@ -89,8 +151,9 @@ public class EDT {
 	}
 
 	/**
-	 * Dit si le creneau (en parametre) est dispo pour la ressource courante
-	 * 
+
+	 * Dit si le creneau (en paramètre) est dispo pour la ressource courante
+	 *
 	 * @param date  La date du creneau
 	 * @param heure L'heure du creneau
 	 * @return true si le creneau est dispo
@@ -113,7 +176,7 @@ public class EDT {
 
 	/**
 	 * Retourne l'EDT d'une ressource en fonction de la semaine et de l'annee.
-	 * 
+	 *
 	 * @param annee   Annee pour laquelle on veut l'EDT
 	 * @param semaine Semaine choisi pour afficher l'EDT
 	 * @return Un tableau a deux dimensions compose de CreaneauxHoraires ou de la
@@ -136,45 +199,133 @@ public class EDT {
 		}
 		return semaineEDT;
 	}
-	
-	
-	public LocalDateTime getPremiereCreneauApresAct(int ordre) {
-		Set<LocalDate> keys = listeCreneaux.keySet(); //On recupere les cles de la hashtable jours
-		Iterator<LocalDate> itt = keys.iterator();
-		boolean trouve = false;		
-		LocalDate key = null;
+
+
+
+
+	/**
+	 * Retourne le premier creneau d'une activité (pour l'EDT courant)
+	 * @return Le creneau en question
+	 */
+	public LocalDateTime getPremiereCreneauApresAct() {
+		Hashtable<LocalDate, ArrayList<CreneauHoraire>> sansCongeEtReunion = enleverCongeReu(listeCreneaux);
+		ArrayList<LocalDate> sortedKeys = new ArrayList<LocalDate>(sansCongeEtReunion.keySet());
+		Collections.sort(sortedKeys);
+		LocalDate dernierJour;
 		LocalDateTime res = null;
-		ArrayList<CreneauHoraire> jourCourant;
-		int i = 0;
-		while(itt.hasNext() && !trouve) { //On parcours les jours
-			key = itt.next();
-			jourCourant = listeCreneaux.get(key); //On recupere le jour courant
-			for (i = 0; i < jourCourant.size(); i++) {
-				if(jourCourant.get(i).getActivite().getOrdre() >= ordre) {
+		if(sortedKeys.size() != 0) {
+			 dernierJour = sortedKeys.get(sortedKeys.size()-1);
+			boolean trouve = false;
+
+			ArrayList<CreneauHoraire> creneauxJour = sansCongeEtReunion.get(dernierJour);
+
+			for (int i = 0; i < creneauxJour.size(); i++) {
+				CreneauHoraire crCourant = creneauxJour.get(i);
+				if(crCourant == null) {
 					trouve = true;
+					res = LocalDateTime.of(verifierJour(dernierJour), LocalTime.of(indiceToHeure(i), 0));
 					break;
 				}
-			}			
+			}
+			if(!trouve) {
+				res = getCreneauSuivant(verifierJour(dernierJour), 7);
+			}
 		}
-		if(key == null) {
-			res = null;
-		} else if(!trouve) {
-			res = getCreneauSuivant(key, i);
-		} else {
-			res =  LocalDateTime.of(key, LocalTime.of(indiceToHeure(i), 0));
-		}
-		
+
+
 		return res;
 	}
-	
+
+
+	/**
+	 * Enlève les congés et les réunions de l'EDT et en renvoie une copie
+	 * @return Le nouvel EDT
+	 */
+	private Hashtable<LocalDate, ArrayList<CreneauHoraire>> enleverCongeReu(Hashtable<LocalDate, ArrayList<CreneauHoraire>> liste) {
+		Hashtable<LocalDate, ArrayList<CreneauHoraire>> res = new Hashtable<LocalDate, ArrayList<CreneauHoraire>>();
+		Set<LocalDate> keys = liste.keySet();
+		for (LocalDate key : keys) {
+			ArrayList<CreneauHoraire> jourCourant = liste.get(key);
+			ArrayList<CreneauHoraire> tmp = new ArrayList<CreneauHoraire>();
+			for (int i = 0; i < jourCourant.size(); i++) {
+				CreneauHoraire crCourant = jourCourant.get(i);
+				if(crCourant != null) {
+					if(crCourant.getType() == CreneauHoraire.CONGE || crCourant.getType() == CreneauHoraire.REUNION) {
+						tmp.add(null);
+					} else {
+						tmp.add(crCourant);
+					}
+				} else {
+					tmp.add(null);
+				}
+
+			}
+			if(!jourNull(tmp)) {
+				res.put(key, tmp);
+			}
+		}
+		return res;
+	}
+
+
+	/**
+	 * Dit si une journéee est constituée que de creneauxHoraires null
+	 * @param La liste des creneaux de la journée
+	 * @return True si la journée est null
+	 */
+	private boolean jourNull(ArrayList<CreneauHoraire> jour) {
+		boolean res = true;
+		for (int i = 0; i < jour.size(); i++) {
+			if(jour.get(i) != null) {
+				res = false;
+			}
+		}
+		return res;
+	}
+
+
+	/**
+	 * Vérifie qu'une journée est ouvrable, si ce n'est pas le cas on renvoie le jour ouvrable suivant le plus proche
+	 * @param La journée à vérifier
+	 * @return La journée un fois vérifiée
+	 */
+	private LocalDate verifierJour(LocalDate jourCourant) {
+		LocalDate jourVerifie;
+		switch (jourCourant.getDayOfWeek()) {
+		case SATURDAY:
+			jourVerifie = jourCourant.plus(2, ChronoUnit.DAYS);
+			break;
+		case SUNDAY:
+			jourVerifie = jourCourant.plus(1, ChronoUnit.DAYS);
+			break;
+		default:
+			jourVerifie = jourCourant;
+			break;
+		}
+		return jourVerifie;
+	}
+
+
+	/**
+	 * Vérifie qu'une journée est ouvrable, si ce n'est pas le cas on renvoie le jour ouvrable suivant le plus proche
+	 * @param La journée à vérifier
+	 * @return La journée un fois vérifiée
+	 */
 	private LocalDateTime getCreneauSuivant(LocalDate key, int indice) {
 		if(indice == 7) {
 			key = key.plus(1, ChronoUnit.DAYS);
-			indice = indiceToHeure(indice);
+			indice = Entreprise.HEURE_DEBUT_MATIN;
 		}
 		return LocalDateTime.of(key, LocalTime.of(indice, 0));
 	}
-	
+
+
+
+	/**
+	 * Transforme un indice d'arrayList de creneauxHoaire en heure correspondante à celles de l'entreprise
+	 * @param L'indice à transformer
+	 * @return L'heure pleine (int)
+	 */
 	private int indiceToHeure(int indice) {
 		int heure = Entreprise.HEURE_DEBUT_MATIN + indice;
 		if(indice > 4) {
@@ -182,21 +333,29 @@ public class EDT {
 		}
 		return heure;
 	}
-	
-	
-	
-	public LocalDate getPremiereDateActivite(Activite act) {
-		List<LocalDate> listKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
-		LocalDate premDate = null;
+
+
+	/**
+	 * Donne la date du premier creneaux d'une activité dans l'EDT courant
+	 * @param L'activité concernée
+	 * @return L'heure et la date du premier creneaux
+	 */
+	public LocalDateTime getPremiereDateActivite(Activite act) {
+		Hashtable<LocalDate, ArrayList<CreneauHoraire>> sansCongeEtReunion = enleverCongeReu(listeCreneaux);
+		List<LocalDate> listKeys = new ArrayList<LocalDate>(sansCongeEtReunion.keySet());
+		LocalDateTime premDate = null;
 		Collections.sort(listKeys);
 		boolean quitter = false;
 		for (int i = 0; i < listKeys.size(); i++) {
-			ArrayList<CreneauHoraire> jour = listeCreneaux.get(listKeys.get(i));
+			ArrayList<CreneauHoraire> jour = sansCongeEtReunion.get(listKeys.get(i));
 			for (int j = 0; j < jour.size(); j++) {
-				if (jour.get(j).getActivite() == act) {
-					premDate = listKeys.get(i);
-					quitter = true;
-					break;
+				CreneauHoraire crCourant = jour.get(j);
+				if(crCourant != null) {
+					if (crCourant.getActivite().equals(act)) {
+						premDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
+						quitter = true;
+						break;
+					}
 				}
 			}
 			if (quitter) {
@@ -204,30 +363,41 @@ public class EDT {
 			}
 		}
 
-		return premDate;	
+		return premDate;
 	}
-	
-	public LocalDate getDerniereDateActivite(Activite act) {
-		List<LocalDate> listKeys = new ArrayList<LocalDate>(listeCreneaux.keySet());
-		LocalDate derDate = null;
+
+
+
+	/**
+	 * Donne la date du dernier creneaux d'une activité dans l'EDT courant
+	 * @param L'activité concernée
+	 * @return L'heure et la date du dernier creneaux
+	 */
+	public LocalDateTime getDerniereDateActivite(Activite act) {
+		Hashtable<LocalDate, ArrayList<CreneauHoraire>> sansCongeEtReunion = enleverCongeReu(listeCreneaux);
+		List<LocalDate> listKeys = new ArrayList<LocalDate>(sansCongeEtReunion.keySet());
+		LocalDateTime derDate = null;
 		Collections.sort(listKeys);
 		boolean quitter = false;
 		for (int i = listKeys.size()-1; i >= 0; i--) {
-			ArrayList<CreneauHoraire> jour = listeCreneaux.get(listKeys.get(i));
+			ArrayList<CreneauHoraire> jour = sansCongeEtReunion.get(listKeys.get(i));
 			for (int j = jour.size()-1; j >= 0 ; j--) {
-				if (jour.get(j).getActivite() == act) {
-					derDate = listKeys.get(i);
-					quitter = true;
-					break;
+				CreneauHoraire crCourant = jour.get(j);
+				if(crCourant != null) {
+					if (crCourant.getActivite().equals(act)) {
+						derDate = LocalDateTime.of(listKeys.get(i), LocalTime.of(crCourant.getDebut(), 0));
+						quitter = true;
+						break;
+					}
 				}
 			}
 			if (quitter) {
 				break;
 			}
 		}
-		return derDate;	
+		return derDate;
 	}
-	
+
 
 
 }

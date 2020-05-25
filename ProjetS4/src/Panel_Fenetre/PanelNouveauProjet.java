@@ -12,6 +12,11 @@ import Model.Entreprise;
 import Model.Temps;
 import Ressource.Personne;
 
+/**
+ *  Affiche les information a saisir pour creer un projet
+ * @author Damien
+ *
+ */
 public class PanelNouveauProjet extends PanelFenetre{
 	
 	/**
@@ -29,30 +34,19 @@ public class PanelNouveauProjet extends PanelFenetre{
 	
 		this.setLayout(new GridBagLayout());
 		this.setBackground(couleurFond);
-		/* Le gridBagConstraints va définir la position et la taille des éléments */
 		GridBagConstraints gc = new GridBagConstraints();
-		
-		/* le parametre fill sert Ã  définir comment le composant sera rempli GridBagConstraints.BOTH permet d'occuper tout l'espace disponible
-		 * horizontalement et verticalement GridBagConstraints.HORIZONTAL maximise horizontalement GridBagConstraints.VERTICAL maximise verticalement
-		 */
 		gc.fill = GridBagConstraints.CENTER;
+				gc.insets = new Insets(5, 5, 5, 5);
 		
-		/* insets définir la marge entre les composant new Insets(margeSupérieure, margeGauche, margeInférieur, margeDroite) */
-		gc.insets = new Insets(5, 5, 5, 5);
-		
-		/* ipady permet de savoir oÃ¹ on place le composant s'il n'occupe pas la totalité de l'espace disponnible */
 		gc.ipady = gc.anchor = GridBagConstraints.CENTER;
 
-		/* weightx définit le nombre de cases en abscisse */
 		gc.weightx = 3;
 		
-		/* weightx définit le nombre de cases en ordonnée */
 		gc.weighty = 7;
 
 		gc.gridx = 0;
 		gc.gridy = 0;
 		gc.gridwidth = 3;
-		//this.add(creerTitre("Creer un projet"), gc);
 		
 		gc.gridy = 1;
 		this.add(creerTitre("Indiquez ses informations"), gc);
@@ -75,7 +69,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 0;
 		gc.gridy = 3;
-		this.add(creerTexte("Indiquez sa priorité"), gc);
+		this.add(creerTexte("Indiquez sa prioritÃ©"), gc);
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridwidth = 2;
 		gc.gridx = 1;
@@ -100,7 +94,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 		gc.gridx = 0;
 		gc.gridy = 5;
 		gc.gridwidth = 3;
-		this.add(creerTitre("Precisez sa deadline"), gc);
+		this.add(creerTitre("PrÃ©Ã§isez sa deadline"), gc);
 		
 		gc.gridx = 0;
 		gc.gridy = 6;
@@ -115,7 +109,7 @@ public class PanelNouveauProjet extends PanelFenetre{
 		
 		gc.ipadx = gc.anchor = GridBagConstraints.WEST;
 		gc.gridx = 2;
-		this.add(creerBoutonFin(this, "Créer"), gc);
+		this.add(creerBoutonFin(this, "CrÃ©er"), gc);
 
 	}
 	
@@ -126,23 +120,20 @@ public class PanelNouveauProjet extends PanelFenetre{
 					Personne pers = (Personne) comboBoxRessource.getSelectedItem();
 					String titre = textFieldNom.getText();
 					int prio = Integer.parseInt(textFieldPriorite.getText());
-					int jour = Integer.parseInt((String) calendrier1.getComboBoxJour().getSelectedItem());
-					int mois = calendrier1.getComboBoxMois().getSelectedIndex()+1;
-					int annee = Integer.parseInt((String) calendrier1.getComboBoxAnnee().getSelectedItem());
-					LocalDate date =  Temps.creerLaDate(jour, mois, annee);
+					LocalDate date =  calendrier1.getDate();
 					entreprise.creerProjet(pers, titre, prio, date);
 					fm.dispose();
 				}
 				else {
-			    	JOptionPane.showMessageDialog(null, "Veillez ecrire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
+			    	JOptionPane.showMessageDialog(null, "Veuillez Ã©crire un nombre pour charge", "Erreur", JOptionPane.ERROR_MESSAGE);			
 				}
 			}
 			else {
-		    	JOptionPane.showMessageDialog(null, "Veillez ecrire sa priorité", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		    	JOptionPane.showMessageDialog(null, "Veuillez Ã©crire sa prioritÃ©", "Erreur", JOptionPane.ERROR_MESSAGE);			
 			}
 		}
 		else {
-	    	JOptionPane.showMessageDialog(null, "Veillez ecrire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
+	    	JOptionPane.showMessageDialog(null, "Veuillez Ã©crire son nom", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 }

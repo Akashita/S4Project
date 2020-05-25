@@ -25,7 +25,12 @@ public class PanelPrincipal extends JPanel implements Observer{
 			GRIS2 = Color.GRAY,
 		    BLANC = new Color(255,255,255),
 			NOIR = new Color(0,0,0),
-			INDISPO = new Color(179,62,197);
+			INDISPO = new Color(179,62,197),
+			NOTIFICATION = new Color(255,0,0),
+			CONGE = Color.RED,
+			REUNION = Color.ORANGE,
+			ACCEPTER = Color.GREEN,
+			REFUSER = Color.RED;
 	
 	public static final int PANELRESSOURCE = 0, PANELTACHE = 1, PANELPROJET = 2, CENTRE = 3, ALL = Integer.MAX_VALUE;
 	

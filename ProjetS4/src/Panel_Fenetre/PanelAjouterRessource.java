@@ -9,9 +9,14 @@ import javax.swing.JOptionPane;
 import Fenetre.FenetreModal;
 import Model.Activite;
 import Model.Entreprise;
-import Model.Temps;
 import Ressource.Ressource;
 
+/**
+ * Affiche la liste des ressource de l'entreprise
+ * Permet d'un choisir une pour l'ajouter à l'activite
+ * @author Damien
+ *
+ */
 public class PanelAjouterRessource extends PanelFenetre{
 	
 	/**
@@ -43,20 +48,17 @@ public class PanelAjouterRessource extends PanelFenetre{
 		gc.gridwidth = 3;
 		this.add(creerTitre("Indiquez le type de la ressource"), gc);
 		
+		gc.fill = GridBagConstraints.CENTER;
 		gc.gridy = 1;
 		initialiseComboBoxType(this); 
 		this.add(comboBoxType, gc);
 		
-		
+		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.gridy = 2;
 		initialiseComboBoxRessource(entreprise.getListeRessourceEntrepriseParType(typeChoisi));
 		this.add(comboBoxRessource, gc);			
 
-		
-		
-		gc.gridy = 3;
-		this.add(creerTitre("Filtres"), gc);
-		
+				
 		gc.gridwidth = 1;
 		gc.ipadx = gc.anchor = GridBagConstraints.EAST;
 		gc.gridx = 1;
@@ -73,12 +75,14 @@ public class PanelAjouterRessource extends PanelFenetre{
 		int type = comboBoxType.getSelectedIndex();
 		Ressource r = (Ressource) comboBoxRessource.getSelectedItem();
 		Activite a = entreprise.getActiviteSelectionner();
-		if (!a.ressourcePresente(r)) {
+		/*entreprise.ajouterRessourceActivite(type, r,a);
+		fm.dispose();*/
+		if(!entreprise.ressourcePresenteDansActivite(type, r, a)) {
 			entreprise.ajouterRessourceActivite(type, r,a);
 			fm.dispose();
 		}
 		else {
-		   	JOptionPane.showMessageDialog(null, "Cette ressource est deja pr�sente dans cette activit�", "Erreur", JOptionPane.ERROR_MESSAGE);			
+		   	JOptionPane.showMessageDialog(null, "Cette ressource est déjà présente dans cette activité", "Erreur", JOptionPane.ERROR_MESSAGE);			
 		}
 	}
 }

@@ -1,12 +1,9 @@
 package Model;
 
 import java.awt.Color;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.swing.JTextArea;
 
 import Ressource.Ressource;
 
@@ -24,17 +21,17 @@ public class Activite implements Comparable<Activite>{
 	private int ordre;
 	private ArrayList<Ressource> lRessources; //Contient les cr�neaux horaires d'une journ�e
 	private ArrayList<String> listeDomaine;
-	
-	private boolean afficheEDT = false; //pour le graphique
-	private boolean changeSens = false; //pour le graphique
+
+	private boolean changeSens = false;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//			CONSTRUCTEUR
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public Activite(int id, String titre, float chargeJH, LocalDate debut, Color couleur, int ordre, ArrayList<String> listeDomaine) {
 		this.id = id;
 		this.titre = titre;
-		this.chargeJHomme = chargeJH; //La charge de travail de l'activitee en jourHomme
+		this.chargeJHomme = chargeJH;
 		this.chargeHeure = (int)(chargeJH * Entreprise.NB_HEURE_JOUR);
+		this.ordre = ordre;
 		this.debut = debut;
 		this.couleur = couleur;
 		this.listeDomaine = listeDomaine;
@@ -82,22 +79,16 @@ public class Activite implements Comparable<Activite>{
 		return couleur;
 	}
 
-	public boolean getAfficheEDT() {
-		return afficheEDT;
-	}
 
 	public boolean getChangeSens() {
 		return changeSens;
 	}
 
+
 	public int getOrdre() {
 		return ordre;
 	}
 
-	public boolean hasRessource() {
-		return lRessources.size() != 0;
- 	}
-	
 	public ArrayList<String> getListeDomaine(){
 		return listeDomaine;
 	}
@@ -112,7 +103,7 @@ public class Activite implements Comparable<Activite>{
 		}
 		return estPresent;
 	}
-	
+
 	//--------------------------------------------------------------------------------->>>>> Setteur
 
 
@@ -129,21 +120,12 @@ public class Activite implements Comparable<Activite>{
 		this.debut = debut;
 	}
 
-	public void afficheEDT() {
-		if (afficheEDT) {
-			afficheEDT = false;
-		}
-		else {
-			if (getListeRessourceType(Ressource.PERSONNE).size()>0) {
-				afficheEDT = true;
-			}
-		}
-	}
 
 	public void setChangeSens(boolean b) {
 		changeSens = b;
 	}
-	
+
+
 	public void supprimerToutesRessources() {
 		lRessources.clear();
 	}
@@ -151,8 +133,8 @@ public class Activite implements Comparable<Activite>{
 	public void setOrdre(int ordre) {
 		this.ordre = ordre;
 	}
-	
-	
+
+
 	//--------------------------------------------------------------------------------->>>>> Comparaison
 	@Override
 	public boolean equals(Object obj) {
@@ -184,7 +166,6 @@ public class Activite implements Comparable<Activite>{
 	public String toString() {
 		//String res = "Activite " + ordre;
 		String res = titre;
-		
 		return res;
 	}
 
@@ -263,7 +244,7 @@ public class Activite implements Comparable<Activite>{
 
 	public String creeAffiche() {
 		// TODO Auto-generated method stub
-		return "titre : " + this.titre + ", id : " + this.id + ", ordre : " + this.ordre + ", charge heure : " + this.chargeHeure + ", charge JHomme : " + this.chargeJHomme 
+		return "titre : " + this.titre + ", id : " + this.id + ", ordre : " + this.ordre + ", charge heure : " + this.chargeHeure + ", charge JHomme : " + this.chargeJHomme
 			+ ", couleur : " + this.couleur + ", debut : " + this.debut + ", liste de domaine : " + this.listeDomaine + ",liste de ressource : " + this.lRessources;
 	}
 
