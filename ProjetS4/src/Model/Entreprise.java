@@ -2507,7 +2507,7 @@ public class Entreprise extends Observable{
 		String modif;
 		try {
 		Ticket ticketCour = JavaSQLRecherche.recupereTicketParId(idT);
-			if (ticketCour.getStatut() == Ticket.ACCEPTEE) {
+			if (ticketCour.getStatut() != Ticket.ACCEPTEE) {
 				modif = JavaSQLRecherche.recupereModifTicketParId(idT);	
 				String[] regex = modif.split(Ticket.SEPARATEUR); 
 				int typeRessource = Integer.parseInt(regex[1]);
