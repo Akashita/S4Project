@@ -24,16 +24,16 @@ public class LancementRapideDebug {
 
 		JavaSQL.connection();
 //		try {
-////			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(1));
-////			JavaSQLDebug.affiche();
-////			System.out.println(JavaSQLPersonne.affiche());
-////			System.out.println(JavaSQLActivite.affiche());
-////			LocalDate date = Temps.creerLaDate(24, 5, 2020);
-////			JavaSQLReunion.insertion(5, date, "test", 9);
-////			JavaSQLReunion.affiche();
-////			JavaSQLConge.affiche();
-////			JavaSQLDebug.drop();
-////			JavaSQL.creation();
+//			System.out.println(JavaSQLRecherche.recupereChefDeProjetParIdPersonne(1));
+//			JavaSQLDebug.affiche();
+//			System.out.println(JavaSQLPersonne.affiche());
+//			System.out.println(JavaSQLActivite.affiche());
+//			LocalDate date = Temps.creerLaDate(24, 5, 2020);
+//			JavaSQLReunion.insertion(5, date, "test", 9);
+//			JavaSQLReunion.affiche();
+//			JavaSQLConge.affiche();
+//			JavaSQLDebug.drop();
+//			JavaSQL.creation();
 //		} catch (SQLException e) {
 //			e.printStackTrace();
 //		}
