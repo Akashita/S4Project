@@ -198,13 +198,13 @@ public class PanelEDTActivite extends JPanel{
 		for (int i=0; i<liste[0].length; i++) {
 			CreneauHoraire ch = liste[numeroJour][i];
 			if(ch != null) {
-			if (ch.getType() == CreneauHoraire.TRAVAIL) {
-				if( ch.getActivite().getId() == activite.getId()) {
-				travaille = true;
-				break;		
-				}
-			}	
-		}
+				if (ch.getType() == CreneauHoraire.TRAVAIL) {
+					if( ch.getActivite().getId() == activite.getId()) {
+						travaille = true;
+						break;		
+					}
+				}	
+			}
 		}
 		return travaille;
 		
